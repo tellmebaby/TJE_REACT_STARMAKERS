@@ -128,3 +128,10 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# starmakers java server
+.vscode/settings.json
+server/build.gradle
+server/build.gradle
+server/src/main/resources/application.yml
+server/src/main/resources/application.properties
