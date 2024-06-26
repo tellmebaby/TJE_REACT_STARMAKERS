@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.codehaus.groovy.classgen.genMathModification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.aloha.server.board.dto.Option;
 import com.aloha.server.board.dto.Page;
@@ -37,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/")
 public class HomeController {
 
@@ -67,67 +69,52 @@ public class HomeController {
     //     // Principal : 현재 로그인 한 사용자 정보를 확인하는 인터페이스
     //     return "index";
     // }
-    @GetMapping({"", "/"})
-    public String home(Principal principal
-                      ,HttpSession session
-                      ,Model model
-                        ,Page page, Option option) throws Exception {
-        // 로그인을 한 사용자 정보를 로깅합니다.
-        log.info("메인 화면");
-        log.info(":::::::::: principal ::::::::::");
-        log.info("principal : " + principal);
-        log.info("user : " + session.getAttribute("user"));
-        Users user = (Users) session.getAttribute("user");
-        model.addAttribute("user", user);
+    // @GetMapping({"", "/"})
+    // public String home(Principal principal
+    //                   ,HttpSession session
+    //                   ,Page page, Option option) throws Exception {
+    //     // 로그인을 한 사용자 정보를 로깅합니다.
+    //     // log.info("메인 화면");
+    //     // log.info(":::::::::: principal ::::::::::");
+    //     // log.info("principal : " + principal);
+    //     // log.info("user : " + session.getAttribute("user"));
+    //     // Users user = (Users) session.getAttribute("user");
+    //     // model.addAttribute("user", user);
 
-        // starList를 가져와서 모델에 추가합니다.
-        List<StarBoard> starListReview = starService.list("review", page, option);
-        for (StarBoard starBoard : starListReview) {
-            int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-            starBoard.setCommentCount(commentCount);
-        }
         
-        List<StarBoard> starListAnn = starService.list("an", page, option);
-        for (StarBoard starBoard : starListAnn) {
-            int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-            starBoard.setCommentCount(commentCount);
-        }
+        
+    //     // starList를 가져와서 모델에 추가합니다.
+    //     List<StarBoard> starListReview = starService.list("review", page, option);
+        
+    //     if(starListReview != null) {
+    //         for (StarBoard starBoard : starListReview) {
+    //             int commentCount = replyService.countByStarNo(starBoard.getStarNo());
+    //             starBoard.setCommentCount(commentCount);
+    //         }
+            
+    //     }
+    //     List<StarBoard> starListAnn = starService.list("an", page, option);
+    //     for (StarBoard starBoard : starListAnn) {
+    //         int commentCount = replyService.countByStarNo(starBoard.getStarNo());
+    //         starBoard.setCommentCount(commentCount);
+    //     }
 
-        List<StarBoard> starListEvent = starService.list("event", page, option);
+    //     List<StarBoard> starListEvent = starService.list("event", page, option);
         
-        model.addAttribute("starListReview", starListReview.stream().limit(5).collect(Collectors.toList()));
-        model.addAttribute("starListAnn", starListAnn.stream().limit(5).collect(Collectors.toList()));
-        model.addAttribute("starListEvent", starListEvent);
-        // index 페이지를 반환합니다.
-        return "index";
-    }
+    //     model.addAttribute("starListReview", starListReview.stream().limit(5).collect(Collectors.toList()));
+    //     model.addAttribute("starListAnn", starListAnn.stream().limit(5).collect(Collectors.toList()));
+    //     model.addAttribute("starListEvent", starListEvent);
+    //     // index 페이지를 반환합니다.
+    //     return "index";
+    // }
 
     
     @GetMapping("/exception")
-    public String exception(Authentication auth, Model model) {
+    public ResponseEntity<?> exception(Authentication auth) {
         log.info("인증 예외 처리...");
         log.info("auth :" + auth.toString());
-        model.addAttribute("msg","인증 거부 : "+auth.toString());
-        return "/exception";
-    }
-
-    /**
-     * 로그인 화면 이동
-     * @return
-     */
-    @GetMapping("/login")
-    public String login() {
-        return "/login";
-    }
- 
-
-    /**
-     * 회원가입 화면 이동
-     * @return
-     */
-    @GetMapping("/join")
-    public String join() {
-        return "/join";
+        String exception = "인증 거부 : "+auth.toString();
+        return new ResponseEntity<>(exception, HttpStatus.OK);
     }
 
     /**
@@ -138,15 +125,15 @@ public class HomeController {
      * @throws Exception
      */
     @PostMapping("/join")
-    public String joinPro( Users user, HttpServletRequest request ) throws Exception{
+    public ResponseEntity<?> joinPro( Users user, HttpServletRequest request ) throws Exception{
         
         int result = userService.join(user);
         if(result > 0){
             userService.login(user, request);
-            return "redirect:/";
+            return new ResponseEntity<> (HttpStatus.OK);
         }
         
-        return "redirect:/join?error";
+        return new ResponseEntity<> (HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 
@@ -158,16 +145,16 @@ public class HomeController {
      * @throws Exception
      */
     @PostMapping("/page/recoverId")
-    public String recoverId( Users user , Model model ) throws Exception{
+    public ResponseEntity<?> recoverId( Users user ) throws Exception{
         
         int result = userService.selectEmail(user);
 
         if( result > 0 ) {
-            model.addAttribute("user", user);
-            return "/page/recoverComplete";
+            // model.addAttribute("user", user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         
-        return "redirect:/page/recoverId?error";
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 
@@ -177,56 +164,6 @@ public class HomeController {
         return ResponseEntity.ok(isTaken);
     }
 
-    
-    @GetMapping("/page/introduce")
-    public String introduce( Model model) {
-        return "page/introduce";
-    }
-    
-
-
-    // @GetMapping("/{path}")
-    // public String home(@PathVariable("path") String path) {        
-    //     return path;
-    // }
-
-    @GetMapping("/page/{path}")
-    public String user(@PathVariable("path") String path ) {        
-        return "page/" + path;
-    } 
-
-    // @GetMapping("/page/starCard/{path}")
-    // public String starcard(@PathVariable("path") String path) {
-    //     return "page/starCard/" + path;
-    // }
-    
-    @GetMapping("/page/mypage/{path}")
-    public String mypage(@PathVariable("path") String path) {
-        return "page/mypage/" + path;
-    }
-   
-    @GetMapping("/page/board/{path}")
-    public String board(@PathVariable("path") String path) {
-        return "page/board/" + path;
-    }
-    
-    @GetMapping("/page/board/eventBoard/{path}")
-    public String eventBoard(@PathVariable("path") String path) {
-        return "page/board/eventBoard/" + path;
-    }
-    
-    @GetMapping("/page/board/anBoard/{path}")
-    public String anBoard(@PathVariable("path") String path) {
-        return "page/board/anBoard/" + path;
-    }
-    @GetMapping("/page/board/qnaBoard/{path}")
-    public String qnaBoard(@PathVariable("path") String path) {
-        return "page/board/qnaBoard/" + path;
-    }
-    @GetMapping("/page/board/reviewBoard/{path}")
-    public String reviewBoard(@PathVariable("path") String path) {
-        return "page/board/reviewBoard/" + path;
-    }
 
     /**
      * 회원 프로필 이미지 불러오기
@@ -234,71 +171,18 @@ public class HomeController {
      * @return
      */
     @GetMapping("/get-user-img-id")
-    @ResponseBody
-    public Map<String, String> getUserImgId(HttpSession session) {
+    public ResponseEntity<?> getUserImgId(HttpSession session) {
         Map<String, String> response = new HashMap<>();
         Users user = (Users) session.getAttribute("user");
         if (user != null) {
             response.put("userImgId", Integer.toString(user.getUserImgId()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
             response.put("error", "No user image ID found in session");
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return response;
-    }
-
-    @GetMapping("/carddesign")
-    public String carddesign() {
-        return "carddesign";
-    }
-
-    // 메인 리뉴얼
-    @GetMapping("/index2")
-    public String home2(Principal principal
-    ,HttpSession session
-    ,Model model
-      ,Page page, Option option) throws Exception {
-    // 로그인을 한 사용자 정보를 로깅합니다.
-    log.info("메인 화면");
-    log.info(":::::::::: principal ::::::::::");
-    log.info("principal : " + principal);
-    log.info("user : " + session.getAttribute("user"));
-    Users user = (Users) session.getAttribute("user");
-    model.addAttribute("user", user);
-
-    // starList를 가져와서 모델에 추가합니다.
-    List<StarBoard> starListReview = starService.list("review", page, option);
-    for (StarBoard starBoard : starListReview) {
-    int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-    starBoard.setCommentCount(commentCount);
-    }
-
-    List<StarBoard> starListAnn = starService.list("an", page, option);
-    for (StarBoard starBoard : starListAnn) {
-    int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-    starBoard.setCommentCount(commentCount);
-    }
-
-    model.addAttribute("starListReview", starListReview.stream().limit(5).collect(Collectors.toList()));
-    model.addAttribute("starListAnn", starListAnn.stream().limit(5).collect(Collectors.toList()));
-    // index 페이지를 반환합니다.
-    return "index2";
     }
     
     
-    /**
-     * 이벤트 후기 게시판 조회
-     */
-    @GetMapping("/board/reviewBoard/reviewPost")
-    public String reviewSelect(@RequestParam("starNo") int starNo, Model model) throws Exception {
-        StarBoard starBoard = starService.select(starNo);
-        model.addAttribute("starBoard", starBoard);
-        return "/page/board/reviewBoard/reviewPost";
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "/test";
-    }
-
 
 }
