@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.aloha.server.board.dto.Option;
 import com.aloha.server.board.dto.Page;
@@ -17,45 +20,53 @@ import com.aloha.server.board.dto.QnaBoard;
 import com.aloha.server.board.service.QnaService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
-
-
 
 
 @Slf4j
-@Controller
-@RequestMapping("/page/board/qnaBoard")
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/qna")
 public class QnaController {
 
     @Autowired
     private QnaService qnaService;
 
     @GetMapping("/qnaList")
-    public String list(Model model, Page page, Option option) throws Exception {
+    public ResponseEntity<?> getAll(Page page, Option option) throws Exception {
         log.info("qna 목록");
-
-        List<QnaBoard> qnaList = qnaService.list(page, option);
-
-        // 페이징, 검색
-        log.info("page : " + page);
-        log.info("option : " + option);
-
-        // List<QnaBoard> qnaList = qnaService.list();
-        model.addAttribute("qnaList", qnaList);
-        model.addAttribute("page", page);
-        model.addAttribute("option", option);
-
-        List<Option> optionList = new ArrayList<Option>();
-        optionList.add(new Option("제목+내용", 0));
-        optionList.add(new Option("제목", 1));
-        optionList.add(new Option("내용", 2));
-        optionList.add(new Option("작성자", 3));
-        model.addAttribute("optionList", optionList);
-        return "/page/board/qnaBoard/qnaList";
+        try {
+            List<QnaBoard> qnaList = qnaService.list(page, option);
+            return new ResponseEntity<>(qnaList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+
+    // @GetMapping("/qnaList")
+    // public String list(Model model, Page page, Option option) throws Exception {
+    //     log.info("qna 목록");
+
+    //     List<QnaBoard> qnaList = qnaService.list(page, option);
+
+    //     // 페이징, 검색
+    //     log.info("page : " + page);
+    //     log.info("option : " + option);
+
+    //     // List<QnaBoard> qnaList = qnaService.list();
+    //     model.addAttribute("qnaList", qnaList);
+    //     model.addAttribute("page", page);
+    //     model.addAttribute("option", option);
+
+    //     List<Option> optionList = new ArrayList<Option>();
+    //     optionList.add(new Option("제목+내용", 0));
+    //     optionList.add(new Option("제목", 1));
+    //     optionList.add(new Option("내용", 2));
+    //     optionList.add(new Option("작성자", 3));
+    //     model.addAttribute("optionList", optionList);
+    //     return "/page/board/qnaBoard/qnaList";
+    // }
 
     @GetMapping("/qnaPost")
     public String read(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
