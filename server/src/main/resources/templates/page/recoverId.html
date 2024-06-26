@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디 찾기</title>
+    <style>
+        .find-id-form {
+            display: flex;
+            height: 60vh;
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 5px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .find-id-form button {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .recover-id-msg {
+            text-align: center;
+        }
+    </style>
+</head>
+<body layout:fragment="content">
+    <div class="find-id-form">
+        <form action="/page/recoverId" method="post">
+            <!-- CSRF TOKEN -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="recover-id-msg">
+                <h1 class="h3 mb-3 font-weight-normal text-center">이메일 찾기</h1>
+                <span>등록된 이름과 이메일을 입력해주세요.</span>
+            </div>
+            <div class="form-group">
+                <label for="inputUsername">이름</label>
+                <input type="text" id="inputUsername" class="form-control" name="name" placeholder="사용자 이름" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">이메일 주소</label>
+                <input type="email" id="inputEmail" class="form-control" name="email" placeholder="이메일 주소" required autofocus>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">이메일 찾기</button>
+        </form>
+    </div>
+
+
+    <!-- 부트스트랩 JS 및 의존성 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <th:block th:replace="fragment/link::link"></th:block>
+    <th:block th:replace="fragment/script::script"></th:block>
+  </head>
+<body>
+  <th:block th:replace="fragment/header::headerFragment"></th:block>
+  <th:block layout:fragment="content"></th:block>
+  <th:block th:replace="fragment/footer::footerFragment"></th:block>
+  <script src="/js/userprofile.js"></script>
+</body>
+
+
+</html>
+

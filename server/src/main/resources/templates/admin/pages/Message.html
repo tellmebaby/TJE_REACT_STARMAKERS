@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="/admin/header :: head"></head>
+
+
+<style>
+    #chatMessages {
+        height: 500px;
+    }
+
+    .direct-chat-contacts {
+        height: auto;
+    }
+
+    .direct-chat-messages {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .direct-chat-msg {
+        max-width: 75%;
+        margin: 5px 0;
+    }
+
+    .direct-chat-msg.right {
+        align-self: flex-end;
+    }
+
+    .direct-chat-msg.left {
+        align-self: flex-start;
+    }
+
+    .direct-chat-text {
+        top: -20px;
+    }
+
+
+    /* li 요소 */
+    .contacts-list li {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* 이미지 */
+    .contacts-list-img {
+        width: 45px;
+        height: 45px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    /* 이름과 메시지 내용 */
+    .contacts-list-info {
+        flex: 1;
+        margin-left: 0;
+    }
+
+    .contacts-list-name {
+        font-weight: bold;
+    }
+
+    /* 카운트와 등록 날짜 */
+    .additional-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .count,
+    .reg-date {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #999;
+    }
+
+    /* 카운트 스타일 */
+    .count {
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        margin-right: 5px;
+        display: inline-block;
+        width: 25px;
+        text-align: center;
+        line-height: 25px;
+    }
+
+    /* 등록 날짜 스타일 */
+    .reg-date {
+        font-style: italic;
+    }
+
+    .scroll-hidden {
+      height: 200px; /* 예제 높이 */
+      overflow-y: scroll;
+      -ms-overflow-style: none;  /* Internet Explorer 10+ */
+      scrollbar-width: none;  /* Firefox */
+    }
+
+    .scroll-hidden::-webkit-scrollbar {
+      display: none;  /* Safari and Chrome */
+    }
+
+</style>
+
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+    <div class="wrapper">
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60"
+                width="60">
+        </div>
+
+
+        <!-- 사이드바 -->
+        <div th:replace="/admin/sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>고객센터</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">고객센터</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="card direct-chat direct-chat-primary col-md-6 direct-chat-contacts-open">
+                    <div class="card-header">
+                        <h3 class="card-title">1:1 채팅</h3>
+
+                        <div class="card-tools">
+                            <span title="3 New Messages" class="badge badge-primary" id="total-count"></span>
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" title="Contacts" data-widget="chat-pane-toggle"
+                                onclick="MessagesList()">
+                                <i class="fas fa-comments"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <!-- Conversations are loaded here -->
+                        <div class="direct-chat-messages scroll-hidden" id="chatMessages">
+                            <!-- Messages will be dynamically loaded here -->
+                        </div>
+                        <!--/.direct-chat-messages-->
+
+                        <!-- Contacts are loaded here -->
+                        <div class="direct-chat-contacts">
+                            <ul class="contacts-list">
+                            </ul>
+                            <!-- /.contacts-list -->
+                        </div>
+                        <!-- /.direct-chat-pane -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <form id="messageForm">
+                            <div class="input-group">
+                                <input type="text" name="content" placeholder="입력하세요" class="form-control"
+                                    id="chatInput">
+                                <input type="hidden" name="userNo" id="userNo" value="">
+                                <input type="hidden" name="code" value="toUser">
+                                <span class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">보내기</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+
+
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 3.2.0
+            </div>
+            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights
+            reserved.
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="/admin/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/admin/dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/admin/dist/js/demo.js"></script>
+    <script src="/js/adminChat.js"></script>
+</body>
+
+</html>

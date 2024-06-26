@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aloha.server.board.mapper.QnaMapper">
+
+    <!-- 게시판 조회 -->
+    <select id="list" resultType="QnaBoard">
+        SELECT *
+        FROM qna_board
+        WHERE (1)
+        <if test="option != null and option.keyword != null and option.keyword != ''">
+            AND
+            <if test="option.code == 0">
+                (title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%'))
+            </if>
+            <if test="option.code == 1">
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 2">
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 3">
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 4">
+                user_no = #{option.keyword}
+            </if>
+        </if>
+        ORDER BY reg_date DESC
+        LIMIT #{page.index}, #{page.rows}
+    </select>
+
+     <!-- 데이터 개수 조회 - [검색] -->
+    <select id="count" resultType="int">
+        SELECT COUNT(*)
+        FROM qna_board 
+        WHERE (1)
+        <if test="option != null and option.keyword != null and option.keyword != ''">
+            AND
+            <if test="option.code == 0">
+                (title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%'))
+            </if>
+            <if test="option.code == 1">
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 2">
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 3">
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 4">
+                user_no =#{option.keyword}
+            </if>
+        </if>
+        
+    </select>
+
+    <!-- 게시글 목록 검색 -->
+    <select id="search" resultType="QnaBoard">
+        SELECT *
+        FROM qna_board
+        WHERE (1)
+        <if test="option != null and option.keyword != null and option.keyword != ''">
+            AND
+            <if test="option.code == 0">
+                (title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%'))
+            </if>
+            <if test="option.code == 1">
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 2">
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 3">
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 4">
+                user_no =#{option.keyword}
+            </if>
+        </if>
+        ORDER BY reg_date DESC
+        
+    </select>
+
+    <!-- 게시글 번호 최댓값 -->
+    <select id="maxPk" resultType="int">
+        SELECT MAX(qna_no)
+        FROM qna_board
+    </select>
+
+    <!-- 게시글 조회 -->
+    <select id="select" resultType="QnaBoard">
+        SELECT * 
+        FROM   qna_board
+        WHERE  qna_no = #{qnaNo}
+    </select>
+
+
+    <!-- 글 등록 -->
+    <insert id="insert">
+        INSERT INTO qna_board(title, writer, content, status, user_no)
+        VALUES (#{title}, #{writer}, #{content},#{status},#{userNo})
+    </insert>
+    
+    <!-- 게시글 수정 -->
+    <update id="update">
+        UPDATE qna_board
+        SET title = #{title},
+            writer = #{writer},
+            content = #{content}
+        WHERE qna_no = #{qnaNo}
+    </update>
+
+    <!-- 답변 등록 -->
+    <update id="insertAnswer">
+        UPDATE qna_board
+        SET answer = #{answer},
+            status = '답변 완료'
+        WHERE qna_no = #{qnaNo}
+    </update>
+
+    <!-- 답변 삭제 -->
+    <update id="deleteAnswer">
+        UPDATE qna_board
+        SET answer = NULL,
+            status = '답변 대기'
+        WHERE qna_no = #{qnaNo}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="delete">
+        DELETE FROM qna_board
+        WHERE qna_no IN (${qnaNos})
+    </delete>
+
+    <!-- 조회수 -->
+    <update id="views">
+        UPDATE qna_board
+           SET views = views + 1
+        WHERE qna_no = #{qnaNo}
+    </update>
+
+</mapper>

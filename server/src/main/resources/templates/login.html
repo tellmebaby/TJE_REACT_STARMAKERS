@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
+    <title>로그인 화면</title>
+    <style>
+        .login-container {
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            padding: 20px 0;
+        }
+        .login-form {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            margin: auto;
+            background: radial-gradient(circle at center, #91ACCF, transparent 60%);
+        }
+
+        .login-form button {
+            width: 100%;
+        }
+
+        .login-form img{
+            width: 50px;
+        }
+        .other-login-icon {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 35px;
+        }
+        .other-login-icon .other-login-img{
+            height: 50px;
+        }
+        .login-find-text {
+            display: flex;
+            justify-content: space-evenly;
+            margin-top: 15px;
+        }
+        .login-check-box {
+            display: flex;
+            justify-content: space-around;
+        }
+        /* 버튼 스타일 */
+        .loginbtn {
+            /* width: 100%; */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #91ACCF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .loginbtn:hover {
+            background-color: #a2bfe6;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .input-style {
+            width: 330px;
+            margin: auto;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0; 
+            }
+            100% {
+                opacity: 1; 
+            }
+        }
+
+        h1 {
+            font-family: "Tiny5", sans-serif;
+            font-weight: 400;
+            font-style: normal
+        }
+    </style>
+</head>
+<body layout:fragment="content" class="login">
+    <div class="login-container">
+        <!-- <center><h1>LOGIN</h1></center> -->
+        <div class="login-form text-center">
+        <form action="/login" method="post">
+            <!-- CSRF TOKEN -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+<div class="input-style">
+            <div style="height: 140px;
+            display: flex; 
+            flex-wrap: wrap;
+            align-content: space-around;
+            justify-content: center;"><img style="width: 100px;"src="/img/logo_ex.png"></div>
+            <label for="inputEmail" class="sr-only">이메일 주소</label>
+            <input type="email" id="inputEmail" class="form-control mb-2" name="email" placeholder="이메일 주소" required autofocus>
+            <label for="inputPassword" class="sr-only">비밀번호</label>
+            <input type="password" id="inputPassword" class="form-control mb-2" name="password" placeholder="비밀번호" required>
+            <button class="loginbtn btn-lg btn-primary btn-block" type="submit">로그인</button>
+            <div class="login-find-text">
+                <a style="font-size: medium;" href="/page/recoverId" >이메일찾기</a>
+                <p style="font-size: small;" >|</p>
+                <a style="font-size: medium;" href="/page/recoverPassword" >비밀번호찾기</a>
+                <p style="font-size: small;" >|</p>
+                <a style="font-size: medium;" href="/join" >회원가입</a>
+            </div>
+
+            <div class="login-check-box">
+                <div class="form-check text-start my-3">
+                    <input class="form-check-input" type="checkbox" name="remember-id"  id="remember-id">
+                    <label class="form-check-label" for="remember-id">
+                      아이디저장
+                    </label>
+                  </div>
+                  <div class="form-check text-start my-3">
+                    <input class="form-check-input" type="checkbox" name="remember-me" id="remember-me">
+                    <label class="form-check-label" for="remember-me">
+                      자동로그인
+                    </label>
+                  </div>
+            </div>
+        
+            <br>
+            <div class="other-login-icon">
+                <div>
+                    <a href="#">
+                        <div class="other-login-img"><img src="/img/naver_login_btn2.png"></div>
+                    </a>
+                    <span style="font-size: small;">네이버로그인</span>
+                </div>
+                <div>
+                    <div>
+                        <a href="/oauth2/authorization/kakao">
+                            <div class="other-login-img"><img src="/img/kakao_login_btn.png"></div>
+                        </a>
+                    </div>
+                    <span style="font-size: small;">카카오로그인</span>
+                </div>
+                <div>
+                    <a href="#">
+                        <div class="other-login-img"><img src="/img/google_login_btn2.png"></div>
+                    </a>
+                    <span style="font-size: small;">구글로그인</span>
+                </div>
+            </div>
+    </div>
+</div>
+</div>
+        </form>
+    
+    
+    <!-- 부트스트랩 JS 및 의존성 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+    <!-- 아이디 저장 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const rememberCheckbox = document.getElementById('remember-id');
+        const userIdInput = document.getElementById('inputEmail');
+
+        // 페이지 로드 시 저장된 아이디가 있으면 입력 필드에 채워줍니다.
+        const savedUserId = localStorage.getItem('savedUserId');
+        if (savedUserId) {
+            userIdInput.value = savedUserId;
+            rememberCheckbox.checked = true;
+        }
+
+        rememberCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+            // 체크박스가 체크된 경우 아이디를 저장합니다.
+            localStorage.setItem('savedUserId', userIdInput.value);
+            } else {
+            // 체크박스가 해제된 경우 저장된 아이디를 삭제합니다.
+            localStorage.removeItem('savedUserId');
+            }
+        });
+
+        userIdInput.addEventListener('input', function() {
+            if (rememberCheckbox.checked) {
+            // 입력 필드의 값이 변경될 때, 체크박스가 체크된 경우 아이디를 업데이트합니다.
+            localStorage.setItem('savedUserId', this.value);
+            }
+        });
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/default_layout}">
+
+<head>
+    <title>결제 실패</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+        }
+
+        .content {
+            margin-left: 5rem;
+            padding: 2rem;
+        }
+
+        .header,
+        .section {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 1.5rem;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content" class="align-items-center ml-5">
+    <div class="container" style="width: 860px;">
+
+        <div class="header text-center mt-4">
+            <h1 class="mt-3 mb-3">결제 실패</h1>
+            <p class="text-danger mb-3">결제에 실패했습니다. 다시 시도해 주세요.</p>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="button" onclick="window.location.href='/retry-payment'">다시 시도</button>
+            <button class="button" onclick="window.location.href='/'">홈으로</button>
+        </div>
+
+    </div>
+</th:block>
+
+</html>

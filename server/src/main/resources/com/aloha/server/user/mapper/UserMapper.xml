@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aloha.server.user.mapper.UserMapper">
+
+    <resultMap type="Users" id="userMap">
+        <id property="userNo" column="user_no" />
+        <result property="name" column="name" />
+        <result property="id" column="id" />
+        <result property="email" column="email" />
+        <result property="password" column="password" />
+        <result property="phone" column="phone" />
+        <result property="address" column="address" />
+        <result property="regDate" column="reg_date" />
+        <result property="updDate" column="upd_date" />
+        <result property="enabled" column="enabled" />
+        <result property="gender" column="gender" />
+        <result property="birth" column="birth" />
+        <collection property="authList" resultMap="authMap"></collection>
+    </resultMap>
+
+    <resultMap type="UserAuth" id="authMap">
+        <result property="authNo" column="auth_no" />
+        <result property="userId" column="user_id" />
+        <result property="auth" column="auth" />
+    </resultMap>
+
+    <resultMap type="Pay" id="payMap">
+        <result property="totalPrice" column="total_price"></result>
+    </resultMap>
+
+    <!-- 로그인 - username -->
+    <select id="login" resultMap="userMap">
+        SELECT u.user_no
+              ,u.email
+              ,password
+              ,name
+              ,id
+              ,phone
+              ,address
+              ,gender
+              ,birth
+              ,reg_date
+              ,upd_date
+              ,1 enabled
+              ,auth
+        FROM user u LEFT OUTER JOIN user_auth auth ON u.email = auth.user_id
+        WHERE u.email = #{email}
+    </select>
+
+
+    <!-- 회원 조회 - id -->
+    <select id="select" resultMap="userMap">
+        SELECT u.user_no
+              ,u.email
+              ,password
+              ,name
+              ,id
+              ,phone
+              ,address
+              ,gender
+              ,birth
+              ,reg_date
+              ,upd_date
+              ,1 enabled
+              ,auth
+        FROM user u LEFT OUTER JOIN user_auth auth ON u.email = auth.user_id
+        WHERE u.email = #{email}
+    </select>
+    
+    <!-- 회원 조회 - userNo -->
+    <select id="selectUserNo" resultMap="userMap">
+        <!-- SELECT *
+        FROM user
+        WHERE user_no = #{userNo} -->
+        SELECT u.user_no
+              ,u.email
+              ,password
+              ,name
+              ,id
+              ,phone
+              ,address
+              ,gender
+              ,birth
+              ,reg_date
+              ,upd_date
+              ,1 enabled
+              ,auth
+        FROM user u LEFT OUTER JOIN user_auth auth ON u.email = auth.user_id  
+        WHERE user_no = #{userNo}
+    </select>
+
+    <!-- 회원 가입 -->
+    <insert id="join" useGeneratedKeys="true" keyProperty="userNo">
+        INSERT INTO user ( name, id, email, password, phone, address, gender, birth, socia_code )
+        VALUES ( #{name}, #{id}, #{email}, #{password}, #{phone}, #{address}, #{gender}, #{birth}, #{sociaCode} )
+    </insert>
+
+    <!-- 마이페이지 조회 -->
+    <select id="read" resultType="Users">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <!-- 회원 정보 수정 -->
+    <update id="update">
+        UPDATE user
+           SET phone = #{phone}
+              ,address = #{address}
+              ,id = #{id}
+              ,email = #{email}
+              ,name = #{name}
+              ,upd_date = now()
+        WHERE email = #{email}
+    </update>
+
+    <!-- 회원 권한 수정 -->
+    <update id="authUpdate">
+        UPDATE user_auth
+           SET auth = #{auth}
+        WHERE user_id = #{email}
+    </update>
+
+
+    <!-- 회원 권한 등록 -->
+    <insert id="insertAuth">
+        INSERT INTO user_auth( user_id, auth )
+        VALUES ( #{userId}, #{auth} )
+    </insert>
+
+    <!-- 회원 탈퇴 -->
+    <delete id="delete">
+        DELETE FROM user
+        WHERE user_no = #{userNo}
+    </delete>
+
+     <!-- 가입여부확인 -->
+    <select id="selectEmail" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE name = #{name} AND email = #{email}
+    </select>
+
+    <!-- 아이디중복확인 -->
+    <select id="selectId" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+
+    <!-- 인기회원조회 -->
+    <select id="starMemberList" resultType="StarUser">
+   SELECT 
+    sb.writer,
+    sb.views,
+    sb.user_no,
+    sb.likes,
+    sb.category2,
+    sb.star_no,  
+    f.file_no AS userImgId
+FROM (
+    SELECT 
+        s.user_no,
+        s.writer,
+        s.views,
+        s.likes,
+        s.category2,
+        s.star_no,
+        COALESCE(s.views, 0) + COALESCE(s.likes, 0) AS total_score
+    FROM 
+        star_board s
+    WHERE 
+        s.card IS NOT NULL
+        AND s.views = (
+            SELECT MAX(inner_s.views)
+            FROM star_board inner_s
+            WHERE inner_s.user_no = s.user_no
+        )
+    ORDER BY 
+        total_score DESC
+    LIMIT 5
+) AS sb
+LEFT JOIN file AS f ON sb.user_no = f.user_no AND f.star_no = 0
+
+    </select>
+
+    <!-- 최신글 회원 조회 -->
+    <select id="newMemberList" resultType="StarUser">
+    SELECT 
+        sb.star_no,
+        sb.writer,
+        sb.views,
+        sb.user_no,
+        sb.likes,
+        sb.category2,
+        f.file_no AS userImgId
+    FROM (
+        SELECT 
+            s.*,
+            ROW_NUMBER() OVER (PARTITION BY s.user_no ORDER BY s.reg_date DESC) AS row_num
+        FROM 
+            star_board s
+        WHERE 
+            s.card IS NOT NULL  
+        ORDER BY 
+            s.reg_date DESC
+    ) sb
+    LEFT JOIN file f ON sb.user_no = f.user_no AND f.star_no = 0
+    WHERE 
+        sb.row_num = 1
+    ORDER BY 
+        sb.reg_date DESC
+    LIMIT 5;
+    </select>
+
+
+    <!-- 관리자 회원 리스트 -->
+    <select id="list" resultType="Users">
+        SELECT u.user_no
+              ,u.email
+              ,password
+              ,name
+              ,id
+              ,phone
+              ,address
+              ,gender
+              ,birth
+              ,reg_date
+              ,upd_date
+              ,1 enabled
+              ,auth
+        FROM user u LEFT OUTER JOIN user_auth auth ON u.email = auth.user_id
+    </select>
+
+    <!-- 소셜로그인 조회 -->
+    <!-- <select id="selectcocd" resultType="Users">
+        SELECT *
+        FROM user Where socia_code=#{sociaCode}
+    </select> -->
+
+
+    <!-- 소셜정보로 회원 조회 -->
+    <select id="selectcocd" resultMap="userMap">
+        SELECT u.user_no
+              ,u.email
+              ,password
+              ,name
+              ,id
+              ,phone
+              ,address
+              ,gender
+              ,birth
+              ,reg_date
+              ,upd_date
+              ,1 enabled
+              ,auth
+        FROM user u 
+            LEFT OUTER JOIN user_auth auth ON u.email = auth.user_id
+        WHERE u.socia_code = #{sociaCode}
+    </select>
+</mapper>

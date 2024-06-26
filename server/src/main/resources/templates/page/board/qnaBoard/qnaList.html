@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q&A</title>
+    <link rel="stylesheet" href="/css/list.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk&family=Noto+Sans+KR:wght@100..900&family=Rubik+Scribble&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: #f5f5f5;">
+    <th:block layout:fragment="content">
+
+        <div class="container">
+        <h3 class="notice">Q&A</h3>
+            <div class="eventtext">
+            <label>당스만을 이용하면서 궁금한 점을 자유롭게 문의하세요:)</label>
+            </div>
+            <div class="search-container">
+                <form action="/page/board/qnaBoard/qnaList" method="get">
+                    <select name="code">
+                        <option th:each="item : ${optionList}" th:value="${item.code}" th:text="${item.codeName}" th:selected="${item.code == option.code}"></option>
+                    </select>
+                    <input type="text" name="keyword" placeholder="검색어를 입력하세요" 
+                           th:value="${param.keyword}">
+                    <button type="submit">검색</button>
+                </form>
+            </div>
+            <div style="background-color: white; border-radius: 10px; display: flex; justify-content: center; padding-bottom: 14px; ">
+            <table style="width: 97%;">
+                <thead>
+                    <tr>
+                        <td width="70"></td>
+                        <th width="300">제목</th>
+                        <th width="150">작성자</th>
+                        <th width="200">작성일</th>
+                        <th width="150">상태</th>
+                        <th width="100">조회수</th>
+                    </tr>
+                </thead>
+                
+                <tr class="fixed">
+                    <td align="center"><i class="fa-solid fa-q twinkle"></i></td>
+                    <td>
+                        <i class="fas fa-star"></i><b style="color: crimson;">로그인 필수</b>
+                    </td>
+                    <td align="center">관리자</td>
+                    <td align="center">
+                        <span >2024-05-28 18:59:37</span>
+                    </td>
+                    <td align="center" ></td>
+                    
+                    <td align="center" >678</td>
+                </tr>
+                <tr class="fixed">
+                    <td align="center"><i class="fa-solid fa-q twinkle"></i></td>
+                    <td>
+                        <i class="fas fa-star"></i><b style="color: crimson;">관리 원칙에 위배되는 글은 삭제될 수 있습니다.</b>
+                    </td>
+                    <td align="center">관리자</td>
+                    <td align="center">
+                        <span >2024-05-28 18:40:37</span>
+                    </td>
+                    <td align="center" ></td>
+                    
+                    <td align="center" >439</td>
+                </tr>
+
+                <th:block th:if="${qnaList.isEmpty()}">
+                    <tr>
+                        <td colspan="6" align="center" style="padding-top: 183.49px; padding-bottom: 183.49px;">
+                            조회된 게시글이 없습니다.
+                        </td>
+                    </tr>
+                </th:block>
+
+                <th:block th:each="qnaBoard : ${qnaList}">
+                <tr>
+                    <td align="center"><i class="fa-solid fa-q twinkle"></i></td>
+                    <td>
+                        <a th:href="|qnaPost?qnaNo=${qnaBoard.qnaNo}|" th:text="${qnaBoard.title}"></a>
+                        <th:block th:if="${qnaBoard.regDate.after(#dates.createToday())}">
+                            <img th:src="@{/img/new.png}" style="width:15px; height:15px;">
+                        </th:block>
+                    </td>
+                    <td align="center" th:text="${qnaBoard.writer}"></td>
+                    <td align="center">
+                        <span th:text="${#dates.format(qnaBoard.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                    </td>
+                    <td align="center" th:text="${qnaBoard.status}" th:classappend="${qnaBoard.status == '답변 대기' ? 'status-waiting' : 'status-completed'}"></td>
+                    
+                    <td align="center" th:text="${qnaBoard.views}"></td>
+                </tr>
+                </th:block>
+            </table>
+        </div>
+            <div class="button-container">
+            <!-- 비 로그인 시 -->
+                <th:block sec:authorize="isAnonymous()">
+                    <!-- 여기에는 아무것도 표시되지 않음 -->
+                </th:block>
+                <!-- 로그인 시 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <a href="/page/board/qnaBoard/qnaInsert" class="btnn" style="background-color: #91ACCF;">✏글쓰기</a>
+                </th:block>
+            </div>
+        
+
+        <!-- 페이지네이션 -->
+        <center>
+            <div class="pagination">
+                <!-- [ 처음으로 ]-->
+                <a th:href="|/page/board/qnaBoard/qnaList?page=${page.first}&code=${option.code}&keyword=${option.keyword}|"><span class="material-symbols-outlined">
+                    first_page
+                    </span></a>
+    
+                <!-- [ 이전 ] -->
+                <th:block th:if="${page.page != page.first}">
+                    <a th:href="|/page/board/qnaBoard/qnaList?page=${page.prev}&code=${option.code}&keyword=${option.keyword}|"><span class="material-symbols-outlined">
+                        chevron_backward
+                        </span></a>
+                </th:block>
+    
+                <th:block th:each="no : ${#numbers.sequence(page.start, page.end)}">  <!--(1,10)모델에 담은 페이지가 아니라 그냥 1부터 10 --> 
+                    <!-- 현재 페이지 -->
+                    <!--
+                    #numbers.sequence(시작번호, 끝번호)
+                    : 시작번호부터 끝번호까지 번호 리스트를 생성
+                    -->
+                    <th:block th:if="${page.page == no}">
+                        <b>
+                            <span th:text="${no}"></span>
+                        </b>
+                    </th:block>
+                    <th:block th:if="${page.page != no}">
+                        <a th:href="|/page/board/qnaBoard/qnaList?page=${no}&code=${option.code}&keyword=${option.keyword}|" th:text="${no}" style="padding: 0 7px;"></a>
+                    </th:block>
+                </th:block>
+    
+                <!-- [ 다음 ] -->
+                <th:block th:if="${page.page != page.last}">
+                    <a th:href="|/page/board/qnaBoard/qnaList?page=${page.next}&code=${option.code}&keyword=${option.keyword}|" class="material-symbols-outlined">
+                        chevron_forward
+                        </a>
+                </th:block>
+    
+                <!-- [ 마지막 ]-->
+                <a th:href="|/page/board/qnaBoard/qnaList?page=${page.last}&code=${option.code}&keyword=${option.keyword}|"><span class="material-symbols-outlined">
+                    last_page
+                    </span></a>
+            </div>
+        </center>
+    </div>
+    </th:block>
+
+</body>
+</html>

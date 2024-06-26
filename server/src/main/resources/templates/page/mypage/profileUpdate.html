@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="/css/mypage.css">
+    <style>
+        .button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 46px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .text {
+            width: 350px;
+            border-radius: 10px;
+            font-size: 20px;
+            padding: 5px;  /* 텍스트 셀과 동일한 패딩 */
+            margin: 0;
+            width: 100%;  /* 텍스트와 input 필드의 너비를 동일하게 */
+            box-sizing: border-box;
+            background: none; /* input 필드의 배경색을 제거 */
+        }
+
+        /* ----------------------- */
+        .table td {
+            height: 60px !important;
+        }
+        .table td:first-child {
+            width: 30%;
+        }
+        .table td:last-child {
+            width: 70%;
+        }
+        .table-margin {
+            margin-top: 170px;
+        }  
+    </style>
+</head>
+<body layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-2 mr-2">
+                <div class="side-menu">
+                    <div class="nav-links">
+                        <a href="/page/mypage/profile" class="active"><i class="fa-solid fa-user"></i>회원 정보</a>
+                        <a href="/page/mypage/payment"><i class="fa-solid fa-credit-card"></i>결제 내역</a>
+                        <a href="/page/mypage/promotion"><i class="fa-solid fa-edit"></i>내가 쓴 글</a>
+                        <a href="/page/mypage/archive"><i class="fa-solid fa-archive"></i>내 보관함</a>
+                        <a href="/page/mypage/inquiry"><i class="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                        <a href="/page/mypage/userDelete"><i class="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="box">
+                    <div class="table-margin"></div>
+                    <form action="/page/mypage/profileUpdate" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden" name="email" th:value="${user.email}">
+                        <table class="table my-0 py-0">
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">닉네임</td>
+                                <td class="fs-5 align-middle border-0">
+                                    <input type="text" name="id" class="form-control fs-5" placeholder="닉네임" th:value="${user.id}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">이름</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.name}"></td>
+                                <input type="hidden" name="name" th:value="${user.name}">
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">전화번호</td>
+                                <td class="fs-5 align-middle border-0">
+                                        <input type="text" name="phone" class="form-control fs-5" placeholder="전화번호" th:value="${user.phone}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">이메일</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.email}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">생년월일</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.birth}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">주소</td>
+                                <td class="fs-5 align-middle border-0">
+                                        <input type="text" name="address" class="form-control fs-5" placeholder="주소"  th:value="${user.address}">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-container">
+                            <input class="button" type="submit" value="확인"></input>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

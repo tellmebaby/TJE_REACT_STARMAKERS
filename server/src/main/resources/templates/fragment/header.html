@@ -1,0 +1,126 @@
+
+<header class="main-header" th:fragment="headerFragment">
+        
+    <nav class="navbar navbar-expand-lg" aria-label="Fifth navbar example" style="background-color: #ffffff;">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/img/logo_ex8.png" alt="logo" width="88" height="auto">
+            </a>
+
+            <!-- 햄버거 버튼 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLight" aria-controls="offcanvasNavbarLight" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- 메뉴 -->
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item ml-5">
+                        <a class="nav-link" href="/page/introduce">소개</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/page/starCard/starList">홍보</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/page/board/eventBoard/eventList">이벤트</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/page/board/reviewBoard/reviewList">후기</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/page/board/qnaBoard/qnaList">Q&A</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/page/board/anBoard/anList">공지사항</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <!-- 비 로그인 시 -->
+                    <th:block sec:authorize="isAnonymous()">
+                        <li class="nav-item mx-2">
+                            <a class="btn btn-outline-mute" href="/login">로그인</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="btn btn-outline-mute" href="/join">회원가입</a>
+                        </li>
+                    </th:block>
+                    <!-- 로그인 시 -->
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li class="nav-item dropdown">
+                            <a href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img id="thumbnail" class="rounded-circle rounded-circle-custom" alt="Thumbnail Image">
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                                    <li><a class="dropdown-item" href="/admin">관리자</a></li>
+                                </th:block>
+                                <li><a class="dropdown-item" href="/page/mypage/profile">마이페이지</a></li>
+                                <li>
+                                    <form action="/logout" method="post" class="dropdown-item">
+                                        <!-- CSRF TOKEN -->
+                                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                        <button type="submit" class="btn btn-link p-0" style="text-decoration: none; color: black;">로그아웃</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </th:block>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+      <!-- 오프캔버스 -->
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbarLight" aria-labelledby="offcanvasNavbarLightLabel">
+            <div class="offcanvas-header border-bottom">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                    <img id="thumbnail" class="rounded-circle rounded-circle-custom" alt="Thumbnail Image">
+                    
+                </a>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body d-flex flex-column justify-content-end">
+                <!-- ⬆ -->
+                <ul class="navbar-nav flex-grow-1 pe-3">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/page/introduce">소개</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/page/starCard/starList">홍보</a>
+                </li>
+             <li class="nav-item">
+                <a class="nav-link" href="/page/board/eventBoard/eventList">이벤트</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/page/board/reviewBoard/reviewList">후기</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/page/board/qnaBoard/qnaList">Q&A</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/page/board/anBoard/anList">공지사항</a>
+            </li>
+                </ul>
+                <!-- ⬇ -->
+                <div class="box p-4 d-grid gap-1 text-center">
+                <!-- 비 로그인 시 -->
+                <th:block sec:authorize="isAnonymous()">
+                        <a class="btn btn-outline-mute" href="/login">로그인</a>
+                        <a class="btn btn-outline-mute" href="/join">회원가입</a>
+                </th:block>
+                <!-- 로그인 시 -->
+                <th:block sec:authorize="isAuthenticated()">
+                    <form action="/logout" method="post">
+                        <!-- CSRF TOKEN -->
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <a href="/page/mypage/profile" style="text-decoration: none; color: black;"><input type="button" class="btn btn-outline-mute" value="마이페이지"></a>
+                            <br>
+                            <button type="submit" class="btn btn-outline-mute">로그아웃</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+       
+</header>    

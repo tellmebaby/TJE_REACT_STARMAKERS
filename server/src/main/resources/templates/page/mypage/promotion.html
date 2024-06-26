@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/default_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <title>마이페이지</title>
+    <style>
+
+        .table {
+            font-size: 15px;
+            border-color: black;
+        }
+
+        .btn-review,
+        .btn-refund {
+            border-radius: 10px;
+            padding: 5px 15px;
+            font-size: 13px;
+            border: none;
+            color: white;
+            margin-right: 5px;
+            width: 90px;
+            text-align: center;
+        }
+
+        .btn-review {
+            background-color: #2972FE;
+        }
+
+        .btn-refund {
+            background-color: #2972FE;
+        }
+
+        .status-approved {
+            background-color: #DDDDDD;
+        }
+
+        .status-pending {
+            background-color: #2972FE;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table td .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .table tr,
+        th {
+            text-align: center;
+        }
+
+        .table.table td {
+            margin-top: 30px;
+        }
+
+        .list {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .list a {
+            text-decoration: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .category-label {
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-right: 5px;
+            display: inline-block;
+        }
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .load-more-btn button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2972FE;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .load-more-btn button:hover {
+            background-color: #1d5bc6;
+        }
+        .hidden {
+            display: none;
+        }
+        .jua-regular {
+        font-family: "Jua", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+    </style>
+</head>
+
+<body layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="side-menu">
+                    <div class="nav-links">
+                        <a href="/page/mypage/profile"><i class="fa-solid fa-user"></i>회원 정보</a>
+                        <a href="/page/mypage/payment"><i class="fa-solid fa-credit-card"></i>결제 내역</a>
+                        <a href="/page/mypage/promotion" class="active"><i class="fa-solid fa-edit"></i>내가 쓴 글</a>
+                        <a href="/page/mypage/archive"><i class="fa-solid fa-archive"></i>내 보관함</a>
+                        <a href="/page/mypage/inquiry"><i class="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                        <a href="/page/mypage/userDelete"><i class="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="list">
+                    <a href="/page/mypage/promotion">
+                        <h2 style="color: #000;" class="jua-regular">홍보글</h2>
+                    </a>
+                    <a href="/page/mypage/event">
+                        <h2 style="color: #545454;" class="jua-regular">이벤트 후기</h2>
+                    </a>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                        <tr>
+                            <th style="width: 350px;">제목</th>
+                            <th style="width: 350px;">채널</th>
+                            <th style="width: 100px;">결제금액</th>
+                            <th style="width: 100px;">작성일자</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="promotion, iterStat : ${promotionList}">
+                            <tr th:if="${user.userNo} == ${promotion.userNo}" th:classappend="${iterStat.index >= 4 ? 'hidden' : ''}">
+                                <td class="border-0 pt-4" th:text="${promotion.title}"></td>
+                                <td class="border-0 pt-4">
+                                    <span class="category-container" th:text="${promotion.category1}"></span>
+                                </td>
+                                <td class="border-0 pt-4">
+                                    <!-- ✨ 타임리프 - 천단위 구분기호 -->
+                                    <span th:text="${#numbers.formatInteger(promotion.starPrice, 0, 'COMMA') + '원'}"></span>
+                                </td>
+                                <td class="border-0 pt-4" th:text="${#dates.format(promotion.regDate, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <tr th:if="${user.userNo} == ${promotion.userNo}" th:classappend="${iterStat.index >= 4 ? 'hidden' : ''}">
+                                <td colspan="3"></td>
+                                <td>
+                                    <div class="button-container">
+                                        <button class="btn-review status-pending" disabled th:text="${promotion.status}"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+                <div class="load-more-btn" th:if="${promotionList.size()} > 4">
+                    <button type="button" id="load-more-btn">더보기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 모든 카테고리 컨테이너에 대해 span 처리
+        document.querySelectorAll('.category-container').forEach(function(container) {
+            var categories = container.textContent.split(',');
+            container.innerHTML = '';
+
+            var translationMap = {
+                'youtube': '유튜브',
+                'instagram': '인스타그램',
+                'afreeca': '아프리카',
+                'chzzk': '치지직'
+            };
+
+            categories.forEach(function(category) {
+                var span = document.createElement('span');
+                span.className = 'category-label';
+                var translatedCategory = translationMap[category.trim().toLowerCase()] || category.trim();
+                span.textContent = translatedCategory;
+                container.appendChild(span);
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let loadMoreBtn = document.getElementById("load-more-btn");
+            let hiddenElements = document.querySelectorAll(".hidden");
+
+            loadMoreBtn.addEventListener("click", function() {
+                let hiddenCount = hiddenElements.length;
+                let elementsToShow = 8; // 한 번에 표시할 요소 수
+
+                for (let i = 0; i < elementsToShow && hiddenCount > 0; i++) {
+                    hiddenElements[0].classList.remove("hidden");
+                    hiddenElements = document.querySelectorAll(".hidden");
+                    hiddenCount = hiddenElements.length;
+                }
+
+                if (hiddenCount === 0) {
+                    loadMoreBtn.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

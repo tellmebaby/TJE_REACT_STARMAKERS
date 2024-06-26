@@ -1,0 +1,276 @@
+/* .card>img {
+    width: 100%;
+    height: 250px;
+} */
+
+#bannerCarousel img {
+    width: -webkit-fill-available;
+    height: 200px;
+}
+
+
+
+.event-banner {
+    background: #f8f9fa;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.bg-image {
+    position: relative;
+    background-image: url('https://plus.unsplash.com/premium_photo-1661963965541-adda6e4c6a1e?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size: cover;
+    background-position: center;
+}
+
+.topOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    /* 반투명한 검은색 오버레이 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    /* 텍스트 색상을 흰색으로 변경 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    /* 텍스트 그림자 추가 */
+    padding: 20px;
+    /* 텍스트 여백 조정 */
+}
+
+.jumbotron {
+    height: 400px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    color: black;
+    left: -5%;
+    right: auto;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black;
+    border-radius: 50%;
+}
+
+.carousel-control-next {
+    left: auto;
+    right: -5%;
+}
+
+
+#promotionCarousel .row {
+    justify-content: start;
+    gap: 17px;
+}
+
+#promotionCarousel .col-lg-3 {
+    /* padding-right: 0;
+    padding-left: 0; */
+    flex: 0 0 24%;
+}
+
+.board-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-muted {
+    font-size: 0.8rem;
+}
+
+.search-input {
+    margin-right: 15px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.badge-secondary {
+    margin-right: 10px;
+}
+
+#promotionCarousel .card {
+    border-radius: 1.25rem;
+    overflow: hidden;
+}
+
+.icon-container {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.icon {
+    cursor: pointer;
+    /* margin-left: 5px; */
+    font-size: 30px;
+}
+
+
+.icon-body {
+    background-color: #b0d5ff;
+    /* 배경색 설정 */
+    padding: 10px;
+    /* 안쪽 여백 추가 */
+    /* border-radius: 10px; */
+    /* 모서리 둥글게 처리 */
+    display: flex;
+    /* 아이콘들을 가로로 나열 */
+    justify-content: center;
+    /* 아이콘들을 중앙 정렬 */
+    align-items: center;
+    /* 아이콘들을 수직 중앙 정렬 */
+    gap: 10px;
+    /* 아이콘들 사이의 간격 설정 */
+}
+
+/* .content-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} */
+
+.youtube {
+    background-color: white;
+}
+
+.afreeca {
+    transform: scale(1.1);
+}
+
+
+.detail-search {
+    padding: 20px;
+    background-color: #E7ECF6;
+    border-radius: 10px;
+}
+
+.form-check-inline {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.form-check-input {
+    margin-right: 5px;
+}
+
+.form-check-label {
+    margin-right: 15px;
+    color: #495057;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    flex: 1 1 33%;
+    padding: 10px;
+}
+
+.search-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* .card {
+    transition: all 0.1s;
+    position: relative;
+
+} */
+
+/* .card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent 40%, rgba(255, 219, 112, 0.8) 45%, rgba(132, 50, 255, 0.6) 50%, transparent 54%);
+    filter: brightness(1.1) opacity(0.8);
+    mix-blend-mode: color-dodge;
+    background-size: 150% 150%;
+    background-position: 100%;
+    pointer-events: none;
+    
+    transition: opacity 0.3s ease;
+} */
+
+
+.icon-body,
+.icon-container {
+    pointer-events: none;
+}
+
+
+/* .heart {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -25px 0 0 -25px;
+    animation: fadeOut 1s forwards;
+}
+
+.heart:before,
+.heart:after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.heart:before {
+    top: -25px;
+    left: 0;
+}
+
+.heart:after {
+    left: 25px;
+    top: 0;
+} */
+
+/* @keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotate(-45deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(2) rotate(-45deg);
+    }
+} */
+
+#cardContainer {
+    margin-top: 65px;
+}
+
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
+    color: black !important;
+    /* 검정색으로 설정 */
+    text-decoration: none !important;
+    /* 밑줄 제거 */
+}

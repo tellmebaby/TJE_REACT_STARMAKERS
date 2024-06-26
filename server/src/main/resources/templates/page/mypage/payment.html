@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="/css/mypage.css">
+    <style>
+      
+        .list {
+            margin-top: 50px;
+            color: #8D8D8D;
+        }
+        .table {
+            font-size: 15px;
+            border-color:black;
+        }
+        .btn-review, .btn-refund {
+            border-radius: 10px;
+            padding: 5px 15px;
+            font-size: 13px;
+            border: none;
+            color: white;
+            margin-right: 5px;
+            width: 90px; 
+            text-align: center; 
+        }
+        .btn-review.pending {
+            background-color: #2972FE;
+        }
+        .btn-review.approved {
+            background-color: #28a745; /* 예: 초록색 */
+        }
+        .btn-refund {
+            background-color: #2972FE;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table td .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .table tr, th {
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* 화살표 위 아래 간격 조정 */
+            margin-bottom: 4px;
+        }
+
+        .pagination a {
+            margin: 0 5px; /* 화살표 간격 조정 */
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .prev,
+        .next {
+            font-size: 24px;
+        }
+
+        .page-number:hover,
+        .prev:hover,
+        .next:hover {
+            color: #000; /* 호버 효과 */
+        }
+
+        span, a {
+            color: black;
+            text-decoration: none;
+        }
+
+        .load-more-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .load-more-btn button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2972FE;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .load-more-btn button:hover {
+            background-color: #1d5bc6;
+        }
+        .hidden {
+            display: none;
+        }
+        
+    </style>
+</head>
+<body layout:fragment="content">
+    <form action="" method="get">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="side-menu">
+                        <div class="nav-links">
+                            <a href="/page/mypage/profile"><i class="fa-solid fa-user"></i>회원 정보</a>
+                            <a href="/page/mypage/payment" class="active"><i class="fa-solid fa-credit-card"></i>결제 내역</a>
+                            <a href="/page/mypage/promotion"><i class="fa-solid fa-edit"></i>내가 쓴 글</a>
+                            <a href="/page/mypage/archive"><i class="fa-solid fa-archive"></i>내 보관함</a>
+                            <a href="/page/mypage/inquiry"><i class="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                            <a href="/page/mypage/userDelete"><i class="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="list">
+                        <h2 style="color: #000;">결제 내역 조회</h2>
+                        <li>홍보글 승인 이전에만 전체 금액 환불이 가능합니다.</li>
+                        <li>홍보글이 승인된 경우, 관리자 확인 후 일부 금액만 환불 가능 또는 환불 불가할 수 있습니다.</li>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="4"></th>
+                                </tr>
+                                <tr>
+                                    <th>결제번호</th>
+                                    <th>결제상품</th>
+                                    <th>결제금액</th>
+                                    <th>결제일자</th>
+                                </tr>
+                            </thead>
+                            <tbody id="payment-list">
+                                <th:block th:each="payment, iterStat : ${payList}">
+                                    <tr th:if="${user.userNo} == ${payment.userNo}" th:classappend="${iterStat.index >= 4 ? 'hidden' : ''}"> 
+                                        <td class="border-0 pt-4" th:text="${payment.code}"></td>
+                                        <td class="border-0 pt-4" th:text="${payment.productTitle}"></td>
+                                        <td class="border-0 pt-4">
+                                            <!-- ✨ 타임리프 - 천단위 구분기호 -->
+                                            <span th:text="${#numbers.formatInteger(payment.price, 0, 'COMMA')  + '원'}"></span>
+                                        </td>
+                                        <td class="border-0 pt-4" th:text="${#dates.format(payment.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                                    </tr>
+                                    <tr th:if="${user.userNo} == ${payment.userNo}" th:classappend="${iterStat.index >= 4 ? 'hidden' : ''}">
+                                        <td colspan="3"></td>
+                                        <td>
+                                            <div class="button-container">
+                                                <input type="button" 
+                                                   class="btn-review" 
+                                                   th:value="${payment.status}" 
+                                                   disabled 
+                                                  th:classappend="${payment.status == '결제완료' ? 'approved' : 'pending'}">
+                                                <button class="btn-refund">환불요청</button>
+                                            </div>
+                                        </td>
+                                    </tr> 
+                                </th:block>
+                            </tbody>
+                        </table>
+                        <div class="load-more-btn" th:if="${payList.size()} > 4">
+                            <button type="button" id="load-more-btn">더보기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let loadMoreBtn = document.getElementById("load-more-btn");
+            let hiddenElements = document.querySelectorAll(".hidden");
+
+            loadMoreBtn.addEventListener("click", function() {
+                let hiddenCount = hiddenElements.length;
+                let elementsToShow = 8; // 한 번에 표시할 요소 수
+
+                for (let i = 0; i < elementsToShow && hiddenCount > 0; i++) {
+                    hiddenElements[0].classList.remove("hidden");
+                    hiddenElements = document.querySelectorAll(".hidden");
+                    hiddenCount = hiddenElements.length;
+                }
+
+                if (hiddenCount === 0) {
+                    loadMoreBtn.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

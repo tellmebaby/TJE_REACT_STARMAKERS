@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="/admin/header :: head"></head>
+
+<!--폰트어썸  -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+rel="stylesheet">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+  <div class="wrapper">
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+
+    <!-- 사이드바 -->
+    <div th:replace="/admin/sidebar :: sidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Inbox</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="row">
+          <div class="col-md-3">
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">⭐게시판⭐</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <ul class="nav nav-pills flex-column">
+                  <li class="nav-item active">
+                    <a href="/admin/pages/mailbox" class="nav-link">
+                      <i class="fas fa-inbox"></i> 전체
+                      <span class="badge bg-primary float-right"></span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/pages/mailboxStar" class="nav-link">
+                      <i class="fa-regular fa-star"></i> 홍보
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/pages/mailboxEvent" class="nav-link">
+                      <i class="fa-regular fa-calendar"></i> 이벤트
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/pages/mailboxReview" class="nav-link">
+                      <i class="fa-solid fa-pencil"></i> 후기
+                      <span class="badge bg-warning float-right"></span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/pages/mailboxAn" class="nav-link">
+                      <i class="fa-solid fa-bullhorn"></i> 공지
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/admin/pages/mailboxQna" class="nav-link">
+                      <i class="fa-solid fa-circle-question"></i> Q&A
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-md-9">
+                  <div class="card-tools">
+            <form action="/admin/pages/mailboxStar" method="get" id="keyword" onsubmit="return validateForm();">
+              <div class="card card-primary card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">⭐홍보 게시판⭐</h3>
+                  <div class="card-tools">
+                    <div class="input-group input-group-sm">
+                      <select name="code" class="form-control mr-2">
+                        <option th:each="item : ${optionList}" th:value="${item.code}" th:text="${item.codeName}"
+                          th:selected="${item.code == option.code}"></option>
+                      </select>
+                      <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요"
+                        th:value="${param.keyword}">
+                      <div class="input-group-append">
+                        <div class="btn btn-primary" onclick="document.getElementById('keyword').submit();">
+                          <i class="fas fa-search"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </form>
+            <form id="actionForm" action="" method="post">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+              <input type="hidden" name="page" value="mailbox">
+              <!-- /.card-tools -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <div class="mailbox-controls">
+              <!-- Check all button -->
+              <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
+              </button>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default btn-sm" onclick="allDelete()">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" onclick="starUpdate()">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </button>
+                <!-- 처음으로 -->
+                <button type="button" class="btn btn-default btn-sm">
+                  <a th:href="|/admin/pages/mailboxStar?page=${page.first}&code=${option.code}&keyword=${option.keyword}|">
+                    <i class="fas fa-reply"></i>
+                  </a>
+                </button>
+                <!-- 마지막으로 -->
+                <button type="button" class="btn btn-default btn-sm">
+                  <a th:href="|/admin/pages/mailboxStar?page=${page.last}&code=${option.code}&keyword=${option.keyword}|">
+                    <i class="fas fa-share"></i>
+                  </a>
+                </button>
+              </div>
+              <div class="float-right">
+                <!-- [ 이전 ] -->
+                <div class="btn-group">
+                  <th:block th:if="${page.page != page.first}">
+                    <button type="button" class="btn btn-default btn-sm">
+                      <a
+                        th:href="|/admin/pages/mailboxStar?page=${page.prev}&code=${option.code}&keyword=${option.keyword}|">
+                        <i class="fas fa-chevron-left"></i>
+                      </a>
+                  </th:block>
+                  </button>
+                  <span class="btn btn-default btn-sm disabled">
+                    <span th:text="${page.page}">1</span> / <span th:text="${page.last}">1</span>
+                  </span>
+                  <th:block th:if="${page.page != page.last}">
+                    <button type="button" class="btn btn-default btn-sm">
+                      <a
+                        th:href="|/admin/pages/mailboxStar?page=${page.next}&code=${option.code}&keyword=${option.keyword}|">
+                        <i class="fas fa-chevron-right"></i>
+                      </a>
+                  </th:block>
+                  </button>
+                </div>
+                <!-- /.btn-group -->
+              </div>
+              <!-- /.float-right -->
+            </div>
+            <div class="table-responsive mailbox-messages">
+              <table class="table table-hover table-striped">
+                <input type="hidden" name="starNos" id="starNos">
+                <thead>
+                  <tr align="center">
+                    <th></th>
+                    <th>번호</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>작성일자</th>
+                  </tr>
+                </thead>
+                <tbody align="center">
+                  <tr th:each="StarBoard : ${starList}">
+                    <td>
+                      <div class="icheck-primary">
+                        <input type="checkbox" th:id="|starNo${StarBoard.starNo}|" name="starNo"
+                          th:value="${StarBoard.starNo}">
+                        <label th:for="|starNo${StarBoard.starNo}|"></label>
+                      </div>
+                    </td>
+                    <td class="mailbox-star" th:text="${StarBoard.starNo}"></td>
+                    <td class="mailbox-name" th:text="${StarBoard.writer}"></td>
+                    <td class="mailbox-subject">
+                      <a th:href="|/page/starCard/starRead?starNo=${StarBoard.starNo}|" th:text="${StarBoard.title}" style="width: 300px; color: black;"></a>
+                    </td>
+                    <td class="mailbox-date">
+                      <span th:text="${#dates.format(StarBoard.regDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                    <!-- /.table -->
+                  </div>
+                  <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer p-0">
+                  <div class="mailbox-controls">
+                    <!-- Check all button -->
+                    <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                      <i class="far fa-square"></i>
+                    </button>
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-default btn-sm" onclick="allDelete()">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                      <button type="button" class="btn btn-default btn-sm" onclick="starUpdate()">
+                        <i class="fa-regular fa-pen-to-square"></i>
+                      </button>
+                    <!-- /.btn-group -->
+                    <!-- 처음으로 -->
+                    <button type="button" class="btn btn-default btn-sm">
+                      <a th:href="|/admin/pages/mailboxStar?page=${page.first}&code=${option.code}&keyword=${option.keyword}|">
+                        <i class="fas fa-reply"></i>
+                      </a>
+                    </button>
+                    <!-- 마지막으로 -->
+                    <button type="button" class="btn btn-default btn-sm">
+                      <a th:href="|/admin/pages/mailboxStar?page=${page.last}&code=${option.code}&keyword=${option.keyword}|">
+                      <i class="fas fa-share"></i>
+                      </a>
+                    </button>
+                  </div>
+                    <div class="float-right">
+                      <!-- [ 이전 ] -->
+                      <div class="btn-group">
+                        <th:block th:if="${page.page != page.first}">
+                              <button type="button" class="btn btn-default btn-sm">
+                                <a th:href="|/admin/pages/mailboxStar?page=${page.prev}&code=${option.code}&keyword=${option.keyword}|">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            </th:block>
+                        </button>
+                        <span class="btn btn-default btn-sm disabled">
+                          <span th:text="${page.page}">1</span> / <span th:text="${page.last}">1</span>
+                      </span>
+                        <th:block th:if="${page.page != page.last}">
+                              <button type="button" class="btn btn-default btn-sm">
+                                <a th:href="|/admin/pages/mailboxStar?page=${page.next}&code=${option.code}&keyword=${option.keyword}|">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </th:block>
+                        </button>
+                      </div>
+                  </div>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+          <b>Version</b> 3.2.0
+        </div>
+        <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+      </footer>
+    
+      <!-- Control Sidebar -->
+      <aside class="control-sidebar control-sidebar-dark">
+        <!-- Control sidebar content goes here -->
+      </aside>
+      <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    </form>
+
+<!-- jQuery -->
+<script src="/admin/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/admin/dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="/admin/dist/js/demo.js"></script>
+<!-- Page specific script -->
+<script>
+  $(function () {
+    //Enable check and uncheck all functionality
+    $('.checkbox-toggle').click(function () {
+      var clicks = $(this).data('clicks')
+      if (clicks) {
+        //Uncheck all checkboxes
+        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', false)
+        $('.checkbox-toggle .far.fa-check-square').removeClass('fa-check-square').addClass('fa-square')
+      } else {
+        //Check all checkboxes
+        $('.mailbox-messages input[type=\'checkbox\']').prop('checked', true)
+        $('.checkbox-toggle .far.fa-square').removeClass('fa-square').addClass('fa-check-square')
+      }
+      $(this).data('clicks', !clicks)
+    })
+
+    //Handle starring for font awesome
+    $('.mailbox-star').click(function (e) {
+      e.preventDefault()
+      //detect type
+      var $this = $(this).find('a > i')
+      var fa    = $this.hasClass('fa')
+
+      //Switch states
+      if (fa) {
+        $this.toggleClass('fa-star')
+        $this.toggleClass('fa-star-o')
+      }
+    })
+  })
+
+  function allDelete() {
+                const checkboxes = document.querySelectorAll('input[name="starNo"]:checked');
+            if (checkboxes.length === 0) {
+                alert('하나 이상의 게시물을 선택하십시오.');
+                return;
+            }
+            
+            const confirmDelete = confirm('선택한 게시물을 삭제하시겠습니까?');
+            if (!confirmDelete) {
+                return;
+            }
+                
+            const starNos = Array.from(checkboxes).map(checkbox => checkbox.value);
+            const form = document.getElementById('actionForm');
+            form.action = '/admin/pages/mailbox/allDelete';
+            form.starNos.value = starNos.join(',');
+            form.submit();
+        }
+  function starUpdate() {
+          const checkboxes = document.querySelectorAll('input[name="starNo"]:checked');
+          if (checkboxes.length === 0) {
+              alert('하나의 게시물을 선택하십시오.');
+              return;
+          }
+          
+          if (checkboxes.length > 1) {
+              alert('수정할 게시물 하나만 선택하십시오.');
+              return;
+          }
+          
+          const starNo = checkboxes[0].value;
+          window.location.href = `/page/starCard/starUpdate?starNo=${starNo}`;
+        }
+function validateForm() {
+  var keyword = document.forms["keyword"]["keyword"].value;
+  var code = document.forms["keyword"]["code"].value;
+
+  if (code == 4 && !/^[0-9]+$/.test(keyword)) {
+      alert("번호 검색은 숫자만 입력 가능합니다.");
+      return false; // 폼 제출 중단
+  }
+  return true; // 폼 제출 허용
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/default_layout}">
+
+<head>
+    <title>결제 완료</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e9ecef;
+        }
+
+        .content {
+            margin-left: 5rem;
+            padding: 2rem;
+        }
+
+        .header,
+        .section {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .section div {
+            margin-bottom: 0.5rem;
+        }
+
+        .box_section {
+            background-color: #e9ecef;
+            padding: 2rem;
+            border: 1px solid #ced4da;
+            border-radius: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 1.5rem;
+            cursor: pointer;
+        }
+
+        .category-label {
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px;
+            padding: 5px 10px;
+            margin-right: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<th:block layout:fragment="content" class="align-items-center ml-5">
+    <div class="container" style="width: 860px;">
+
+        <div class="header text-center mt-4">
+            <h1 class="mt-3 mb-3">결제 완료</h1>
+            <p class="text-secondary mb-3">결제가 성공적으로 완료되었습니다. 감사합니다.</p>
+        </div>
+
+        <h4>결제 정보</h4>
+        <div class="section">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">주문 번호</th>
+                        <td th:text="${pay.code}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">결제 금액</th>
+                        <td th:text="${pay.price + '원'}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">결제 일시</th>
+                        <td th:text="${#dates.format(pay.regDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4>상품 정보</h4>
+        <div class="section">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">상품</th>
+                        <td>홍보카드 기간제 상품</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">제목</th>
+                        <td th:text="${starBoard.title}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">채널</th>
+                        <td id="category-container" th:text="${starBoard.category1}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">분야</th>
+                        <td id="category-container2" th:text="${starBoard.category2}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">홍보기간</th>
+                        <td
+                            th:text="|${#dates.format(starBoard.startDate, 'yyyy-MM-dd')} ~ ${#dates.format(starBoard.endDate, 'yyyy-MM-dd')}|">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">썸네일 이미지</th>
+                        <td style="width: 85%;"><img th:src="|/file/img/${starBoard.imgNo}|" style="width: 40%;"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4>회원 정보</h4>
+        <div class="section">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">이름</th>
+                        <td style="width: 85%;" th:text="${user.name}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">연락처</th>
+                        <td th:text="${user.phone}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">이메일</th>
+                        <td th:text="${user.email}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <button class="button" onclick="window.location.href='/'">홈으로</button>
+            <button class="button" onclick="window.location.href='/page/starCard/starList'">목록으로</button>
+        </div>
+
+    </div>
+
+
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            //카테고리 span 처리
+            var container = document.getElementById('category-container');
+            var categories = container.textContent.split(',');
+            container.innerHTML = '';
+
+            var translationMap = {
+                'youtube': '유튜브',
+                'instagram': '인스타그램',
+                'afreeca': '아프리카',
+                'chzzk': '치지직'
+            };
+
+            categories.forEach(function (category) {
+                var span = document.createElement('span');
+                span.className = 'category-label';
+                var translatedCategory = translationMap[category.trim().toLowerCase()] || category.trim();
+                span.textContent = translatedCategory;
+                container.appendChild(span);
+            });
+
+            // 
+
+            var container = document.getElementById('category-container2');
+            var categories = container.textContent.split(',');
+            container.innerHTML = '';
+
+            var translationMap = {
+                'food': '음식',
+                'travel': '여행',
+                'game': '게임',
+                'music': '음악',
+                'animal': '동물',
+                'workOut': '운동',
+                'asmr': 'ASMR',
+                'fashion': '패션'
+            };
+
+            categories.forEach(function (category) {
+                var span = document.createElement('span');
+                span.className = 'category-label';
+                var translatedCategory = translationMap[category.trim().toLowerCase()] || category.trim();
+                span.textContent = translatedCategory;
+                container.appendChild(span);
+            });
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+</th:block>
+
+</html>

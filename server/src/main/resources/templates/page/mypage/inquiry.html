@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/mypage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <title>마이페이지</title>
+    <style>
+        
+        .table {
+            font-size: 15px;
+            border-color:black;
+        }
+        .btn-review, .btn-refund {
+            border-radius: 10px;
+            padding: 5px 15px;
+            font-size: 14px;
+            border: none;
+            color: white;
+            margin-right: 5px;
+            width: 90px;
+            text-align: center;
+        }
+        .btn-review {
+            background-color: #2972FE;
+        }
+        .btn-refund {
+            background-color: #2972FE;
+        }
+        .status-approved {
+            background-color: #DDDDDD;
+        }
+        .status-pending {
+            background-color: #2972FE;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table td .button-container {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 20px;
+        }
+        .table tr, th {
+            text-align: center;
+        }
+        .prev,
+        .next {
+            font-size: 24px;
+        }
+
+        .page-number:hover,
+        .prev:hover,
+        .next:hover {
+            color: #000;
+        }
+
+        .list {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #2972FE;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 7px 15px;
+            font-size: 20px;
+            margin: 6px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .status-waiting {
+            color: grey; /* 답변 대기일 때의 색상 */
+        }
+
+        .status-completed {
+            color: darkblue; /* 답변 완료일 때의 색상 */
+            font-weight: bold;
+        }
+        .jua-regular {
+        font-family: "Jua", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        }
+        .button:hover {
+            background-color: #1d5bc6;
+        }
+    </style>
+   
+</head>
+<body layout:fragment="content">
+    <form id="actionForm" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <input type="hidden" name="qnaNos" id="qnaNos">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="side-menu">
+                        <div class="nav-links">
+                            <a href="/page/mypage/profile"><i class="fa-solid fa-user"></i>회원 정보</a>
+                            <a href="/page/mypage/payment"><i class="fa-solid fa-credit-card"></i>결제 내역</a>
+                            <a href="/page/mypage/promotion"><i class="fa-solid fa-edit"></i>내가 쓴 글</a>
+                            <a href="/page/mypage/archive"><i class="fa-solid fa-archive"></i>내 보관함</a>
+                            <a href="/page/mypage/inquiry" class="active"><i class="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                            <a href="/page/mypage/userDelete"><i class="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="list">
+                        <h2 style="color: #000;" class="jua-regular">1 : 1 문의</h2>
+                    </div>                            
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px;"></th>
+                                <th style="width: 500px;">제목</th>
+                                <th style="width: 200px;">작성일자</th>
+                                <th style="width: 100px;">상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <th:block th:each="qnaBoard : ${qnaList}">
+                                <tr th:if="${qnaBoard.userNo} == ${user.userNo}">
+                                    <td><input type="checkbox" name="qnaNo" th:value="${qnaBoard.qnaNo}"></td>
+                                    <td align="center">
+                                        <a th:href="|/page/mypage/qnaPost?qnaNo=${qnaBoard.qnaNo}|" th:text="${qnaBoard.title}"></a>
+                                    </td>
+                                    <td align="center">
+                                        <span th:text="${#dates.format(qnaBoard.regDate, 'yyyy-MM-dd')}"></span>
+                                    </td>
+                                    <td align="center" th:text="${qnaBoard.status}" th:classappend="${qnaBoard.status == '답변 대기' ? 'status-waiting' : 'status-completed'}"></td>
+                                </tr>
+                            </th:block>
+                        </tbody>
+                    </table>
+                    <div class="button-container">
+                        <input class="button" type="button" value="수정" onclick="qnaUpdate()">
+                        <input class="button" type="button" value="삭제" onclick="qnaDelete()">
+                    </div>
+        <!-- 페이지네이션 -->
+        <center>
+            <div>
+                <!-- [ 처음으로 ]-->
+                <a th:href="|/page/mypage/inquiry?=${page.first}&code=${option.code}&keyword=${option.keyword}|">&laquo;</a>
+    
+                <!-- [ 이전 ] -->
+                <th:block th:if="${page.page != page.first}">
+                    <a th:href="|/page/mypage/inquiry?page=${page.prev}&code=${option.code}&keyword=${option.keyword}|">&lt;</a>
+                </th:block>
+    
+                <th:block th:each="no : ${#numbers.sequence(page.start, page.end)}">  <!--(1,10)모델에 담은 페이지가 아니라 그냥 1부터 10 --> 
+                    <!-- 현재 페이지 -->
+                    <!--
+                    #numbers.sequence(시작번호, 끝번호)
+                    : 시작번호부터 끝번호까지 번호 리스트를 생성
+                    -->
+                    <th:block th:if="${page.page == no}">
+                        <b>
+                            <span th:text="${no}"></span>
+                        </b>
+                    </th:block>
+                    <th:block th:if="${page.page != no}">
+                        <a th:href="|/page/mypage/inquiry?page=${no}&code=${option.code}&keyword=${option.keyword}|" th:text="${no}"></a>
+                    </th:block>
+                </th:block>
+    
+                <!-- [ 다음 ] -->
+                <th:block th:if="${page.page != page.last}">
+                    <a th:href="|/page/mypage/inquiry?page=${page.next}&code=${option.code}&keyword=${option.keyword}|">&gt;</a>
+                </th:block>
+    
+                <!-- [ 마지막 ]-->
+                <a th:href="|/page/mypage/inquiry?page=${page.last}&code=${option.code}&keyword=${option.keyword}|">&raquo;</a>
+            </div>
+            </center>
+                </div>
+            </div>
+        </div>
+    </form>
+      
+    <script>
+        function qnaDelete() {
+                const checkboxes = document.querySelectorAll('input[name="qnaNo"]:checked');
+            if (checkboxes.length === 0) {
+                alert('하나 이상의 게시물을 선택하십시오.');
+                return;
+            }
+            
+            const confirmDelete = confirm('선택한 게시물을 삭제하시겠습니까?');
+            if (!confirmDelete) {
+                return;
+            }
+                
+            const qnaNos = Array.from(checkboxes).map(checkbox => checkbox.value);
+            const form = document.getElementById('actionForm');
+            form.action = '/page/board/qnaBoard/qnaDelete';
+            form.qnaNos.value = qnaNos.join(',');
+            form.submit();
+        }
+
+            function qnaUpdate() {
+                const checkboxes = document.querySelectorAll('input[name="qnaNo"]:checked');
+                if (checkboxes.length === 0) {
+                    alert('하나의 게시물을 선택하십시오.');
+                    return;
+                }
+                
+                if (checkboxes.length > 1) {
+                    alert('수정할 게시물 하나만 선택하십시오.');
+                    return;
+                }
+                
+                const qnaNo = checkboxes[0].value;
+                window.location.href = `/page/mypage/qnaUpdate?qnaNo=${qnaNo}`;
+             }
+    </script>
+</body>
+</html>

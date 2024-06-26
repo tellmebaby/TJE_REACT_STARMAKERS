@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/default_layout}">
+
+<head>
+  <link rel="stylesheet" href="/css/starCard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Subrayada:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Honk&family=Noto+Sans+KR:wght@100..900&family=Rubik+Scribble&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Q&A</title>
+  <style>
+     .container2 .button-box button {
+            font-size: 13px;
+            color : #91ACCF;
+            border: 1px #91ACCF solid;
+            border-radius : 10px;
+            background-color: white;
+            width: 50px;
+            height: 30px;
+            margin-left : 4px;
+        }
+    .notice {
+    font-family: "Montserrat Subrayada", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    text-align: center;
+    padding-top: 50px;
+    font-size: 50px;
+}
+.eventtext {
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    text-align: center;
+}
+    .container2 {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+
+    .writer {
+      display: flex;
+      justify-content: space-around;
+      gap: 10px;
+      padding: 50px 15px 5px 5px;
+      width: 100%;
+    }
+
+    .writer label:first-child {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .writer label:last-child {
+      font-size: 15px;
+      color: rgba(192, 190, 183, 1);
+    }
+
+    .title-container {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 30px;
+      border: 1px solid;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    .title-container span {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .content-container {
+      width: 100%;
+      padding: 30px;
+      border: 1px solid;
+      box-sizing: border-box;
+      overflow: hidden;
+      /* 오버플로우 숨기기 */
+      word-wrap: break-word;
+      /* 긴 단어를 줄 바꿈 */
+    }
+
+    .title-container hr {
+      margin-top: 10px;
+    }
+
+    h1 {
+      margin-top: 40px;
+      margin-bottom: 10px;
+    }
+
+    /* 버튼 */
+    .button-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 10px 0;
+      width: 100%;
+    }
+
+    .button-container1,
+    .button-container2 {
+      text-align: right;
+      padding: 10px 0;
+    }
+
+    .button-container1 button,
+    .button-container2 button {
+      margin-left: 5px;
+      padding: 7px 20px;
+      border-radius: 3px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      font-weight: normal;
+      border: none;
+    }
+
+    .button-container1 button {
+      background-color: rgba(37, 37, 37, 1);
+      color: white;
+    }
+
+    .button-container1 button:hover {
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      font-weight: bolder;
+      color: black;
+    }
+
+    .button-container2 button {
+      background-color: rgba(192, 190, 183, 1);
+      color: black;
+    }
+
+    .button-container2 button:hover {
+      background-color: black;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+      font-weight: bolder;
+      color: white;
+    }
+
+    .answer {
+      margin-left: 10px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .answer-container {
+      width: 100%;
+      margin: 0 auto 5px;
+      padding: 30px;
+      border: 1px solid;
+      border-radius: 10px;
+      background-color: rgb(240, 240, 240);
+      box-sizing: border-box;
+    }
+
+    #answer-span {
+      display: inline-block;
+      width: 100%;
+      height: 150px;
+      background-color: rgb(240, 240, 240);
+    }
+    .button-container3 {
+            text-align: right;
+            padding: 10px 0;
+    }
+    .button-container3 input {
+            margin-left: 5px;
+            padding: 7px 20px;
+            border-radius: 3px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: normal;
+            border: none;
+            cursor: pointer;
+    }
+    .btn-reply-delete {
+            margin-left: 5px;
+            padding: 5px 10px;
+            background-color: rgba(37, 37, 37, 1);
+            border-radius: 3px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: normal;
+            border: none;
+            cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <th:block layout:fragment="content">
+    <div class="container2">
+      <center>
+        <h3 class="notice">Q&A</h3>
+        <label class="eventtext">운영원칙에 위배되는 글은 관리자에 의해 무통보 삭제될 수 있습니다.</label>
+      </center>
+      <div class="writer">
+        <label th:text="${qnaBoard.writer}"></label>
+        <label th:text="${#dates.format(qnaBoard.regDate, 'yyyy-MM-dd HH:mm:ss')}"></label>
+      </div>
+      <div class="title-container">
+        <span th:text="${qnaBoard.title}"></span>
+        <hr>
+      </div>
+      <div class="content-container">
+        <div th:utext="${qnaBoard.content}"></div>
+      </div>
+      <!-- <div class="button-wrapper">
+        <div class="button-container1">
+          <button type="button" onclick="moveList()">목록</button>
+        </div>
+        <div class="button-container2" th:if="${session.user} and ${session.user.userNo}==${qnaBoard.userNo}">
+          <button type="button" onclick="update()">수정</button>
+        </div>
+        <div class="button-container3" th:if="${session.user} and ${session.user.userNo}==${qnaBoard.userNo}">
+          <input type="submit" class="btn btn-reply-delete" onclick="actionDelete()" value="삭제">
+        </div>
+      </div> -->
+      <div class="d-flex justify-content-end mt-2 button-box">
+        <button class="btn-list" type="button" onclick="moveList()">목록</button>
+        <button th:if="${session.user} and ${session.user.userNo}==${qnaBoard.userNo}"
+          class="btn-update" type="button" onclick="update()">수정</button>
+      </div>
+      <label class="answer">답변</label>
+      <form action="/page/board/qnaBoard/qnaPost" method="post" id="form">
+        <input type="hidden" id="inputCsrf" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <div class="answer-container">
+          <span id="answer-span" th:text="${qnaBoard.answer}"></span>
+          <textarea id="answer-textarea" name="answer" style="display: none; width: 100%; height: 150px;" placeholder="답변을 입력하세요..." th:text="${qnaBoard.answer}"></textarea>
+          <input type="hidden" name="qnaNo" id="qnaNo" th:value="${qnaBoard.qnaNo}" />
+        </div>
+        <div class="button-container1">
+          <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+          <button type="button" id="toggle-button" th:if="${qnaBoard.answer} == null" onclick="toggleAnswer()">답변 등록</button>
+          <div class="button-wrapper" th:if="${qnaBoard.answer} != null">
+            <div class="button-container2" >
+              <button type="button" id="update-answer-button" onclick="updateAnswer()">수정</button>
+            </div>
+            <div class="button-container1">
+              <button type="button" id="delete-answer-button" onclick="deleteAnswer()">삭제</button>
+            </div>
+          </div>
+        </th:block>
+        </div>
+        
+        
+      </form>
+  </div>
+  <script>
+    let qnaNo = '[[${qnaBoard.qnaNo}]]';
+
+    function moveList() {
+      location.href = '/page/mypage/inquiry';
+    }
+  
+    function update() {
+      location.href = '/page/mypage/qnaUpdate?qnaNo=' + qnaNo;
+    }
+    
+    function toggleAnswer() {
+      var span = document.getElementById("answer-span");
+      var textarea = document.getElementById("answer-textarea");
+      var button = document.getElementById("toggle-button");
+      var form = document.getElementById("form");
+
+      if (textarea.style.display === "none") {
+        span.style.display = "none";
+        textarea.style.display = "block";
+        textarea.value = span.innerText;
+        button.innerText = "등록 완료";
+
+        button.onclick = function() {
+            if (textarea.value.trim() === "") {
+                alert("내용을 입력해주세요.");
+            } else {
+                alert("답변이 등록되었습니다!");
+                form.submit();
+            }
+        };
+      } else {
+        span.style.display = "block";
+        textarea.style.display = "none";
+        span.innerText = textarea.value;
+        button.innerText = "답변 등록";
+        button.onclick = toggleAnswer;
+      }
+    }
+
+    function updateAnswer() {
+      var span = document.getElementById("answer-span");
+      var textarea = document.getElementById("answer-textarea");
+      var button = document.getElementById("update-answer-button");
+      var form = document.getElementById("form");
+
+      if (textarea.style.display === "none") {
+        span.style.display = "none";
+        textarea.style.display = "block";
+        textarea.value = span.innerText;
+        button.innerText = "수정 완료";
+
+        button.onclick = function() {
+          if (textarea.value.trim() === "") {
+            alert("내용을 입력해주세요.");
+          } else {
+            alert("답변이 수정되었습니다!");
+            form.submit();
+          }
+        };
+      } else {
+        span.style.display = "block";
+        textarea.style.display = "none";
+        span.innerText = textarea.value;
+        button.innerText = "수정";
+        button.onclick = updateAnswer;
+      }
+    }
+
+    
+    // 삭제 요청
+    function actionDelete() {
+      let check = confirm('정말로 삭제하시겠습니까?')
+        if( check ) {
+          form.submit;
+        }
+    }
+
+    function deleteAnswer() {
+      let check = confirm('답변을 삭제하시겠습니까?');
+      var form = document.getElementById("form");
+      console.log(form)
+      if (check) {
+        form.action="/page/board/qnaBoard/qnaPost/deleteAnswer"
+        form.method="post"
+        form.submit()
+        // var request = new XMLHttpRequest();
+        // request.open("POST", "/page/board/qnaBoard/qnaPost?qnaNo=" + qnaNo, true);
+        // request.onreadystatechange = function() {
+        //   if (request.readyState === XMLHttpRequest.DONE) {
+        //     if (request.status === 200) {
+        //       alert("답변이 삭제되었습니다!");
+        //       location.reload(); // 페이지 리로드
+        //     } else {
+        //       alert("답변 삭제에 실패했습니다.");
+        //     }
+        //   }
+        // };
+        request.send();
+      }
+    }
+  </script>
+  </th:block>
+</body>
+</html>

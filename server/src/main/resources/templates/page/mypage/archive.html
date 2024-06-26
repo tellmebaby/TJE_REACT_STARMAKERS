@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="/css/archive.css" class="css"> -->
+    <link rel="stylesheet" href="/css/mypage.css">
+    <link href="/css/starCard.css" rel="stylesheet" class="css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <title>마이페이지</title>
+    <style>
+
+        /* 새로 작성 부분 */
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .fixed-width {
+            width: 80px; /* 고정된 너비 */
+            margin-right: 110px;
+            
+        }
+        .responsive-width {
+            flex: 1; /* 남은 공간을 차지하도록 설정 */
+            overflow-y: scroll; /* 수직 스크롤을 허용 */
+            scrollbar-width: none; /* Firefox에서 스크롤바 숨기기 */
+            -ms-overflow-style: none; /* IE와 Edge에서 스크롤바 숨기기 */
+        }
+        .responsive-width::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera에서 스크롤바 숨기기 */
+        }
+
+
+    </style>
+</head>
+<body layout:fragment="content">
+        <div class="container">
+            <div class="d-flex">
+                <div class="fixed-width">
+                    <div class="side-menu">
+                        <div class="nav-links">
+                            <a href="/page/mypage/profile"><i class="fa-solid fa-user"></i>회원 정보</a>
+                            <a href="/page/mypage/payment"><i class="fa-solid fa-credit-card"></i>결제 내역</a>
+                            <a href="/page/mypage/promotion"><i class="fa-solid fa-edit"></i>내가 쓴 글</a>
+                            <a href="/page/mypage/archive" class="active"><i class="fa-solid fa-archive"></i>내 보관함</a>
+                            <a href="/page/mypage/inquiry"><i class="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                            <a href="/page/mypage/userDelete"><i class="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                        </div>
+                    </div>
+                </div> 
+                <div class="responsive-width">
+                    <div class="row">
+                        <div class="row row-cols-1 row-cols-lg-2" id="starList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <script>
+            
+        let page = 0; // page 변수 초기화
+        const type = 'starCard';
+        let isLoading = false;
+        const token = $("meta[name='_csrf']").attr("content");
+        const header = $("meta[name='_csrf_header']").attr("content");
+
+        $(document).ready(function () {
+
+        function applyStyles() {
+        $('.card-text p span').css({
+        'background-color': '',
+        'color': '',
+        'font-size': '',
+        // 필요한 다른 스타일 속성들도 여기에 추가할 수 있습니다.
+        });
+        }
+
+
+
+
+        function loadMoreCards(resetPage = false, keyword = '') {
+            let isLoading = false; // isLoading 변수 초기화
+
+            if (isLoading) return;
+            isLoading = true;
+
+            if (resetPage) page = 0;
+            page += 1;
+
+            console.log("Loading more cards...");
+            console.log("Page:", page);
+            console.log("Keyword:", keyword);
+
+            $.ajax({
+                url: `/page/mypageStarlist`,
+                method: 'GET',
+                data: {
+                    type: type,
+                    page: page,
+                    eventOngoing: $('#eventOngoing').is(':checked'),
+                    eventExpired: $('#eventExpired').is(':checked'),
+                    eventUpcoming: $('#eventUpcoming').is(':checked'),
+                    instagram: $('#instagram').is(':checked'),
+                    youtube: $('#youtube').is(':checked'),
+                    chzzk: $('#chzzk').is(':checked'),
+                    afreeca: $('#afreeca').is(':checked'),
+                    food: $('#food').is(':checked'),
+                    travel: $('#travel').is(':checked'),
+                    game: $('#game').is(':checked'),
+                    music: $('#music').is(':checked'),
+                    animal: $('#animal').is(':checked'),
+                    workOut: $('#workOut').is(':checked'),
+                    asmr: $('#asmr').is(':checked'),
+                    fashion: $('#fashion').is(':checked'),
+                    keyword: keyword
+                },  
+            success: function (data) {
+                console.log("Data received:", data);
+                if (resetPage) $('#starList').empty();
+
+                data.forEach(star => {
+                    const categories = star.category1.split(',');
+                    const icon1 = categories.includes('afreeca') ? '<img src="/img/icon/afreeca.png" alt="아이콘1" class="content-icon">' : '';
+                    const icon2 = categories.includes('chzzk') ? '<img src="/img/icon/chzzk.png" alt="아이콘2" class="content-icon">' : '';
+                    const icon3 = categories.includes('youtube') ? '<img src="/img/icon/youtube.png" alt="아이콘3" class="content-icon">' : '';
+                    const icon4 = categories.includes('instagram') ? '<img src="/img/icon/instagram.png" alt="아이콘4" class="content-icon">' : '';
+
+                    const categories2 = star.category2.split(',');
+                    const musicBtn = categories2.includes('music') ? '<a href="#" class="btn btn-custom" data-category="music">#음악</a>' : '';
+                    const travelBtn = categories2.includes('travel') ? '<a href="#" class="btn btn-custom" data-category="travel">#여행</a>' : '';
+                    const foodBtn = categories2.includes('food') ? '<a href="#" class="btn btn-custom" data-category="food">#음식</a>' : '';
+                    const gameBtn = categories2.includes('game') ? '<a href="#" class="btn btn-custom" data-category="game">#게임</a>' : '';
+                    const animalBtn = categories2.includes('animal') ? '<a href="#" class="btn btn-custom" data-category="animal">#동물</a>' : '';
+                    const exerciseBtn = categories2.includes('workOut') ? '<a href="#" class="btn btn-custom" data-category="workOut">#운동</a>' : '';
+                    const fashionBtn = categories2.includes('fashion') ? '<a href="#" class="btn btn-custom" data-category="fashion">#패션</a>' : '';
+                    const asmrBtn = categories2.includes('asmr') ? '<a href="#" class="btn btn-custom" data-category="asmr">#ASMR</a>' : '';
+
+
+                    let starLinksHtml = ''; // 좋아요 버튼이 담길 변수
+                    let likeVar = ''; // 좋아요 수를 담을 변수
+                    let starNo = star.starNo;
+
+
+                    // 좋아요 수 처리
+                    if (star.likes < 100) {
+                        // 99까지는 그대로 표시
+                        likeVar = star.likes;
+                    } else {
+                        // 100부터 0.001을 곱해서 'k'를 붙여서 표시
+                        likeVar = (star.likes * 0.001).toFixed(1) + ' k';
+                    }
+
+                    let viewVar = ''; // 조회수 처리
+
+                    if (star.views < 100) {
+                        // 99까지는 그대로 표시
+                        viewVar = star.views
+                    } else {
+                        // 100 부터 0.001을 곱해서 'k'를 붙여서 표시
+                        viewVar = (star.views * 0.001).toFixed(1) + ' k';
+                    }
+                    let user = "[[${session.user != null ? session.user.userNo : ''}]]";
+                    // 로그인 상태 확인
+                    if (user !== '') {
+                        console.log('유저정보가 있어서 스타를 줄게' + user);
+                            let starIconType = '';
+                            if (star.action === 'liked') {
+                                starIconType = `<i id="changeStar" class="fa-solid fa-star"></i>`;
+                            } else {
+                                starIconType = `<i id="changeStar" class="fa-regular fa-star"></i>`;
+                            }
+                            
+                            // 로그인 상태일 때 좋아요 버튼 추가
+                            starLinksHtml = `
+                                <div class="star-links liked" data-no="${star.starNo}">
+                                    ${starIconType}
+                                    <span class="count">${likeVar} like</span>
+                                </div>`;
+                        }else{
+                            starLinksHtml = `
+                                <div class="star-links liked" data-no="${star.starNo}">
+                                    <span class="count">${viewVar} view</span>
+                                </div>`;
+                        }
+
+                const cardHtml = `
+                    <div class="col-md-1 mb-2" style="width:200px;" data-no="${star.starNo}">
+                        <div id="card-effect" class="card ${star.card === '유료홍보' ? 'effect' : ''}" data-no="${star.starNo}">
+                            ${star.card === '유료홍보' ? '<div class="card-overlay"></div>' : ''}
+                            <div class="card ${star.card === '유료홍보' ? 'prime' : 'standard'}" ondblclick="animateCard(this, ${star.starNo})" data-no="${star.starNo}">
+                                <div class="card custom-card" style="background-image: url('/file/img/${star.imgNo}');">
+                                <span class="star">&#9733;</span>
+                                    <div class="top-container">
+                                        <div class="left-content">
+                                            ${icon1}
+                                            ${icon2}
+                                            ${icon3}
+                                            ${icon4}
+                                        </div>
+                                        <div class="right-content" data-no="${star.starNo}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                                            </svg>
+                                        </div>
+                                    </div> 
+                                        <div class="overlay" style="background-image: url('/file/img/${star.imgNo}');"></div>
+                                        <div class="card-body" data-no="${star.starNo}">
+                                            <h5 class="card-title">
+                                                <img src="/file/img/${star.userImgId}" alt="작성자 아이콘" class="author-icon">
+                                                ${star.title}
+                                            </h5>
+                                            <div class="card-text">${star.content}</div>
+                                            <div class="bottom-container">
+                                                <div class="field-links">
+                                                ${musicBtn}
+                                                ${travelBtn}
+                                                ${foodBtn}
+                                                ${gameBtn}
+                                                ${animalBtn}
+                                                ${exerciseBtn}
+                                                ${fashionBtn}
+                                                ${asmrBtn}
+                                                </div>
+                                                ${starLinksHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            $('#starList').append(cardHtml);
+
+            });
+
+                // applyStyles 함수 호출
+                applyStyles();
+                //  $('.card').on('dblclick', likeCard);
+                // 클래스 클릭 이벤트 핸들러
+                $('.card-body').on('click', function(e) {
+                    // data-no 값을 가져옴
+                    var no = $(this).data('no');
+                    // 페이지 이동
+                    if (no != null) {
+                        window.location = "/page/starCard/starRead?starNo=" + no;
+                    }
+                });
+
+                    isLoading = false;
+                },
+                error: function () {
+                    console.error("Failed to load more cards.");
+                    isLoading = false;
+                }
+            });
+        }
+
+        // 초기 카드 로드
+        loadMoreCards();
+
+
+        // 카드 공유하기 이벤트
+        $(document).on({
+            mouseenter: function(event) {
+                var cardNo = $(this).data('no'); // .right-content의 data-no 속성값 가져오기
+                console.log('Card No:', cardNo); // cardNo 값을 콘솔에 출력
+                var clipboardIcon = $('<i class="bi bi-clipboard2-plus-fill clipboard-icon"></i>'); // 새로운 클립보드 아이콘 생성
+                $(this).find('.bi-three-dots-vertical').hide(); // 기존 아이콘 숨기기
+                $(this).append(clipboardIcon); // 새로운 클립보드 아이콘 추가
+                $('.clipboard-icon').addClass('rotate-180');
+                clipboardIcon.data('cardNo', cardNo); // 클립보드 아이콘에 cardNo 속성 설정
+                console.log('Clipboard Icon:', clipboardIcon); // 클립보드 아이콘을 콘솔에 출력
+                },
+            mouseleave: function() {
+                $('.clipboard-icon').remove(); // 모든 클립보드 아이콘 제거
+                $(this).find('.bi-three-dots-vertical').show(); // 기존 아이콘 다시 보이기
+            }
+        }, '.right-content'); 
+
+        $(document).on('click', '.right-content', function(event) {
+                event.stopPropagation(); // 이벤트 전파 중지
+                var cardNo = $(this).find('.clipboard-icon').data('cardNo'); // 클립보드 아이콘의 cardNo 속성 가져오기
+                var textArea = document.createElement("textarea");
+                textArea.value = 'localHost:8080/page/starCard/starRead?starNo=' + cardNo;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('클립보드에 복사되었습니다.');
+            });
+        });
+
+
+        $(document).ready(function () {
+
+            // 카드 이펙트
+            $(document).on('mousemove', '.effect', function (e) {
+                var container = $(this);
+                var overlay = container.find('.card-overlay');
+
+                var x = e.offsetX;
+                var y = e.offsetY;
+                var rotateY = -1 / 5 * x + 20;
+                var rotateX = 4 / 30 * y - 20;
+
+                overlay.css('background-position', `${x / 5 + y / 5}%`);
+                container.css('transform', `perspective(350px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`);
+            });
+
+            $(document).on('mouseout', '.effect', function () {
+                var container = $(this);
+                var overlay = container.find('.card-overlay');
+
+                overlay.css('filter', 'opacity(0)');
+                container.css('transform', 'perspective(350px) rotateY(0deg) rotateX(0deg)');
+            });
+
+            $(document).on('mouseenter', '.effect', function () {
+                var overlay = $(this).find('.card-overlay');
+                overlay.css('filter', 'opacity(0.8)');
+            });
+
+        });
+
+        // mypage 더블클릭 이벤트 좋아요 취소하고 카드 사라지게 함
+        function animateCard(card, starNo) {
+            event.preventDefault(); // 기본 동작 방지
+            // 원클릭 이벤트 제거
+            $(this).off('click');
+
+            console.log("더블 클릭 이벤트 발생!");
+            toggleIconClass(starNo);
+
+            const star = card.querySelector('.star');
+            star.style.display = 'inline'; // 이모티콘 표시
+
+            // 카드 요소의 위치 및 크기 정보 가져오기
+            const rect = card.getBoundingClientRect();
+
+            // 마우스 포인터 위치 계산
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            // 이모티콘 위치 설정
+            star.style.left = `${x}px`;
+            star.style.top = `${y}px`;
+
+            // 애니메이션 실행 및 이모티콘 숨김 처리
+            star.style.animation = 'burst 0.5s forwards';
+
+            setTimeout(function() {
+                star.style.display = 'none'; // 이모티콘 숨김
+            }, 500); // 0.5초 (애니메이션의 총 시간)
+
+            // 여기서부터 starNo를 사용할 수 있습니다.
+            console.log("starNo:", starNo);
+            var userNo = "[[${session.user != null ? session.user.userNo : ''}]]";
+            if ( userNo != null) {
+                console.log("유저번호가 있어요 : " + userNo);
+            }
+            if (token != null) {
+                console.log("crsfToken 이 있어요 : " + token);
+            }
+            likeCard(starNo, token, userNo);
+
+            // starNo와 일치하는 요소를 찾아서 삭제
+            var elements = document.querySelectorAll(`[data-no="${starNo}"]`);
+            elements.forEach(function(element) {
+                element.remove();
+            });
+        }
+
+
+
+
+        // 좋아요 기록하기
+        function likeCard(starNo, token, userNo) {
+
+            if (userNo === '') {
+                alert("로그인이 필요합니다.");
+                event.preventDefault(); // 기본 동작 방지
+                return;
+            }
+
+            $.ajax({
+                url: '/page/like', // 서버의 좋아요 상태를 변경하는 API 엔드포인트
+                method: 'POST',
+                data: {
+                    userNo: userNo,
+                    starNo: starNo
+                },
+                beforeSend: function(xhr) {
+                        xhr.setRequestHeader(header, token); // CSRF 토큰을 헤더에 포함
+                    },
+                success: function (response) {
+                    console.log('Message sent successfully:', response); // 성공 시 응답 출력
+                    
+                }.bind(this), // this 바인딩
+                error: function(xhr, status, error) {
+                        console.error('Error sending message:', status, error); // 에러 시 상태 및 에러 메시지 출력
+                        console.log(xhr.responseText);
+                        // 메시지 전송 실패 시 에러 처리
+                    }
+            });
+        }
+
+
+
+        // 스타 아이콘 변경
+        function toggleIconClass(starNo) {
+            // 아이콘의 클래스 변경
+            $('.star-links[data-no="' + starNo + '"] i').toggleClass('fa-regular fa-solid');
+
+            // i 태그의 형제인 span.count 태그의 문자값에서 숫자를 찾아내어 조작
+            $('.star-links[data-no="' + starNo + '"] i').each(function() {
+                const isSolid = $(this).hasClass('fa-solid');
+                const countSpan = $(this).siblings('span.count');
+                let numberText = countSpan.text().trim().match(/\d+(\.\d+)?/)[0];
+                // 소수인지 판단 정수일 때 true
+                let isInteger = !numberText.includes('.');
+                let number = parseInt(numberText);
+
+                if (isInteger) {
+                    // 정수일 경우
+                    if (isSolid) {
+                        // 숫자에 1을 더하기
+                        if (number <= 98) {
+                            number += 1;
+                        } else if (number === 99) {
+                            number = 0.1;
+                        }
+                    } else { // fa-regular 클래스가 추가되었을 때
+                        if (number <= 99) {
+                            number -= 1;
+                        } 
+                    }
+                    // 조작한 결과를 적용
+                    countSpan.text(number + ' like');
+                }
+            });
+
+            
+        }
+
+        </script>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorate="~{/layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디 찾기</title>
+    <style>
+        .find-id-form {
+            display: flex;
+            height: 60vh;
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 5px;
+            /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .find-id-form button {
+            width: 100%;
+        }
+
+        .recover-complete-msg {
+            border: 1px solid gray;
+            height: 260px;
+            align-content: center;
+            border-radius: 20px;
+            margin-bottom: 70px;
+                }
+    </style>
+</head>
+<body layout:fragment="content">
+    <div class="find-id-form">
+        <form>
+            <div class="recover-complete-msg">
+                <h1 class="h3 mb-3 font-weight-normal text-center" th:text="${user.email}"></h1><br>
+                <h1 class="h3 mb-3 font-weight-normal text-center">메일주소의 회원정보가</h1><br>
+                <h1 class="h3 mb-3 font-weight-normal text-center">존재합니다.</h1>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="moveLogin()">로그인 하기</button>
+        </form>
+    </div>
+
+
+    <!-- 부트스트랩 JS 및 의존성 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+
+    <script>
+        function moveLogin() {
+            location.href ='/login';
+        }
+    </script>
+</body>
+</html>
+

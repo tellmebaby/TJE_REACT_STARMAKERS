@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/default_layout}">
+
+<head>
+  <title>결제하기</title>
+  <!-- <link rel="stylesheet" type="text/css" href="/css/payments.css" /> -->
+  <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e9ecef;
+    }
+
+    .content {
+      margin-left: 5rem;
+      padding: 2rem;
+    }
+
+    .header,
+    .section {
+      background-color: #ffffff;
+      border: 1px solid #dee2e6;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section h4 {
+      margin-bottom: 1rem;
+    }
+
+    .section div {
+      margin-bottom: 0.5rem;
+    }
+
+    .box_section {
+      background-color: #e9ecef;
+      padding: 2rem;
+      border: 1px solid #ced4da;
+      border-radius: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 1.5rem;
+      cursor: not-allowed;
+    }
+
+    .button:enabled {
+      cursor: pointer;
+    }
+
+
+
+    .category-label {
+      background-color: #007bff;
+      color: white;
+      border-radius: 15px;
+      padding: 5px 10px;
+      margin-right: 5px;
+      display: inline-block;
+    }
+  </style>
+
+</head>
+
+
+<th:block layout:fragment="content" class="align-items-center ml-5">
+
+
+
+
+  <div class="container" style="width: 860px;">
+
+    <div class="header text-center mt-4">
+      <h1 class="mt-3 mb-3">결제 정보</h1>
+      <p class="text-secondary mb-3">문의사항은 1:1 채팅 또는 Q&A 게시판을 이용해주세요.</p>
+    </div>
+
+    <h4>상품정보</h4>
+    <div class="section">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th scope="row">상품</th>
+            <td>홍보카드 기간제 상품</td>
+          </tr>
+          <tr>
+            <th scope="row">제목</th>
+            <td th:text="${starBoard.title}"></td>
+          </tr>
+          <tr>
+            <th scope="row">채널</th>
+            <td id="category-container" th:text="${starBoard.category1}"></td>
+          </tr>
+          <tr>
+            <th scope="row">분야</th>
+            <td id="category-container2" th:text="${starBoard.category2}"></td>
+          </tr>
+          <tr>
+            <th scope="row">홍보기간</th>
+            <td
+              th:text="|${#dates.format(starBoard.startDate, 'yyyy-MM-dd')} ~ ${#dates.format(starBoard.endDate, 'yyyy-MM-dd')} ( ${dif}일 )|">
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">결제금액</th>
+            <td th:text="${formattedPrice + '원'}"></td>
+          </tr>
+          <tr>
+            <th scope="row">썸네일 이미지</th>
+            <td style="width: 85%;"><img th:src="|/file/img/${starBoard.imgNo}|" style="width: 40%;"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-primary mt-2"
+          th:onclick="|window.location.href='/page/starCard/starUpdate?starNo=${starBoard.starNo}'|">수정하기</button>
+      </div>
+    </div>
+
+
+
+    <h4>회원정보</h4>
+    <div class="section">
+      <table class="table">
+        <tbody>
+          <tr>
+            <th scope="row">이름</th>
+            <td style="width: 85%;" th:text="${user.name}"></td>
+          </tr>
+          <tr>
+            <th scope="row">연락처</th>
+            <td th:text="${user.phone}"></td>
+          </tr>
+          <tr>
+            <th scope="row">이메일</th>
+            <td th:text="${user.email}"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>결제수단</h4>
+    <div class="section">
+      <div id="payment-method"></div>
+      <div id="agreement"></div>
+
+      <button class="btn btn-primary mt-2 w-100" id="payment-request-button" disabled>결제하기</button>
+    </div>
+
+  </div>
+
+
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      //카테고리 span 처리
+      var container = document.getElementById('category-container');
+      var categories = container.textContent.split(',');
+      container.innerHTML = '';
+
+      var translationMap = {
+        'youtube': '유튜브',
+        'instagram': '인스타그램',
+        'afreeca': '아프리카',
+        'chzzk': '치지직'
+      };
+
+      categories.forEach(function (category) {
+        var span = document.createElement('span');
+        span.className = 'category-label';
+        var translatedCategory = translationMap[category.trim().toLowerCase()] || category.trim();
+        span.textContent = translatedCategory;
+        container.appendChild(span);
+      });
+
+      // 
+
+      var container = document.getElementById('category-container2');
+      var categories = container.textContent.split(',');
+      container.innerHTML = '';
+
+      var translationMap = {
+        'food': '음식',
+        'travel': '여행',
+        'game': '게임',
+        'music': '음악',
+        'animal': '동물',
+        'workOut': '운동',
+        'asmr': 'ASMR',
+        'fashion': '패션'
+      };
+
+      categories.forEach(function (category) {
+        var span = document.createElement('span');
+        span.className = 'category-label';
+        var translatedCategory = translationMap[category.trim().toLowerCase()] || category.trim();
+        span.textContent = translatedCategory;
+        container.appendChild(span);
+      });
+
+
+      const button = document.getElementById("payment-request-button");
+      const generateRandomString = () => window.btoa(Math.random()).slice(0, 20);
+      var amount = "[[${price}]]";
+
+      console.log("결제 위젯 초기화 시작");
+      // 결제위젯 초기화
+      const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 실제 클라이언트 키로 변경하세요.
+      const customerKey = generateRandomString();
+      const paymentWidget = PaymentWidget(clientKey, customerKey);
+
+      // 결제 UI 렌더링
+      const paymentMethodWidget = paymentWidget.renderPaymentMethods(
+        "#payment-method",
+        { value: amount },
+        { variantKey: "DEFAULT" }
+      );
+
+      // 이용약관 UI 렌더링
+      paymentWidget.renderAgreement('#agreement', { variantKey: 'DEFAULT' });
+
+      // 결제 UI 렌더링 완료 이벤트
+      paymentMethodWidget.on("ready", function () {
+        console.log("결제 위젯 렌더링 완료");
+        button.disabled = false;
+      });
+
+      // 결제하기 버튼 누르면 결제창 띄우기
+      button.addEventListener("click", function () {
+        var csrfToken = "[[${_csrf.token}]]";
+        var starNo = "[[${param.starNo}]]";
+        var userNo = "[[${user.userNo}]]";
+
+        paymentWidget.requestPayment({
+          orderId: generateRandomString(),
+          orderName: "홍보카드 기간제 상품",
+          successUrl: window.location.origin + "/payments/success?starNo=" + starNo + "&userNo=" + userNo,
+          failUrl: window.location.origin + "/payments/payFail?starNo=" + starNo + "&userNo=" + userNo,
+          headers: {
+            'X-CSRF-TOKEN': csrfToken // CSRF 토큰을 헤더에 포함
+          }
+        });
+      });
+    });
+
+
+
+
+
+
+  </script>
+
+
+</th:block>
+
+</html>

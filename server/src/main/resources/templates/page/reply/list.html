@@ -1,0 +1,69 @@
+<div th:each="reply : ${replyList}">
+        <!-- 댓글인 경우 -->
+        <th:block th:if="${reply.replyNo == reply.parentNo}">
+            <div id="reply-line">
+                <!-- 댓글 -->
+                <div class="reply-top">
+                    <span class="reply-writer" th:text="${reply.writer}"></span>
+                    <span class="reply-regDate" th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}">
+                        <i class="fa-regular fa-thumbs-up icon"></i>
+                    </span>
+                </div>
+                <!-- 댓글 내용/ 수정 삭제 버튼 -->
+                <div class="reply-con">
+                    <div class="reply-middle"> 
+                        <p class="reply-content"  th:text="${reply.content}" id="content"></p>
+                        <div class="reply-button"> 
+                            <th:block th:if="${session.user != null and session.user.id == reply.writer}">
+                                <button class="btn-reply-update" th:data="${reply.replyNo}">수정</button>
+                                <button class="btn-reply-delete" th:onclick="|deleteReply(${reply.replyNo})|">삭제</button>
+                            </th:block>
+                        </div>
+                    </div>
+                </div> 
+                <div class="reply-rereply">
+                    <button class="btn-rereply" th:onclick="|insertAnswer(this, ${reply.replyNo})|">답글쓰기</button>
+                </div>
+            </div>
+        </th:block>
+
+        <!-- 답글인 경우! -->
+        <th:block th:if="${reply.replyNo != reply.parentNo}">
+            <div id="rereply-list">
+            <!-- 답글!! 목록 -->
+                <div class="rereply" >
+                    <!-- 답글 -->
+                    <div class="rereply-top">
+                        <span class="rereply-writer" th:text="${reply.writer}"></span>
+                        <span class="rereply-regDate" th:text="${#dates.format(reply.regDate, 'yyyy-MM-dd HH:mm:ss')}">
+                            <i class="fa-regular fa-thumbs-up icon"></i>
+                        </span>
+                    </div>
+                    <!-- 답글 내용/ 수정 삭제 버튼 -->
+                    <div class="rereply-con">
+                    <div class="rereply-middle">
+                        <p class="rereply-content" th:text="${reply.content}" id="content"></p>
+                        <div class="rereply-button">
+                            <th:block th:if="${session.user != null and session.user.id == reply.writer}">
+                                <button class="btn-rereply-update" th:data="${reply.replyNo}">수정</button>
+                                <button class="btn-rereply-delete" th:onclick="|deleteReply(${reply.replyNo})|">삭제</button>
+                            </th:block>
+                        </div>
+                    </div>
+                    </div>
+                    <!-- 답글에 답글 쓰기 보류...-->
+                    <div class="rereply-rereply">
+                        <br>
+                        <!-- <button class="btn-rereply" th:onclick="|insertAnswer(this, ${reply.replyNo})|">답글쓰기</button> -->
+                    </div>
+                    <div class="rereply-container m-0 p-0">
+                        <div class="rereply-box">
+                            <textarea type="text" placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."></textarea>
+                            <button type="button" th:onclick="|insertAnswer(this, ${reply.replyNo})|">등록</button>
+                        </div>       
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</th:block>

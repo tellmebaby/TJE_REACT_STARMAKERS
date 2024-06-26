@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카드디자인 모의페이지</title>
+   
+    <style>
+     .card {
+            position: relative;
+            overflow: hidden;
+            transition: opacity 0.5s, transform 0.5s;
+            border-radius: 25px;
+            padding: 3px;
+            background-clip: padding-box;
+        }
+
+        .card.standard {
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, #4e5d6c, #6c7a89, #bfc9d1, #6c7a89, #4e5d6c);
+            background-clip: padding-box;
+        }
+
+        .card.prime {
+            border: 1px solid transparent;
+            background: linear-gradient(to right, pink, purple, lightblue, cyan, lime, yellow, orange);
+        }
+
+        .card.gold {
+            border: 1px solid transparent;
+            background: linear-gradient(to right, gold, goldenrod, yellow, lightyellow, palegoldenrod);
+        }
+
+        .card.clicked {
+            opacity: 0.5;
+            transform: scale(1.2);
+            animation: revertAnimation 0.5s 0.5s forwards;
+        }
+
+        @keyframes revertAnimation {
+            from {
+                opacity: 0.5;
+                transform: scale(3);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .custom-card {
+            height: 400px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            overflow: hidden;
+            border-radius: 25px;
+        }
+
+        .overlay, .card-body {
+            position: absolute;
+            bottom: -55%;
+            width: 100%;
+            transition: bottom 1s;
+        }
+
+        .overlay {
+            height: 45%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center top;
+            filter: blur(10px);
+            z-index: 1;
+        }
+
+        .card-body {
+            background: rgba(0, 0, 0, 0.5); /* 반투명한 배경 */
+            border-radius: 25px;
+            height: 45%;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: left;
+            text-align: left; /* 왼쪽 정렬 추가 */
+            padding: 10px; /* 내부 여백 추가 */
+            box-sizing: border-box;
+        }
+
+        .card:hover .overlay,
+        .card:hover .card-body {
+            bottom: 0;
+        }
+
+        .card:hover .overlay {
+            background-position: center bottom;
+        }
+
+        .card-body h5, .card-body p {
+            margin: 0;
+        }
+
+        .card-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%; /* 부모 요소의 100%를 사용하도록 수정 */
+            margin-bottom: 5px; /* 아래 여백 추가 */
+        }
+
+        .card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* 최대 두 줄 표시 */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            width: 100%; /* 부모 요소의 100%를 사용하도록 수정 */
+            margin-bottom: 10px; /* 아래 여백 추가 */
+        }
+
+        .star {
+            color: yellow;
+            font-size: 24px;
+            position: absolute;
+            display: none; /* 초기에는 숨겨둠 */
+            pointer-events: none; /* 클릭 이벤트 무시 */
+        }
+
+        @keyframes burst {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(5);
+                opacity: 0;
+            }
+        }
+
+        .btn-primary {
+            color: white; /* 텍스트 색상 변경 */
+            background-color: transparent; /* 배경색 투명하게 설정 */
+            border: 1px solid white; /* 테두리를 하얀색으로 설정 */
+            padding: 3px 3px; /* 내부 여백 조정 */
+            text-align: center; /* 텍스트 가운데 정렬 설정 */
+            font-size: 0.7em; /* 현재 크기의 0.7배로 설정 */
+            margin-top: 10px; /* 버튼과 위쪽 요소 간 간격 추가 */
+            width: 48px;
+        }
+
+        .author-icon {
+            width: 1em; /* 아이콘 크기 조정 */
+            height: 1em;
+            margin-right: 5px; /* 타이틀과의 간격 조정 */
+            border-radius: 50%; /* 이미지를 원형으로 만듭니다 */
+            overflow: hidden; /* 필요한 경우 이미지가 넘치는 부분을 숨깁니다 */
+        }
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        .left-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .content-icon {
+            width: 1em; /* 타이틀 글자 크기와 동일한 크기로 설정 */
+            height: 1em;
+            margin-bottom: 5px; /* 각 이미지 사이의 간격 설정 */
+            border-radius: 50%; /* 원형으로 스타일링 */
+        }
+
+        .right-content {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .right-content i {
+            font-size: 1em; /* 타이틀 글자 크기와 동일한 크기로 설정 */
+        }
+
+        .bottom-container {
+            display: flex;
+        }
+
+        .field-links {
+            flex: 4;
+        }
+
+        .star-links {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px; /* 버튼과 위쪽 요소 간 간격 추가 */
+        }
+
+        .star-links > svg {
+            width: 2em; /* 현재 크기의 3배 */
+            height: 2em; /* 현재 크기의 3배 */
+        }
+
+        .count {
+            margin-top: 5px; /* 텍스트와 아이콘 간격 조정 */
+        }
+    </style>
+    
+</head>
+<body layout:fragment="content">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card prime"ondblclick="animateCard(this)">
+                    <div class="card custom-card" style="background-image: url('/file/img/19');">
+                        <span class="star">&#9733;</span> <!-- 노란색 별 이모티콘 -->
+                        <div class="top-container">
+                            <div class="left-content">
+                                <img src="/img/icon/afreeca.png" alt="아이콘1" class="content-icon">
+                                <img src="/img/icon/chzzk.png" alt="아이콘2" class="content-icon">
+                                <img src="/img/icon/youtube.png" alt="아이콘3" class="content-icon">
+                                <img src="/img/icon/instagram.png" alt="아이콘4" class="content-icon">
+                            </div>
+                            <div class="right-content">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                    <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3m5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3"/>
+                                  </svg>
+                            </div>
+                        </div>
+                        <div class="overlay" style="background-image: url('/file/img/19');"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <img src="/file/img/1" alt="작성자 아이콘" class="author-icon">
+                                뉴진스 사인CD+폴라 도착
+                            </h5>
+                            <p class="card-text">“안녕, 버니즈?”🐰버블검에 이어 새롭게 등장한 더블 싱글 [How Sweet]✨
+                
+                                1️⃣ 멜론 독점! 강렬한 변신의 소장각 포토 2️⃣  고민 릴레이, 멜런스 게임 3️⃣ 토깽이들이 추천하는 최애곡! 멜론에서 모두 확인하고 한정판 친필 사인 CD+폴라(5명)받아 가세요💟</p>
+                                <div class="bottom-container">
+                                    <div class="field-links">
+                                        <a href="#" class="btn btn-primary">#음악</a>
+                                        <a href="#" class="btn btn-primary">#ASMR</a>
+                                        <a href="#" class="btn btn-primary">#여행</a>
+                                        <a href="#" class="btn btn-primary">#음식</a>
+                                        <a href="#" class="btn btn-primary">#게임</a>
+                                        <a href="#" class="btn btn-primary">#동물</a>
+                                        <a href="#" class="btn btn-primary">#운동</a>
+                                    </div>
+                                    <div class="star-links">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+                                        </svg>
+                                        <span class="count">1.5k</span>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card standard" ondblclick="animateCard(this)">
+                    <div class="card custom-card" style="background-image: url('/file/img/15');">
+                        <div class="overlay" style="background-image: url('/file/img/15');"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">카드 제목 2</h5>
+                            <p class="card-text">카드 내용 2입니다.</p>
+                            <a href="#" class="btn btn-primary">더 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card gold" ondblclick="animateCard(this)">
+                    <div class="card custom-card" style="background-image: url('/file/img/14');">
+                        <div class="overlay" style="background-image: url('/file/img/14');"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">카드 제목 3</h5>
+                            <p class="card-text">카드 내용 3입니다.</p>
+                            <a href="#" class="btn btn-primary">더 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card standard" ondblclick="animateCard(this)">
+                    <div class="card custom-card" style="background-image: url('/file/img/13');">
+                        <div class="overlay" style="background-image: url('/file/img/13');"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">카드 제목 4</h5>
+                            <p class="card-text">카드 내용 4입니다.</p>
+                            <a href="#" class="btn btn-primary">더 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+       function animateCard(card) {
+            const star = card.querySelector('.star');
+            star.style.display = 'inline'; // 이모티콘 표시
+
+            const x = event.clientX - card.offsetLeft;
+            const y = event.clientY - card.offsetTop;
+            star.style.left = `${x}px`;
+            star.style.top = `${y}px`;
+
+            setTimeout(function() {
+                star.style.display = 'none'; // 이모티콘 숨김
+            }, 500); // 0.5초 (애니메이션의 총 시간)
+
+            star.style.animation = 'burst 0.5s forwards'; // 애니메이션 시작
+        }
+    </script>
+    
+
+</body>
+</html>

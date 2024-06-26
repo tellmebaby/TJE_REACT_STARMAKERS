@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{/layout/default_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="/css/mypage.css">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <style>
+
+        .button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 46px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        tbody {
+            width: 600px;
+            height: 350px;
+        }
+
+
+        /* ----------------------- */
+        .table td {
+            height: 60px !important;
+        }
+
+        .table td:first-child {
+            width: 30%;
+        }
+
+        .table td:last-child {
+            width: 70%;
+        }
+
+        .table-margin {
+            margin-top: 170px;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf85dv87L-QUBgTu6c8_OrOjHGFkldiqpx31GaI65ut4X0BbqtUvSPJWxyyuiD9bvKqzA&usqp=CAU');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border-radius: 17%;
+            border: 5px solid black;
+            overflow: hidden;
+        }
+
+        .placeholder {
+            font-size: 2em;
+            color: #888;
+        }
+
+        #uploadedImage {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+        }
+        .button:hover {
+            background-color: #1d5bc6;
+        }
+
+    </style>
+</head>
+
+<body layout:fragment="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="side-menu">
+                        <div class="nav-links">
+                            <a href="/page/mypage/profile" class="active"><i class="fa-solid fa-user"></i>회원 정보</a>
+                            <a href="/page/mypage/payment"><i class="fa-solid fa-credit-card"></i>결제 내역</a>
+                            <a href="/page/mypage/promotion"><i class="fa-solid fa-edit"></i>내가 쓴 글</a>
+                            <a href="/page/mypage/archive"><i class="fa-solid fa-archive"></i>내 보관함</a>
+                            <a href="/page/mypage/inquiry"><i class="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                            <a href="/page/mypage/userDelete"><i class="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="table-margin"></div>
+                        <table class="table">
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">닉네임</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.id}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">이름</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.name}"></td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">전화번호</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.phone}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">이메일</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.email}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">생년월일</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.birth}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="fw-bold fs-5 text-center align-middle border-0">주소</td>
+                                <td class="fs-5 align-middle border-0" th:text="${user.address}">
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-container">
+                            <a href="/page/mypage/profileUpdate"><input class="button" type="button" value="정보 수정"></a>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-md-3">
+                <div class="table-margin"></div>
+                <!-- 빈 이미지일 경우 -->
+                <div class="image-container" id="imageContainer">
+                    <img id="uploadedImage" th:src="|/file/img/${file.fileNo}|" alt="" style="width: 100%; ">
+                </div>
+                <input type="file" id="fileInput" style="display: none;">
+                <button class="btn btn-primary w-100 mt-1" onclick="saveImage()">이미지 저장</button>
+                <button class="btn btn-primary w-100 mt-1" onclick="deleteImage()">기본 이미지로 변경</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.getElementById('imageContainer').addEventListener('click', function () {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('uploadedImage').src = e.target.result;
+                    document.getElementById('uploadedImage').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+    function saveImage() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert("파일을 선택해 주세요.");
+            return;
+        }
+
+        var userNo = "[[${user.userNo}]]";
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("user_no", userNo);  // user_no 값을 추가 (실제 값으로 변경 필요)
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        fetch('/file/upload', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+        .then(response => response.text())
+        .then(result => {
+            // alert(result);
+            // 이미지가 저장된 후에 이미지 업데이트 코드를 직접 호출
+            updateImage(); // 이미지 업데이트 함수 호출
+            alert("이미지가 저장되었습니다.");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('이미지 업로드 실패');
+        });
+    }
+
+//     function deleteImage() {
+//     const defaultImageFile = 'path/to/default-image.jpg';  // 기본 이미지 파일 경로 설정
+
+//     var userNo = "[[${user.userNo}]]";
+//     const formData = new FormData();
+//     formData.append("file", defaultImageFile);  // 기본 이미지 파일을 추가
+//     formData.append("user_no", userNo);  // user_no 값을 추가 (실제 값으로 변경 필요)
+
+//     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+//     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+//     fetch('/file/upload', {
+//         method: 'POST',
+//         body: formData,
+//         headers: {
+//             [csrfHeader]: csrfToken
+//         }
+//     })
+//     .then(response => response.text())
+//     .then(result => {
+//         updateImage(); // 이미지 업데이트 함수 호출
+//         alert("기본 이미지가 업로드되었습니다.");
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('기본 이미지 업로드 실패');
+//     });
+// }
+
+    function deleteImage() {
+        const defaultImageUrl = 'path/to/default-image.jpg';  // 기본 이미지 URL 설정
+
+        var userNo = "[[${user.userNo}]]";
+        const formData = new FormData();
+        formData.append("user_no", userNo);  // user_no 값을 추가 (실제 값으로 변경 필요)
+
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+
+        fetch('/file/allDelete', {
+            method: 'DELETE',
+            body: formData,
+            headers: {
+                [csrfHeader]: csrfToken
+            }
+        })
+        .then(response => response.text())
+        .then(result => {
+            document.getElementById('uploadedImage').src = defaultImageUrl;
+            alert("기본 이미지로 변경되었습니다.");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('이미지 삭제 실패');
+        });
+    }
+    
+    </script>
+</body>
+
+</html>

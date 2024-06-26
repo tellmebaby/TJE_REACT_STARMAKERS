@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datepicker Example</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <style>
+    .ui-datepicker {
+      width: auto;
+      padding: 10px;
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1000 !important;
+    }
+    .ui-datepicker a {
+      color: #007bff !important;
+    }
+    .input-group-text {
+      background-color: #e9ecef;
+      border: 1px solid #ced4da;
+    }
+    .form-control {
+      border: 1px solid #ced4da;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="input-group mb-3">
+      <span class="input-group-text">홍보 시작일</span>
+      <input type="text" class="form-control" id="datepicker" placeholder="홍보 시작일" readonly>
+      <button class="btn btn-outline-secondary" type="button" id="datepicker-btn"><i class="bi bi-calendar3"></i></button>
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text">홍보 종료일</span>
+      <input type="text" class="form-control" id="datepicker2" placeholder="홍보 종료일" readonly>
+      <button class="btn btn-outline-secondary" type="button" id="datepicker2-btn"><i class="bi bi-calendar3"></i></button>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#datepicker').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0,
+        onSelect: function(selectedDate) {
+          var minDate = new Date(selectedDate);
+          $('#datepicker2').datepicker('option', 'minDate', minDate);
+        }
+      });
+
+      $('#datepicker2').datepicker({
+        dateFormat: 'yy-mm-dd',
+        minDate: 0
+      });
+
+      // 버튼 클릭 시 Datepicker를 표시
+      $('#datepicker-btn').click(function() {
+        $('#datepicker').datepicker('show');
+      });
+
+      $('#datepicker2-btn').click(function() {
+        $('#datepicker2').datepicker('show');
+      });
+    });
+  </script>
+</body>
+</html>

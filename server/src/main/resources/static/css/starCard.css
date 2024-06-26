@@ -1,0 +1,943 @@
+/* 기존 스타일 */
+#bannerCarousel img {
+    width: -webkit-fill-available;
+    height: 120px;
+    border-radius: 15px;
+    border: 1px solid rgb(211, 212, 215);
+}
+
+.event-banner {
+    text-align: center;
+    overflow: hidden;
+    /* margin: 20px 0; */
+}
+
+.bg-image {
+    position: relative;
+    background-image: url('/img/indexTopBackImg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 60vh; /* 이미지가 화면 높이만큼 차지하도록 설정 */
+    overflow: hidden; /* 오버플로우 숨기기 */
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+.bg-image .topOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* .bg-image의 높이에 맞춤 */
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.jumbotron {
+    height: 60vh; /* 화면 높이와 동일하게 설정 */
+    margin-bottom: 3%;
+}
+
+.jumbotron .topOverlay {
+    padding: 0 30px;
+    text-align: left;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    color: black;
+    left: -5%;
+    right: auto;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black;
+    border-radius: 50%;
+}
+
+.carousel-control-next {
+    left: auto;
+    right: -5%;
+}
+
+#promotionCarousel .row {
+    display: flex;
+    /* gap: 17px; */
+}
+
+#promotionCarousel .col-lg-3 {
+    flex: 0 0 24%;
+}
+
+.board-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-muted {
+    font-size: 0.8rem;
+}
+
+.search-input {
+    margin-right: 15px;
+}
+
+#searchForm{
+    align-content: center;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.badge-secondary {
+    margin-right: 10px;
+}
+
+#promotionCarousel .card {
+    border-radius: 1.25rem;
+    /* overflow: hidden; */
+    
+}
+
+.icon-container {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+.icon {
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.icon-body {
+    background-color: #b0d5ff;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.detail-search {
+    padding: 20px;
+    background-color: #E7ECF6;
+    border-radius: 10px;
+}
+
+.form-check-inline {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.form-check-input {
+    margin-right: 5px;
+}
+
+.form-check-label {
+    margin-right: 15px;
+    color: #495057;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    flex: 1 1 33%;
+    padding: 10px;
+}
+
+.search-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#cardContainer {
+    margin-top: 65px;
+}
+
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+/* 카드 스타일 */
+.card {
+    position: relative;
+    /* overflow: hidden; */
+    transition: opacity 0.5s, transform 0.5s;
+    border-radius: 25px;
+    padding: 3px;
+    background-clip: padding-box;
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+.card.standard {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #4e5d6c, #6c7a89, #bfc9d1, #6c7a89, #4e5d6c);
+    background-clip: padding-box;
+}
+
+.card.prime {
+    border: 1px solid transparent;
+    background: linear-gradient(to right, pink, purple, lightblue, cyan, lime, yellow, orange);
+}
+
+.card.gold {
+    border: 1px solid transparent;
+    background: linear-gradient(to right, gold, goldenrod, yellow, lightyellow, palegoldenrod);
+}
+
+.card.clicked {
+    opacity: 0.5;
+    transform: scale(1.2);
+    animation: revertAnimation 0.5s 0.5s forwards;
+}
+
+@keyframes revertAnimation {
+    from {
+        opacity: 0.5;
+        transform: scale(3);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.custom-card {
+    height: 330px;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    overflow: hidden;
+    border-radius: 25px;
+}
+
+.overlay,
+.card-body {
+    position: absolute;
+    bottom: -55%;
+    width: 100%;
+    transition: bottom 1s;
+}
+
+.overlay {
+    height: 40%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 60%;
+    filter: blur(10px);
+    z-index: 1;
+}
+
+.card-body {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    height: 40%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: left;
+    text-align: left;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.card-body:hover {
+    cursor: pointer;
+}
+
+.card:hover .overlay,
+.card:hover .card-body {
+    bottom: 0;
+}
+
+.card:hover .overlay {
+    background-position: center bottom;
+}
+
+.card-body h5,
+.card-body p {
+    margin: 0;
+}
+
+.card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 80%;
+    line-height: 1.2em;
+    max-height: 2.4em;
+}
+
+.card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 최대 표시 줄 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 80%;
+    line-height: 1.2em;
+    margin-top: 2%;
+    max-height: 4.8em; /* 4줄의 최대 높이 */
+    min-height: 4.8em; /* 4줄의 최소 높이 */
+    background-color: transparent !important;;
+}
+
+.star {
+    color: yellow;
+    font-size: 24px;
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@keyframes burst {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(6);
+        opacity: 0;
+    }
+}
+
+.btn-custom {
+    color: white;
+    background-color: transparent;
+    border: 1px solid white;
+    /* padding: 0.25em 0.25em; */
+    padding: 0;
+    text-align: center;
+    font-size: 0.7em;
+    /* margin-top: 1%; */
+    width: 40px;
+    height: 18px;
+    align-content: center;
+}
+
+#asmr-link {
+    width: 42px;
+}
+
+.author-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.left-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.content-icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin-bottom: 5px;
+    border-radius: 50%;
+}
+
+.right-content {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    z-index: 5;
+}
+
+
+.right-content > svg {
+    width: 16px; /* 아이콘의 너비 설정 */
+    height: 16px; /* 아이콘의 높이 설정 */
+    fill: white; /* 아이콘의 색상을 흰색으로 설정 */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)); /* 그림자 설정 */
+}
+
+.bottom-container {
+    display: flex;
+    flex-direction: row; /* 수평 정렬 */
+    justify-content: space-between; /* 요소들 사이에 균등한 간격 */
+    align-items: end;
+    padding: 0; /* 패딩 설정 */
+    height: 20%;
+}
+
+.field-links {
+    flex: 3;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* 최대 2줄까지 표시 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* font-size: 70%; */
+    /* max-height: 2.4em; */
+    /* margin: 2px 0; */
+}
+
+.star-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* margin-top: 10px; */
+}
+
+.star-links > i {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.star-links > span {
+    font-size: 0.5em;
+}
+.count {
+    /* margin-top: 10px; */
+    font-size: 70%;
+}
+
+.shadow-icon {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
+}
+
+#main-search {
+    background-color: transparent; /* 배경색 없음 */
+    border: 1px solid white; /* 테두리 하얀색 */
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    margin-left: -1px; /* 왼쪽에 인풋과 겹치지 않도록 마진 설정 */
+    border-top-right-radius: 0; /* 버튼 왼쪽 상단 모서리를 둥글게 하지 않음 */
+    border-bottom-right-radius: 0; /* 버튼 왼쪽 하단 모서리를 둥글게 하지 않음 */
+    height: calc(100% - 2px); /* 버튼 높이를 인풋과 동일하게 설정 */
+    margin-right: -1px; /* 버튼과의 간격을 없애기 위해 추가 */
+}
+
+#btn-mainSearch {
+    background-color: transparent; /* 배경색 없음 */
+    border: 1px solid white; /* 테두리 하얀색 */
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    margin-left: -1px; /* 왼쪽에 인풋과 겹치지 않도록 마진 설정 */
+    border-top-left-radius: 0; /* 버튼 왼쪽 상단 모서리를 둥글게 하지 않음 */
+    border-bottom-left-radius: 0; /* 버튼 왼쪽 하단 모서리를 둥글게 하지 않음 */
+    height: calc(100% - 2px); /* 버튼 높이를 인풋과 동일하게 설정 */
+    width: 150px;
+    margin-right: -1px; /* 버튼과의 간격을 없애기 위해 추가 */
+}
+
+#main-search::placeholder {
+    color: white; /* 플레이스홀더 텍스트 색상을 흰색으로 설정 */
+}
+
+#btn-mainSearch:hover {
+    background-color: white; /* 마우스 오버시 배경색 흰색으로 변경 */
+    color: black; /* 텍스트 색상을 검은색으로 변경 */
+}
+
+  .contentIcon-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    flex-direction: row;
+    position: relative; /* 자식 요소의 absolute positioning을 위해 추가 */
+    margin-top: 23%;
+  }
+
+  .contentIcon1:hover,
+  .contentIcon2:hover,
+  .contentIcon3:hover,
+  .contentIcon4:hover,
+  .contentIcon5:hover,
+  .contentIcon6:hover,
+  .contentIcon7:hover,
+  .contentIcon8:hover{
+    background-color: beige;
+    cursor: pointer;
+  }
+
+  .contentIcon1,
+  .contentIcon2,
+  .contentIcon3,
+  .contentIcon4,
+  .contentIcon5,
+  .contentIcon6,
+  .contentIcon7,
+  .contentIcon8{
+    display: flex;
+    text-align: center;
+    border-radius: 10px;
+    background-color: transparent; /* 아이콘 배경 투명하게 설정 */
+    border: 1px solid rgb(214, 215, 220); /* 원하는 색으로 변경 가능 */
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+    background-color: #fff;
+    z-index: 2;
+  }
+
+  .contentIcon-backMusic,
+  .contentIcon-backGame,
+  .contentIcon-backTravel,
+  .contentIcon-backFood,
+  .contentIcon-backAnimal,
+  .contentIcon-backAsmr,
+  .contentIcon-backWork,
+  .contentIcon-backFashion{
+    position: absolute;
+    height: 175px;
+    width: 100%; /* 부모 요소의 너비에 맞추기 위해 100%로 설정 */
+    border-radius: 15px;
+    background-repeat: no-repeat;
+    background-position: 0 45%;
+    z-index: 1;
+    background-size: cover;
+  }
+
+  /* .contentIcon:hover {
+      background-color: #f9ebbf;
+    } */
+    
+    .contentIcon1:hover ~ .contentIcon-backMusic{
+    background-image: url("/img/categoryMusic.gif");
+  }
+
+  .contentIcon2:hover ~ .contentIcon-backGame{
+    background-image: url("/img/categoryGame.gif");
+  }
+
+  .contentIcon3:hover ~ .contentIcon-backTravel{
+    background-image: url("/img/categoryTravle.gif");
+  }
+
+  .contentIcon4:hover ~ .contentIcon-backFood{
+    background-image: url("/img/categoryFood2.gif");
+  }
+
+  .contentIcon5:hover ~ .contentIcon-backAnimal{
+    background-image: url("/img/categoryAnimal.gif");
+  }
+
+  .contentIcon6:hover ~ .contentIcon-backAsmr{
+    background-image: url("/img/categoryAsmr.gif");
+  }
+
+  .contentIcon7:hover ~ .contentIcon-backWork{
+    background-image: url("/img/categoryGym.gif");
+  }
+
+  .contentIcon8:hover ~ .contentIcon-backFashion{
+    background-image: url("/img/categoryFashion.gif");
+  }
+
+  .contentIcon-container i {
+    font-size: 24px;
+    display: block;
+    margin-bottom: 5px;
+    width: 45px;
+    height: 45px;
+    line-height: 50px;
+    
+    
+  }
+  .contentIcon-container p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .starmember-wrapper {
+    position: relative;
+    display: flex;
+    height: 100%;
+    background-color: #fff;
+    border: 1px solid rgb(214, 215, 220);
+    border-radius: 15px;
+  }
+  .starmember-list .starmember-detail {
+    position:inherit;
+    flex: 1;
+    /* border: 1px solid black; */
+    padding: 10px;
+  }
+  .starmember-list {
+    display: flex;
+    flex-direction: row; /* 수평 정렬 */
+    justify-content: space-around; /* 공간을 고르게 분배 */
+    align-items: center; /* 수직 중앙 정렬 */
+    width: 100%;
+  }
+  .starmember {
+      display: flex; /* 수평 정렬을 위한 플렉스 박스 */
+      align-items: center; /* 수직 중앙 정렬 */
+      /* border: 1px solid black; */
+      padding: 10px;
+      text-align: left;
+      flex: 1; /* 각 항목이 동일한 너비를 차지하도록 설정 */
+      margin: 0 5px; /* 항목 사이의 간격 조정 */
+  }
+
+  .starmember:hover {
+    background-color: beige;
+    cursor: pointer;
+  }
+    .starmember img {
+    width: 30px;
+    height: 30px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    object-fit: cover; /* 이미지가 원형 안에 맞게 조절 */
+    margin-right: 10px; /* 이미지와 텍스트 사이 간격 */
+    }
+
+    .starmember-detail > span{
+        margin-left: 30px;
+    }
+
+    .starmember > a{
+        color: #4e5d6c;
+        font-size: 70%;
+        gap: 3px;
+        white-space: nowrap;      /* 텍스트 한 줄 유지 */
+        overflow: hidden;         /* 넘치는 텍스트 숨김 */
+        text-overflow: ellipsis;  /* 넘치는 텍스트를 생략 기호로 표시 */
+        display: inline-block;    /* 너비를 지정할 수 있도록 블록 레벨 요소로 설정 */
+    }
+
+    
+
+    .items-eventType,
+    .items-category1,
+    .items-category2 {
+        display: flex;
+    }
+
+    .type-sub .hide-check {
+        display: none;
+    }
+
+    .type-sub.checked {
+        background-color: #dcffca !important;
+    }
+
+    .type-sub.checked label {
+        color: black;
+    }
+
+    /* .type-sub.checked #type-chzzk {
+        background-color: #f6fcf3 !important;
+    } */
+
+    
+
+    /* 타입 버튼 마우스 올릴시 스타일 */
+    .type-sub:hover {
+        background-color: #fff;
+        box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    #starList {
+        margin-top: 30px;
+    }
+
+    #card-effect {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    .type-sub img{
+        width: 50px;
+    }
+
+    .type-sub i{
+        height: 2em;
+        font-size: 2em;
+    }
+
+    #type-chzzk {
+        background: black;
+    }
+
+    .container-starSearch {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        height: 30px;
+        margin-top: 41px;
+    }
+
+    .sub-searchInput {
+        display: flex;
+        align-content: center;
+        background-color: transparent;
+        border: 1px solid rgb(230, 230, 230);
+        border-radius: 17px;
+        color: gray;
+        height: 40px;
+        margin-right: 10px;
+        background-color: #fff;
+    }
+
+    .sub-searchInput input{
+        background-color: transparent;
+        border-color: transparent;
+
+    }
+
+    .sub-searchInput input:focus {
+        outline: none;
+    }
+
+    #icon-inSearchBar {
+        align-content: center;
+        width: 22px;
+        margin-left: 10px;
+    }
+
+    /* 캘린더 입력하기 버튼 스타일 */
+    .sub-btn-calendar,
+    .sub-btn-insertCard{
+        align-content: center;
+        width: 65px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 17px;
+        font-size: 0.9em;
+        text-align: center;
+        margin: 0px 4px;
+        height: 40px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+
+    .sub-btn-calendar:hover{
+        background-color: #fff;
+        box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .sub-btn-calendar:hover i{
+        color: black;
+    }
+
+    .sub-btn-insertCard:hover{
+        background-color: #fff;
+        box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .sub-btn-insertCard:hover i{
+        color: black;
+    }
+
+    .sub-btn-calendar i{
+        color: rgb(105, 108, 115);
+        font-size: 1.5em;
+    }
+
+    .sub-btn-insertCard i{
+        color: rgb(105, 108, 115);
+        font-size: 1.5em;
+    }
+
+    /* 타입 버튼 클릭시 변경 스타일*/
+    .type-sub.checked label,
+    .type-sub.checked i,
+    .type-sub.checked img {
+        color: black;
+        z-index: 3;
+    }
+
+    /* 중앙에 메시지를 출력하기 위한 스타일 */
+    .no-results {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-size: 24px;
+        color: #555;
+    }
+
+    .type-sub label:hover {
+        cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+    }
+
+    .clipboard-icon{
+        transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
+        opacity: 0;
+    }
+
+    .clipboard-icon.rotate-180:hover{
+        transform: rotate(0deg); /* 요소를 180도 회전시키는 변환 */
+        opacity: 1;
+        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
+    }
+
+    .bi-three-dots-vertical.rotate-180 {
+        transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
+        transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
+        opacity: 0; /* 투명도를 0으로 설정하여 요소가 서서히 사라지도록 함 */
+    }
+
+
+    
+    .bi-three-dots-vertical.show {
+        transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
+        opacity: 1;
+        transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
+    }
+
+    .container-typeTitle {
+        width: 100%;
+        position: relative;
+    }
+
+  
+
+    @media (max-width: 768px) {
+        .col-md-2 {
+            flex: 0 0 48%; /* 한 줄에 2개의 카드를 표시하도록 설정 */
+            max-width: 48%; /* 한 줄에 2개의 카드를 표시하도록 설정 */
+        }
+        .starList-detail {
+            margin-top: 20px;
+        }
+        .container-typeTitle span {
+            position: absolute;
+            width: 100%;
+            top: -70px;
+            color: #555;
+            font-size: 0.7em;
+            letter-spacing: -1px; /* 폰트의 간격을 조절합니다. 음수 값은 글자를 겹치게 합니다. */
+        }
+        .type-sub {
+            align-content: center;
+            width: 60px;
+            border: 1px solid rgb(220, 223, 225);
+            border-radius: 23px;
+            font-size: 0.7em;
+            text-align: center;
+            margin: 2px 4px;
+            height: 36px;
+            background-color: #fff;
+            color: rgb(105, 108, 115);
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+        }
+    }
+    
+    @media (min-width: 769px) and (max-width: 992px) {
+        .col-md-2 {
+            flex: 0 0 33%; /* 한 줄에 3개의 카드를 표시하도록 설정 */
+            max-width: 33%; /* 한 줄에 3개의 카드를 표시하도록 설정 */
+        }
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+            margin-top: 4%;
+        }
+        .starList-detail {
+            margin-top: 20px;
+        }
+        .container-typeTitle span {
+            position: absolute;
+            width: 100%;
+            top: -70px;
+            color: #555;
+            font-size: 1em;
+            letter-spacing: -1px; /* 폰트의 간격을 조절합니다. 음수 값은 글자를 겹치게 합니다. */
+        }
+        .type-sub {
+            align-content: center;
+            width: 65px;
+            border: 1px solid rgb(220, 223, 225);
+            border-radius: 23px;
+            font-size: 0.9em;
+            text-align: center;
+            margin: 2px 4px;
+            height: 55px;
+            background-color: #fff;
+            color: rgb(105, 108, 115);
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+        }
+    }
+    
+    @media (min-width: 993px) {
+        .col-md-2 {
+            flex: 0 0 16%; /* 한 줄에 4개의 카드를 표시하도록 설정 */
+            max-width: 16%; /* 한 줄에 4개의 카드를 표시하도록 설정 */
+        }
+        .col-md-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+        }
+        .starList-detail {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            margin-top: 20px;
+        }
+        .container-typeTitle span {
+            position: absolute;
+            width: 35%;
+            top: -60px;
+            color: #555;
+            font-size: 1.3em;
+            letter-spacing: -1px; /* 폰트의 간격을 조절합니다. 음수 값은 글자를 겹치게 합니다. */
+        }
+
+        /* 타입 버튼 스타일 */
+        .type-sub {
+            align-content: center;
+            width: 65px;
+            border: 1px solid rgb(220, 223, 225);
+            border-radius: 23px;
+            font-size: 0.9em;
+            text-align: center;
+            margin: 0px 4px;
+            height: 55px;
+            background-color: #fff;
+            color: rgb(105, 108, 115);
+            cursor: pointer;
+            display: inline-block;
+            box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+        }
+    }
+
+    .justify-content-center{
+        margin-top: 2%;
+    }
+    

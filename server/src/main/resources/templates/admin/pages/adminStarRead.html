@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/default_layout}">
+
+<head>
+  <title>홍보</title>
+
+  <!-- include summernote css/js-->
+  <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet"> -->
+  <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css"
+    integrity="sha256-IKhQVXDfwbVELwiR0ke6dX+pJt0RSmWky3WB2pNx9Hg=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"
+    integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script>
+
+  <!-- language pack -->
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/lang/summernote-ko-KR.min.js"
+    integrity="sha256-y2bkXLA0VKwUx5hwbBKnaboRThcu7YOFyuYarJbCnoQ=" crossorigin="anonymous"></script>
+
+  <!-- DatePicker  -->
+  <script src="/lib/datePicker.js" type="text/javascript"></script>
+  <!-- <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script> -->
+  <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/css/post.css">
+
+</head>
+
+
+<!-- layout:decorate 쓸 때 본문 내용은 <th:block layout:fragment="content"></th:block> 안에 적어야 화면에 뜸 -->
+<th:block layout:fragment="content" class="align-items-center ml-5">
+  <div class="body lg" style="max-width: 900 ;">
+    <div class="d-flex justify-content-center">
+        <h1 class="starTitle" th:text="${starBoard.title}"> </h1>
+    </div>
+    <div class="btn d-flex justify-content-center">
+        <span class="btn btn-primary" th:text="${starBoard.status}"></span>
+    </div>
+      <div class="container2">
+        <form action="/page/starBoard/delete" method="get" id="read">
+          <input type="hidden" name="starNo" th:value="${starBoard.starNo}">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+          <div class="d-flex justify-content-between fw-light fs-6 read-top">
+            <span class="" th:text="|홍보 기간 ${#dates.format(starBoard.startDate, 'yyyy-MM-dd')}~${#dates.format(starBoard.endDate, 'yyyy-MM-dd')}|"></span>
+            <span class="align-items-center" th:text="|작성일 ${#dates.format(starBoard.regDate, 'yyyy-MM-dd HH:mm:ss')}|"></span>
+            <div class="d-flex justify-content-end col-2">
+              <span ><i class="fa-solid fa-star"></i> </span>
+              <span th:text="${starBoard.likes}"></span>
+              <span class="ms-2"><i class="fa-regular fa-eye"></i> </span>
+              <span th:text="${starBoard.views}"></span>
+            </div>
+            <!-- <span th:text="|view${starBoard.views}  likes${starBoard.likes}|"></span> -->
+          </div>
+          <div class="main-image">
+            <div>
+              <img th:src="|/file/img/${starBoard.imgNo}|" class="image rounded mt-auto" alt="썸네일">
+            </div>
+            <div class="text">
+              <span class="fw-bold fs-1 m-0 p-0" th:text="${starBoard.title}"></span>
+              <br>
+              <span class="fw-bold fs-10" th:text="${starBoard.writer}"></span>
+              <br>
+              <div th:text="|${starBoard.category1}|" class="fs-10" id="category1" style="display: flex;">
+              </div>
+              <!-- <img src="/img/icon/instagram.png" class="content-icon instagram" style="max-width: 20px;"> -->
+              <span th:text="|${starBoard.category2}|" class="fs-10" id="category2"></span>
+            </div>
+            <!-- <div class="icon">
+              <i class="fa-regular fa-star"></i>
+            </div> -->
+          </div>
+
+          <div class="content-container2" id="content">
+            <span th:utext="${starBoard.content}"></span>
+          </div>
+          <div class="button-box1">
+            <button class="like-btn" data-user-no="[[${session.user != null ? session.user.userNo : ''}]]" data-star-no="[[${starBoard.starNo}]]">
+              <i class="fa fa-star fa-regular [[${#lists.contains(session.user.likedStars, starBoard.starNo) ? 'fa-solid' : 'fa-regular'}]]"></i>
+          </button>
+          <span id="like-count" th:text="${starBoard.likes}"></span>
+          </div>
+          <div class="d-flex justify-content-end mt-2 button-box">
+            <button class="btn-list" type="button" onclick="moveList()">목록</button>
+            <button th:if="${session.user} and ${session.user.userNo}==${starBoard.userNo}"
+              class="btn-update" type="button" onclick="update()">수정</button>
+            <input th:if="${session.user} and ${session.user.userNo}==${starBoard.userNo}"
+              class="btn-delete" type="submit" onclick="actionDelete()"
+              value="삭제"></input>
+          </div>
+        </form>
+        <!-- 좋아요 버튼 -->
+        
+
+        <!-- 댓글 등록 -->
+        <div class="reply-container">
+          <div class="reply-box">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <!-- 사용자 아이디(hidden) -->
+            <input type="hidden" name="username" id="username"
+              th:value="${session.user != null ? session.user.email : '비회원'}">
+            <input type="hidden" name="writer" id="reply-writer"
+              th:value="${session.user != null ? session.user.id : '비회원'}">
+            <textarea type="text" name="content" id="reply-content" placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다.
+                  로그인 하신 분만 댓글을 작성할 수 있습니다." th:disabled="${session.user == null}"></textarea>
+            <button type="button" id="btn-reply-insert" class="btn-reply" onclick="insertReply()"
+              th:disabled="${session.user == null}">등록</button>
+          </div>
+        </div>
+        <div class="top-reply-list">
+          <label class="reply">댓글</label>
+          <label class="reply-count" th:text="${starBoard.commentCount} + ' 개'"></label>
+        </div>
+        <!-- 댓글 목록 -->
+        <div id="reply-listbox">
+          <div id="reply-list">
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  
+  <script>
+    
+    $(document).on('click', '.like-btn', function (e) {
+        e.preventDefault(); // 기본 동작 방지
+
+        var userNo = "[[${session.user != null ? session.user.userNo : ''}]]";
+        var starNo = "[[${starBoard.starNo}]]";
+        var csrfToken = "[[${_csrf.token}]]";
+
+        if (userNo === '') {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        $.ajax({
+            url: '/page/like',
+            method: 'POST',
+            contentType: 'application/x-www-form-urlencoded',
+            data: {
+                userNo: userNo,
+                starNo: starNo
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+            },
+            success: function (response) {
+                var likeIcon = $(this).find('i.fa-star');
+                var likeCount = $('#like-count');
+
+                if (response.liked) {
+                    likeIcon.removeClass('fa-regular').addClass('fa-solid');
+                    likeCount.text(parseInt(likeCount.text()) + 1);
+                } else {
+                    likeIcon.removeClass('fa-solid').addClass('fa-regular');
+                    likeCount.text(parseInt(likeCount.text()) - 1);
+                }
+            }.bind(this),
+            error: function (xhr, status, error) {
+                console.error("좋아요 상태 변경 실패:", error);
+            }
+        });
+    });
+
+
+
+    const starNo = "[[${starBoard.starNo}]]"
+
+    function moveList() {
+      location.href = '/page/starCard/starList'
+    }
+
+    function update() {
+      location.href = '/page/starCard/starUpdate?starNo=' + starNo;
+    }
+
+    const form = document.getElementById('read')
+    //  th:if="${session.user.userNo}==${starBoard.userNo}"삭제 요청
+    function actionDelete() {
+      let check = confirm('정말로 삭제하시겠습니까?')
+      form.method='post'
+      // form.submit;
+    }
+
+    // console.log(newText)
+    const category1 = document.getElementById('category1')
+    const category1Text = category1.textContent
+    // category1.style.display=inline-block;
+    console.log(category1)
+    const newText1 = category1Text.split(',').map(icon =>
+      `<img src="/img/icon/${icon}.png" class="content-icon ${icon}" style="max-width:20px; margin: 0; margin-right:5px; max-height:20px;">`
+    ).join(' ')
+    category1.innerHTML = newText1
+
+
+    const category2 = document.getElementById('category2')
+    const category2Text = category2.textContent
+
+    var arr = [category2Text.split(',')]
+    console.log(arr)
+    const category2Text2 = category2Text.split(',').map(word => `#${word.trim()}`).join(' ')
+    category2.textContent = category2Text2
+
+    // 댓글 목록 요청
+    replyList()
+
+    // 댓글 목록
+    function replyList() {
+      // AJAX 비동기 요청
+      // 💍 CRSF TOKEN
+      let csrfToken = document.querySelector('input[name="_csrf"]').value;
+      let request = new XMLHttpRequest()
+
+      // 요청 세팅
+      // request.open(요청메소드, URL)
+      request.open('GET', '/page/reply/' + starNo) // 글 번호
+
+      request.onreadystatechange = function () {
+
+        // 요청 성공 시,
+        if (request.readyState == request.DONE && request.status == 200) {
+          // 댓글 목록 확인
+          let response = request.responseText
+          // 서버에서 렌더링한 HTML
+          let data = response
+          let replyList = document.getElementById('reply-listbox')
+          replyList.innerHTML = data
+
+          updateEvent()
+          event()
+        }
+      }
+      request.send()
+    }
+
+    // 댓글 등록
+    let $writer = document.getElementById('reply-writer')
+    let writer = $writer.value
+
+    function insertReply() {
+      let $content = document.getElementById('reply-content')
+      let content = $content.value
+
+      if (content === "") {
+                alert("내용을 입력해주세요.");
+                return;
+            }
+      let username = document.getElementById('username').value
+      console.log(username)
+      let data = {
+        'starNo': starNo,
+        'writer': writer,
+        'content': content,
+        'username': username
+      }
+
+      console.dir(data)
+      // 💍 CRSF TOKEN
+      let csrfToken = document.querySelector('input[name="_csrf"]').value;
+      // var csrfToken = "[[${_csrf.token}]]"
+
+      let request = new XMLHttpRequest()
+
+      request.open('POST', '/page/reply')
+      request.setRequestHeader('Content-Type', 'application/json')
+      request.setRequestHeader('X-CSRF-TOKEN', csrfToken)
+      request.send(JSON.stringify(data))
+
+      request.onreadystatechange = function () {
+
+        // 요청 성공 시,
+        if (request.readyState == request.DONE && request.status == 201) {
+          console.log('댓글 등록 성공!');
+          let response = request.responseText
+          if (response == 'SUCCESS') {
+            replyList()
+            // 댓글 목록 갱신 후 댓글 입력 창 비우기
+            // $writer.value = ''
+            $content.value = ''
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    // 이벤트 등록
+
+    function updateEvent() {
+      // 댓글 수정 버튼
+      let $btnUpdate = document.getElementsByClassName('btn-reply-update')
+
+      // 댓글 수정 클릭 이벤트
+
+      for (let i = 0; i < $btnUpdate.length; i++) {
+        $btnUpdate[i].addEventListener('click', function () {
+          let $top = $btnUpdate[i].parentNode
+          // let writer = $top.childNodes[1].textContent
+          let $inner = $top.parentNode
+          let content = $inner.childNodes[1].textContent
+          let $replyBox = $inner.parentNode
+          let $toptop = $replyBox.parentElement
+          console.log($replyBox)
+
+          let replyNo = $btnUpdate[i].getAttribute('data') // 댓글 번호
+
+          // 댓글 수정 모드
+          // 1. 기존 댓글 내용창 숨기기
+          $inner.style.display = 'none';
+          // 2. 수정 UI 출력
+          let $editor = document.createElement('div')
+          $editor.classList.add('inner');
+          $editor.id = 'editor'
+          let editor = `
+                      <input type="hidden" id="update-writer" value="${writer}">
+                      <textarea id="update-reply" cols="100" >${content}</textarea>
+                      <div class="reply-button">
+                          <button class="btn-reply-update" onclick="updateReply(${replyNo})">수정</button>
+                          <button class="btn-reply-delete" onclick="cancelReply(${replyNo})">취소</button>
+                      </div>
+                  `;
+
+          $editor.innerHTML = editor
+          $replyBox.appendChild($editor)
+        })
+
+      }
+
+    }
+
+
+
+    // 댓글 수정 요청
+    function updateReply(replyNo) {
+      // alert('댓글 수정')
+      let writer = document.getElementById('update-writer').value
+      let content = document.getElementById('update-reply').value
+
+      console.log(`수정한 작성자 : ${writer}`)
+      console.log(`수정한 내용 :  ${content}`)
+
+
+      let data = {
+        'replyNo': replyNo,
+        'writer': writer,
+        'content': content
+      }
+
+      console.dir(data)
+
+      // 수정 요청
+      let csrfToken = document.querySelector('input[name="_csrf"]').value;
+      let request = new XMLHttpRequest()
+      request.open('PUT', '/page/reply')
+      request.setRequestHeader('Content-Type', 'application/json')
+      request.setRequestHeader('X-CSRF-TOKEN', csrfToken)
+      request.send(JSON.stringify(data))
+
+      request.onreadystatechange = function () {
+        // 요청 성공 시,
+        if (request.readyState == request.DONE && request.status == 200) {
+          console.log('댓글 수정 성공!');
+          let response = request.responseText
+          alert(response)
+          if (response == 'SUCCESS') {
+            replyList() // 댓글 목록 갱신
+          }
+        }
+      }
+    }
+
+    // 댓글 수정 취소
+    function cancelReply() {
+      const check = confirm("작성중인 내용이 사라집니다.")
+      if (!check)
+        return
+
+      let $editor = document.getElementById('editor')
+      $editor.remove()
+
+      // 원래 있던 inner 다시 가져오기
+      let $inner = document.getElementsByClassName('reply-middle')
+      console.log("취소했을 때 : " + $inner)
+      for (let i = 0; i < $inner.length; i++) {
+        $inner[i].style.display = 'flex'
+
+      }
+
+    }
+
+    // 댓글 삭제
+    function deleteReply(replyNo) {
+
+      const check = confirm("정말로 삭제하시겠습니까?")
+      if (!check)
+        return
+      let csrfToken = document.querySelector('input[name="_csrf"]').value;
+      let request = new XMLHttpRequest();
+
+      request.open('DELETE', `/page/reply/${replyNo}`);
+      request.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+      request.send();
+
+      request.onreadystatechange = function () {
+        if (request.readyState == request.DONE && request.status == 200) {
+          let response = request.responseText
+          if (request.responseText == 'SUCCESS') {
+            replyList();
+          }
+        }
+      }
+    }
+
+
+    // 답글 등록
+    function insertAnswer(element, replyNo) {
+      let $rereplyBox = element.parentNode
+      console.log(`부모 번호 : ${replyNo}`);
+      console.log($rereplyBox);
+      console.log(username.value, writer)
+
+      // 답글 작성 UI
+      let $editor = document.createElement('div')
+      $editor.classList.add('rereply-container')
+      // $editor.classList.add('rereply-box')
+      $editor.id = 'answer'
+
+      let editor = ``
+      editor += `
+
+          <div class="rereply-box">
+                  
+              <input type="hidden" name="writer" id="rereply-writer" value="${writer}">
+              <textarea name="rereply-content" id="rereply-content" type="text" placeholder="
+              로그인하지 않았을 경우, 답글을 등록할 수 없습니다."></textarea>
+              <button type="button" onclick="answer(${replyNo})">등록</button>
+                   
+          </div>
+
+      `
+      $editor.innerHTML = editor
+
+      // 기존 답글 UI 가 있으면 초기화
+      let $answer = document.getElementById("answer");
+      if ($answer) {
+        $answer.parentNode.removeChild($answer);
+      }
+
+      // 요소.after(추가 요소)
+      if ($rereplyBox) {
+        $rereplyBox.after($editor);
+
+        $editor.style.visibility = 'visible';
+        $editor.style.height = 'auto';
+        $editor.style.overflow = 'visible';
+      } else {
+        console.error('$rereplyBox 다시 살펴보기');
+      }
+
+    }
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    // 답글 등록 요청
+    function answer(parentNo) {
+      // TODO:
+      // 1. answer-writer, answer-content 값을 가져오고
+      // 2. data = {부모번호, 작성자, 내용}
+      // 3. POST = /reply 요청
+      let $writer = document.getElementById('rereply-writer')
+      let $content = document.getElementById('rereply-content')
+
+      let writer = $writer.value
+      let content = $content.value
+
+      if (content === "") {
+                alert("내용을 입력해주세요.");
+                return;
+            }
+
+      let username = document.getElementById('username').value
+
+      console.log(username, content)
+
+
+      let data = {
+        'starNo': starNo, // 글 번호
+        'parentNo': parentNo, // 부모 댓글 번호
+        'writer': writer,
+        'content': content,
+        'username': username
+      }
+
+      console.dir(data)
+      let csrfToken = document.querySelector('input[name="_csrf"]').value;
+      let request = new XMLHttpRequest()
+
+      request.open('POST', '/page/reply')
+      request.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+      request.setRequestHeader('Content-Type', 'application/json')
+      request.send(JSON.stringify(data))
+
+      request.onreadystatechange = function () {
+
+        // 요청 성공 시,
+        if (request.readyState == request.DONE && request.status == 201) {
+          console.log('답글 등록 성공!');
+          let response = request.responseText
+          if (response == 'SUCCESS') {
+            replyList() // 댓글 목록 갱신
+          }
+        }
+      }
+    }
+
+    function event() {
+      // 답글 수정 버튼
+      let $btnUpdate = document.getElementsByClassName('btn-rereply-update')
+
+      // 답글 수정 클릭 이벤트
+      for (let i = 0; i < $btnUpdate.length; i++) {
+        $btnUpdate[i].addEventListener('click', function () {
+          let $top = $btnUpdate[i].parentNode
+          // let writer = $top.childNodes[1].textContent
+          let $inner = $top.parentNode
+          let content = $inner.childNodes[1].textContent
+          let $replyBox = $inner.parentNode
+          let $toptop = $replyBox.parentElement
+          console.log($replyBox)
+
+          let replyNo = $btnUpdate[i].getAttribute('data') // 답글 번호
+
+          // 답글 수정 모드
+          // 1. 기존 답글 내용창 숨기기
+          $inner.style.display = 'none';
+          // 2. 수정 UI 출력
+          let $editor = document.createElement('div')
+          $editor.classList.add('inner');
+          $editor.id = 'editor'
+          let editor = `
+                      <input type="hidden" id="update-writer" value="${writer}">
+                      <textarea id="update-reply" cols="80" >${content}</textarea>
+                      <div class="reply-button">
+                          <button class="btn-reply-update" onclick="updateRereply(${replyNo})">수정</button>
+                          <button class="btn-reply-delete" onclick="cancelRereply(${replyNo})">취소</button>
+                      </div>
+                  `;
+
+          $editor.innerHTML = editor
+          $replyBox.appendChild($editor)
+
+        })
+      }
+    }
+
+    // 답글 수정 요청
+    function updateRereply(replyNo) {
+      // alert('답글 수정')
+      let writer = document.getElementById('update-writer').value
+      let content = document.getElementById('update-reply').value
+
+      console.log(`수정한 작성자 : ${writer}`)
+      console.log(`수정한 내용 :  ${content}`)
+
+
+      let data = {
+        'replyNo': replyNo,
+        'writer': writer,
+        'content': content
+      }
+
+      console.dir(data)
+
+      // 수정 요청
+      let csrfToken = document.querySelector('input[name="_csrf"]').value;
+      let request = new XMLHttpRequest()
+      request.open('PUT', '/page/reply')
+      request.setRequestHeader('Content-Type', 'application/json')
+      request.setRequestHeader('X-CSRF-TOKEN', csrfToken)
+      request.send(JSON.stringify(data))
+
+      request.onreadystatechange = function () {
+        // 요청 성공 시,
+        if (request.readyState == request.DONE && request.status == 200) {
+          console.log('댓글 수정 성공!');
+          let response = request.responseText
+          alert(response)
+          if (response == 'SUCCESS') {
+            replyList() // 댓글 목록 갱신
+          }
+        }
+      }
+    }
+
+    // 답글 수정 취소
+    function cancelRereply() {
+      const check = confirm("작성중인 내용이 사라집니다.")
+      if (!check)
+        return
+
+      let $editor = document.getElementById('editor')
+      $editor.remove()
+
+      // 원래 있던 inner 다시 가져오기
+      let $inner = document.getElementsByClassName('rereply-middle')
+      console.log("취소했을 때 : " + $inner)
+      for (let i = 0; i < $inner.length; i++) {
+        $inner[i].style.display = 'flex'
+
+      }
+
+    }
+  </script>
+
+
+</th:block>
+
+</html>

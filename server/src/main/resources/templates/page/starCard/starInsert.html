@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{/layout/default_layout}">
+
+<head>
+  <title>홍보</title>
+
+  <!-- include summernote css/js-->
+  <!-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet"> -->
+  <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css"
+    integrity="sha256-IKhQVXDfwbVELwiR0ke6dX+pJt0RSmWky3WB2pNx9Hg=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"
+    integrity="sha256-5slxYrL5Ct3mhMAp/dgnb5JSnTYMtkr4dHby34N10qw=" crossorigin="anonymous"></script>
+
+  <!-- language pack -->
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/lang/summernote-ko-KR.min.js"
+    integrity="sha256-y2bkXLA0VKwUx5hwbBKnaboRThcu7YOFyuYarJbCnoQ=" crossorigin="anonymous"></script>
+
+  <!-- DatePicker  -->
+  <script src="/lib/datePicker.js" type="text/javascript"></script>
+  <!-- <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script> -->
+  <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <style>
+    .content-box {
+      width: 960px;
+      height: 600px;
+      display: block;
+      align-items: center;
+      top: 40%;
+    }
+
+    .noto-sans-kr {
+      font-family: "Noto Sans KR", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 15px;
+      font-style: bold;
+    }
+  </style>
+</head>
+
+
+<!-- layout:decorate 쓸 때 본문 내용은 <th:block layout:fragment="content"></th:block> 안에 적어야 화면에 뜸 -->
+<th:block layout:fragment="content" class="align-items-center ml-5">
+  <th:block sec:authorize="isAnonymous()">
+    <div class="container content-box mt-3 mb-3">
+      <div class="d-flex justify-content-center mb-5" style="padding-top:200px">
+        <p>로그인이 필요한 페이지입니다.</p>
+      </div>
+      <div class="d-flex justify-content-center">
+        <a href="/login" class="btn btn-info m-1 " style="color:white">로그인 하러 가기</a>
+        <a href="/join" class="btn btn-primary m-1">회원가입 하러 가기</a>
+      </div>
+    </div>
+  </th:block>
+  <!-- 로그인 -->
+  <th:block sec:authorize="isAuthenticated()">
+    <div class="body lg" style="max-width: 900 ;">
+      <h1 class="d-flex justify-content-center mt-3 mb-3">
+        홍보요청
+      </h1>
+      <p class="d-flex justify-content-center text-secondary mb-3">문의사항은 1:1 채팅 또는 Q&A 게시판을 이용해주세요.</p>
+
+      <div class="container">
+        <div class="d-flex align-items-center border-bottom border-dark" id="channel">
+          <button type="button" class="btn btn-dark btn-lg col-4 border-0 rounded-1" id="freePromo">무료홍보</button>
+          <button type="button" class="btn btn-outline-dark btn-lg col-4 border-0 rounded-1" id="payPromo">유료홍보</button>
+          <button type="button" class="btn btn-outline-dark btn-lg col-4 border-0 rounded-1"
+            id="designBtn">디자인의뢰</button>
+        </div>
+        <form action="/page/starCard/starInsert" method="post" id="starInsert" enctype="multipart/form-data">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <input type="hidden" name="card" value="무료홍보">
+          <input type="hidden" name="username" th:value="${session.user.email}">
+          <div class="category my-4 bg-body-tertiary rounded">
+            <div class="site row py-2">
+              <div class="item col-1"></div>
+              <div class="item col-2">
+                <b>채널</b>
+              </div>
+              <input type="hidden" name="status" value="홍보요청" id="status">
+
+              <input type="hidden" name="type" value="starCard">
+              <div class="item col-8 d-flex justify-content-start column-gap-2">
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input " name="category1" type="checkbox" value="youtube" id="youtube">
+                  <label class="form-check-label" for="youtube">
+                    유튜브
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category1" type="checkbox" value="instagram" id="instagram">
+                  <label class="form-check-label" for="instagram">
+                    인스타그램
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category1" type="checkbox" value="afreeca" id="afreeca">
+                  <label class="form-check-label" for="afreeca">
+                    아프리카
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category1" type="checkbox" value="chzzk" id="chzzk">
+                  <label class="form-check-label" for="chzzk">
+                    치지직
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="site row py-2">
+              <div class="item col-1"></div>
+              <div class="item col-2">
+                <b>분야</b>
+              </div>
+              <div class="item col-9 d-flex justify-content-start column-gap-2">
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="food" id="food">
+                  <label class="form-check-label" for="food">
+                    음식
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="travel" id="travel">
+                  <label class="form-check-label" for="travel">
+                    여행
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input " name="category2" type="checkbox" value="game" id="game">
+                  <label class="form-check-label" for="game">
+                    게임
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="music" id="music">
+                  <label class="form-check-label" for="music">
+                    음악
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="animal" id="animal">
+                  <label class="form-check-label" for="animal">
+                    동물
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="workout" id="workOut">
+                  <label class="form-check-label" for="workOut">
+                    운동
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="asmr" id="asmr">
+                  <label class="form-check-label" for="asmr">
+                    ASMR
+                  </label>
+                </div>
+                <div class="form-check form-check-inline d-flex align-items-center">
+                  <input class="form-check-input" name="category2" type="checkbox" value="fashion" id="fashion">
+                  <label class="form-check-label" for="fashion">
+                    패션
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div class='input-group' id='datetimepicker1' data-td-target-input='nearest' data-td-target-toggle='nearest'>
+            <span class="input-group-text mb-3 col-2">
+              홍보 기간
+            </span>
+            <input type='text' name="startDate" id='datepicker' class='form-control' data-td-target='#datepicker'
+              width="41.7%" aria-describedby="addon-wrapping" placeholder="홍보 시작일" readonly />
+            <input type='text' name="endDate" id='datepicker2' class='form-control' data-td-target='#datepicker2'
+              width="41.7%" aria-describedby="addon-wrapping" placeholder="홍보 종료일" readonly />
+          </div>
+
+          <!-- </div> -->
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="addon-wrapping">제목</span>
+            <input type="text" name="title" class="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
+              aria-describedby="addon-wrapping">
+          </div>
+          <!-- <input type="text" class="" id="starPostTitle" placeholder="제목을 입력해주세요"> -->
+
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupFile01">썸네일</label>
+            <input type="file" name="image" class="form-control" id="inputGroupFile01">
+          </div>
+
+          <div>
+            <textarea name="content" class="" id="summernote" value=""></textarea>
+          </div>
+
+          <!-- B8C3FF -->
+          <div class="d-flex justify-content-end mt-2">
+            <button type="button" class="btn btn-light btn-sm col-1 btn-list" onclick="starList()" id="list">목록</button>
+
+            <input type="submit" class="btn btn-dark btn-sm border col-1" id="sendPost" value="등록">
+
+            <button class="btn btn-dark btn-sm col-1 " id="payBtn" type="button" style="display: none;">결제</button>
+          </div>
+
+        </form>
+
+        <div class="container item-align-center text-start noto-sans-kr" style="display: none;" id="design">
+          <h1 class="mt-5 noto-sans-kr">"디자인이 어려우시면,</h1><br>
+          <h1 class="text-primary ms-5 noto-sans-kr">저희에게 맡겨주세요!"</h1><br>
+          <ul class="noto-sans-kr">
+            <li>인스타그램 홍보 카드</li>
+            <li>치지직/유튜브 홍보 인트로 영상</li>
+            <li>배너 광고 이미지</li>
+          </ul><br>
+          <p class="noto-sans-kr">예비 스타님의 개성에 맞춘 홍보물을 만들어 드립니다!😆</p>
+
+          <!-- <img src="/img/star.jpg" class="w-100"> -->
+          <!-- <button type="button" id="chat"
+              class="btn btn-lg btn-outline-secondary w-100 mt-5">1:1 채팅 바로가기</button></b> -->
+
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header noto-sans-kr">
+                <button class="accordion-button collapsed border-bottom" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
+                  style="background-color: rgb(229, 235, 241)">
+                  ⭐<b>디자인 의뢰하기</b>🙋‍♀️
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <form action="/page/starCard/starInsert" method="post" id="designReq">
+                  <input type="hidden" name="type" value="design">
+                  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                  <input type="hidden" name="username" th:value="${session.user.email}">
+                  <input type="hidden" name="title" th:value="|${session.user.email}님 디자인 의뢰|">
+                  <input type="hidden" name="card" value="디자인의뢰">
+                  <div>
+                    <textarea name="content" id="summernote2"></textarea>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                    <input type="submit" class="btn btn-dark btn-sm border col-2" id="designBtn" value="견적 요청">
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </th:block>
+  <script>
+    $('#summernote').summernote({
+      toolbar: [
+        // [groupName, [list of button]]
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+        ['color', ['forecolor', 'color']],
+        ['table', ['table']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['insert', ['picture', 'link', 'video']],
+        ['view', ['fullscreen', 'help']]
+      ],
+      height: 500,
+      minHeight: null,
+      maxHeight: null,
+      lang: 'ko-KR',
+      fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+      fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+      placeholder: '홍보할 내용을 입력하세요.',
+      callbacks: {
+        onImageUpload: function (files) {
+          // 이미지 파일을 읽고 최적화하는 함수 호출
+          optimizeAndUploadImage(files[0]);
+        }
+      }
+    });
+
+    function optimizeAndUploadImage(file) {
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const img = new Image();
+        img.src = event.target.result;
+        img.onload = function () {
+          const maxWidth = 800; // 최대 너비 설정
+
+          // 이미지의 원래 크기가 maxWidth보다 큰 경우에만 리사이즈
+          if (img.width > maxWidth) {
+            // 캔버스를 사용하여 이미지 리사이즈
+            const canvas = document.createElement('canvas');
+            const scaleSize = maxWidth / img.width;
+            canvas.width = maxWidth;
+            canvas.height = img.height * scaleSize;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // 리사이즈한 이미지를 base64 데이터 URL로 변환
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8); // 품질 설정 (0.8은 80%)
+
+            // Summernote 에디터에 이미지를 삽입
+            const $summernote = $('#summernote');
+            $summernote.summernote('insertImage', dataUrl);
+          } else {
+            // 이미지가 maxWidth보다 작으면 원본 이미지를 삽입
+            const dataUrl = event.target.result;
+
+            // Summernote 에디터에 이미지를 삽입
+            const $summernote = $('#summernote');
+            $summernote.summernote('insertImage', dataUrl);
+          }
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+
+
+    $('#summernote2').summernote({
+      toolbar: [
+        // [groupName, [list of button]]
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+        ['color', ['forecolor', 'color']],
+        ['table', ['table']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['insert', ['picture', 'link', 'video']],
+        ['view', ['fullscreen', 'help']]
+      ],
+      height: 500,
+      minHeight: null,
+      maxHeight: null,
+      lang: 'ko-KR',
+      fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', '맑은 고딕', '궁서', '굴림체', '굴림', '돋움체', '바탕체'],
+      fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '20', '22', '24', '28', '30', '36', '50', '72'],
+      placeholder: '의뢰하고 싶은 디자인의 내용을 입력해주세요.<br> 자세히 작성해주실 수록 더욱 마음에 드시는 결과물을 얻으실 수 있을 거예요 :D <br> 디자인 가격은 의뢰주시는 내용에 따라 달라지며 관리자가 확인 후 3일 이내에 연락 드립니다!'
+    });
+
+    // $(document).ready(function () {
+    //         $('#sendPost').click(function () {
+    //             alert('글등록')
+    //             let sendBtn = document.getElementById('summernote').value;
+    //             console.log(sendBtn)
+
+    //         });
+    //     });
+
+    $('#payBtn').click(function () {
+      // alert('결제')
+      $("#starInsert").attr("action", "/page/starCard/starPayment").submit();
+    });
+
+
+    function starList() {
+      location.href = '/page/starCard/starList'
+
+    }
+
+    $(document).ready(function () {
+      $(document).ready(function () {
+        $('#payPromo').click(function () {
+          $("#sendPost").hide();
+          $("#payBtn").show();
+          $("#starInsert").show();
+          $("#design").hide();
+          // $('#card').val="유료 홍보 요청"
+        });
+
+        $('#freePromo').click(function () {
+          $("#sendPost").show();
+          $("#payBtn").hide();
+          $("#starInsert").show();
+          $("#design").hide();
+        });
+
+        $('#designBtn').click(function () {
+          $("#sendPost").hide();
+          $("#payBtn").hide();
+          $("#starInsert").hide();
+          $("#design").show();
+        })
+
+
+        // 무료홍보 버튼 클릭 시
+        $('#freePromo').click(function () {
+          $('.rounded-1').removeClass('btn-dark').addClass('btn-outline-dark'); // 모든 버튼에서 스타일 제거
+          $(this).removeClass('btn-outline-dark').addClass('btn-dark'); // 클릭된 버튼에 스타일 적용
+        });
+
+        // 유료홍보 버튼 클릭 시
+        $('#payPromo').click(function () {
+          $('.rounded-1').removeClass('btn-dark').addClass('btn-outline-dark'); // 모든 버튼에서 스타일 제거
+          $(this).removeClass('btn-outline-dark').addClass('btn-dark'); // 클릭된 버튼에 스타일 적용
+        });
+
+        // 디자인 의뢰 버튼 클릭 시
+        $('#designBtn').click(function () {
+          $('.rounded-1').removeClass('btn-dark').addClass('btn-outline-dark'); // 모든 버튼에서 스타일 제거
+          $(this).removeClass('btn-outline-dark').addClass('btn-dark'); // 클릭된 버튼에 스타일 적용
+        });
+
+      });
+    });
+
+    var today = new Date();
+    today.setDate(today.getDate() - 1);
+    $('#datepicker').datepicker({
+      minDate: today,
+      uiLibrary: 'bootstrap5'
+    });
+
+    $('#datepicker2').datepicker({
+      minDate: today,
+      uiLibrary: 'bootstrap5'
+    });
+
+    // $('#datepicker').on('change', function () {
+    //   var selectedDate = $(this).datepicker('getDate');
+    //   $('#datepicker2').datepicker('setStartDate', selectedDate);
+    // });
+
+    // 유효성 검사
+    $('#starInsert').submit(function (event) {
+      var siteChecked = document.querySelectorAll('input[name="category1"]:checked').length > 0;
+      var fieldChecked = document.querySelectorAll('input[name="category2"]:checked').length > 0;
+      var startDate = document.querySelector('input[name="startDate"]').value;
+      var endDate = document.querySelector('input[name="endDate"]').value;
+      var title = document.querySelector('input[name="title"]').value.trim();
+      var image = document.querySelector('input[name="image"]').value;
+      var content = document.querySelector('textarea[name="content"]').value.trim();
+
+      if (!siteChecked) {
+        alert('사이트를 최소 1개 선택하세요.');
+        event.preventDefault();
+        return;
+      }
+
+      if (!fieldChecked) {
+        alert('분야를 최소 1개 선택하세요.');
+        event.preventDefault();
+        return;
+      }
+
+      if (!startDate || !endDate) {
+        alert('홍보기간을 입력하세요.');
+        event.preventDefault();
+        return;
+      }
+
+      if (!title) {
+        alert('제목을 입력하세요.');
+        event.preventDefault();
+        return;
+      }
+
+      if (!image) {
+        alert('썸네일을 업로드하세요.');
+        event.preventDefault();
+        return;
+      }
+
+      if (!content) {
+        alert('내용을 입력하세요.');
+        event.preventDefault();
+        return;
+      }
+    });
+  </script>
+
+
+
+</th:block>
+
+</html>

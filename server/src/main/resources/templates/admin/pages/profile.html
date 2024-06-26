@@ -1,0 +1,469 @@
+<html lang="en">
+
+<head th:replace="/admin/header :: head"></head>
+
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+  <div class="wrapper">
+    <!-- Preloader -->
+    <div class="preloader flex-column justify-content-center align-items-center">
+      <img class="animation__shake" src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+    </div>
+
+
+    <!-- 사이드바 -->
+    <div th:replace="/admin/sidebar :: sidebar"></div>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Profile</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">회원 정보</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-3">
+
+              <!-- Profile Image -->
+              <div class="card card-primary card-outline">
+                <div class="card-body box-profile">
+                  <div class="text-center">
+                    <img id="uploadedImage" style="width: 128px; height: 128px; object-fit: cover;"
+                      class="profile-user-img img-fluid img-circle" th:src="|/file/img/${file.fileNo}|"
+                      alt="User profile picture">
+                    <!-- src="/admin/dist/img/user4-128x128.jpg" -->
+                  </div>
+
+                  <p class="profile-username text-center" th:text="${user.name}"></p>
+
+                  <p class="text-muted text-center" th:text="${user.email}"></p>
+
+                  <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                      <b>작성글</b> <a th:href="|http://localhost:8080/admin/pages/mailbox?code=4&keyword=${user.userNo}|"
+                        class="float-right" th:text="${boardTotal}"></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>작성댓글</b> <a class="float-right" th:text="${replyTotal}"></a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>결제금액</b> <a class="float-right" th:text="|${totalPrice}원|"></a>
+                    </li>
+                  </ul>
+                  <!-- 이 버튼을 권한 수정하는 걸로 바꿔도 될 듯 -->
+                  <div class="badge badge-primary btn-block align-items-center p-3" th:text="${user.auth}"></div>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+
+              <!-- About Me Box -->
+              <!-- 이게 필요한가..? -->
+              <div class="">
+                <div class="card-header">
+                  <!-- <h3 class="card-title">About Me</h3> -->
+                </div>
+                <!-- /.card-header -->
+                <!-- <div class="card-body">
+                  <strong><i class="fas fa-book mr-1"></i> Education</strong>
+
+                  <p class="text-muted">
+                    B.S. in Computer Science from the University of Tennessee at Knoxville
+                  </p>
+
+                  <hr>
+
+                  <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+
+                  <p class="text-muted">Malibu, California</p>
+
+                  <hr>
+
+                  <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+
+                  <p class="text-muted">
+                    <span class="tag tag-danger">UI Design</span>
+                    <span class="tag tag-success">Coding</span>
+                    <span class="tag tag-info">Javascript</span>
+                    <span class="tag tag-warning">PHP</span>
+                    <span class="tag tag-primary">Node.js</span>
+                  </p>
+
+                  <hr>
+
+                  <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+
+                  <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim
+                    neque.</p>
+                </div> -->
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+              <div class="card">
+                <div class="card-header p-2">
+                  <ul class="nav nav-pills">
+                    <!-- <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Activity</a></li> -->
+                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">1 : 1 채팅</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">정보 수정</a></li>
+                  </ul>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <div class="tab-content">
+                    <!-- <div class="active tab-pane" id="activity">
+                    <div class="user-block">
+                      <span class="username" th:text="|${user.name} 님|"></span>
+                      <span class="description">회원 정보 수정 가능</span>
+                    </div>
+                    </div> -->
+                      <!-- Post -->
+                      <!-- 게시판 / 제목 /  -->
+                      <!-- <div class="post">
+                        <div class="user-block">
+                          <img class="img-circle img-bordered-sm" src="/admin/dist/img/user1-128x128.jpg"
+                            alt="user image">
+                          <span class="username">
+                            <a href="#">Jonathan Burke Jr.</a>
+                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                          </span>
+                          <span class="description">Shared publicly - 7:30 PM today</span>
+                        </div> -->
+                        <!-- /.user-block -->
+                        <!-- <p>
+                          Lorem ipsum represents a long-held tradition for designers,
+                          typographers and the like. Some people hate it and argue for
+                          its demise, but others ignore the hate as they create awesome
+                          tools to help create filler text for everyone from bacon lovers
+                          to Charlie Sheen fans.
+                        </p>
+
+                        <p>
+                          <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                          <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                          <span class="float-right">
+                            <a href="#" class="link-black text-sm">
+                              <i class="far fa-comments mr-1"></i> Comments (5)
+                            </a>
+                          </span>
+                        </p>
+
+                        <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                      </div> -->
+                      <!-- /.post -->
+
+                      <!-- Post -->
+                      <!-- <div class="post clearfix">
+                        <div class="user-block">
+                          <img class="img-circle img-bordered-sm" src="/admin/dist/img/user7-128x128.jpg"
+                            alt="User Image">
+                          <span class="username">
+                            <a href="#">Sarah Ross</a>
+                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                          </span>
+                          <span class="description">Sent you a message - 3 days ago</span>
+                        </div> -->
+                        <!-- /.user-block -->
+                        <!-- <p>
+                          Lorem ipsum represents a long-held tradition for designers,
+                          typographers and the like. Some people hate it and argue for
+                          its demise, but others ignore the hate as they create awesome
+                          tools to help create filler text for everyone from bacon lovers
+                          to Charlie Sheen fans.
+                        </p>
+
+                        <form class="form-horizontal">
+                          <div class="input-group input-group-sm mb-0">
+                            <input class="form-control form-control-sm" placeholder="Response">
+                            <div class="input-group-append">
+                              <button type="submit" class="btn btn-danger">Send</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div> -->
+                      <!-- /.post -->
+
+                      <!-- Post -->
+                      <!-- <div class="post">
+                        <div class="user-block">
+                          <img class="img-circle img-bordered-sm" src="/admin/dist/img/user6-128x128.jpg"
+                            alt="User Image">
+                          <span class="username">
+                            <a href="#">Adam Jones</a>
+                            <a href="#" class="float-right btn-tool"><i class="fas fa-times"></i></a>
+                          </span>
+                          <span class="description">Posted 5 photos - 5 days ago</span>
+                        </div> -->
+                        <!-- /.user-block -->
+                        <!-- <div class="row mb-3">
+                          <div class="col-sm-6">
+                            <img class="img-fluid" src="/admin/dist/img/photo1.png" alt="Photo">
+                          </div> -->
+                          <!-- /.col -->
+                          <!-- <div class="col-sm-6">
+                            <div class="row">
+                              <div class="col-sm-6">
+                                <img class="img-fluid mb-3" src="/admin/dist/img/photo2.png" alt="Photo">
+                                <img class="img-fluid" src="/admin/dist/img/photo3.jpg" alt="Photo">
+                              </div> -->
+                              <!-- /.col -->
+                              <!-- <div class="col-sm-6">
+                                <img class="img-fluid mb-3" src="/admin/dist/img/photo4.jpg" alt="Photo">
+                                <img class="img-fluid" src="/admin/dist/img/photo1.png" alt="Photo">
+                              </div> -->
+                              <!-- /.col -->
+                            <!-- </div> -->
+                            <!-- /.row -->
+                          <!-- </div> -->
+                          <!-- /.col -->
+                        <!-- </div> -->
+                        <!-- /.row -->
+
+                        <!-- <p>
+                          <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Share</a>
+                          <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
+                          <span class="float-right">
+                            <a href="#" class="link-black text-sm">
+                              <i class="far fa-comments mr-1"></i> Comments (5)
+                            </a>
+                          </span>
+                        </p>
+
+                        <input class="form-control form-control-sm" type="text" placeholder="Type a comment">
+                      </div> -->
+                      <!-- /.post -->
+                    <!-- </div> -->
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="timeline">
+                      <!-- The timeline -->
+                      <div class="timeline timeline-inverse">
+                        <!-- timeline time label -->
+                        <table>
+                          <tr th:each="message : ${messageList}">
+                            <!-- <div class="time-label">
+                              <span class="bg-danger"> 상담중 </span>
+                            </div> -->
+                            <div>
+                              <!-- th:each로 messageList 만들어서 반복돌려야하나..? -->
+                              <!-- code가 toAdmin인지 toUser인지에따라 관리자/회원 나눠서 띄우면 될 듯 -->
+                              <!-- <i th:if="${message.code}==toAdmin" class="fas fa-envelope bg-primary"></i> -->
+
+                              <div class="timeline-item" id="message-content">
+                                <span class="time" th:text="${#dates.format(message.regDate, 'yyyy-MM-dd hh:mm:ss')}"><i class="far fa-clock"></i></span>
+    
+                                <h3 class="timeline-header" th:if="${message.code == 'toAdmin'}" th:text="|${user.name}님 메세지|"></h3>
+                                <h3 class="timeline-header" th:if="${message.code == 'toUser'}">관리자님 메세지</h3>
+    
+                                <div class="timeline-body">
+                                  <span th:text="${message.content}"></span>
+                                </div>
+                              </div>
+                            </div>
+
+                          </tr>
+                        </table>
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <!-- END timeline item -->
+                        <!-- timeline item -->
+                        <!-- <div>
+                          <i class="fas fa-user bg-info"></i>
+  
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
+  
+                            <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                            </h3>
+                          </div>
+                        </div> -->
+                        <!-- END timeline item -->
+                        <!-- timeline item -->
+                        <!-- <div>
+                          <i class="fas fa-comments bg-warning"></i>
+
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i>메세지 전송 시간</span>
+
+                            <h3 class="timeline-header">관리자님의 메세지</h3>
+
+                            <div class="timeline-body">
+                              메세지 내용
+                            </div>
+                            <div class="timeline-footer">
+                              <a href="#" class="btn btn-dark btn-flat btn-sm">delete</a>
+                            </div>
+                          </div>
+                        </div> -->
+                        <!-- END timeline item -->
+                        <!-- timeline time label -->
+                        <!-- <div class="time-label">
+                          <span class="bg-success">
+                            메세지 주고 받은 날짜
+                          </span>
+                        </div> -->
+                        <!-- /.timeline-label -->
+                        <!-- timeline item -->
+                        <!-- <div>
+                          <i class="fas fa-camera bg-purple"></i>
+
+                          <div class="timeline-item">
+                            <span class="time"><i class="far fa-clock"></i>메세지 전송 시간 reg_date</span>
+
+                            <h3 class="timeline-header">김조은님의 메세지</h3>
+
+                            <div class="timeline-body">
+                              <img src="https://placehold.it/150x100" alt="...">
+                              <img src="https://placehold.it/150x100" alt="...">
+                              <img src="https://placehold.it/150x100" alt="...">
+                              <img src="https://placehold.it/150x100" alt="...">
+                            </div>
+                          </div>
+                        </div> -->
+                        <!-- END timeline item -->
+                        <!-- <div>
+                          <i class="far fa-clock bg-gray"></i>
+                        </div> -->
+                      </div>
+                      <form action="/admin/insertToAdmin" class="form-horizontal" id="message">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="text" name="content" placeholder="메세지를 입력하세요" class="form-control">
+                        <input type="hidden" name="code" value="toUser">
+                        <button type="submit">전송</button>
+                        <button type="button">상담 종료</button>
+                      </form>
+
+                      </form>
+                    </div>
+                    <!-- /.tab-pane -->
+
+                    <div class="tab-pane" id="settings">
+                      <form class="form-horizontal" action="/admin/pages/profileUpdate" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden" th:name="userNo" th:value="${user.userNo}">
+                        <div class="form-group row">
+                          <label for="inputName" class="col-sm-2 col-form-label">이름</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control" id="inputName" th:value="${user.name}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputName2" class="col-sm-2 col-form-label">닉네임</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="id" class="form-control" id="inputName2" th:value="${user.id}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                          <div class="col-sm-10">
+                            <input type="email" name="email" class="form-control" id="inputEmail"
+                              th:value="${user.email}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputExperience" class="col-sm-2 col-form-label">주소</label>
+                          <div class="col-sm-10">
+                            <textarea class="form-control" name="address" id="inputExperience"
+                              th:text="${user.address}"></textarea>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputSkills" class="col-sm-2 col-form-label">전화번호</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="phone" class="form-control" id="inputSkills"
+                              th:value="${user.phone}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputSkills" class="col-sm-2 col-form-label">생년월일</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="birth" class="form-control" id="inputSkills"
+                              th:value="${user.birth}" readonly>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputSkills" class="col-sm-2 col-form-label">성별</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="gender" class="form-control" id="inputSkills"
+                              th:value="${user.gender}" readonly>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="offset-sm-2 col-sm-10">
+                            <div class="checkbox">
+                              <label>
+                                <th:block th:if="${user.black}">
+                                  <input type="checkbox" name="auth" value="ROLE_GUEST" checked> 활동 정지
+                                </th:block>
+                                <th:block th:if="${!user.black}">
+                                  <input type="checkbox" name="auth" value="ROLE_USER"> 활동 정지
+                                </th:block>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="offset-sm-2 col-sm-10">
+                            <button type="submit" class="btn btn-danger">정보 수정</button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /.tab-pane -->
+                  </div>
+                  <!-- /.tab-content -->
+                </div><!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+        </div><!-- /.container-fluid -->
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <div class="float-right d-none d-sm-block">
+        <b>Version</b> 3.2.0
+      </div>
+      <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery -->
+  <script src="/admin/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/admin/dist/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="/admin/dist/js/demo.js"></script>
+  <!-- 채팅 -->
+<script src="/js/adminChat.js"></script>
+</body>
+
+</html>
