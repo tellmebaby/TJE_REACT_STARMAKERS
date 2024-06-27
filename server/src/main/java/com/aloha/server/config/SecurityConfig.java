@@ -76,7 +76,7 @@ public class SecurityConfig  {
         // 사용자 정보를 불러오는 서비스 설정
         http.userDetailsService(customUserDetailService);
 
-     http.csrf().disable();  // CSRF 방지 비활성화
+
 		return http.build();
 	}
 

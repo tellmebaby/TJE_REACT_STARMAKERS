@@ -1,6 +1,9 @@
 package com.aloha.server.board.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +40,19 @@ public class QnaController {
         log.info("qna 목록");
         try {
             List<QnaBoard> qnaList = qnaService.list(page, option);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("qnaList", qnaList);
+            response.put("page", page);
+            response.put("option", option);
+
+            List<Option> optionList = new ArrayList<Option>();
+            optionList.add(new Option("제목+내용", 0));
+            optionList.add(new Option("제목", 1));
+            optionList.add(new Option("내용", 2));
+            optionList.add(new Option("작성자", 3));
+            response.put("optionList", optionList);
+            
             return new ResponseEntity<>(qnaList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

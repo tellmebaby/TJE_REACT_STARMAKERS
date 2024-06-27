@@ -14,10 +14,44 @@ const Header = () => {
         logout();
     };
 
+<<<<<<< HEAD
     const handleCloseOffcanvas = () => {
         setShowOffcanvas(false);
         setShowCollapse(false);
     };
+=======
+  return (
+    <header>
+        <div className="logo">
+            <Link to="/">
+                <img src="https://i.imgur.com/fzADqJo.png" alt="logo" className='logo' />
+            </Link>
+        </div>
+        <div className="util">
+            <ul>
+                {/* 로그인 여부 (isLogin) 에 따라서 조건부 렌더링 */}
+                {
+                    isLogin ?
+                    <>
+                     
+                        <li><Link to="src/pages/board/Insert.jsx">글쓰기</Link></li>
+                        <li><Link to="src/pages/User.jsx">마이페이지</Link></li>
+                        <li><button className='link' onClick={() => logout() }>로그아웃</button></li>
+                    </>
+                    :
+                    <>
+                        <li><Link to="/board/Insert">글쓰기</Link></li>
+                        <li><Link to="/Login">로그인</Link></li>
+                        <li><Link to="/Join">회원가입</Link></li>       
+                        <li><Link to="/About">소개</Link></li>
+                    </>
+                }
+            </ul>
+        </div>
+    </header>
+  )
+}
+>>>>>>> 7903d3f252679d157c290af50c6882f92d8ebb0c
 
     const handleShowOffcanvas = () => {
         setShowOffcanvas(true);
