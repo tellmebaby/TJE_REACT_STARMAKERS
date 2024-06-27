@@ -14,14 +14,17 @@ import java.time.format.DateTimeFormatter;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aloha.server.board.dto.Files;
@@ -43,7 +46,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Slf4j
-@Controller
+@CrossOrigin(origins = "*")
+@RestController
 @RequestMapping("/page")
 public class StarController {
 
@@ -177,13 +181,12 @@ public class StarController {
     }
 
     @GetMapping("/starCard/starList")
-
     public String cardList(
             @RequestParam(value = "type", defaultValue = "starCard") String type,
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam Map<String, String> params, // 모든 요청 파라미터를 받아오기 위한 Map
-            Model model,
             Page page,
+            Model model,
             HttpSession session,
             Option option) throws Exception {
 
@@ -984,18 +987,55 @@ public class StarController {
         return starService.mainCardList(type);
     }
 
+    // @GetMapping("/starMember")
+    // @ResponseBody
+    // public List<StarUser> starMember() throws Exception {
+    //     return userService.starMemberList();
+    // }
+
     @GetMapping("/starMember")
-    @ResponseBody
-    public List<StarUser> starMember() throws Exception {
-        return userService.starMemberList();
+    public ResponseEntity<?> starMember() throws Exception {
+        try {
+            List<StarUser> starMemberList = userService.starMemberList();
+            log.info("인기회원 문제없이 불러왔습니다 주인님 불러온 리스트 수: " + starMemberList.size());
+            return new ResponseEntity<>(starMemberList, HttpStatus.OK);
+        } catch (Exception e) {
+            log.info("인기회원 불러오다 문제가 생겨버렸네요 히힉");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    // @GetMapping("/newStarMember")
+    // @ResponseBody
+    // public List<StarUser> newStarMember() throws Exception {
+    //     return userService.newMemberList();
+    // }
     @GetMapping("/newStarMember")
-    @ResponseBody
-    public List<StarUser> newStarMember() throws Exception {
-        return userService.newMemberList();
+    public ResponseEntity<?> newStarMember() throws Exception {
+        try {
+            List<StarUser> newStarMember = userService.newMemberList();
+            log.info("신인회원 문제없이 불러왔습니다 주인님 불러온 리스트 수: " + newStarMember.size());
+            return new ResponseEntity<>(newStarMember, HttpStatus.OK);
+        } catch (Exception e) {
+            log.info("신인회원 불러오다 문제가 생겨버렸네요 히힉 여기는 starController");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+       
     }
 
+
+
+    // @GetMapping("/mypageStarlist")
+    // @ResponseBody
+    // public List<StarBoard> getMypageStarList(HttpSession session) throws Exception {
+    //     Users user = (Users) session.getAttribute("user");
+    //     if (user != null) {
+    //         log.info("유저정보가 있어" + user);
+    //         int userNo = user.getUserNo();
+    //         return starService.getStarCardsByUserNo(userNo);
+    //     }
+    //     return starService.mainCardList("starCard");
+    // }
     @GetMapping("/mypageStarlist")
     @ResponseBody
     public List<StarBoard> getMypageStarList(HttpSession session) throws Exception {
