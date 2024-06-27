@@ -121,7 +121,7 @@
 
 
 
-    <!-- 새 메인 카드 리스트 요청 -->
+    <!-- 새 메인 카드 리스트 요청 : 승인된 글만 보여야 함-->
     <select id="mainCardList" resultType="StarBoard">
         SELECT 
         s.*,
@@ -171,7 +171,7 @@
     ORDER BY 
         s.reg_date DESC
     </select> -->
-
+    <!-- 메인 카드 list 출력 : 승인된 글만 보여야 함 -->
     <select id="getMainCardListForLoggedInUser" parameterType="map" resultType="StarBoard">
     SELECT
         s.*,
@@ -194,7 +194,7 @@
     LEFT JOIN
         action a ON a.star_no = s.star_no AND a.user_no = #{userNo}
     WHERE 
-        s.type = #{type}
+        s.type = #{type} and s.status = '승인'
     ORDER BY 
         s.reg_date DESC
     LIMIT 60

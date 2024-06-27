@@ -1,6 +1,9 @@
 package com.aloha.server.board.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +40,19 @@ public class QnaController {
         log.info("qna 목록");
         try {
             List<QnaBoard> qnaList = qnaService.list(page, option);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("qnaList", qnaList);
+            response.put("page", page);
+            response.put("option", option);
+
+            List<Option> optionList = new ArrayList<Option>();
+            optionList.add(new Option("제목+내용", 0));
+            optionList.add(new Option("제목", 1));
+            optionList.add(new Option("내용", 2));
+            optionList.add(new Option("작성자", 3));
+            response.put("optionList", optionList);
+            
             return new ResponseEntity<>(qnaList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,6 +90,7 @@ public class QnaController {
         log.info("Q&A 글 번호: ", qnaNo);
         try {
             QnaBoard qnaBoard = qnaService.select(qnaNo);
+            qnaService.views(qnaNo);
             if (qnaBoard != null) {
                 return new ResponseEntity<>(qnaBoard, HttpStatus.OK);
             } else {
@@ -84,6 +101,22 @@ public class QnaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // @GetMapping("/qnaPost")
+    // public String read(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
+    //     QnaBoard qnaBoard = qnaService.select(qnaNo);
+
+    //     // 조회수 증가
+    //    qnaService.views(qnaNo);
+
+    //     // 모델 등록
+    //     model.addAttribute("qnaBoard", qnaBoard);
+
+    //     // 뷰페이지 지정
+    //     return "/page/board/qnaBoard/qnaPost";
+    // }
+    
+
 
 
     @PostMapping()

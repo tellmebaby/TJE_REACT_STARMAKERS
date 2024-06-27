@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aloha.server.board.dto.Files;
 import com.aloha.server.board.service.FileService;
+import com.aloha.server.user.dto.CustomUser;
 import com.aloha.server.user.dto.Users;
 
 import lombok.extern.slf4j.Slf4j;
@@ -180,14 +181,16 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> profileUpload(@RequestParam("file") MultipartFile multipartFile,
-            @RequestParam("user_no") int userNo , HttpSession session) throws Exception {
+            @RequestParam("user_no") int userNo ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
         boolean isUploaded = fileService.profileUpload(multipartFile, userNo);
         if (isUploaded) {
             // 저장된 마지막 파일정보 가져와서 세션에 파일 번호 저장
             Files file = fileService.selectByUserNoAndStarNo(userNo);
-            Users user = (Users) session.getAttribute("user");
+            // Users user = customUser.getUser();
+            Users user = new Users();
+            user.setUserNo(1);
             user.setUserImgId(file.getFileNo());
-            session.setAttribute("user", user);
+            // customUser.setUser(user);
             log.info("::::::::::: 저장된 user : " + user);
             return new ResponseEntity<>("파일 업로드 성공", HttpStatus.OK);
         } else {
