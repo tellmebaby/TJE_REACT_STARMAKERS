@@ -7,6 +7,8 @@ import User from './pages/User'
 import About from './pages/About'
 import Login from './pages/Login'
 import Insert from './pages/board/Insert';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
 
 
