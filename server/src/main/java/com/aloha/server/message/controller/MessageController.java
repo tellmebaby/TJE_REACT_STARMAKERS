@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,17 +16,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import com.aloha.server.board.service.FileService;
 import com.aloha.server.message.dto.Message;
 import com.aloha.server.message.service.MessageService;
+import com.aloha.server.user.dto.CustomUser;
 import com.aloha.server.user.dto.Users;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Controller
+@CrossOrigin(origins = "*")
+@RestController
 @RequestMapping("/message")
 public class MessageController {
 
@@ -36,13 +41,14 @@ public class MessageController {
     private FileService fileService;
 
     @PostMapping("/insertToAdmin")
-    public ResponseEntity<String> insertPro(@RequestBody Message messageDTO, HttpSession session) {
+    public ResponseEntity<String> insertPro(@RequestBody Message messageDTO, 
+                                            @AuthenticationPrincipal CustomUser customUser) {
 
         String name = messageDTO.getName();
         int userNo = 0;
 
         if (name != "관리자" && name == null) {
-            Users user = (Users) session.getAttribute("user");
+            Users user = customUser.getUser();
             if (user == null) {
                 return ResponseEntity.status(401).body("User not authenticated");
             }
@@ -75,11 +81,61 @@ public class MessageController {
         }
         return ResponseEntity.status(500).body("Failed to save message");
     }
+    // @PostMapping("/insertToAdmin")
+    // public ResponseEntity<String> insertPro(@RequestBody Message messageDTO, HttpSession session) {
+
+    //     String name = messageDTO.getName();
+    //     int userNo = 0;
+
+    //     if (name != "관리자" && name == null) {
+    //         Users user = (Users) session.getAttribute("user");
+    //         if (user == null) {
+    //             return ResponseEntity.status(401).body("User not authenticated");
+    //         }
+
+    //         if (messageDTO.getContent() == null || messageDTO.getContent().isEmpty()) {
+    //             return ResponseEntity.status(400).body("Content cannot be null or empty");
+    //         }
+
+    //         userNo = user.getUserNo();
+    //     } else {
+    //         userNo = messageDTO.getUserNo();
+    //     }
+
+    //     if (userNo == 0) {
+    //         return ResponseEntity.status(401).body("User not authenticated");
+    //     }
+
+    //     Message message = new Message();
+    //     message.setContent(messageDTO.getContent());
+    //     message.setCode(messageDTO.getCode());
+    //     message.setPayNo(0);
+    //     message.setQnaNo(0);
+    //     message.setReplyNo(0);
+    //     message.setUserNo(userNo);
+
+    //     int result = messageService.insertMessage(message);
+    //     if (result > 0) {
+    //         log.info("Insert successful!");
+    //         return ResponseEntity.ok("Message saved successfully");
+    //     }
+    //     return ResponseEntity.status(500).body("Failed to save message");
+    // }
 
     @GetMapping("/{messageNo}")
-    public Message getMessage(@PathVariable int messageNo) {
-        return messageService.getMessageById(messageNo);
+    public ResponseEntity<?> getMessage(@PathVariable int messageNo) {
+        try {
+            Message message = messageService.getMessageById(messageNo);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("FAIL", HttpStatus.BAD_REQUEST);
+        }
+        
     }
+    // @GetMapping("/{messageNo}")
+    // public Message getMessage(@PathVariable int messageNo) {
+    //     return messageService.getMessageById(messageNo);
+    // }
 
     @PutMapping("/")
     public void updateMessage(@RequestBody Message messageDTO) {
@@ -92,8 +148,8 @@ public class MessageController {
     }
 
     @GetMapping("/getChatMessagesByUser")
-    public ResponseEntity<List<Message>> getMessagesByUser(HttpSession session) {
-        Users user = (Users) session.getAttribute("user");
+    public ResponseEntity<List<Message>> getMessagesByUser(@AuthenticationPrincipal CustomUser customUser) {
+        Users user = customUser.getUser();
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
@@ -127,8 +183,8 @@ public class MessageController {
 
     
     @GetMapping("/messageClose")
-    public ResponseEntity<?> closeMessage(HttpSession session) {
-        Users user = (Users) session.getAttribute("user");
+    public ResponseEntity<?> closeMessage(@AuthenticationPrincipal CustomUser customUser) {
+        Users user = customUser.getUser();
         if (user != null) {
             int result = messageService.updateMessageByUser(user.getUserNo());
             if (result > 0) {
