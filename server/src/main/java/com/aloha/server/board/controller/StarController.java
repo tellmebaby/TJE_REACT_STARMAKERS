@@ -82,7 +82,7 @@ public class StarController {
      * @throws Exception
      */
     @GetMapping("/{no}")
-    public ResponseEntity<?> eventSelect(@AuthenticationPrincipal CustomUser customUser,
+    public ResponseEntity<?> select(@AuthenticationPrincipal CustomUser customUser,
             @PathVariable("no") Integer starNo) throws Exception {
 
         Users user = customUser.getUser();
@@ -118,7 +118,7 @@ public class StarController {
      * @throws Exception
      */
     @PutMapping("")
-    public ResponseEntity<?> putMethodName(StarBoard starBoard,
+    public ResponseEntity<?> update(StarBoard starBoard,
             @AuthenticationPrincipal CustomUser customUser,
             MultipartFile file) throws Exception {
 
@@ -162,7 +162,7 @@ public class StarController {
      */
     // @PostMapping("/board/eventBoard/delete")
     @DeleteMapping("/{no}")
-    public ResponseEntity<?> eventDeletePost(@PathVariable("no") Integer starNo) throws Exception {
+    public ResponseEntity<?> delete(@PathVariable("no") Integer starNo) throws Exception {
         String starNos = starNo + "";
         int result = starService.delete(starNos);
         if (result > 0) {
@@ -193,6 +193,7 @@ public class StarController {
             @AuthenticationPrincipal CustomUser customUser,
             Option option) {
         Users user = customUser.getUser();
+        // Users user = new Users();
         String type = "starCard";
         List<StarBoard> starList = null;
         page.setRows(5);
@@ -277,53 +278,45 @@ public class StarController {
      */
     @GetMapping("/starCard")
     public ResponseEntity<?> cardList(
-            // @RequestParam(value = "keyword", required = false) String keyword,
-            // @RequestParam Map<String, String> params, // 모든 요청 파라미터를 받아오기 위한 Map
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam Map<String, String> params, // 모든 요청 파라미터를 받아오기 위한 Map
             @AuthenticationPrincipal CustomUser customUser,
             Page page,
             Option option) throws Exception {
-        log.info("홍보 게시판 목록 조회!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        // Users user = customUser.getUser();
+        Users user = customUser.getUser();
         // Users user = new Users();
-        // // List<StarBoard> starList = null;
+        // List<StarBoard> starList = null;
         // List<StarBoard> starList = starService.list("starCard", page, option);
-        // page.setRows(12 * 4);
+        page.setRows(12 * 4);
 
         // URL 파라미터로 받은 옵션 값 설정
-        // params.forEach((key, value) -> {
-        //     if (value.equals("true")) {
-        //         option.setCategory(key, true);
-        //     }
-        // });
+        params.forEach((key, value) -> {
+            if (value.equals("true")) {
+                option.setCategory(key, true);
+            }
+        });
 
         // 키워드가 있을 경우 검색 조건에 추가
-        // if (keyword != null && !keyword.isEmpty()) {
-        //     log.info("::::::::::검색어 들어왔다 " + keyword);
-        //     option.setKeyword(keyword);
-        // }
+        if (keyword != null && !keyword.isEmpty()) {
+            log.info("::::::::::검색어 들어왔다 " + keyword);
+            option.setKeyword(keyword);
+        }
+        List<StarBoard> starList;
+        if (user != null) {
+            int userNo = user.getUserNo();
+            starList = starService.list("starCard", page, option, userNo);
+        } else {
+            starList = starService.list("starCard", page, option);
+        }
 
-        // if (user != null) {
-        //     int userNo = user.getUserNo();
-        //     starList = starService.list("starCard", page, option, userNo);
-        // } else {
-        //     starList = starService.list("starCard", page, option);
-        // }
+        starList.forEach(star -> {
+            if (star.getCategory1() != null) {
+                List<String> icons = Arrays.stream(star.getCategory1().split(","))
+                        .collect(Collectors.toList());
+                star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
+            }
+        });
 
-        // starList.forEach(star -> {
-        //     if (star.getCategory1() != null) {
-        //         List<String> icons = Arrays.stream(star.getCategory1().split(","))
-        //                 .collect(Collectors.toList());
-        //         star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
-        //     }
-        // });
-        List<StarBoard> starList = starService.list("starCard", page, option);
-        // if(starList != null ){
-        //     for (StarBoard starBoard : starList) {
-        //         log.info("홍보 글 목록 : " + starBoard.toString());
-        //     }
-        // } else {
-        //     log.info("게시판 조회가 안 됩니다..");
-        // }
         Map<String, Object> response = new HashMap<>();
         response.put("starList", starList);
         response.put("starList", starList);
@@ -370,7 +363,7 @@ public class StarController {
         // }
         // }
 
-        return ResponseEntity.ok(starList);
+        return new ResponseEntity<>(starList, HttpStatus.OK);
     }
 
     /**
@@ -381,13 +374,13 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/starCard/starPayment")
-    public String payment(@RequestParam("starNo") int starNo, Model model, HttpSession session) throws Exception {
-
-        Users user = (Users) session.getAttribute("user");
+    @GetMapping("/starPayment/{no}")
+    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Map<String, Object> response = new HashMap<>();
+        Users user = customUser.getUser();
 
         if (user != null) {
-            model.addAttribute("user", user);
+            response.put("user", user);
         }
         StarBoard starBoard = starService.select(starNo);
 
@@ -395,22 +388,22 @@ public class StarController {
         Date endDate = starBoard.getEndDate();
         int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
         int price = dif * 1000; // 결제 금액
-        model.addAttribute("dif", dif);
-        model.addAttribute("price", price);
+        response.put("dif", dif);
+        response.put("price", price);
 
         price = (int) (dif * 1000); // 결제 금액
         NumberFormat format = NumberFormat.getInstance();
         String formattedPrice = format.format(price);
-        model.addAttribute("formattedPrice", formattedPrice);
+        response.put("formattedPrice", formattedPrice);
 
-        model.addAttribute("starBoard", starBoard);
-        return "/page/starCard/starPayment";
+        response.put("starBoard", starBoard);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/starCard/starPayment")
-    public String paymentPro(StarBoard starBoard, String username, Model model,
+    @PostMapping("/starPayment")
+    public ResponseEntity<?> paymentPro(StarBoard starBoard,
             @RequestParam(value = "image", required = false) MultipartFile file,
-            HttpSession session) throws Exception {
+            @AuthenticationPrincipal CustomUser customUser) throws Exception {
         // 결제 버튼 클릭 시,
         // 홍보글 정보 insert로 db등록
         // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
@@ -426,31 +419,15 @@ public class StarController {
         Date endDate = starBoard.getEndDate();
         int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
         int price = dif * 1000; // 결제 금액
-        model.addAttribute("dif", dif);
-        model.addAttribute("price", price);
+        Map<String, Object> response = new HashMap<>();
+        response.put("dif", dif);
+        response.put("price", price);
 
-        Users user = (Users) session.getAttribute("user");
+        Users user = customUser.getUser();
         int userNo = user.getUserNo();
         String userName = user.getName();
-        model.addAttribute("userName", userName);
-        return userName;
-
-        // 리다이렉트
-        // 데이터 처리 성공
-        // if (starNo > 0) {
-        // // 파일 처리 로직
-        // if (file != null && !file.isEmpty()) {
-        // fileService.upload(file, starNo, userNo);
-        // }
-        // return "redirect:/page/starCard/starPayment?starNo=" + starNo;
-        // }
-
-        // 데이터 처리 실패
-        // int no = starBoard.getStarNo();
-        // return "redirect:/page/starCard/starInsert?starNo=" + starNo + "&error";
-
-        // model.addAttribute("starBoard1", starBoard1);
-
+        response.put("userName", userName);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**
@@ -648,7 +625,7 @@ public class StarController {
     @GetMapping("/review")
     public ResponseEntity<?> reviewList(Page page, Option option) throws Exception {
 
-        List<StarBoard> starList = starService.list("review", page, option);
+        List<StarBoard> starList = starService.list("anBoard", page, option);
         Map<String, Object> response = new HashMap<>();
         response.put("starList", starList);
         for (StarBoard starBoard : starList) {
@@ -800,16 +777,18 @@ public class StarController {
     }
 
     @GetMapping("/mainlist")
-    @ResponseBody
-    public List<StarBoard> getMainStarList(HttpSession session) throws Exception {
+    public ResponseEntity<?> getMainStarList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
         String type = "starCard";
-        Users user = (Users) session.getAttribute("user");
+        // Users user = customUser.getUser();
+        Users user = new Users();
+        user.setUserNo(1);
         if (user != null) {
             log.info("유저정보가 있어" + user);
             int userNo = user.getUserNo();
-            return starService.getMainCardListForLoggedInUser(userNo, type);
+            List<StarBoard> starList = starService.getMainCardListForLoggedInUser(userNo, type);
+            return new ResponseEntity<>(starList, HttpStatus.OK);
         }
-        return starService.mainCardList(type);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // @GetMapping("/starMember")
@@ -849,15 +828,15 @@ public class StarController {
     }
 
     @GetMapping("/mypageStarlist")
-    @ResponseBody
-    public List<StarBoard> getMypageStarList(HttpSession session) throws Exception {
-        Users user = (Users) session.getAttribute("user");
+    public ResponseEntity<?> getMypageStarList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Users user = customUser.getUser();
         if (user != null) {
             log.info("유저정보가 있어" + user);
             int userNo = user.getUserNo();
-            return starService.getStarCardsByUserNo(userNo);
+            List<StarBoard> myStar = starService.getStarCardsByUserNo(userNo);
+            return new ResponseEntity<>(myStar, HttpStatus.OK);
         }
-        return starService.mainCardList("starCard");
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
