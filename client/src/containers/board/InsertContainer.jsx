@@ -33,6 +33,7 @@ const InsertContainer = () => {
           {/* <InsertForm onInsert={onInsert}/> */}
           <InsertForm/>
       </>
-
+    )
+  }
 
 export default InsertContainer
