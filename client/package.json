@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@easylogic/react-summernote": "^0.0.9",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
+    "popper.js": "^1.16.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.0",
@@ -40,6 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy" : "http://localhost:8080/"
-
+  "proxy": "http://localhost:8080/"
 }

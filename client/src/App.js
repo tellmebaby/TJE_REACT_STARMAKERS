@@ -6,6 +6,7 @@ import Join from './pages/Join'
 import User from './pages/User'
 import About from './pages/About'
 import Login from './pages/Login'
+import Insert from './pages/board/Insert';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/Join" element={<Join/>}></Route>
           <Route path="/User" element={<User/>}></Route>
           <Route path="/About" element={<About/>}></Route>
+          <Route path="/board/Insert" element={<Insert/>}></Route>
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>

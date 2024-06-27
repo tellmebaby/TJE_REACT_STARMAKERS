@@ -11,3 +11,9 @@ npm install js-cookie
 ### sweetalert2
 npm install sweetalert2
 npm install sweetalert2-react-content
+
+### summernote
+npm install @easylogic/react-summernote
+npm install bootstrap --save
+npm install jquery --save
+npm install popper.js --save
