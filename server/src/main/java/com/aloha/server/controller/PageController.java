@@ -1,18 +1,21 @@
 package com.aloha.server.controller;
 
-import java.security.Principal;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.aloha.server.board.dto.Files;
 import com.aloha.server.board.dto.Option;
@@ -25,19 +28,15 @@ import com.aloha.server.board.service.ReplyService;
 import com.aloha.server.board.service.StarService;
 import com.aloha.server.pay.dto.Pay;
 import com.aloha.server.pay.service.PayService;
+import com.aloha.server.user.dto.CustomUser;
 import com.aloha.server.user.dto.Users;
 import com.aloha.server.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
-
-
-
-
 @Slf4j
-@Controller
-@RequestMapping("/page")
+@RestController
+@RequestMapping("/mypage")
 public class PageController {
 
     @Autowired
@@ -58,273 +57,223 @@ public class PageController {
     @Autowired
     private ReplyService replyService;
 
-    // @GetMapping("mypage/{path}")
-    // public String getMethodName2(@PathVariable("path") String path, HttpSession session, Model model) {    
-    //     Users user = (Users) session.getAttribute("user");   
-    //     model.addAttribute("user", user); 
-    //     return "page/mypage/"+path;
-    // } 
-    
-    @GetMapping("/mypage/profile")
-    // public String read(@RequestParam("userNo") int userNo, Model model) throws Exception {
-    public String read(Principal principal
-                      ,HttpSession session
-                      ,Model model) throws Exception {
-        // Princiapl 로 유저 가져오기
-        // CustomUser loginUser = (CustomUser) principal;
-        // int userNo = loginUser.getUser().getUserNo();
-        // session 으로 가져오기
-        Users user = (Users) session.getAttribute("user");
-        int userNo = user.getUserNo();
-        String email = user.getEmail();
-        log.info("email : " + email);
-        user = userService.read(email);
+    /**
+     * 사용자 조회(CustomUser 아직 안되서 임의로 지정)
+     * @param customUser
+     * @return
+     */
+    @GetMapping("/profile")
+    public ResponseEntity<?> read(@AuthenticationPrincipal CustomUser customUser) {
+        try {
+            log.info("customUser : " + customUser);
+            Users user = customUser.getUser();
+            // Users user = new Users();
+            // user.setUserNo(1);
+            // user.setEmail("joeun@naver.com");
 
-        
-       
-        Integer fileNo = fileService.profileSelect(userNo);
-        if( fileNo > 0 ){
-            Files file = fileService.select(fileNo);
-            model.addAttribute("file", file);
-            log.info("file : " + file);
+            log.info("user : " + user);
+            int userNo = user.getUserNo();
+            String email = user.getEmail();
+            log.info("email : " + email);
+            user = userService.read(email);
 
-        } else {
-            Files file = new Files();
-            file.setFileNo(-1);
-            model.addAttribute("file", file);
+            Integer fileNo = fileService.profileSelect(userNo);
+            if (fileNo > 0) {
+                Files file = fileService.select(fileNo);
+                log.info("file : " + file);
+            } else {
+                Files file = new Files();
+                file.setFileNo(-1);
+                log.info("file123 : " + file);
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            log.info("error : " + e);
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-
-        model.addAttribute("user", user);
-        return "page/mypage/profile";
     }
-
-    @GetMapping("/mypage/profileUpdate")
-    // public String read(@RequestParam("userNo") int userNo, Model model) throws Exception {
-    public String update(Principal principal
-                      ,HttpSession session
-                      , Model model) throws Exception {
-        // Princiapl 로 유저 가져오기
-        // CustomUser loginUser = (CustomUser) principal;
-        // int userNo = loginUser.getUser().getUserNo();
-        // session 으로 가져오기
-        Users user = (Users) session.getAttribute("user");
-        String email = user.getEmail();
-        log.info("email : " + email);
-        user = userService.read(email);
-        model.addAttribute("user", user);
-        return "page/mypage/profileUpdate";
-    }
-
-    @PostMapping("/mypage/profileUpdate")
-    public String updatePro( Users user ) throws Exception {
-        int result = userService.update(user);
-        log.info("수정 : " + user);
-        if(result > 0){
-            log.info("수정성공");
-            return "redirect:/page/mypage/profile";
-        }
-        log.info("수정 실패");
-        return "redirect:/page/mypage/profileUpdate?error";
-    }
-
-
-    @GetMapping("/mypage/userDelete")
-    public String delete(Principal principal
-                      ,HttpSession session
-                      , Model model) throws Exception {
-        // Princiapl 로 유저 가져오기
-        // CustomUser loginUser = (CustomUser) principal;
-        // int userNo = loginUser.getUser().getUserNo();
-        // session 으로 가져오기
-        Users user = (Users) session.getAttribute("user");
-        String email = user.getEmail();
-        log.info("email : " + email);
-        user = userService.read(email);
-        log.info("user : " + user);
-        model.addAttribute("user", user);
-        return "page/mypage/userDelete";
-    }
-
-    @PostMapping("/mypage/userDelete")
-    public String deletePro(Users user, HttpServletRequest request, HttpSession session) throws Exception {
-        
-        int result = userService.delete(user);
-        log.info("번호 : " + user);
-        if ( result > 0) {
-            session.invalidate();
-            log.info("번호 : " + user);
-            return "redirect:/";
-        }
-        return "redirect:/page/mypage/userDelete?error";
-    }
-
-    /* ----------------------------------------------------------------------------- */
-    /* 1:1 문의 */
 
     /**
-     * 게시글 조회
-     * @param model
+     * 사용자 수정
+     * @param user
      * @return
      * @throws Exception
      */
-    @GetMapping("/mypage/inquiry")
-    public String qnaList(Model model, Page page, Option option, HttpSession session) throws Exception {
-        log.info("qna 목록");
-
-        List<QnaBoard> qnaList = qnaService.list(page, option);
-        Users user = (Users) session.getAttribute("user");
-        model.addAttribute("qnaList", qnaList);
-        model.addAttribute("user", user);
-        return "/page/mypage/inquiry";
-    }
-
-    @GetMapping("/mypage/qnaPost")
-    public String read(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
-        QnaBoard qnaBoard = qnaService.select(qnaNo);
-
-        // 모델 등록
-        model.addAttribute("qnaBoard", qnaBoard);
-
-        starService.views(qnaNo);
-
-        // 뷰페이지 지정
-        return "/page/mypage/qnaPost";
-    }
-
-    @GetMapping("/mypage/qnaUpdate")
-    public String update(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
-        QnaBoard qnaBoard = qnaService.select(qnaNo);
-
-        // 모델 등록
-        model.addAttribute("qnaBoard", qnaBoard);
-
-        // 뷰페이지 지정
-        return "/page/mypage/qnaUpdate";
-    }
-
-    @PostMapping("/mypage/qnaUpdate")
-    public String updatePro(QnaBoard qnaBoard) throws Exception {
-
-        int result = qnaService.update(qnaBoard);
-        if ( result > 0) {
-            return "redirect:/page/mypage/inquiry";
+    @PutMapping("/profile")
+    public ResponseEntity<?> updatePro(@RequestBody Users user) throws Exception {
+        try {
+            int result = userService.update(user);
+            log.info("수정 : " + user);
+            if (result > 0) {
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(500).body("Profile update failed");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        int qnaNo = qnaBoard.getQnaNo();
-        
-        return "redirect:/page/mypage/qnaUpdate?qnaNo=" + qnaNo + "$error";
     }
 
-    /* ------------------------------------------------------------- */
-    /* 결제내역 */
-    @GetMapping("/mypage/payment")
-    public String payList(Model model, HttpSession session) throws Exception {
-
-        Users user = (Users) session.getAttribute("user");
-
-        int userNo = user.getUserNo();
-        List<Pay> payList = payService.userList(userNo);
-
-        model.addAttribute("user", user);
-        model.addAttribute("payList", payList);
-        log.info("userNo : " + userNo);
-        return "/page/mypage/payment";
-    }
-
-    /* 내가 쓴 글 */
-    @GetMapping("/mypage/promotion")
-    public String promotionList(Model model, HttpSession session, Page page, Option option) throws Exception {
-
-        Users user = (Users) session.getAttribute("user");
-        int userNo = user.getUserNo();
-
-        List<StarBoard> promotionList = starService.promotionList(userNo, page, option);
-
-        model.addAttribute("user", user);
-        model.addAttribute("promotionList", promotionList);
-        model.addAttribute("page", page);
-        model.addAttribute("option", option);
-        log.info("userNo : " + userNo);
-        return "/page/mypage/promotion";
-    }
-    
-    /* 내가 쓴 글 */
-    @GetMapping("/mypage/event")
-    public String reviewList(@RequestParam(value = "type", defaultValue = "review") String type
-                                    ,Model model, Page page
-                                    ,Option option
-                                    ,HttpSession session) throws Exception {
-
-        List<StarBoard> starList = starService.list(type, page, option);
-        model.addAttribute("starList", starList);
-        model.addAttribute("page", page);
-        model.addAttribute("option", option);
-        Users user = (Users) session.getAttribute("user");
-        model.addAttribute("user", user);
-        
-
-        return "/page/mypage/event";
-    }
-
-    @PostMapping("/mypage/eventDelete")
-    public String reviewDelete(@RequestParam("starNos") String starNos) throws Exception {
-       
-        int result = 0;
-        result = starService.delete(starNos);
-
-        if (result > 0) {
-            return "redirect:/page/mypage/event";
+    @DeleteMapping("/profile/{userNo}")
+    public ResponseEntity<?> deletePro(@AuthenticationPrincipal CustomUser customUser, @PathVariable("userNo") int userNo) throws Exception {
+        try {
+            Users user = customUser.getUser();
+            // Users user = new Users();
+            // user.setUserNo(2);
+            // user.setEmail("user1@example.com");
+            String email = user.getEmail();
+            log.info("email : " + email);
+            int result = userService.delete(user);
+            log.info("번호 : " + user);
+            if (result > 0) {
+                log.info("번호 : " + user);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(500).body("User deletion failed");
+            }
+        } catch (Exception e) {
+            log.info("error : " + e);
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        
-        return "redirect:/page/mypage/event?error";  // 삭제 실패시에도 같은 페이지로 리디렉션
     }
 
-    @GetMapping("/mypage/reviewPost")
-    public String reviewRead(@RequestParam("starNo") int starNo, Model model) throws Exception {
-
-        StarBoard starBoard = starService.select(starNo);
-        int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-        starBoard.setCommentCount(commentCount);
-        // 모델 등록
-        model.addAttribute("starBoard", starBoard);
-        starService.views(starNo);
-
-        // 뷰페이지 지정
-        return "/page/mypage/reviewPost";
-    }
-
-    @GetMapping("/mypage/reviewUpdate")
-    public String reviewUpdate(@RequestParam("starNo") int starNo, Model model) throws Exception {
-        StarBoard starBoard = starService.select(starNo);
-
-        // 모델 등록
-        model.addAttribute("starBoard", starBoard);
-
-        // 뷰페이지 지정
-        return "/page/mypage/reviewUpdate";
-    }
-
-    @PostMapping("/mypage/reviewUpdate")
-    public String reviewUpdatePro(StarBoard starBoard) throws Exception {
-
-        int result = starService.update(starBoard);
-        if ( result > 0) {
-            return "redirect:/page/mypage/event";
+    @GetMapping("/qna")
+    public ResponseEntity<?> qnaList(Page page, Option option, HttpSession session) throws Exception {
+        try {
+            log.info("qna 목록");
+            List<QnaBoard> qnaList = qnaService.list(page, option);
+            return new ResponseEntity<>(qnaList, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-        int starNo = starBoard.getStarNo();
-        
-        return "redirect:/page/mypage/reviewUpdate?qnaNo=" + starNo + "$error";
     }
 
-    @GetMapping("/mypage/archive")
-    public String archive(StarBoard starBoard) throws Exception {
-        return "/page/mypage/archive";
+    @GetMapping("/qna/{qnaNo}")
+    public ResponseEntity<?> read(@PathVariable("qnaNo") int qnaNo) throws Exception {
+        try {
+            QnaBoard qnaBoard = qnaService.select(qnaNo);
+            starService.views(qnaNo);
+            return new ResponseEntity<>(qnaBoard, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
 
-    @GetMapping("/mypage/archive2")
-    public String archive2(StarBoard starBoard) throws Exception {
-        return "/page/mypage/archive2";
+    @PutMapping("/qna")
+    public ResponseEntity<?> updatePro(@RequestBody QnaBoard qnaBoard) throws Exception {
+        try {
+            int result = qnaService.update(qnaBoard);
+            if (result > 0) {
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(500).body("QnA update failed");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
-    
 
+    @GetMapping("/payment")
+    public ResponseEntity<?> payList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        try {
+            // Users user = customUser.getUser();
+            Users user = new Users();
+            user.setUserNo(15);
+            user.setEmail("joeun@naver.com");
+            int userNo = user.getUserNo();
+            List<Pay> payList = payService.userList(userNo);
+            log.info("userNo : " + userNo);
+            return new ResponseEntity<>(payList, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+    // @GetMapping("/payment")
+    // public ResponseEntity<?> payList(HttpSession session) throws Exception {
+    //     try {
+    //         Users user = (Users) session.getAttribute("user");
+    //         int userNo = user.getUserNo();
+    //         List<Pay> payList = payService.userList(userNo);
+    //         log.info("userNo : " + userNo);
+    //         return ResponseEntity.ok(payList);
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(500).body("Internal Server Error");
+    //     }
+    // }
 
+    @GetMapping("/promotion")
+    public ResponseEntity<?> promotionList(@AuthenticationPrincipal CustomUser customUser, Page page, Option option) throws Exception {
+        try {
+            // Users user = customUser.getUser();
+            Users user = new Users();
+            user.setUserNo(15);
+            user.setEmail("joeun@naver.com");
+            int userNo = user.getUserNo();
+            List<StarBoard> promotionList = starService.promotionList(userNo, page, option);
+            return new ResponseEntity<>(promotionList, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    @GetMapping("/event")
+    public ResponseEntity<?> reviewList(@RequestParam(value = "type", defaultValue = "review") String type, Page page, Option option, HttpSession session) throws Exception {
+        try {
+            List<StarBoard> starList = starService.list(type, page, option);
+            return new ResponseEntity<>(starList, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    @DeleteMapping("/event/{starNos}")
+    public ResponseEntity<?> reviewDelete(@PathVariable("starNos") String starNos) throws Exception {
+        try {
+            int result = starService.delete(starNos);
+            if (result > 0) {
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(500).body("Event deletion failed");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    @GetMapping("/review/{starNo}")
+    public ResponseEntity<?> reviewRead(@PathVariable("starNo") int starNo) throws Exception {
+        try {
+            StarBoard starBoard = starService.select(starNo);
+            int commentCount = replyService.countByStarNo(starBoard.getStarNo());
+            starBoard.setCommentCount(commentCount);
+            starService.views(starNo);
+              return new ResponseEntity<>(starBoard, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    @PutMapping("/review")
+    public ResponseEntity<?> reviewUpdatePro(@RequestBody StarBoard starBoard) throws Exception {
+        try {
+            int result = starService.update(starBoard);
+            if (result > 0) {
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                return ResponseEntity.status(500).body("Review update failed");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
+    }
+
+    @GetMapping("/archive")
+    public ResponseEntity<?> archive() throws Exception {
+        return ResponseEntity.ok("archive endpoint");
+    }
+
+    @GetMapping("/archive2")
+    public ResponseEntity<?> archive2() throws Exception {
+        return ResponseEntity.ok("archive2 endpoint");
+    }
 }
