@@ -1,17 +1,18 @@
 package com.aloha.server.board.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aloha.server.board.dto.Option;
@@ -32,7 +33,7 @@ public class QnaController {
     private QnaService qnaService;
 
     @GetMapping("/qnaList")
-    public ResponseEntity<?> getAll(Page page, Option option) throws Exception {
+    public ResponseEntity<?> list(Page page, Option option) throws Exception {
         log.info("qna 목록");
         try {
             List<QnaBoard> qnaList = qnaService.list(page, option);
@@ -68,117 +69,128 @@ public class QnaController {
     //     return "/page/board/qnaBoard/qnaList";
     // }
 
-    @GetMapping("/qnaPost")
-    public String read(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
-        QnaBoard qnaBoard = qnaService.select(qnaNo);
-
-        // 조회수 증가
-       qnaService.views(qnaNo);
-
-        // 모델 등록
-        model.addAttribute("qnaBoard", qnaBoard);
-
-        // 뷰페이지 지정
-        return "/page/board/qnaBoard/qnaPost";
-    }
-    
-
-    /**
-     * 게시글 등록 화면 요청
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/qnaInsert")
-    public String insert() throws Exception {
-
-        return "/page/board/qnaBoard/qnaInsert";
-    } 
-
-    // @GetMapping("/qnaPost")
-    // public String quaPost(Model model) throws Exception {
-    //     log.info("qna 목록");
-
-    //     QnaBoard qnaBoard = new QnaBoard();
-    //     qnaBoard.setContent("<p><b>굵게</b></p><p><b><br></b></p><p><b><i>기울임</i></b></p><p><b><i><br></i></b></p><p><b><i><u>밑줄</u></i></b></p>");
-    //     model.addAttribute("qnaBoard", qnaBoard);
-    //     return "/page/board/qnaBoard/qnaPost";
-    // }
-
-
-    @PostMapping("/qnaInsert")
-    public String insertPro(QnaBoard qnaBoard, String username) throws Exception {
-        int result = qnaService.insert(qnaBoard, username);
-        // 리다이렉트
-        // 데이터 처리 성공
-        if(result>0){
-            return "redirect:/page/board/qnaBoard/qnaList";
+    @GetMapping("qnaPost/{qnaNo}")
+    public ResponseEntity<?> read(@PathVariable("qnaNo") int qnaNo) {
+        log.info("Q&A 글 번호: ", qnaNo);
+        try {
+            QnaBoard qnaBoard = qnaService.select(qnaNo);
+            if (qnaBoard != null) {
+                return new ResponseEntity<>(qnaBoard, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            log.error("Q&A 글 조회 실패: qnaNo={}", qnaNo, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        // 데이터 처리 실패
-        int no = qnaBoard.getQnaNo();
-        return "redirect:/board/insert?no=" + no + "&error";
     }
+
+
+    @PostMapping()
+    public ResponseEntity<?> insert(@RequestBody QnaBoard qnaBoard) {
+        try {
+            String username = qnaBoard.getUsername();
+            QnaBoard newQnaBoard = qnaService.insert(qnaBoard, username);
+
+            if (newQnaBoard != null) {
+                // log.info("여기까진오나??");
+                return new ResponseEntity<>(newQnaBoard, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     /** 글 수정
      * 
      */
-    @GetMapping("/qnaUpdate")
-    public String update(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
-        QnaBoard qnaBoard = qnaService.select(qnaNo);
-
-        // 모델 등록
-        model.addAttribute("qnaBoard", qnaBoard);
-
-        // 뷰페이지 지정
-        return "/page/board/qnaBoard/qnaUpdate";
+    @PutMapping()
+    public ResponseEntity<?> update(@RequestBody QnaBoard qnaBoard) {
+        try {
+            int qnaNo = qnaBoard.getQnaNo();
+            qnaBoard.setQnaNo(qnaNo);
+            int result = qnaService.update(qnaBoard);
+            if (result > 0) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PostMapping("/qnaUpdate")
-    public String updatePro(QnaBoard qnaBoard) throws Exception {
-
-        int result = qnaService.update(qnaBoard);
-        if ( result > 0) {
-            return "redirect:/page/board/qnaBoard/qnaList";
+    /**
+     * 답변 등록(answer 속성 수정)
+     * @param qnaBoard
+     * @return
+     */
+    @PutMapping("/answer")
+    public ResponseEntity<?> insertAnswer(@RequestBody QnaBoard qnaBoard) {
+        try {
+            int qnaNo = qnaBoard.getQnaNo();
+            qnaBoard.setQnaNo(qnaNo);
+            int result = qnaService.insertAnswer(qnaBoard);
+            if (result > 0) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        int qnaNo = qnaBoard.getQnaNo();
-        
-        return "redirect:/page/board/qnaBoard/qnaUpdate?qnaNo=" + qnaNo + "$error";
     }
     
-
-    @PostMapping("/qnaDelete")
-    public String delete(@RequestParam("qnaNos") String qnaNos) throws Exception {
+    /**
+     * qna 삭제
+     * @param qnaNos
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/{qnaNos}")
+    public ResponseEntity<?> delete(@PathVariable("qnaNos") String qnaNos) throws Exception {
        
-        int result = 0;
-        result = qnaService.delete(qnaNos);
-
-        if (result > 0) {
-            return "redirect:/page/board/qnaBoard/qnaList";
+        try {
+            int result = qnaService.delete(qnaNos);
+            if (result > 0) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        
-        return "redirect:/page/board/qnaBoard/qnaList";  // 삭제 실패시에도 같은 페이지로 리디렉션
     }
 
-    @PostMapping("/qnaPost")
-    public String insertAnswerPro(QnaBoard qnaBoard, Model model) throws Exception {
-        log.info("답변수정");
-        int result = qnaService.insertAnswer(qnaBoard);
-        if(result > 0) {
-        return "redirect:/admin/pages/mailboxQna"; 
+    /**
+     * 답변 삭제(속성 수정)
+     * @param qnaBoard
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @PutMapping("/deleteAnswer")
+    public ResponseEntity<?> deleteAnswer(@RequestBody QnaBoard qnaBoard) {
+        try {
+            int qnaNo = qnaBoard.getQnaNo();
+            qnaBoard.setQnaNo(qnaNo);
+            int result = qnaService.deleteAnswer(qnaBoard);
+            if (result > 0) {
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        int qnaNo = qnaBoard.getQnaNo();
-        return "redirect:/page/board/qnaBoard/qnaPost?qnaNo=" + qnaNo + "&error";
-
-    }
-
-    @PostMapping("/qnaPost/deleteAnswer")
-    public String deleteAnswerPro(QnaBoard qnaBoard, Model model) throws Exception {
-        log.info("답변삭제");
-        int result = qnaService.deleteAnswer(qnaBoard);
-        if(result > 0) {
-        return "redirect:/admin/pages/mailboxQna"; 
-        }
-        int qnaNo = qnaBoard.getQnaNo();
-        return "redirect:/page/board/qnaBoard/qnaPost?qnaNo=" + qnaNo + "&error";
     }
     
 

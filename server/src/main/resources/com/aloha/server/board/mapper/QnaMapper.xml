@@ -103,7 +103,7 @@
 
 
     <!-- 글 등록 -->
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="qnaNo">
         INSERT INTO qna_board(title, writer, content, status, user_no)
         VALUES (#{title}, #{writer}, #{content},#{status},#{userNo})
     </insert>

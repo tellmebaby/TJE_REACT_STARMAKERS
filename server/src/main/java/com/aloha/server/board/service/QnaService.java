@@ -14,7 +14,7 @@ public interface QnaService {
     public QnaBoard select(int qnaNo) throws Exception;
 
     // 글 등록
-    public int insert(QnaBoard qnaBoard, String username) throws Exception;
+    public QnaBoard insert(QnaBoard qnaBoard, String username) throws Exception;
         
     // 글 수정
     public int update(QnaBoard qnaBoard) throws Exception;
