@@ -1,4 +1,5 @@
 import React from 'react'
+
 import InsertForm from '../../components/board/InsertForm'
 // import * as boards from '../apis/boards'
 import { useNavigate } from 'react-router-dom'
@@ -32,7 +33,6 @@ const InsertContainer = () => {
           {/* <InsertForm onInsert={onInsert}/> */}
           <InsertForm/>
       </>
-  )
-}
+
 
 export default InsertContainer
