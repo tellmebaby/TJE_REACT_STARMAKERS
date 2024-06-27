@@ -16,10 +16,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
+import com.aloha.server.dto.CustomUser;
 import com.aloha.server.security.constants.SecurityConstants;
 import com.aloha.server.security.provider.JwtTokenProvider;
-import com.aloha.server.user.dto.CustomUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,14 +50,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        log.info("username : " + username);
+        log.info("email : " + email);
         log.info("password : " + password);
 
         // 사용자 인증정보 객체 생성
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
+
+         // // 사용자 인증정보 객체 생성
+        // Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
+
+        // try {
+        //     // 사용자 인증 (로그인)
+        //     authentication = authenticationManager.authenticate(authentication);
+        // } catch (Exception e) {
+        //     log.info("error" + e);
+        // }
 
         // 사용자 인증 (로그인)
         authentication = authenticationManager.authenticate(authentication);

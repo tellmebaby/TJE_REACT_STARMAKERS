@@ -8,6 +8,10 @@ import About from './pages/About'
 import Login from './pages/Login'
 import Profile from './pages/mypage/Profile';
 import QnaList from './pages/mypage/QnaList';
+import Insert from './pages/board/Insert';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import EventList from './pages/board/EventList';
 
 
 function App() {
@@ -22,6 +26,8 @@ function App() {
           <Route path="/About" element={<About/>}></Route>
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
+          <Route path="/board/Insert" element={<Insert/>}></Route>
+          <Route path="/page/event" component={<EventList/>} />
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>
