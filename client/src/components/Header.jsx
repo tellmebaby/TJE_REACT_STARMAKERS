@@ -24,13 +24,16 @@ const Header = () => {
                 {
                     isLogin ?
                     <>
+                     
+                        <li><Link to="src/pages/board/Insert.jsx">글쓰기</Link></li>
                         <li><Link to="src/pages/User.jsx">마이페이지</Link></li>
                         <li><button className='link' onClick={() => logout() }>로그아웃</button></li>
                     </>
                     :
                     <>
+                        <li><Link to="/board/Insert">글쓰기</Link></li>
                         <li><Link to="/Login">로그인</Link></li>
-                        <li><Link to="/Join">회원가입</Link></li>
+                        <li><Link to="/Join">회원가입</Link></li>       
                         <li><Link to="/About">소개</Link></li>
                     </>
                 }
