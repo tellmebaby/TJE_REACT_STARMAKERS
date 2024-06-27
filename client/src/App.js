@@ -6,7 +6,9 @@ import Join from './pages/Join'
 import User from './pages/User'
 import About from './pages/About'
 import Login from './pages/Login'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import InsertForm from './components/board/InsertForm';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/Join" element={<Join/>}></Route>
           <Route path="/User" element={<User/>}></Route>
           <Route path="/About" element={<About/>}></Route>
+          <Route path="/inset" element={<InsertForm/>}></Route>
+          
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>
