@@ -68,10 +68,10 @@ public class PageController {
     public ResponseEntity<?> read(@AuthenticationPrincipal CustomUser customUser) {
         try {
             log.info("customUser : " + customUser);
-            Users user = customUser.getUser();
-            // Users user = new Users();
-            // user.setUserNo(1);
-            // user.setEmail("joeun@naver.com");
+            // Users user = customUser.getUser();
+            Users user = new Users();
+            user.setUserNo(1);
+            user.setEmail("joeun@naver.com");
 
             log.info("user : " + user);
             int userNo = user.getUserNo();
@@ -101,7 +101,7 @@ public class PageController {
      * @return
      * @throws Exception
      */
-    @PutMapping("/profile")
+    @PutMapping("/profile/")
     public ResponseEntity<?> updatePro(@RequestBody Users user) throws Exception {
         try {
             int result = userService.update(user);
@@ -139,7 +139,7 @@ public class PageController {
         }
     }
 
-    @GetMapping("/qna")
+    @GetMapping("/qnaList")
     public ResponseEntity<?> qnaList(Page page, Option option, HttpSession session) throws Exception {
         try {
             log.info("qna 목록");
