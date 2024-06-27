@@ -40,8 +40,8 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public int insert(Reply reply, String userId) throws Exception {
 
-        Users user = userMapper.login(userId);
-        reply.setUserNo(user.getUserNo());
+        // Users user = userMapper.login(userId);
+        // reply.setUserNo(user.getUserNo());
         int result = replyMapper.insert(reply);
         int parentNo = reply.getParentNo();
 
