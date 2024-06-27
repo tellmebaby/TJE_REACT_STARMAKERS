@@ -1,7 +1,20 @@
 import axios from 'axios';
 
 // 목록
-export const list = (type, page, option) => axios.get("/boards")
+export const list = (type, page, option) => {
+    let url = `/event?type=${type}`;
+    if (page) {
+      url += `&page=${page}`;
+    }
+    if (option) {
+      for (const key in option) {
+        if (option.hasOwnProperty(key)) {
+          url += `&${key}=${option[key]}`;
+        }
+      }
+    }
+    return axios.get(url);
+  }
 
 // 조회
 export const select = (no) => axios.get(`/boards/${no}`)
