@@ -16,10 +16,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
+import com.aloha.server.dto.CustomUser;
 import com.aloha.server.security.constants.SecurityConstants;
 import com.aloha.server.security.provider.JwtTokenProvider;
-import com.aloha.server.user.dto.CustomUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,16 +56,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         log.info("email : " + email);
         log.info("password : " + password);
 
-        // // 사용자 인증정보 객체 생성
+        // 사용자 인증정보 객체 생성
+        Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
+
+         // // 사용자 인증정보 객체 생성
         // Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
 
         // try {
         //     // 사용자 인증 (로그인)
         //     authentication = authenticationManager.authenticate(authentication);
         // } catch (Exception e) {
-        //     log.info("error");
+        //     log.info("error" + e);
         // }
-            /*
+
+        // 사용자 인증 (로그인)
+        authentication = authenticationManager.authenticate(authentication);
+        /*
             🔐 authenticate() 인증 처리 프로세스
             1️⃣ 주어진 Authentication 객체에서 사용자의 아이디를 추출합니다.
             2️⃣ UserDetailsService를 사용하여 해당 아이디에 대한 UserDetails 객체를 가져옵니다.
@@ -77,17 +82,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
          */
 
         log.info("authenticationManager : " + authenticationManager);
-        // log.info("authentication : " + authentication);
-        // log.info("인증 여부(isAuthenticated) : " + authentication.isAuthenticated());
+        log.info("authentication : " + authentication);
+        log.info("인증 여부(isAuthenticated) : " + authentication.isAuthenticated());
 
         // 인증 실패 (username, password 불일치)
-        // if( !authentication.isAuthenticated() ) {
-        //     log.info("인증 실패 : 아이디와 비밀번호가 일치하지 않습니다.");
-        //     response.setStatus(401);
-        // }
+        if( !authentication.isAuthenticated() ) {
+            log.info("인증 실패 : 아이디와 비밀번호가 일치하지 않습니다.");
+            response.setStatus(401);
+        }
 
-        // return authentication;
-        return null;
+        return authentication;
     }
 
 

@@ -6,9 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.aloha.server.user.dto.CustomUser;
-import com.aloha.server.user.dto.Users;
-import com.aloha.server.user.mapper.UserMapper;
+import com.aloha.server.dto.CustomUser;
+import com.aloha.server.dto.Users;
+import com.aloha.server.mapper.UserMapper;
 
 import lombok.extern.slf4j.Slf4j;
 

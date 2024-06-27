@@ -12,13 +12,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-
+import com.aloha.server.dto.CustomUser;
+import com.aloha.server.dto.UserAuth;
+import com.aloha.server.dto.Users;
+import com.aloha.server.mapper.UserMapper;
+import com.aloha.server.prop.JwtProps;
 import com.aloha.server.security.constants.SecurityConstants;
-import com.aloha.server.user.dto.CustomUser;
-import com.aloha.server.user.dto.UserAuth;
-import com.aloha.server.user.dto.Users;
-import com.aloha.server.user.mapper.UserMapper;
-import com.aloha.server.user.prop.JwtProps;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -229,4 +228,3 @@ public class JwtTokenProvider {
 
     
 }
-
