@@ -45,23 +45,23 @@ public class StarServiceImpl implements StarService {
      * 글 등록(무료)
      */
     @Override
-    public int insert(StarBoard starBoard, String username) throws Exception {
-        Users user = userMapper.login(username);
+    public StarBoard insert(StarBoard starBoard) throws Exception {
+        int result = starMapper.insert(starBoard);
+        log.info("result : " + result);
+        int newNo = starBoard.getStarNo();
+        StarBoard newBoard = starMapper.select(newNo); 
+
+        // 파일 업로드
 
 
-        starBoard.setUserNo(user.getUserNo());
-        if (user.getId() == null || user.getId().equals("")) {
-            starBoard.setWriter(user.getName()); 
-        }else{
-            starBoard.setWriter(user.getId());
-        }
+        // starBoard.setUserNo(user.getUserNo());
+        // if (user.getId() == null || user.getId().equals("")) {
+        //     starBoard.setWriter(user.getName()); 
+        // }else{
+        //     starBoard.setWriter(user.getId());
+        // }
 
-        
-
-        // 정보 등록
-        starMapper.insert(starBoard);
-
-        return starBoard.getStarNo();
+        return newBoard;
     }
 
     /**

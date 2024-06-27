@@ -40,7 +40,7 @@ public interface StarService {
     public List<StarBoard> adminStarCard(String type, Page page, Option option, int status)  throws Exception;
 
     // 글 등록(무료)
-    public int insert(StarBoard starBoard, String username) throws Exception;
+    public StarBoard insert(StarBoard starBoard) throws Exception;
 
     // 글 등록(유료)
     public int payInsert(StarBoard starBoard, String username) throws Exception;
