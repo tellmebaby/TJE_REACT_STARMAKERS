@@ -74,6 +74,7 @@ public class QnaController {
         log.info("Q&A 글 번호: ", qnaNo);
         try {
             QnaBoard qnaBoard = qnaService.select(qnaNo);
+            qnaService.views(qnaNo);
             if (qnaBoard != null) {
                 return new ResponseEntity<>(qnaBoard, HttpStatus.OK);
             } else {
@@ -84,6 +85,22 @@ public class QnaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // @GetMapping("/qnaPost")
+    // public String read(@RequestParam("qnaNo") int qnaNo, Model model) throws Exception {
+    //     QnaBoard qnaBoard = qnaService.select(qnaNo);
+
+    //     // 조회수 증가
+    //    qnaService.views(qnaNo);
+
+    //     // 모델 등록
+    //     model.addAttribute("qnaBoard", qnaBoard);
+
+    //     // 뷰페이지 지정
+    //     return "/page/board/qnaBoard/qnaPost";
+    // }
+    
+
 
 
     @PostMapping()

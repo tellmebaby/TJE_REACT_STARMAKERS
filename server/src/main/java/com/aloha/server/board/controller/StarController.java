@@ -518,7 +518,9 @@ public class StarController {
         log.info("이벤트 등록");
         // 타입 추가
         starBoard.setType("event");
-        Users user = customUser.getUser();
+        // Users user = customUser.getUser();
+        Users user = new Users(); // 커스텀 유저 되기 전에 임시로 해놓은 유저
+        user.setUserNo(1);
         int userNo = user.getUserNo();
         starBoard.setUserNo(userNo);
         StarBoard newBoard = starService.insert(starBoard); // starBoard 등록
