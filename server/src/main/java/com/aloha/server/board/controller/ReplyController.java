@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.aloha.server.board.dto.QnaBoard;
 import com.aloha.server.board.dto.Reply;
 import com.aloha.server.board.service.ReplyService;
 
@@ -24,8 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@Controller
-@RequestMapping("/page/reply")
+@RestController
+@RequestMapping("/reply")
+@CrossOrigin(origins = "*")
 public class ReplyController {
 
     @Autowired
@@ -39,12 +42,15 @@ public class ReplyController {
      * @throws Exception
      */
     @GetMapping("/{starNo}")
-    public String list(@PathVariable("starNo") int starNo, Model model) throws Exception {
+    public ResponseEntity<?> list(@PathVariable("starNo") int starNo) throws Exception {
 
-        List<Reply> replyList = replyService.listByStarNo(starNo);
-        
-        model.addAttribute("replyList", replyList);
-        return "page/reply/list";
+        try {
+            List<Reply> replyList = replyService.listByStarNo(starNo);
+            return new ResponseEntity<>(replyList, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -53,7 +59,7 @@ public class ReplyController {
      * @return
      * @throws Exception
      */
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<String> insert(@RequestBody Reply reply) throws Exception {
         log.info(reply.toString());
         String userId = reply.getUsername();
@@ -68,15 +74,13 @@ public class ReplyController {
         }
     }
 
-
-
     /**
      * 댓글 수정
      * @param reply
      * @return
      * @throws Exception
      */
-    @PutMapping("")
+    @PutMapping()
     public ResponseEntity<String> update(@RequestBody Reply reply) throws Exception {
         int result = replyService.update(reply);
         if(result > 0) {
