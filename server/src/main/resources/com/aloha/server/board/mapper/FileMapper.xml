@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <!-- 파일 등록 -->
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="no">
         INSERT INTO file( file_name, origin_name, size, user_no, star_no )
         VALUES ( #{fileName}, #{originName}, #{size}, #{userNo}, #{starNo} )
     </insert>
