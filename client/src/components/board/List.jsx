@@ -9,7 +9,7 @@ const List = ({ optionList, starList, page, option }) => {
         <label>다양한 이벤트에 참여하고 상품도 받아가세요🎊</label>
       </div>
       <div className="search-container">
-        <form action="/page/board/eventBoard/eventList" method="get">
+        <form action="/page/event" method="get">
           <select name="code">
             {optionList.map((item) => (
               <option key={item.code} value={item.code} selected={item.code === option.code}>
