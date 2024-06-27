@@ -35,9 +35,15 @@ public class StarServiceImpl implements StarService {
         page.setTotal(total);
         log.info(page.toString());
         log.info(option.toString());
-        log.info(":::여기는 서비스 옵션값을 볼까? " + option.getKeyword());
+        // log.info(":::여기는 서비스 옵션값을 볼까? " + option.getKeyword());
         List<StarBoard> starList = starMapper.list(type, page, option);
-
+        if (starList != null && !starList.isEmpty()) {
+            for (StarBoard starBoard : starList) {
+                log.info("글 목록 : " + starBoard.toString());
+            }
+        } else {
+            log.info("게시판 조회가 안 됩니다..");
+        }
         return starList;
     }
 
@@ -49,16 +55,15 @@ public class StarServiceImpl implements StarService {
         int result = starMapper.insert(starBoard);
         log.info("result : " + result);
         int newNo = starBoard.getStarNo();
-        StarBoard newBoard = starMapper.select(newNo); 
+        StarBoard newBoard = starMapper.select(newNo);
 
         // 파일 업로드
 
-
         // starBoard.setUserNo(user.getUserNo());
         // if (user.getId() == null || user.getId().equals("")) {
-        //     starBoard.setWriter(user.getName()); 
+        // starBoard.setWriter(user.getName());
         // }else{
-        //     starBoard.setWriter(user.getId());
+        // starBoard.setWriter(user.getId());
         // }
 
         return newBoard;
@@ -73,8 +78,8 @@ public class StarServiceImpl implements StarService {
         Users user = userMapper.login(username);
         starBoard.setUserNo(user.getUserNo());
         if (user.getId() == null || user.getId().equals("")) {
-            starBoard.setWriter(user.getName()); 
-        }else{
+            starBoard.setWriter(user.getName());
+        } else {
             starBoard.setWriter(user.getId());
         }
         starBoard.setCard("유료홍보요청");
@@ -128,6 +133,9 @@ public class StarServiceImpl implements StarService {
 
     }
 
+    /**
+     * 글 목록 조회(list)
+     */
     @Override
     public List<StarBoard> list(String type, Page page, Option option, int userNo) throws Exception {
         int total = starMapper.count(option, type);
@@ -159,7 +167,7 @@ public class StarServiceImpl implements StarService {
     }
 
     @Override
-    public List<StarBoard> getMainCardListForLoggedInUser( int userNo, String type ) throws Exception{
+    public List<StarBoard> getMainCardListForLoggedInUser(int userNo, String type) throws Exception {
         log.info("유저번호 받아왔나 여기는 서비스 : " + userNo);
         List<StarBoard> starList = starMapper.getMainCardListForLoggedInUser(userNo, type);
         return starList;
@@ -204,7 +212,7 @@ public class StarServiceImpl implements StarService {
      * myPage 내 보관함 카드목록
      */
     @Override
-    public List<StarBoard> getStarCardsByUserNo( int userNo ) throws Exception {
+    public List<StarBoard> getStarCardsByUserNo(int userNo) throws Exception {
         return starMapper.getStarCardsByUserNo(userNo);
     }
 
