@@ -1,15 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import * as starBoard from '../../apis/starBoard';
 
-const List = ({ optionList, starList, page, option }) => {
+
+const List = ({ type, optionList, page, option, param }) => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    starBoard.list(type, page.page, option).then(response => {
+      setItems(response.data);
+      setLoading(false);
+    }).catch(error => {
+      console.error(`Error fetching ${type} list:`, error);
+      setLoading(false);
+    });
+  }, [type, page.page, option]);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const code = event.target.code.value;
+    const keyword = event.target.keyword.value;
+    // history.push(`/page/board/${type}Board/${type}List?page=${page.page}&code=${code}&keyword=${keyword}`);
+  };
+
   return (
     <div className="container" style={{ padding: '10px' }}>
-      <h3 className="event">EVENT</h3>
+      <h3 className="event">{type.toUpperCase()}</h3>
       <div className="eventtext">
         <label>다양한 이벤트에 참여하고 상품도 받아가세요🎊</label>
       </div>
       <div className="search-container">
-        <form action="/page/event" method="get">
+        <form onSubmit={handleSearch}>
           <select name="code">
             {optionList.map((item) => (
               <option key={item.code} value={item.code} selected={item.code === option.code}>
@@ -34,106 +56,62 @@ const List = ({ optionList, starList, page, option }) => {
             </tr>
           </thead>
           <tbody>
-            <tr className="fixed">
-              <td align="center" className="important"><p className="important-text">필독</p></td>
-              <td>
-                <i className="fas fa-star"></i><b style={{ color: '#ff1919' }}>로그인 필수</b>
-              </td>
-              <td align="center">관리자</td>
-              <td align="center">
-                <span>2024-05-28 18:59:37</span>
-              </td>
-              <td align="center">537</td>
-              <td align="center">678</td>
-            </tr>
-            <tr className="fixed">
-              <td align="center" className="important"><p className="important-text">필독</p></td>
-              <td>
-                <i className="fas fa-star"></i><b style={{ color: '#ff2020' }}>질문 답변 등록 됩니다</b>
-              </td>
-              <td align="center">관리자</td>
-              <td align="center">
-                <span>2024-05-28 18:59:37</span>
-              </td>
-              <td align="center">596</td>
-              <td align="center">439</td>
-            </tr>
-
-            {starList.length === 0 && (
+            {items.length === 0 ? (
               <tr>
                 <td colSpan="6" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
                   조회된 게시글이 없습니다.
                 </td>
               </tr>
-            )}
-
-            {starList.map((starBoard) => (
-              starBoard.type === 'event' && (
-                <tr key={starBoard.starNo}>
-                  <td align="center">{starBoard.starNo}</td>
+            ) : (
+              items.map((item) => (
+                <tr key={item.id}>
+                  <td align="center">{item.id}</td>
                   <td>
-                    <Link to={`/eventPost?starNo=${starBoard.starNo}`}>{starBoard.title} [{starBoard.commentCount}]</Link>
-                    {new Date(starBoard.regDate) > new Date() && (
+                    <Link to={`/${type}Post?starNo=${item.id}`}>{item.title} [{item.commentCount}]</Link>
+                    {new Date(item.regDate) > new Date() && (
                       <img src="/img/new.png" alt="new" style={{ width: '15px', height: '15px' }} />
                     )}
                   </td>
-                  <td align="center">{starBoard.writer}</td>
+                  <td align="center">{item.writer}</td>
                   <td align="center">
-                    <span>{new Date(starBoard.regDate).toLocaleString()}</span>
+                    <span>{new Date(item.regDate).toLocaleString()}</span>
                   </td>
-                  <td align="center">{starBoard.likes}</td>
-                  <td align="center">{starBoard.views}</td>
+                  <td align="center">{item.likes}</td>
+                  <td align="center">{item.views}</td>
                 </tr>
-              )
-            ))}
+              ))
+            )}
           </tbody>
         </table>
       </div>
       <div className="button-container">
-        {/* <!-- 비 로그인 시 --> */}
-        {/* <th:block sec:authorize="isAnonymous()">
-            
-        </th:block>      */}
-        {/* <!-- 로그인 시 --> */}
-        {/* <th:block sec:authorize="hasRole('ROLE_ADMIN')"> */}
-            <Link to="/page/board/eventBoard/eventInsert" className="btnn" style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
-        {/* </th:block> */}
+        <Link to={`/page/board/${type}Board/${type}Insert`} className="btnn" style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
       </div>
-
-      {/* 페이지네이션 */}
       <center>
         <div className="pagination">
-          {/* 처음으로 */}
-          <Link to={`/page/board/eventBoard/eventList?page=${page.first}&code=${option.code}&keyword=${option.keyword}`}>
+          <Link to={`/page/board/${type}Board/${type}List?page=${page.first}&code=${option.code}&keyword=${option.keyword}`}>
             <span className="material-symbols-outlined">first_page</span>
           </Link>
-
-          {/* 이전 */}
           {page.page !== page.first && (
-            <Link to={`/page/board/eventBoard/eventList?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`}>
+            <Link to={`/page/board/${type}Board/${type}List?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`}>
               <span className="material-symbols-outlined">chevron_backward</span>
             </Link>
           )}
-
           {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map((no) => (
             <React.Fragment key={no}>
               {page.page === no ? (
                 <b><span>{no}</span></b>
               ) : (
-                <Link to={`/page/board/eventBoard/eventList?page=${no}&code=${option.code}&keyword=${option.keyword}`} style={{ padding: '0 7px' }}>{no}</Link>
+                <Link to={`/page/board/${type}Board/${type}List?page=${no}&code=${option.code}&keyword=${option.keyword}`} style={{ padding: '0 7px' }}>{no}</Link>
               )}
             </React.Fragment>
           ))}
-
-          {/* 다음 */}
           {page.page !== page.last && (
-            <Link to={`/page/board/eventBoard/eventList?page=${page.next}&code=${option.code}&keyword=${option.keyword}`} className="material-symbols-outlined">
+            <Link to={`/page/board/${type}Board/${type}List?page=${page.next}&code=${option.code}&keyword=${option.keyword}`} className="material-symbols-outlined">
               chevron_forward
             </Link>
           )}
-
-          {/* 마지막 */}
-          <Link to={`/page/board/eventBoard/eventList?page=${page.last}&code=${option.code}&keyword=${option.keyword}`}>
+          <Link to={`/page/board/${type}Board/${type}List?page=${page.last}&code=${option.code}&keyword=${option.keyword}`}>
             <span className="material-symbols-outlined">last_page</span>
           </Link>
         </div>

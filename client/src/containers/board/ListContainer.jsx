@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import List from '../../components/board/List';
 
-const ListContainer = () => {
+const ListContainer = ({ type, optionList, page, option, param }) => {
   return (
-    <div>ListContainer</div>
-  )
-}
+    <List
+      type={type}
+      optionList={optionList}
+      page={page}
+      option={option}
+      param={param}
+    />
+  );
+};
 
-export default ListContainer
+export default ListContainer;
