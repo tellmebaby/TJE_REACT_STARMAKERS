@@ -3,6 +3,8 @@ package com.aloha.server.board.dto;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -34,5 +36,7 @@ public class StarBoard {
     private int starPrice;
 
     private String action;
+
+    private MultipartFile file;
 }
 

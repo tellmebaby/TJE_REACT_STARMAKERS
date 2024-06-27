@@ -16,10 +16,12 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +37,7 @@ import com.aloha.server.board.service.FileService;
 import com.aloha.server.board.service.LikeService;
 import com.aloha.server.board.service.ReplyService;
 import com.aloha.server.board.service.StarService;
+import com.aloha.server.user.dto.CustomUser;
 import com.aloha.server.user.dto.StarUser;
 import com.aloha.server.user.dto.Users;
 
@@ -44,6 +47,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @Slf4j
 @CrossOrigin(origins = "*")
@@ -66,15 +71,6 @@ public class StarController {
     @Autowired
     private ReplyService replyService;
 
-    /**
-     * 글 등록 화면 요청
-     * 
-     * @return
-     */
-    @GetMapping("/starCard/starInsert")
-    public String insert() {
-        return "/page/starCard/starInsert";
-    }
 
     @GetMapping("/starCard/starCalendar")
     public String starCalendarList() {
@@ -111,8 +107,15 @@ public class StarController {
         return "/page/starCard/starCalendar";
     }
 
+    /**
+     * 홍보 달력 가져오기
+     * @param type
+     * @param page
+     * @param session
+     * @param option
+     * @return
+     */
     @GetMapping("/getStarCalendar")
-    @ResponseBody
     public List<StarBoard> getStarCalendarList(
             @RequestParam(value = "type", defaultValue = "starCard") String type,
             Page page,
@@ -156,28 +159,37 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/starCard/starInsert")
-    public String insertPro(StarBoard starBoard, String username,
-            @RequestParam(value = "image", required = false) MultipartFile file, HttpSession session)
+    @PostMapping("/starInsert")
+    public ResponseEntity<?> insertPro(StarBoard starBoard,
+            @RequestParam(value = "image", required = false) MultipartFile file)
             throws Exception {
-        int starNo = starService.insert(starBoard, username); // starBoard 등록
+        
+        
+        StarBoard newBoard = starService.insert(starBoard); // starBoard 등록
+        int starNo = newBoard.getStarNo();
+        // 파일 처리
+        // if (file != null) {
+        //     for (MultipartFile file : files) {
+        //         fileService.upload(file, starNo, userNo); // file 등록
+        //     }
+        // }
 
-        Users user = (Users) session.getAttribute("user");
-        int userNo = user.getUserNo();
+
+        // Users user = (Users) session.getAttribute("user");
+        // int userNo = user.getUserNo();
 
         // 리다이렉트
         // 데이터 처리 성공
         if (starNo > 0) {
             // 파일 처리 로직
             if (file != null && !file.isEmpty()) {
-                fileService.upload(file, starNo, userNo); // file 등록
+                fileService.upload(file, starNo, 1); // file 등록
             }
-            return "redirect:/page/starCard/starList";
+            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
         // 데이터 처리 실패
-        int no = starBoard.getStarNo();
-        return "redirect:/page/starCard/starInsert?no=" + no + "&error";
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/starCard/starList")
@@ -313,11 +325,11 @@ public class StarController {
         // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
 
         // StarBoard starBoard1 = starBoard;
-        int starNo = 0;
-        if (starNo <= 0) {
-            starBoard.setCard("유료홍보");
-            starNo = starService.insert(starBoard, username);
-        }
+        StarBoard newBoard;
+        // if (newBoard != null) {
+        //     starBoard.setCard("유료홍보");
+        //     newBoard = starService.insert(starBoard);
+        // }
 
         Date strDate = starBoard.getStartDate();
         Date endDate = starBoard.getEndDate();
@@ -330,20 +342,21 @@ public class StarController {
         int userNo = user.getUserNo();
         String userName = user.getName();
         model.addAttribute("userName", userName);
+        return userName;
 
         // 리다이렉트
         // 데이터 처리 성공
-        if (starNo > 0) {
-            // 파일 처리 로직
-            if (file != null && !file.isEmpty()) {
-                fileService.upload(file, starNo, userNo);
-            }
-            return "redirect:/page/starCard/starPayment?starNo=" + starNo;
-        }
+        // if (starNo > 0) {
+        //     // 파일 처리 로직
+        //     if (file != null && !file.isEmpty()) {
+        //         fileService.upload(file, starNo, userNo);
+        //     }
+        //     return "redirect:/page/starCard/starPayment?starNo=" + starNo;
+        // }
 
         // 데이터 처리 실패
         // int no = starBoard.getStarNo();
-        return "redirect:/page/starCard/starInsert?starNo=" + starNo + "&error";
+        // return "redirect:/page/starCard/starInsert?starNo=" + starNo + "&error";
 
         // model.addAttribute("starBoard1", starBoard1);
 
@@ -404,21 +417,6 @@ public class StarController {
         return "/page/starCard/starRead";
     }
 
-    /**
-     * 글 수정 페이지 요청
-     * 
-     * @param starNo
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/starCard/starUpdate")
-    public String update(@RequestParam("starNo") int starNo, Model model) throws Exception {
-        StarBoard starBoard = starService.select(starNo);
-        model.addAttribute("starBoard", starBoard);
-        
-        return "/page/starCard/starUpdate";
-    }
 
     @PostMapping("/starCard/starUpdate")
     public String updatePro(StarBoard starBoard, String username,
@@ -484,22 +482,20 @@ public class StarController {
     }
 
     // 아래부터 event 게시판 ---------------------------------------------------------
-    @GetMapping("/board/eventBoard/eventList")
-    public String eventList(@RequestParam(value = "type", defaultValue = "event") String type, Model model, Page page,
-            Option option) throws Exception {
+    @GetMapping("/event")
+    public ResponseEntity<?> eventList(Page page, Option option) throws Exception {
 
         List<StarBoard> starListEvent = starService.list("event", page, option);
-        model.addAttribute("starListEvent", starListEvent);
-        List<StarBoard> starList = starService.list(type, page, option);
-        for (StarBoard starBoard : starList) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("starListEvent", starListEvent);
+        for (StarBoard starBoard : starListEvent) {
             int commentCount = replyService.countByStarNo(starBoard.getStarNo());
             starBoard.setCommentCount(commentCount);
         }
 
-        model.addAttribute("starList", starList);
-        model.addAttribute("page", page);
-        model.addAttribute("option", option);
-        model.addAttribute("currentTime", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        response.put("page", page);
+        response.put("option", option);
+        response.put("currentTime", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         log.info("first Page: " + page.getFirst());
         log.info("List Page: " + page.getLast());
         log.info("Total : " + page.getTotal());
@@ -510,51 +506,41 @@ public class StarController {
         optionList.add(new Option("내용", 2));
         optionList.add(new Option("작성자", 3));
 
-        model.addAttribute("optionList", optionList);
+        response.put("optionList", optionList);
 
-        return "/page/board/eventBoard/eventList";
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    // @PostMapping("/board/eventBoard/eventInsert")
-    // public String eventInsertPro(StarBoard starBoard, String username) throws
-    // Exception {
 
-    // starBoard.setType("event");
-    // int result = starService.insert(starBoard, username);
-    // // 리다이렉트
-    // // 데이터 처리 성공
-    // if (result > 0) {
-    // return "redirect:/page/board/eventBoard/eventList";
-    // }
-
-    // // 데이터 처리 실패
-    // int no = starBoard.getStarNo();
-    // return "redirect:/page/board/eventBoard/eventInsert?starNo=" + no + "&error";
-    // }
-
-    @PostMapping("/board/eventBoard/eventInsert")
-    public String eventInsertPro(StarBoard starBoard, String username,
-            @RequestParam(value = "image", required = false) MultipartFile file, HttpSession session)
+    @PostMapping("/event")
+    public ResponseEntity<?> eventInsertPro(StarBoard starBoard,@RequestParam(value = "image", required = false) MultipartFile file, @AuthenticationPrincipal CustomUser customUser)
             throws Exception {
-
-        int starNo = starService.insert(starBoard, username); // starBoard 등록
-
-        Users user = (Users) session.getAttribute("user");
+        log.info("이벤트 등록");
+        // 타입 추가
+        starBoard.setType("event");
+        Users user = customUser.getUser();
         int userNo = user.getUserNo();
+        starBoard.setUserNo(userNo);
+        StarBoard newBoard = starService.insert(starBoard); // starBoard 등록
+        int starNo = newBoard.getStarNo();
 
+        if ( starNo>0 ){
+            log.info("보드 데이터" + newBoard.toString());
+            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
+        }
         // 리다이렉트
+        // 데이터 처리 성공
         // 데이터 처리 성공
         if (starNo > 0) {
             // 파일 처리 로직
             if (file != null && !file.isEmpty()) {
-                fileService.upload(file, starNo, userNo); // file 등록
+                fileService.upload(file, starNo, 1); // file 등록
             }
-            return "redirect:/page/board/eventBoard/eventList";
+            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
         // 데이터 처리 실패
-        int no = starBoard.getStarNo();
-        return "redirect:/page/board/eventBoard/eventInsert?starNo=" + no + "&error";
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -565,11 +551,11 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/board/eventBoard/eventPost")
-    public String eventSelect(@RequestParam("starNo") int starNo, Model model, HttpSession session) throws Exception {
+    @GetMapping("/event/{no}")
+    public ResponseEntity<?> eventSelect(@AuthenticationPrincipal CustomUser customUser, @PathVariable("no") Integer starNo) throws Exception {
 
-        Users user = (Users) session.getAttribute("user");
-
+        Users user = customUser.getUser();
+        // StarBoard starBoard = starService.select(starNo);
         StarBoard starBoard = null;
         if (user != null) {
             int userNo = user.getUserNo();
@@ -578,64 +564,52 @@ public class StarController {
             starBoard = starService.select(starNo);
         }
 
+        // 댓글수
         int commentCount = replyService.countByStarNo(starBoard.getStarNo());
         starBoard.setCommentCount(commentCount);
+        // 조회수
         starService.views(starNo);
 
-        model.addAttribute("starBoard", starBoard);
-        return "/page/board/eventBoard/eventPost";
+        // 값 넘겨주기
+        Map<String, Object> response = new HashMap<>();
+        response.put("starBoard", starBoard);
+        
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    /**
-     * 글 수정 페이지 요청
-     * 
-     * @param starNo
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/board/eventBoard/eventUpdate")
-    public String eventUpdate(@RequestParam("starNo") int starNo, Model model) throws Exception {
-        StarBoard starBoard = starService.select(starNo);
-        model.addAttribute("starBoard", starBoard);
-        return "/page/board/eventBoard/eventUpdate";
-    }
-
-    @PostMapping("/board/eventBoard/eventUpdate")
-    public String eventUpdatePro(StarBoard starBoard, String username,
-            @RequestParam(value = "image", required = false) MultipartFile file,
-            HttpSession session) throws Exception {
+    @PutMapping("event")
+    public String putMethodName(StarBoard starBoard) {
 
         int starNo = starBoard.getStarNo();
-        int result = starService.update(starBoard);
-        log.info("수정 결과 :" + result);
+        // int result = starService.update(starBoard);
+        // log.info("수정 결과 :" + result);
 
-        Users user = (Users) session.getAttribute("user");
-        int userNo = user.getUserNo();
+        // Users user = (Users) session.getAttribute("user");
+        // int userNo = user.getUserNo();
 
         // 파일 로직 추가
 
         // 데이터 처리 성공
-        if (result > 0) {
-            // 파일 처리 로직
+        // if (result > 0) {
+        //     // 파일 처리 로직
 
-            // log.info(file.toString()+"sadfasdfdsf");
+        //     // log.info(file.toString()+"sadfasdfdsf");
 
-            if (file != null && !file.isEmpty()) { // file이 있을 경우 실행
-                // 기존에 올라간 파일 삭제
-                // 1. starNo로 기존에 올라가있는 파일 있는지 확인하고 있으면 파일 값 가져오기
-                // 2. starNo로 등록 된 파일 삭제
-                // 3. starNo로 새로운 파일 등록
-                log.info("새로 등록된 파일 있음");
-                Files file2 = new Files();
-                file2.setStarNo(starNo);
-                fileService.deleteByParent(file2); // 기존 파일 삭제
+        //     if (file != null && !file.isEmpty()) { // file이 있을 경우 실행
+        //         // 기존에 올라간 파일 삭제
+        //         // 1. starNo로 기존에 올라가있는 파일 있는지 확인하고 있으면 파일 값 가져오기
+        //         // 2. starNo로 등록 된 파일 삭제
+        //         // 3. starNo로 새로운 파일 등록
+        //         log.info("새로 등록된 파일 있음");
+        //         Files file2 = new Files();
+        //         file2.setStarNo(starNo);
+        //         fileService.deleteByParent(file2); // 기존 파일 삭제
 
-                fileService.upload(file, starNo, userNo); // file 등록
-            }
-            log.info("파일 확인 안 됨");
-            return "redirect:/page/board/eventBoard/eventPost?starNo=" + starNo;
-        }
+        //         fileService.upload(file, starNo, userNo); // file 등록
+        //     }
+        //     log.info("파일 확인 안 됨");
+        //     return "redirect:/page/board/eventBoard/eventPost?starNo=" + starNo;
+        // }
 
         return "redirect:/page/board/eventBoard/eventPost?starNo=" + starNo;
     }
@@ -736,12 +710,12 @@ public class StarController {
     }
 
     @PostMapping("/board/reviewBoard/reviewInsert")
-    public String reviewInsertPro(StarBoard starBoard, String username) throws Exception {
-        int result = starService.insert(starBoard, username);
+    public String reviewInsertPro(StarBoard starBoard) throws Exception {
+        StarBoard newBoard = starService.insert(starBoard);
         // 리다이렉트
         // 데이터 처리 성공
         int no = starBoard.getStarNo();
-        if (result > 0) {
+        if (newBoard != null) {
 
             return "redirect:/page/board/reviewBoard/reviewList";
         }
@@ -831,11 +805,11 @@ public class StarController {
     }
 
     @PostMapping("/board/anBoard/anInsert")
-    public String anInsertPro(StarBoard starBoard, String username) throws Exception {
-        int result = starService.insert(starBoard, username);
+    public String anInsertPro(StarBoard starBoard) throws Exception {
+        StarBoard newBoard = starService.insert(starBoard);
         // 리다이렉트
         // 데이터 처리 성공
-        if (result > 0) {
+        if (newBoard != null) {
             return "redirect:/page/board/anBoard/anList";
         }
 
@@ -1024,18 +998,6 @@ public class StarController {
     }
 
 
-
-    // @GetMapping("/mypageStarlist")
-    // @ResponseBody
-    // public List<StarBoard> getMypageStarList(HttpSession session) throws Exception {
-    //     Users user = (Users) session.getAttribute("user");
-    //     if (user != null) {
-    //         log.info("유저정보가 있어" + user);
-    //         int userNo = user.getUserNo();
-    //         return starService.getStarCardsByUserNo(userNo);
-    //     }
-    //     return starService.mainCardList("starCard");
-    // }
     @GetMapping("/mypageStarlist")
     @ResponseBody
     public List<StarBoard> getMypageStarList(HttpSession session) throws Exception {

@@ -92,6 +92,8 @@ public class SecurityConfig {
         // http.csrf(csrf ->
         // csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
 
+        http.csrf().disable();  // CSRF 방지 비활성화
+
         return http.build();
     }
 
