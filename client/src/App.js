@@ -7,6 +7,7 @@ import User from './pages/User'
 import About from './pages/About'
 import Login from './pages/Login'
 import Insert from './pages/board/Insert';
+import EventList from './pages/board/EventList';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
           <Route path="/User" element={<User/>}></Route>
           <Route path="/About" element={<About/>}></Route>
           <Route path="/board/Insert" element={<Insert/>}></Route>
+
+          <Route path="/page/event" component={<EventList/>} />
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>
