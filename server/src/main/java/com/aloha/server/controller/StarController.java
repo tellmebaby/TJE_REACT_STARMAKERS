@@ -53,7 +53,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/page")
 public class StarController {
 
     @Autowired
