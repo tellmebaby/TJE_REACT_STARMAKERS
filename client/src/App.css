@@ -1,2 +1,67 @@
 
 hr { margin-bottom: 50px; }
+
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .note-table .note-icon-caret {
+    display: none;
+  }
+  
+  .note-fontsize .note-icon-caret {
+    display: none;
+  }
+  
+  .note-fontname .note-icon-caret {
+    display: none;
+  }
+  
+  .title {
+    tab-size: 30px;
+  }
+  
+  /* 메뉴 바 굵기 */
+  .nav-links a.active {
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .note-height .note-icon-caret {
+    display: none;
+  }
+  
+  .note-para .note-icon-caret {
+    display: none;
+  }
+  
+  .note-color-all .note-icon-caret {
+    /* display: none; */
+  }
+  
+  
+  .container #channel {
+    border: 1px;
+  }
+  
+  .container .btn-list {
+    /* margin-top: 10px; */
+    margin-right: 10px;
+  }
+  
+  
+  /* 웹킷 기반 브라우저에서 스크롤바 숨기기 */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .rounded-circle-custom {
+    width: 70px;
+    height: 70px;
+    object-fit: cover; /* 이미지가 원 안에 잘 맞도록 합니다 */
+  }
+  
+  #thumbnail {
+    display: none; /* 이미지가 로드되기 전까지 숨김 */
+  }

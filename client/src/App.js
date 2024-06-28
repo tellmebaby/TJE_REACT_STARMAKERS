@@ -4,7 +4,7 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import Home from './pages/Home'
 import Join from './pages/Join'
 import User from './pages/User'
-import About from './pages/About'
+import IntroPage from './pages/IntroPage'
 import Login from './pages/Login'
 import Profile from './pages/mypage/Profile';
 import QnaList from './pages/mypage/QnaList';
@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
 import anList from './pages/board/anList';
+import Test from './pages/board/Test';
 
 
 function App() {
@@ -24,12 +25,13 @@ function App() {
           <Route path="/Login" element={<Login/>}></Route>
           <Route path="/Join" element={<Join/>}></Route>
           <Route path="/User" element={<User/>}></Route>
-          <Route path="/About" element={<About/>}></Route>
+          <Route path="/IntroPage" element={<IntroPage/>}></Route>
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
-          <Route path="/board/anInsert" element={<Insert/>}></Route>
           <Route path="/event" element={<EventList/>} />
           <Route path="/an" element={<anList />}/>
+          <Route path="/anInsert" element={<Insert/>}></Route>
+          <Route path="/test" component={<Test/>} />
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>

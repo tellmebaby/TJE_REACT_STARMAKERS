@@ -1,5 +1,7 @@
 package com.aloha.server.controller;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,9 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.aloha.server.dto.Email;
 import com.aloha.server.service.EmailService;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 public class EmailController {
 
@@ -22,7 +22,7 @@ public class EmailController {
 
     @ResponseBody
     @PostMapping("/sendVerificationEmail")
-    public String sendVerificationEmail(@RequestParam String email) {
+    public String sendVerificationEmail(@RequestParam String email) throws MessagingException {
         emailService.sendVerificationEmail(email);
         return "인증 이메일이 발송되었습니다.";
     }
@@ -33,7 +33,7 @@ public class EmailController {
 
         if (emailService.verifyToken(token)) {
             email.setStatus("인증완료");
-            int result = emailService.update(email);
+            emailService.update(email);
 
             model.addAttribute("email", email);
 

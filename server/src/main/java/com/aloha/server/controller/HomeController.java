@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aloha.server.service.ReplyService;
-import com.aloha.server.service.StarService;
 import com.aloha.server.dto.Users;
 import com.aloha.server.service.UserService;
 

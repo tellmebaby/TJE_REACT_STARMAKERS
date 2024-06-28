@@ -1,0 +1,140 @@
+.join-container {
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    padding: 20px 0;
+}
+
+.signup-form {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+#input-btn {
+    width: 100%;
+}
+
+.join-check-gender {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+/* 폼 전체 스타일 */
+.form-group {
+    margin-bottom: 10px;
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+    /* width: 100%; */
+    /* padding: 10px; */
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+/* 버튼 스타일 */
+.joinbtn {
+    /* width: 100%; */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #91ACCF;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.joinbtn:hover {
+    background-color: #a2bfe6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 인증 코드 입력 부분 스타일 */
+#emailVerificationGroup {
+    margin-top: 20px;
+}
+
+/* 이메일 발송 버튼과 입력 필드를 한 줄에 나타내기 */
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group button {
+    margin-left: 10px;
+    padding: 7px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e6b2c3;
+    color: white;
+    cursor: pointer;
+}
+
+.input-group button:hover {
+    background-color: #E7A5BC;
+}
+
+/* 인증 코드 입력 필드와 버튼을 한 줄에 나타내기 */
+#emailVerificationGroup .input-group {
+    display: flex;
+    align-items: center;
+}
+
+/* 폼 전체 폭 조정 */
+form {
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    /* border-radius: 10px; */
+    /* background-color: #f9f9f9; */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+label {
+    padding-bottom: 5px;
+}
+
+h1 {
+    font-family: "Tiny5", sans-serif;
+    font-weight: 400;
+    font-style: normal
+}
+
+.join-style {
+    background: radial-gradient(circle at center, #91ACCF, transparent 40%);
+}
+
+.logo-container{
+    height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-around;
+    justify-content: center;
+}
+
+img{
+    width: 100px;
+}
