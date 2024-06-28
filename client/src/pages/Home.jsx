@@ -1,5 +1,7 @@
 import React from 'react'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
+import { Navbar, Nav, NavDropdown, Container, Offcanvas, Button } from 'react-bootstrap';
 
 const Home = () => {
   return (
@@ -23,6 +25,7 @@ const Home = () => {
               </div>
           </div>
         </div>
+        <Footer/>
     </>
   )
 }
