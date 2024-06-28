@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import styles from '../mypage/css/ProfileForm.module.css';
 
 const MyPage = ({ user, file }) => {
     // const [uploadedImage, setUploadedImage] = useState(`/file/img/${file.fileNo}`);
@@ -77,64 +78,64 @@ const MyPage = ({ user, file }) => {
         <div className="container">
             <div className="row">
                 <div className="col-md-3">
-                    <div className="side-menu">
-                        <div className="nav-links">
-                            <a href="/page/mypage/profile" className="active"><i className="fa-solid fa-user"></i>회원 정보</a>
-                            <a href="/page/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</a>
-                            <a href="/page/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</a>
-                            <a href="/page/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</a>
-                            <a href="/page/mypage/inquiry"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</a>
-                            <a href="/page/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                    <div className={styles.sideMenu}>
+                        <div className={styles.navLinks}>
+                            <a href="/mypage/profile" className="active"><i className="fa-solid fa-user"></i>회원 정보</a>
+                            <a href="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</a>
+                            <a href="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</a>
+                            <a href="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</a>
+                            <a href="/mypage/QnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</a>
+                            <a href="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</a>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="box">
-                        <div className="table-margin"></div>
+                        <div className={styles.tableMargin}></div>
                         <table className="table">
                             <tbody>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">닉네임</td>
-                                    {/* <td className="fs-5 align-middle border-0">{user.id}</td> */}
+                                    <td className="fs-5 align-middle border-0">{user.id}</td>
                                 </tr>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">이름</td>
-                                    {/* <td className="fs-5 align-middle border-0">{user.name}</td> */}
+                                    <td className="fs-5 align-middle border-0">{user.name}</td>
                                 </tr>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">전화번호</td>
-                                    {/* <td className="fs-5 align-middle border-0">{user.phone}</td> */}
+                                    <td className="fs-5 align-middle border-0">{user.phone}</td>
                                 </tr>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">이메일</td>
-                                    {/* <td className="fs-5 align-middle border-0">{user.email}</td> */}
+                                    <td className="fs-5 align-middle border-0">{user.email}</td>
                                 </tr>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">생년월일</td>
-                                    {/* <td className="fs-5 align-middle border-0">{user.birth}</td> */}
+                                    <td className="fs-5 align-middle border-0">{user.birth}</td>
                                 </tr>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">주소</td>
-                                    {/* <td className="fs-5 align-middle border-0">{user.address}</td> */}
+                                    <td className="fs-5 align-middle border-0">{user.address}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div className="button-container">
+                        <div className={styles.buttonContainer}>
                             <a href="/page/mypage/profileUpdate">
-                                <input className="button" type="button" value="정보 수정" />
+                                <input className={styles.button} type="button" value="정보 수정" />
                             </a>
                         </div>
                     </div>
                 </div>
-                <div className="col-md-3">
-                    <div className="table-margin"></div>
-                    {/* <div className="image-container" onClick={handleImageClick}>
+                {/* <div className="col-md-3">
+                    <div className={styles.tableMargin}></div>
+                    <div className={styles.imageContainer} onClick={handleImageClick}>
                         <img id="uploadedImage" src={uploadedImage} alt="" style={{ width: '100%' }} />
-                    </div> */}
-                    {/* <input type="file" id="fileInput" style={{ display: 'none' }} ref={input => setFileInput(input)} onChange={handleFileChange} /> */}
-                    {/* <button className="btn btn-primary w-100 mt-1" onClick={saveImage}>이미지 저장</button>
-                    <button className="btn btn-primary w-100 mt-1" onClick={deleteImage}>기본 이미지로 변경</button> */}
-                </div>
+                    </div>
+                    <input type="file" id="fileInput" style={{ display: 'none' }} ref={input => setFileInput(input)} onChange={handleFileChange} />
+                    <button className="btn btn-primary w-100 mt-1" onClick={saveImage}>이미지 저장</button>
+                    <button className="btn btn-primary w-100 mt-1" onClick={deleteImage}>기본 이미지로 변경</button>
+                </div> */}
             </div>
         </div>
     );

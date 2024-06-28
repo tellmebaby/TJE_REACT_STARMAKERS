@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import Profile from '../components/mypage/ProfileForm'
-import * as mypage   from '../apis/mypage'
+import * as mypage   from '../../apis/mypage'
+import ProfileForm from '../../components/mypage/ProfileForm'
+
 
 
 const ProfileContainer = ({ email }) => {
   // state
-  const [users, setUsers] = useState({})
+  const [user, setUser] = useState({})
 
   // 함수
   const getUser = async () => {
     const response = await mypage.select(email)
     const data = await response.data
     console.log(data);
-    setUsers(data)
+    setUser(data)
   }
 
   // hook
@@ -22,7 +23,7 @@ const ProfileContainer = ({ email }) => {
 
   return (
     <>
-        <Profile email={email} users={users} />
+        <ProfileForm email={email} user={user} />
     </>
   )
 }
