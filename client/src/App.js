@@ -13,8 +13,9 @@ import AnInsert from './pages/board/anInsert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
-import anList from './pages/board/anList';
 import Test from './pages/board/Test';
+import AnList from './pages/board/AnList';
+import ReviewList from './pages/board/ReviewList';
 
 
 
@@ -31,9 +32,10 @@ function App() {
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/event" element={<EventList/>} />
-          <Route path="/an" element={<anList />}/>
           <Route path="/anInsert" element={<AnInsert/>}></Route>
           <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
+          <Route path="/an" element={<AnList />}/>
+          <Route path="/review" element={<ReviewList />}/>
           <Route path="/test" component={<Test/>} />
         </Routes>
       </LoginContextProvider>
