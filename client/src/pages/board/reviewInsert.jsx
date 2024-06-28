@@ -8,8 +8,8 @@ const Insert = () => {
   return (
     <>
         <MainLayout>
-          <h1 className='d-flex justify-content-center mb-3 mt-3'>공지사항 등록</h1>
-          <InsertContainer type={"an"}/>
+          <h1 className='d-flex justify-content-center mb-3 mt-3'>후기 등록</h1>
+          <InsertContainer type={"review"}/>
         </MainLayout>
     </>
   )

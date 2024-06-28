@@ -96,7 +96,7 @@ public class FileController {
 
     @DeleteMapping("/{no}")
     public ResponseEntity<String> deleteFile(@PathVariable("no") int no) throws Exception {
-        log.info("[DELETE] - /file/10");
+        // log.info("[DELETE] - /file/10");
 
         // 파일 삭제 요청
         int result = fileService.delete(no);
@@ -179,20 +179,32 @@ public class FileController {
     // 반환타입을 void 나 String 으로 하면 html 을 응답해주기 때문에
     // 데이터를 응답받기 위해서는 ResponseEntity 사용
 
+ 
     @PostMapping("/upload")
-    public ResponseEntity<String> profileUpload(@RequestParam("file") MultipartFile multipartFile,
-            @RequestParam("user_no") int userNo ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+    public ResponseEntity<?> insert(@RequestParam("file") MultipartFile multipartFile ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Users user = customUser.getUser();
+        int userNo = user.getUserNo();
+        int fileNo = fileService.upload(multipartFile, null , userNo);
+        if (fileNo>0) {
+            return new ResponseEntity<>(fileNo, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("파일 업로드 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // 준수야 이거 알아서 고쳐써라 연진이가 망가트려놨다
+    @PostMapping("/profileUpload")
+    public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile multipartFile ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Users user = customUser.getUser();
+        int userNo = user.getUserNo();
         boolean isUploaded = fileService.profileUpload(multipartFile, userNo);
         if (isUploaded) {
             // 저장된 마지막 파일정보 가져와서 세션에 파일 번호 저장
             Files file = fileService.selectByUserNoAndStarNo(userNo);
-            // Users user = customUser.getUser();
-            Users user = new Users();
-            user.setUserNo(1);
-            user.setUserImgId(file.getFileNo());
-            // customUser.setUser(user);
-            log.info("::::::::::: 저장된 user : " + user);
-            return new ResponseEntity<>("파일 업로드 성공", HttpStatus.OK);
+            int newFileNo = file.getFileNo();
+
+            return new ResponseEntity<>(newFileNo, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("파일 업로드 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }

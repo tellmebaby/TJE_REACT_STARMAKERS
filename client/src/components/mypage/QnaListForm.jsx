@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../mypage/css/QnaListForm.module.css';
 import { formatDate } from '../../apis/format';
 
-const QnaList = ({ user }) => {
-    const [qnaList, setQnaList] = useState([]);
-    // const [isLoading, setIsLoading] = useState(true);
+const QnaListForm = ({ qnaList, user }) => {
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     axios.get('/api/qnaList')
-    //         .then(response => {
-    //             setQnaList(response.data);
-    //             setIsLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching qna list:', error);
-    //             setIsLoading(false);
-    //         });
-    // }, []);
+    console.log('Rendered QnaList:', qnaList); // 전달된 qnaList 확인
+    console.log('Rendered User:', user); // 전달된 user 확인
 
     const handleDelete = () => {
         const checkboxes = document.querySelectorAll('input[name="qnaNo"]:checked');
@@ -34,10 +23,11 @@ const QnaList = ({ user }) => {
         }
 
         const qnaNos = Array.from(checkboxes).map(checkbox => checkbox.value);
-        axios.post('/page/board/qnaBoard/qnaDelete', { qnaNos })
+        axios
+            .post('/page/board/qnaBoard/qnaDelete', { qnaNos })
             .then(response => {
                 alert('삭제되었습니다.');
-                setQnaList(qnaList.filter(qna => !qnaNos.includes(qna.qnaNo.toString())));
+                window.location.reload(); // 페이지를 새로고침하여 목록을 업데이트합니다.
             })
             .catch(error => {
                 console.error('Error deleting qna:', error);
@@ -60,13 +50,16 @@ const QnaList = ({ user }) => {
         navigate(`/page/mypage/qnaUpdate?qnaNo=${qnaNo}`);
     };
 
+    // 사용자의 게시물만 필터링합니다.
+    const userQnaList = qnaList.filter(qna => qna.userNo === user.userNo);
+
     return (
-        <div className='container'>
-            <div className='row'>
-                <div className='col-md-3'>
+        <div className="container">
+            <div className="row">
+                <div className="col-md-3">
                     <div className={styles.sideMenu}>
                         <div className={styles.navLinks}>
-                            <Link to="/page/mypage/profile"><i className="fa-solid fa-user"></i>회원 정보</Link>
+                            <Link to="/mypage/profile"><i className="fa-solid fa-user"></i>회원 정보</Link>
                             <Link to="/page/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
                             <Link to="/page/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
                             <Link to="/page/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
@@ -75,51 +68,40 @@ const QnaList = ({ user }) => {
                         </div>
                     </div>
                 </div>
-                <div className='col-md-9'>
+                <div className="col-md-9">
                     <div className={styles.list}>
                         <h2 className={styles.juaRegular}>1 : 1 문의</h2>
                     </div>
-                    {/* {
-                        isLoading &&
-                        <div>
-                            <img src="/img/loading.webp" alt="loading" width="100%"></img>
-                        </div>
-                    } */}
-                    {/* { */}
-                        {/* !isLoading && qnaList && ( */}
-                            <table border={1} className={styles.table}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: '10px' }}></th>
-                                        <th style={{ width: '500px' }}>제목</th>
-                                        <th style={{ width: '200px' }}>작성일자</th>
-                                        <th style={{ width: '100px' }}>상태</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {qnaList.map((qna) => (
-                                        qna.userNo === user.userNo && (
-                                            <tr key={qna.qnaNo}>
-                                                {/* <td><input type="checkbox" name="qnaNo" value={qna.qnaNo} /></td> */}
-                                                <td>안녕</td>
-                                                <td align="center">
-                                                    <Link to={`/page/mypage/qnaPost?qnaNo=${qna.qnaNo}`}>
-                                                        {qna.title}
-                                                    </Link>
-                                                </td>
-                                                <td align="center">
-                                                    <span>{formatDate(qna.regDate)}</span>
-                                                </td>
-                                                <td align="center" className={qna.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>
-                                                    {qna.status}
-                                                </td>
-                                            </tr>
-                                        )
-                                    ))}
-                                </tbody>
-                            </table>
-                        {/* ) */}
-                    {/* } */}
+                    {userQnaList.length > 0 ? (
+                        <table className={styles.table}>
+                            <thead>
+                                <tr>
+                                    <th style={{ width: '10px' }}></th>
+                                    <th style={{ width: '600px' }}>제목</th>
+                                    <th style={{ width: '240px' }}>작성일자</th>
+                                    <th style={{ width: '90px' }}>상태</th>
+                                </tr>
+                            </thead>
+                            {userQnaList.map((qna) => (
+                                <tr key={qna.qnaNo}>
+                                    <td><input type="checkbox" name="qnaNo" value={qna.qnaNo} /></td>
+                                    <td align="center">
+                                        <Link to={`/page/mypage/qnaPost?qnaNo=${qna.qnaNo}`}>
+                                            {qna.title}
+                                        </Link>
+                                    </td>
+                                    <td align="center">
+                                        <span>{formatDate(qna.regDate)}</span>
+                                    </td>
+                                    <td align="center" className={qna.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>
+                                        {qna.status}
+                                    </td>
+                                </tr>
+                            ))}
+                        </table>
+                    ) : (
+                        <p>질문이 없습니다.</p>
+                    )}
                     <div className={styles.buttonContainer}>
                         <button className={styles.button} onClick={handleUpdate}>수정</button>
                         <button className={styles.button} onClick={handleDelete}>삭제</button>
@@ -139,4 +121,4 @@ const QnaList = ({ user }) => {
     );
 };
 
-export default QnaList;
+export default QnaListForm;

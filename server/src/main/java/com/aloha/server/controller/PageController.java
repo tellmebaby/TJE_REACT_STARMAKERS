@@ -64,27 +64,25 @@ public class PageController {
      * @param customUser
      * @return
      */
-    @GetMapping("/profile")
+    @GetMapping("/profile/{email}")
     public ResponseEntity<?> read(@AuthenticationPrincipal CustomUser customUser) {
         try {
+          
+            Users user = customUser.getUser();
             log.info("customUser : " + customUser);
-            // Users user = customUser.getUser();
-            Users user = new Users();
-            user.setUserNo(1);
-            user.setEmail("joeun@naver.com");
-
             log.info("user : " + user);
             int userNo = user.getUserNo();
             String email = user.getEmail();
             log.info("email : " + email);
             user = userService.read(email);
-
+    
             Integer fileNo = fileService.profileSelect(userNo);
+            Files file;
             if (fileNo > 0) {
-                Files file = fileService.select(fileNo);
+                file = fileService.select(fileNo);
                 log.info("file : " + file);
             } else {
-                Files file = new Files();
+                file = new Files();
                 file.setFileNo(-1);
                 log.info("file123 : " + file);
             }
@@ -94,6 +92,7 @@ public class PageController {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
+    
 
     /**
      * 사용자 수정
@@ -101,7 +100,7 @@ public class PageController {
      * @return
      * @throws Exception
      */
-    @PutMapping("/profile/")
+    @PutMapping("/profile")
     public ResponseEntity<?> updatePro(@RequestBody Users user) throws Exception {
         try {
             int result = userService.update(user);

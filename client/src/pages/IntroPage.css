@@ -1,0 +1,20 @@
+.intro-section {
+    padding: 50px 0;
+}
+.intro-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+.intro-section:nth-child(odd) .intro-img {
+    order: 1;
+}
+.intro-section:nth-child(even) .intro-img {
+    order: 2;
+}
+.intro-section:nth-child(odd) .intro-text {
+    order: 2;
+}
+.intro-section:nth-child(even) .intro-text {
+    order: 1;
+}

@@ -338,7 +338,7 @@ public class AdminController {
         int result = userService.update(user);
         log.info("수정 : " + user);
         int userNo = user.getUserNo();
-        String email = user.getEmail();
+        // String email = user.getEmail();
         String auth = user.getAuth();
         log.info("auth" + auth);
         if (auth != null) {
