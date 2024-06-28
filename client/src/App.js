@@ -12,6 +12,7 @@ import Insert from './pages/board/Insert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
+import Test from './pages/Test';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <LoginContextProvider>
         <Routes>
           <Route path="/" element={<Home/>}></Route>
+          <Route path="/test" element={<Test/>}></Route>
           <Route path="/Login" element={<Login/>}></Route>
           <Route path="/Join" element={<Join/>}></Route>
           <Route path="/User" element={<User/>}></Route>
