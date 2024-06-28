@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LoginContextProvider from './contexts/LoginContextProvider';
-import Home from './pages/Home'
+import Home from './pages/Home/Home'
 import Join from './pages/Join'
 import User from './pages/User'
 import About from './pages/About'

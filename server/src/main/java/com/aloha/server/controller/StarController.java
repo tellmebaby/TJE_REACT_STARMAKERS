@@ -780,17 +780,21 @@ public class StarController {
 
     @GetMapping("/mainlist")
     public ResponseEntity<?> getMainStarList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        log.info("시작이야");
         String type = "starCard";
-        // Users user = customUser.getUser();
-        Users user = new Users();
-        user.setUserNo(1);
-        if (user != null) {
-            log.info("유저정보가 있어" + user);
-            int userNo = user.getUserNo();
-            List<StarBoard> starList = starService.getMainCardListForLoggedInUser(userNo, type);
-            return new ResponseEntity<>(starList, HttpStatus.OK);
+        if ( customUser != null){
+            Users user = customUser.getUser();
+            if (user != null) {
+                log.info("유저정보가 있어" + user);
+                int userNo = user.getUserNo();
+                List<StarBoard> starCardList = starService.getMainCardListForLoggedInUser(userNo, type);
+                return new ResponseEntity<>(starCardList, HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        // 로그인 안했잖아 그래도 줄게 카드리스트
+        List<StarBoard> starCardList = starService.mainCardList(type);
+        log.info("성공했어 데이터를 가져왔어 : " + starCardList.size());
+        return new ResponseEntity<>(starCardList, HttpStatus.OK);
     }
 
     // @GetMapping("/starMember")

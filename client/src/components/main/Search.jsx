@@ -1,5 +1,5 @@
 import React from 'react';
-import './Search.css';  // 같은 폴더에 있는 CSS 파일을 import
+
 
 const Search = () => {
   return (
