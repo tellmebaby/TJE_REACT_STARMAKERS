@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 목록
 export const list = (type, page, option) => {
-    let url = `/event?type=${type}`;
+    let url = `/${type}`;
     if (page) {
       url += `&page=${page}`;
     }
@@ -21,7 +21,7 @@ export const select = (no) => axios.get(`/boards/${no}`)
 
 // 등록
 // export const insert = (title, writer, content) => axios.post("/boards", {title, writer, content})
-export const insert = (FormData, headers) => axios.post("/boards", FormData, headers )
+export const insert = (toBoard, FormData, headers) => axios.post( toBoard, FormData, headers )
 // url, body, headers
 
 // 수정
