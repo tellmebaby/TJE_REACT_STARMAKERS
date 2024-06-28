@@ -1,4 +1,4 @@
-.join-container {
+.joinContainer {
     /* display: flex; */
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
 .signup-form {
     margin-top: 40px;
     width: 100%;
-    max-width: 400px;
+    /* max-width: 400px; */
     padding: 15px;
     margin: auto;
     background-color: #fff;
@@ -103,7 +103,7 @@
 }
 
 /* 폼 전체 폭 조정 */
-form {
+.join-form {
     max-width: 500px;
     margin: auto;
     padding: 20px;
@@ -113,15 +113,10 @@ form {
 }
 
 
-label {
+#label {
     padding-bottom: 5px;
 }
 
-h1 {
-    font-family: "Tiny5", sans-serif;
-    font-weight: 400;
-    font-style: normal
-}
 
 .join-style {
     background: radial-gradient(circle at center, #91ACCF, transparent 40%);
@@ -135,6 +130,6 @@ h1 {
     justify-content: center;
 }
 
-img{
+.logo {
     width: 100px;
 }

@@ -8,8 +8,8 @@ const Insert = ({toBoard}) => {
   return (
     <>
         <MainLayout>
-        <h1 className='d-flex justify-content-center mb-3 mt-3'>공지사항 등록</h1>
-        <InsertContainer toBoard={"/anBoard"}/>
+          <h1 className='d-flex justify-content-center mb-3 mt-3'>공지사항 등록</h1>
+          <InsertContainer toBoard={"/anBoard"}/>
         </MainLayout>
     </>
   )
