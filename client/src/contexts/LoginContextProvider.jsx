@@ -76,8 +76,8 @@ const LoginContextProvider = ({ children }) => {
 
     // 🔐 로그인
     const login = async (email, password ) => {
-        console.log(`email: ${email}`);
-        console.log(`password: ${password}`);
+        // console.log(`email: ${email}`);
+        // console.log(`password: ${password}`);
 
         try {
             const response = await auth.login(email, password)
@@ -88,10 +88,10 @@ const LoginContextProvider = ({ children }) => {
             // 💍 JWT
             const accessToken = authorization.replace("Bearer ", "")
 
-            console.log(`data : ${data}`);
-            console.log(`status : ${status}`);
-            console.log(`headers : ${headers}`);
-            console.log(`jwt : ${accessToken}`);
+            // console.log(`data : ${data}`);
+            // console.log(`status : ${status}`);
+            // console.log(`headers : ${headers}`);
+            // console.log(`jwt : ${accessToken}`);
 
             // 로그인 성공 ✅
             if( status == 200 ) {
@@ -122,11 +122,11 @@ const LoginContextProvider = ({ children }) => {
         const { no, userId, authList, email } = userData   // 👩🏻‍💼 Users (DTO) [JSON]
         const roleList = authList.map((auth) => auth.auth) // 🏷️ [ROLE_USER,ROLE_ADMIN]
     
-        console.log(`no : ${no}`);
-        console.log(`userId : ${userId}`);
-        console.log(`email : ${email}`);
-        console.log(`authList : ${authList}`);
-        console.log(`roleList : ${roleList}`);
+        // console.log(`no : ${no}`);
+        // console.log(`userId : ${userId}`);
+        // console.log(`email : ${email}`);
+        // console.log(`authList : ${authList}`);
+        // console.log(`roleList : ${roleList}`);
 
         // axios common head - Authorization 헤더에 JWT emdfhr
         api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
@@ -140,7 +140,7 @@ const LoginContextProvider = ({ children }) => {
         setUserInfo(updatedUserInfo)
 
         // 👩🏻‍🎨 권한 정보 세팅
-        const updatedRoles = { isUser : false, isAdimin : false }
+        const updatedRoles = { isUser : false, isAdmin : false }
         roleList.forEach((role) => {
             if( role == 'ROLE_USER') updatedRoles.isUser = true
             if( role == 'ROLE_ADMIN') updatedRoles.isAdmin = true
@@ -199,7 +199,7 @@ const LoginContextProvider = ({ children }) => {
     },[])
 
   return (
-    <LoginContext.Provider value={{isLogin,login,logout}}>
+    <LoginContext.Provider value={{isLogin,login,logout,roles}}>
         {children}
     </LoginContext.Provider>
   )

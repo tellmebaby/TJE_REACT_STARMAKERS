@@ -5,7 +5,7 @@ import { Navbar, Nav, NavDropdown, Container, Offcanvas, Button } from 'react-bo
 import './Header.css';
 
 const Header = () => {
-    const { isLogin, logout, userRole, csrfToken } = useContext(LoginContext);
+    const { isLogin, logout, roles } = useContext(LoginContext);
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const [showCollapse, setShowCollapse] = useState(false);
 
@@ -34,7 +34,7 @@ const Header = () => {
                     <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShowOffcanvas} />
                     <Navbar.Collapse id="basic-navbar-nav" in={showCollapse}>
                         <Nav className="me-auto">
-                            <Nav.Link as={Link} to="/page/introduce">소개</Nav.Link>
+                            <Nav.Link as={Link} to="/IntroPage">소개</Nav.Link>
                             <Nav.Link as={Link} to="/page/starCard/starList">홍보</Nav.Link>
                             <Nav.Link as={Link} to="/page/board/eventBoard/eventList">이벤트</Nav.Link>
                             <Nav.Link as={Link} to="/page/board/reviewBoard/reviewList">후기</Nav.Link>
@@ -49,12 +49,11 @@ const Header = () => {
                                 </>
                             ) : (
                                 <NavDropdown title={<img id="thumbnail" className="rounded-circle rounded-circle-custom" alt="Thumbnail Image" />} id="profileDropdown">
-                                    {userRole === 'ROLE_ADMIN' && (
+                                    {roles.isAdmin && (
                                         <NavDropdown.Item as={Link} to="/admin">관리자</NavDropdown.Item>
                                     )}
                                     <NavDropdown.Item as={Link} to="/page/mypage/profile">마이페이지</NavDropdown.Item>
                                     <NavDropdown.Item as="form" onSubmit={handleLogout}>
-                                        <input type="hidden" name="_csrf" value={csrfToken} />
                                         <Button type="submit" variant="link" style={{ textDecoration: 'none', color: 'black' }}>로그아웃</Button>
                                     </NavDropdown.Item>
                                 </NavDropdown>
@@ -66,16 +65,11 @@ const Header = () => {
 
             <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} id="offcanvasNavbar" placement="end">
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>
-                        {/* <Navbar.Brand as={Link} to="/">
-                            <img id="thumbnail" className="rounded-circle rounded-circle-custom" alt="Thumbnail Image" />
-                        </Navbar.Brand> */}
-                    </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     <Nav className="box p-4 d-grid gap-1 text-center">
                         <h5 className="text-center">메뉴</h5>
-                        <Nav.Link as={Link} to="/page/introduce">소개</Nav.Link>
+                        <Nav.Link as={Link} to="/IntroPage">소개</Nav.Link>
                         <Nav.Link as={Link} to="/page/starCard/starList">홍보</Nav.Link>
                         <Nav.Link as={Link} to="/page/board/eventBoard/eventList">이벤트</Nav.Link>
                         <Nav.Link as={Link} to="/page/board/reviewBoard/reviewList">후기</Nav.Link>

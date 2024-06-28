@@ -53,14 +53,35 @@
     <script>
         document.getElementById('copyButton').addEventListener('click', function() {
             var codeValue = document.getElementById('verificationCode').value; // 코드 값 가져오기
-            navigator.clipboard.writeText(codeValue) // 클립보드에 복사
-                .then(function() {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(codeValue) // 클립보드에 복사
+                    .then(function() {
+                        alert('인증 코드가 복사되었습니다.');
+                    })
+                    .catch(function(err) {
+                        console.error('복사 에러:', err);
+                        alert('복사에 실패했습니다.');
+                    });
+            } else {
+                // Fallback for older browsers
+                var textArea = document.createElement("textarea");
+                textArea.value = codeValue;
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
                     alert('인증 코드가 복사되었습니다.');
-                })
-                .catch(function(err) {
+                } catch (err) {
                     console.error('복사 에러:', err);
                     alert('복사에 실패했습니다.');
-                });
+                }
+                document.body.removeChild(textArea);
+            }
         });
     </script>
 </body>

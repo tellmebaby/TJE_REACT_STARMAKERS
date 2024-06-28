@@ -4,7 +4,7 @@ import LoginContextProvider from './contexts/LoginContextProvider';
 import Home from './pages/Home'
 import Join from './pages/Join'
 import User from './pages/User'
-import About from './pages/About'
+import IntroPage from './pages/IntroPage'
 import Login from './pages/Login'
 import Profile from './pages/mypage/Profile';
 import QnaList from './pages/mypage/QnaList';
@@ -23,7 +23,7 @@ function App() {
           <Route path="/Login" element={<Login/>}></Route>
           <Route path="/Join" element={<Join/>}></Route>
           <Route path="/User" element={<User/>}></Route>
-          <Route path="/About" element={<About/>}></Route>
+          <Route path="/IntroPage" element={<IntroPage/>}></Route>
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/board/anInsert" element={<Insert/>}></Route>
