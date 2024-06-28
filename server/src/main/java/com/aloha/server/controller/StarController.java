@@ -676,10 +676,10 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/anBoard")
+    @GetMapping("/an")
     public ResponseEntity<?> anList(Page page, Option option) throws Exception {
 
-        List<StarBoard> starList = starService.list("anBoard", page, option);
+        List<StarBoard> starList = starService.list("an", page, option);
         Map<String, Object> response = new HashMap<>();
         response.put("starList", starList);
         for (StarBoard starBoard : starList) {
@@ -712,7 +712,7 @@ public class StarController {
      */
     @PostMapping("/anBoard")
     public ResponseEntity<?> anInsertPro(StarBoard starBoard) throws Exception {
-        starBoard.setType("anBoard");
+        starBoard.setType("an");
         StarBoard newBoard = starService.insert(starBoard);
         // 리다이렉트
         // 데이터 처리 성공

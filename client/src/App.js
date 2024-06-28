@@ -12,6 +12,7 @@ import Insert from './pages/board/anInsert';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
+import anList from './pages/board/anList';
 import Test from './pages/board/Test';
 
 
@@ -27,10 +28,10 @@ function App() {
           <Route path="/IntroPage" element={<IntroPage/>}></Route>
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
+          <Route path="/event" element={<EventList/>} />
+          <Route path="/an" element={<anList />}/>
           <Route path="/anInsert" element={<Insert/>}></Route>
-          <Route path="/page/event" component={<EventList/>} />
           <Route path="/test" component={<Test/>} />
-
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>

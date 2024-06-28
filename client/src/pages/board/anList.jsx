@@ -2,7 +2,7 @@ import React from 'react';
 import ListContainer from '../../containers/board/ListContainer';
 import MainLayout from '../../layouts/MainLayout';
 
-const EventList = () => {
+const anList = () => {
   const optionList = [/* ... 옵션 리스트 ... */];
   const page = {
     first: 1,
@@ -23,15 +23,15 @@ const EventList = () => {
       <MainLayout>
 
         <ListContainer
-          type="event"
+          type="an"
           optionList={optionList}
           page={page}
           option={option}
-          toBoard={"/event"}
+          toBoard={"/an"}
         />
       </MainLayout>
     </>
   );
 };
 
-export default EventList;
+export default anList;
