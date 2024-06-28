@@ -33,7 +33,7 @@
 
 .bg-image {
     position: relative;
-    /* background-image: url('/star.jpg'); */
+    background-image: url('../../../public/img/indexTopBackImg.jpg');
     background-size: cover;
     background-position: center;
     height: 60vh;
