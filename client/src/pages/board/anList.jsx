@@ -2,7 +2,7 @@ import React from 'react'
 import MainLayout from '../../layouts/MainLayout'
 import ListContainer from '../../containers/board/ListContainer'
 
-const anList = () => {
+const AnList = () => {
     const optionList = []
     const page = {
         first : 1,
@@ -33,4 +33,4 @@ const anList = () => {
   )
 }
 
-export default anList
+export default AnList

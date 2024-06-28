@@ -1,20 +1,39 @@
 import axios from 'axios';
 
 // 목록
-export const list = (type, page, option) => {
-    let url = `/${type}`;
-    if (page) {
-      url += `&page=${page}`;
-    }
-    if (option) {
-      for (const key in option) {
-        if (option.hasOwnProperty(key)) {
-          url += `&${key}=${option[key]}`;
-        }
-      }
-    }
-    return axios.get(url);
+// export const list = (type, page, option) => {
+//     let url = `/${type}`;
+//     if (page) {
+//       url += `&page=${page}`;
+//     }
+//     if (option) {
+//       for (const key in option) {
+//         if (option.hasOwnProperty(key)) {
+//           url += `&${key}=${option[key]}`;
+//         }
+//       }
+//     }
+//     return axios.get(url);
+//   }
+
+export const list = async (type, page, option) => {
+  try {
+    console.log("Request URL:", `/${type}`);
+    console.log("Request Parameters:", { type, page, code: option.code, keyword: option.keyword });
+
+    const response = await axios.get(`/${type}`, {
+      params: {
+        page,
+        code: option.code,
+        keyword: option.keyword,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error in API request:", error);
+    throw error;
   }
+};
 
 // 조회
 export const select = (no) => axios.get(`/boards/${no}`)

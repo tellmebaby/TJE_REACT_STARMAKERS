@@ -1,22 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import * as starBoard from '../../apis/starBoard';
 import styles from '../board/css/list.module.css'
 
-const List = ({ type, optionList, page, option, toBoard }) => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+const List = ({ type, optionList, page, option, toBoard, boardList}) => {
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    starBoard.list(type, page.page, option).then(response => {
-      setItems(response.data);
-      setLoading(false);
-    }).catch(error => {
-      console.error(`Error fetching ${type} list:`, error);
-      setLoading(false);
-    });
-  }, [type, page.page, option]);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -76,15 +65,15 @@ const List = ({ type, optionList, page, option, toBoard }) => {
             </tr>
           </thead>
           <tbody>
-            {items.length === 0 ? (
+            {boardList.length === 0 ? (
               <tr>
                 <td colSpan="6" align="center" className={styles.emptyRow}>
                   조회된 게시글이 없습니다.
                 </td>
               </tr>
             ) : (
-              items.map((starBoard) => (
-                <tr key={starBoard.id}>
+              boardList.map((starBoard) => (
+                <tr key={starBoard.starNo}>
                   <td align="center">{starBoard.type}</td>
                   <td>
                     <Link to={`/${starBoard.starNo}`} className={styles.link}>{starBoard.title} [{starBoard.commentCount}]</Link>
@@ -110,11 +99,11 @@ const List = ({ type, optionList, page, option, toBoard }) => {
       <center>
         <div className={styles.pagination}>
           <Link to={`/${type}?page=${page.first}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-            <span className={styles.icon}>first_page</span>
+            <span className="material-symbols-outlined">first_page</span>
           </Link>
           {page.page !== page.first && (
             <Link to={`/${type}?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-              <span className={styles.icon}>chevron_backward</span>
+              <span className="material-symbols-outlined">chevron_backward</span>
             </Link>
           )}
           {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map((no) => (
@@ -128,11 +117,11 @@ const List = ({ type, optionList, page, option, toBoard }) => {
           ))}
           {page.page !== page.last && (
             <Link to={`/${type}?page=${page.next}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-              <span className={styles.icon}>chevron_forward</span>
+              <span className="material-symbols-outlined">chevron_forward</span>
             </Link>
           )}
           <Link to={`/${type}?page=${page.last}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-            <span className={styles.icon}>last_page</span>
+            <span className="material-symbols-outlined">last_page</span>
           </Link>
         </div>
       </center>
