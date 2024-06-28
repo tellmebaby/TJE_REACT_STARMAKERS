@@ -2,12 +2,13 @@ import React from 'react'
 import Header from '../components/Header'
 import { Navbar, Nav, NavDropdown, Container, Offcanvas, Button } from 'react-bootstrap';
 import Search from '../components/main/Search'
+import MainLayout from '../layouts/MainLayout';
 
 
 const Home = () => {
   return (
     <>
-        <Header />
+        <MainLayout>
         <Search />
 
         <div class="container">
@@ -107,6 +108,7 @@ const Home = () => {
 
     </div>
 </div>
+</MainLayout>
 
     </>
   )

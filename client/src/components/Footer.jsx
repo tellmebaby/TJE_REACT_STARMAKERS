@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import './Footer.css'
 import { LoginContext } from '../contexts/LoginContextProvider';
+import { Navbar, Nav, NavDropdown, Container, Offcanvas, Button } from 'react-bootstrap';
 
 const Footer = () => {
     const { isLogin, logout, userRole, csrfToken } = useContext(LoginContext);
