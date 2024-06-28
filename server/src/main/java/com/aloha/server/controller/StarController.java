@@ -48,7 +48,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/page")
 public class StarController {
 
     @Autowired
