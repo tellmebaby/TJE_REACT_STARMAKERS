@@ -11,16 +11,16 @@ const InsertContainer = ({toBoard}) => {
 
     // 🎁 이벤트 함수
     // const onInsert = async (title, writer, content) => {
-    const onInsert = async (formData, headers) => {
+    const onInsert = async (toBoard, formData, headers) => {
       try {
         // const response = await boards.insert(title, writer, content)
-        const response = await boards.insert(formData, headers)
+        const response = await boards.insert({toBoard}, formData, headers)
         const status = await response.status 
         console.log(`게시글 등록 요청 결과 : ${status}`);
         alert("게시글 등록 완료!")
 
         // -> 게시글 목록으로 이동
-        // navigate({toBoard})
+        navigate({toBoard})
       } catch (error) {
         console.log(error);
       }

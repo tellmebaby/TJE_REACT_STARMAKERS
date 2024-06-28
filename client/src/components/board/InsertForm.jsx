@@ -110,7 +110,7 @@ const InsertForm = ({ toBoard, onInsert }) => {
               </div>
             </div>
             :
-            <form action="/page/board/anBoard/anInsert" method="post" id="anInsert">
+            <form id="anInsert">
 
               <div className="container">
                 <div className="input-group mb-3">
@@ -142,7 +142,7 @@ const InsertForm = ({ toBoard, onInsert }) => {
                       options: ['left', 'center', 'right', 'justify'],
                     },
 
-                    // extraPlugins: [uploadPlugin]            // 업로드 플러그인
+                    extraPlugins: [uploadPlugin]            // 업로드 플러그인
                   }}
                   data=""         // ⭐ 기존 컨텐츠 내용 입력 (HTML)
                   onReady={editor => {

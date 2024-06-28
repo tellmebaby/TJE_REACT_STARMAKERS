@@ -712,7 +712,7 @@ public class StarController {
      */
     @PostMapping("/anBoard")
     public ResponseEntity<?> anInsertPro(StarBoard starBoard) throws Exception {
-        starBoard.setType("an");
+        starBoard.setType("anBoard");
         StarBoard newBoard = starService.insert(starBoard);
         // 리다이렉트
         // 데이터 처리 성공
