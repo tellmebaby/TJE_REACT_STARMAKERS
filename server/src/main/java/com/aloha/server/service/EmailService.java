@@ -5,9 +5,12 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.aloha.server.dto.Email;
@@ -22,17 +25,19 @@ public class EmailService {
     @Autowired
     private EmailMapper emailMapper;
 
-    // 임시로 토큰 저장 (실제로는 DB에 저장해야 합니다)
     private Map<String, String> emailTokens = new ConcurrentHashMap<>();
 
-    public void sendVerificationEmail(String toEmail) {
+    public void sendVerificationEmail(String toEmail) throws MessagingException {
         String token = UUID.randomUUID().toString();
         emailTokens.put(toEmail, token);
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject("이메일 인증");
-        message.setText("인증 링크: http://192.168.30.137:8080/verify?token=" + token);
+        String htmlBody = "<a href=\"http://192.168.30.231:8080/verify?token=" + token + "\">인증하기</a>";
+
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(toEmail);
+        helper.setSubject("이메일 인증");
+        helper.setText(htmlBody, true);  // true indicates HTML
 
         emailSender.send(message);
 
@@ -43,9 +48,7 @@ public class EmailService {
         email.setToken(token);
         email.setCode(code);
 
-        int result = emailMapper.save(email);
-        if (result > 1) {
-        }
+        emailMapper.save(email);        
     }
 
     public String generateRandomNumber(int length) {

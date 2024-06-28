@@ -27,7 +27,6 @@ public class CustomUserDetailService implements UserDetailsService {
         try {
             user = userMapper.login(username);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
