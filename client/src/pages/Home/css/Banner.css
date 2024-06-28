@@ -1,0 +1,27 @@
+.carousel-control-prev,
+.carousel-control-next {
+    width: 40px;
+    color: black;
+    left: -5%;
+    right: auto;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: black;
+    border-radius: 50%;
+}
+
+.carousel-control-next {
+    left: auto;
+    right: -5%;
+}
+
+#promotionCarousel .row {
+    display: flex;
+    /* gap: 17px; */
+}
+
+#promotionCarousel .col-lg-3 {
+    flex: 0 0 24%;
+}
