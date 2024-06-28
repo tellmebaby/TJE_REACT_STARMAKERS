@@ -32,7 +32,7 @@ const ListContainer = ({ type, optionList, page, option }) => {
       optionList={optionList}
       page={page}
       option={option}
-      toBoard={toBoard}
+      toBoard={toBoard()}
     />
   );
 };

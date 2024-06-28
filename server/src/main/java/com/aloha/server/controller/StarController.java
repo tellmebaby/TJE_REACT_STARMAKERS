@@ -621,7 +621,7 @@ public class StarController {
     @GetMapping("/review")
     public ResponseEntity<?> reviewList(Page page, Option option) throws Exception {
 
-        List<StarBoard> starList = starService.list("anBoard", page, option);
+        List<StarBoard> starList = starService.list("review", page, option);
         Map<String, Object> response = new HashMap<>();
         response.put("starList", starList);
         for (StarBoard starBoard : starList) {
