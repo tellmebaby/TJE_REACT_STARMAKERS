@@ -7,6 +7,7 @@ import Search from '../components/main/Search'
 const Home = () => {
   return (
     <>
+      
         <Header />
         <Search />
 
