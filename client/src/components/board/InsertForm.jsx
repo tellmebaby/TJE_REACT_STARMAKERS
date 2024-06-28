@@ -9,10 +9,10 @@ import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
 
-const InsertForm = ({ toBoard, onInsert }) => {
+const InsertForm = ({ type, onInsert }) => {
+
   const { isLogin, logout } = useContext(LoginContext)
   const [title, setTitle] = useState('')
-  const [writer, setWriter] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState(null)
 
@@ -25,7 +25,9 @@ const InsertForm = ({ toBoard, onInsert }) => {
     setFiles(e.target.files)
   }
 
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault()      // 기본 이벤트 방지
+    console.log("여기오나? onSubmit");
     // 유효성 검사 ✅
     // ...일단 생략
 
@@ -33,8 +35,11 @@ const InsertForm = ({ toBoard, onInsert }) => {
     // Content-Type : application/json -> multipart/form-data
     const formData = new FormData()
     formData.append('title', title)
-    formData.append('writer', writer)
     formData.append('content', content)
+    formData.append('type', type)
+
+    console.log("title : " + title);
+    console.log("content : " + content);
 
     // 헤더
     const headers = {
@@ -115,10 +120,10 @@ const InsertForm = ({ toBoard, onInsert }) => {
               <div className="container">
                 <div className="input-group mb-3">
                   <span className="input-group-text" id="addon-wrapping">제목</span>
-                  <input type="text" name="title" className="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
-                    aria-describedby="addon-wrapping" onChange={handleChangeTitle} />
+                  <input type="text" className="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
+                    aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
+                  {/* <input type="hidden" value={type}/> */}
                 </div>
-                <input type="hidden" name="type" value="an" />
                 <CKEditor
                   editor={ClassicEditor}
                   config={{
@@ -152,7 +157,7 @@ const InsertForm = ({ toBoard, onInsert }) => {
                   onChange={(event, editor) => {
                     const data = editor.getData();
                     console.log({ event, editor, data });
-                    // setContent(data);
+                    setContent(data);
                   }}
                   onBlur={(event, editor) => {
                     console.log('Blur.', editor);
@@ -163,7 +168,7 @@ const InsertForm = ({ toBoard, onInsert }) => {
                 />
                 <div className="d-flex justify-content-end mt-2">
                   {/* <button type="button" className="btn btn-primary btn-submit col-1 border-1 btn-list" >목록</button> */}
-                  <Link to={toBoard} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
+                  <Link to={`/${type}`} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
                   <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>등록</button>
                 </div>
               </div>

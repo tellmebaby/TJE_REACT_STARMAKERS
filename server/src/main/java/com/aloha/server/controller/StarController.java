@@ -111,7 +111,7 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @PutMapping("")
+    @PutMapping("/updateBoard")
     public ResponseEntity<?> update(StarBoard starBoard,
             @AuthenticationPrincipal CustomUser customUser,
             MultipartFile file) throws Exception {
@@ -710,13 +710,14 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @PostMapping("/anBoard")
+    @PostMapping("/insertBoard")
     public ResponseEntity<?> anInsertPro(StarBoard starBoard) throws Exception {
-        starBoard.setType("anBoard");
+        // starBoard.setType("notice");
         StarBoard newBoard = starService.insert(starBoard);
         // 리다이렉트
         // 데이터 처리 성공
         if (newBoard != null) {
+            log.info(newBoard.toString());
             return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
