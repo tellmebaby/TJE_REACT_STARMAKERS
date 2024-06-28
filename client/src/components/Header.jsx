@@ -52,7 +52,7 @@ const Header = () => {
                                     {roles.isAdmin && (
                                         <NavDropdown.Item as={Link} to="/admin">관리자</NavDropdown.Item>
                                     )}
-                                    <NavDropdown.Item as={Link} to="/page/mypage/profile">마이페이지</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to="/mypage/profile">마이페이지</NavDropdown.Item>
                                     <NavDropdown.Item as="form" onSubmit={handleLogout}>
                                         <Button type="submit" variant="link" style={{ textDecoration: 'none', color: 'black' }}>로그아웃</Button>
                                     </NavDropdown.Item>
@@ -85,7 +85,7 @@ const Header = () => {
                         ) : (
                             <>                                
                                 <form onSubmit={handleLogout}>
-                                    <Link to="/page/mypage/profile" style={{ textDecoration: 'none', color: 'black' }}>
+                                    <Link to="/mypage/profile" style={{ textDecoration: 'none', color: 'black' }}>
                                         <Button variant="outline-secondary" className="btn-block">마이페이지</Button>
                                     </Link>
                                     <Button type="submit" variant="outline-secondary" className="btn-block">로그아웃</Button>
