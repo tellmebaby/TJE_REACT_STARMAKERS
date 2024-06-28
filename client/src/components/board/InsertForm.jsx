@@ -12,8 +12,8 @@ const InsertForm = () => {
 
 
   return (
+    
     <div className="insert">
-
       <h1 class="d-flex justify-content-center mb-3 mt-3">
         공지 등록
       </h1>
@@ -76,6 +76,7 @@ const InsertForm = () => {
             </div>
           </div>
         </form>
+        {/* <input type="sub" /> */}
       </div>
       {/* {
         isLogin ?

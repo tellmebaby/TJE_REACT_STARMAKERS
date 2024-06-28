@@ -1,6 +1,8 @@
 import React from 'react'
 import Header from '../components/Header'
+import { Navbar, Nav, NavDropdown, Container, Offcanvas, Button } from 'react-bootstrap';
 import Search from '../components/main/Search'
+
 
 const Home = () => {
   return (
@@ -105,6 +107,7 @@ const Home = () => {
 
     </div>
 </div>
+
     </>
   )
 }
