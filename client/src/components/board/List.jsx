@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as starBoard from '../../apis/starBoard';
 
-
-const List = ({ type, optionList, page, option, param }) => {
+const List = ({ type, optionList, page, option }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     starBoard.list(type, page.page, option).then(response => {
@@ -21,7 +21,7 @@ const List = ({ type, optionList, page, option, param }) => {
     event.preventDefault();
     const code = event.target.code.value;
     const keyword = event.target.keyword.value;
-    // history.push(`/page/board/${type}Board/${type}List?page=${page.page}&code=${code}&keyword=${keyword}`);
+    navigate(`/page/board/${type}Board/${type}List?page=${page.page}&code=${code}&keyword=${keyword}`);
   };
 
   return (
@@ -39,7 +39,7 @@ const List = ({ type, optionList, page, option, param }) => {
               </option>
             ))}
           </select>
-          <input type="text" name="keyword" placeholder="검색어를 입력하세요" defaultValue={param.keyword} />
+          <input type="text" name="keyword" placeholder="검색어를 입력하세요" defaultValue={option.keyword} />
           <button type="submit">검색</button>
         </form>
       </div>
