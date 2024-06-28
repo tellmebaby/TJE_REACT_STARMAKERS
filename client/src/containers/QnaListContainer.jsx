@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import QnaList from '../components/Mypage/QnaListForm'
+import QnaList from '../components/mypage/QnaListForm'
 import * as mypage from '../apis/mypage'
 
 const QnaListContainer = () => {
