@@ -37,8 +37,8 @@ const Header = () => {
                             <Nav.Link as={Link} to="/IntroPage">소개</Nav.Link>
                             <Nav.Link as={Link} to="/page/starCard/starList">홍보</Nav.Link>
                             <Nav.Link as={Link} to="/event">이벤트</Nav.Link>
-                            <Nav.Link as={Link} to="/page/board/reviewBoard/reviewList">후기</Nav.Link>
-                            <Nav.Link as={Link} to="/page/board/qnaBoard/qnaList">Q&A</Nav.Link>
+                            <Nav.Link as={Link} to="/review">후기</Nav.Link>
+                            <Nav.Link as={Link} to="/qna">Q&A</Nav.Link>
                             <Nav.Link as={Link} to="/an">공지사항</Nav.Link>
                         </Nav>
                         <Nav>

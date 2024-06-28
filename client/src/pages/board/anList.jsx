@@ -1,37 +1,36 @@
-import React from 'react';
-import ListContainer from '../../containers/board/ListContainer';
-import MainLayout from '../../layouts/MainLayout';
+import React from 'react'
+import MainLayout from '../../layouts/MainLayout'
+import ListContainer from '../../containers/board/ListContainer'
 
 const anList = () => {
-  const optionList = [/* ... 옵션 리스트 ... */];
-  const page = {
-    first: 1,
-    prev: 1,
-    start: 1,
-    end: 10,
-    next: 2,
-    last: 10,
-    page: 1,
-  };
-  const option = {
-    code: '', // 초기값 설정
-    keyword: '', // 초기값 설정
-  };
-
+    const optionList = []
+    const page = {
+        first : 1,
+        prev: 1,
+        start: 1,
+        end: 10,
+        nest: 2,
+        last: 10,
+        page: 1,
+    }
+    const option = {
+        code: '',
+        keyword: '',
+    }
+    
   return (
     <>
-      <MainLayout>
-
+    <MainLayout>
         <ListContainer
-          type="an"
-          optionList={optionList}
-          page={page}
-          option={option}
-          toBoard={"/an"}
+        type="an"
+        optionList={optionList}
+        page={page}
+        option={option}
+        toBoard={"/an"}
         />
-      </MainLayout>
+    </MainLayout>
     </>
-  );
-};
+  )
+}
 
-export default anList;
+export default anList

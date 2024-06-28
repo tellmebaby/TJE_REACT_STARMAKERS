@@ -30,7 +30,6 @@ const List = ({ type, optionList, page, option, toBoard }) => {
       case 'event': return 'EVENT';
       case 'an': return 'Notice';
       case 'review': return '후기';
-      default: return 'BOARD';
     }
   };
 
@@ -46,7 +45,7 @@ const List = ({ type, optionList, page, option, toBoard }) => {
   
 
   return (
-    <div className={styles.container} style={{ padding: '10px' }}>
+    <div className="container" style={{ padding: '10px' }}>
       <h3 className={styles.event}>{getTitle()}</h3>
       <div className={styles.eventtext}>
         <label>{getDescription()}</label>
