@@ -181,19 +181,28 @@ public class FileController {
 
  
     @PostMapping("/upload")
-    public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile multipartFile,
-            @RequestParam("user_no") int userNo ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+    public ResponseEntity<?> insert(@RequestParam("file") MultipartFile multipartFile ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Users user = customUser.getUser();
+        int userNo = user.getUserNo();
+        int fileNo = fileService.upload(multipartFile, null , userNo);
+        if (fileNo>0) {
+            return new ResponseEntity<>(fileNo, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("파일 업로드 실패", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    // 준수야 이거 알아서 고쳐써라 연진이가 망가트려놨다
+    @PostMapping("/profileUpload")
+    public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile multipartFile ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+        Users user = customUser.getUser();
+        int userNo = user.getUserNo();
         boolean isUploaded = fileService.profileUpload(multipartFile, userNo);
         if (isUploaded) {
             // 저장된 마지막 파일정보 가져와서 세션에 파일 번호 저장
             Files file = fileService.selectByUserNoAndStarNo(userNo);
-            Users user = customUser.getUser();
-            // Users user = new Users();
-            // user.setUserNo(1);
             int newFileNo = file.getFileNo();
-            user.setUserImgId(newFileNo);
-            // customUser.setUser(user);
-            log.info("::::::::::: 저장된 user : " + user);
 
             return new ResponseEntity<>(newFileNo, HttpStatus.OK);
         } else {

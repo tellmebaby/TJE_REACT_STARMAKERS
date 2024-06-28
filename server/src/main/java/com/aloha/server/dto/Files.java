@@ -14,6 +14,6 @@ public class Files {
     private long size;
     private Date regDate;
     private int userNo;
-    private int StarNo;
+    private Integer StarNo;
     private MultipartFile file;
 }

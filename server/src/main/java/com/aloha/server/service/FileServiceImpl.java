@@ -51,8 +51,8 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public int insert(Files file) throws Exception {
-        int result = fileMapper.insert(file);
-        return result;
+        fileMapper.insert(file);
+        return file.getFileNo();
     }
 
 
@@ -127,7 +127,7 @@ public class FileServiceImpl implements FileService {
      * 파일 업로드
      */
     @Override
-    public boolean upload(MultipartFile mf, int stat_no, int user_no) throws Exception {
+    public int upload(MultipartFile mf, Integer stat_no, int user_no) throws Exception {
 
         // 파일 정보 : 원본파일명, 파일 용량, 파일 데이터
         String originName = mf.getOriginalFilename();
@@ -164,8 +164,9 @@ public class FileServiceImpl implements FileService {
         file.setStarNo(stat_no);
 
         fileMapper.insert(file);
+        int fileNo = file.getFileNo();
 
-        return true;
+        return fileNo;
     }
 
 
