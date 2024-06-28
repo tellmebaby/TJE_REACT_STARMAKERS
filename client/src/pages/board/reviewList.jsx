@@ -1,6 +1,8 @@
 import React from 'react'
+import ListContainer from '../../containers/board/ListContainer';
+import MainLayout from '../../layouts/MainLayout';
 
-const reviewList = () => {
+const ReviewList = () => {
     const optionList = []
     const page = {
         first : 1,
@@ -34,4 +36,4 @@ const reviewList = () => {
   )
 }
 
-export default reviewList
+export default ReviewList
