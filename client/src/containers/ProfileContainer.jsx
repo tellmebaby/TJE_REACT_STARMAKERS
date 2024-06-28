@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Profile from '../components/Mypage/ProfileForm'
+import Profile from '../components/mypage/ProfileForm'
 import * as mypage   from '../apis/mypage'
 
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../Mypage/css/QnaListForm.module.css';
+import styles from '../mypage/css/QnaListForm.module.css';
 import { formatDate } from '../../apis/format';
 
 const QnaList = ({ user }) => {

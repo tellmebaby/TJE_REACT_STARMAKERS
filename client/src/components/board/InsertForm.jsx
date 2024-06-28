@@ -6,7 +6,6 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import 'bootstrap/dist/css/bootstrap.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import './test.css'
-// import SummernoteComponent from './Summernote.jsx';
 
 const InsertForm = () => {
   const { isLogin, logout } = useContext(LoginContext)
