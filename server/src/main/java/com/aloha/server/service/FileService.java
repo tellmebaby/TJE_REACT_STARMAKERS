@@ -32,7 +32,7 @@ public interface FileService {
     public int deleteByParent(Files file) throws Exception;
     
     // 파일 업로드
-    public boolean upload(MultipartFile multipartFile, int star_no, int user_no) throws Exception;
+    public int upload(MultipartFile multipartFile, Integer star_no, int user_no) throws Exception;
 
     // 프로필 업로드
     public boolean profileUpload(MultipartFile multipartFile, int user_no) throws Exception;
