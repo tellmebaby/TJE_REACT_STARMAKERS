@@ -10,12 +10,11 @@ const UserDeleteContainer = ({ userNo }) => {
     const userDelete = async () => {
         try {
             const response = await mypage.deleteUser(userNo);
-            const data = response.data;
-            setUser(data)
+            const data = await response.data
             console.log('userDelete 함수 호출, userNo:', userNo); // userNo 로그 출력
-            console.log("data : " + data);
-            console.log("response : " + response);
+            console.log('Delete response:', response.data);
             navigate("/");
+            setUser(data)
         } catch (error) {
             console.error("Error during user delete:", error);
         }
