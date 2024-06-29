@@ -22,6 +22,11 @@
     color: #000;
 }
 
+.navLinks .active {
+    font-weight: bold;
+    color: black;
+}
+
 .table {
     font-size: 15px;
     
@@ -120,3 +125,4 @@ th {
 .button:hover {
     background-color: #1d5bc6;
 }
+
