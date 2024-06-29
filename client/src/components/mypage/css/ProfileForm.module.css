@@ -22,6 +22,11 @@
     color: #000;
 }
 
+.navLinks .active {
+    font-weight: bold;
+    color: black;
+}
+
 .button {
     background-color: #0d6efd;
     color: white;
@@ -88,5 +93,9 @@ tbody {
 }
 .button:hover {
     background-color: #1d5bc6;
+}
+
+.active {
+    font-weight: bolder;
 }
     

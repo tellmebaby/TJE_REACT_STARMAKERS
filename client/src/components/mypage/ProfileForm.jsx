@@ -81,7 +81,7 @@ const ProfileForm = ({ user, file }) => {
                 <div className="col-md-3">
                     <div className={styles.sideMenu}>
                         <div className={styles.navLinks}>
-                            <Link to="/mypage/profile" className="active"><i className="fa-solid fa-user"></i>회원 정보</Link>
+                            <Link to="/mypage/profile" className={styles.active}><i className="fa-solid fa-user"></i>회원 정보</Link>
                             <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
                             <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
                             <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>

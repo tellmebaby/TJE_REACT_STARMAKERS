@@ -17,6 +17,7 @@ import Test from './pages/board/Test';
 import ProfileUpdate from './pages/mypage/ProfileUpdate';
 import AnList from './pages/board/AnList';
 import ReviewList from './pages/board/ReviewList';
+import UserDelete from './pages/mypage/UserDelete';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/ProfileUpdate" element={<ProfileUpdate/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
+          <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
           <Route path="/event" element={<EventList/>} />
           <Route path="/anInsert" element={<AnInsert/>}></Route>
           <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
