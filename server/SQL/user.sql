@@ -26,13 +26,13 @@ INSERT INTO user ( user_id, user_pw, name, email )
 VALUES ( 'user', '123456', '사용자', 'user@mail.com' );
 
 -- 관리자
-INSERT INTO user ( user_id, user_pw, name, email )
+INSERT INTO user ( id, user_pw, name, email )
 VALUES ( 'admin', '123456', '관리자', 'admin@mail.com' );
 
   
 -- BCryptPasswordEncoder - 암호화 시
 -- 사용자
-INSERT INTO user ( user_id, user_pw, name, email )
+INSERT INTO user ( id, password, name, email )
 VALUES ( 'user', '$2a$12$TrN..KcVjciCiz.5Vj96YOBljeVTTGJ9AUKmtfbGpgc9hmC7BxQ92', '사용자', 'user@mail.com' );
 
 INSERT INTO user ( user_id, user_pw, name, email )
