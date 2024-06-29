@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../mypage/css/UserDeleteForm.module.css';
 
-const UserDeleteForm = ({ userNo, userDelete }) => {
+const UserDeleteForm = ({ userDelete }) => {
   const [show, setShow] = useState(false);
   const [checked, setChecked] = useState(false);
 
@@ -19,7 +19,7 @@ const UserDeleteForm = ({ userNo, userDelete }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('handleSubmit 함수 호출, userNo:', userNo); // userNo 로그 출력
+    // console.log('handleSubmit 함수 호출, userNo:', userNo); // userNo 로그 출력
     await userDelete();
     setShow(false);
   };
