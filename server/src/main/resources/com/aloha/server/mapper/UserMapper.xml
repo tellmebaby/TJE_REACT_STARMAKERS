@@ -111,8 +111,6 @@
            SET phone = #{phone}
               ,address = #{address}
               ,id = #{id}
-              ,email = #{email}
-              ,name = #{name}
               ,upd_date = now()
         WHERE email = #{email}
     </update>
