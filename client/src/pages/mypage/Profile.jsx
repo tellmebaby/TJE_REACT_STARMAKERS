@@ -1,12 +1,12 @@
 import React from 'react'
 import ProfileContainer from '../../containers/mypage/ProfileContainer'
-import Header from '../../components/Header'
-
+import MainLayout from '../../layouts/MainLayout'
 const Profile = () => {
   return (
     <>
-        <Header />
-        <ProfileContainer />
+        <MainLayout>
+          <ProfileContainer />
+        </MainLayout>
     </>
   )
 }

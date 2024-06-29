@@ -14,10 +14,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
 import Test from './pages/board/Test';
+import ProfileUpdate from './pages/mypage/ProfileUpdate';
 import AnList from './pages/board/AnList';
 import ReviewList from './pages/board/ReviewList';
-
-
 
 function App() {
   return (
@@ -30,6 +29,7 @@ function App() {
           <Route path="/User" element={<User/>}></Route>
           <Route path="/IntroPage" element={<IntroPage/>}></Route>
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
+          <Route path="/mypage/ProfileUpdate" element={<ProfileUpdate/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/event" element={<EventList/>} />
           <Route path="/anInsert" element={<AnInsert/>}></Route>
