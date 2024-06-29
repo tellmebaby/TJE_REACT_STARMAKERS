@@ -5,18 +5,26 @@ import * as starBoard from '../../apis/starBoard'
 
 const ListContainer = ({ type, optionList, page, option }) => {
 
-  
-  // // 🌞 함수
-  // const getBoardList = async () => {
-  //   // 로딩 시작
-  //   setLoading(true)
-  //   const response = await boards.list()
-  //   const data = await response.data        //⭐boardList
-  //   setBoardList(data) // 2. state 가 바뀌면서 update 되어 렌더링을 다시 한다.
-  //   setLoading(false)
-  //   // 로딩 끝
+  const [boardList, setBoardList] = useState([]);
+  const [isLoading, setLoading] = useState(false);
 
-  // }
+  const getBoardList = async () => {
+    setLoading(true);
+    try {
+      const response = await starBoard.list(type, page, option);
+      const data = await response.data
+      setBoardList(data);
+      console.log(data);
+    } catch (error) {
+      console.error(`Error fetching ${type} list:`, error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getBoardList();
+  }, [type, page.page, option]);
 
   const toBoard = () => {
     switch (type) {
@@ -32,7 +40,9 @@ const ListContainer = ({ type, optionList, page, option }) => {
       optionList={optionList}
       page={page}
       option={option}
-      toBoard={toBoard}
+      toBoard={toBoard()}
+      boardList={boardList}
+      loading={isLoading}
     />
   );
 };

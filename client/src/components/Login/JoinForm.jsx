@@ -150,15 +150,15 @@ const handleSubmit = async (event) => {
 };
 
   return (
-    <div className="join-container">
+    <div className="joinContainer">
       <div className="join-style">
         <div className="signup-form">
           <div className="logo-container">
-            <img src="/img/logo_ex4.png" alt="logo" />
+            <img src="/img/logo_ex4.png" alt="logo" className="logo"/>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form className='join-form' onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="inputUserid">닉네임</label>
+              <label id="label" htmlFor="inputUserid">닉네임</label>
               <div className="input-group">
                 <input
                   type="text"
