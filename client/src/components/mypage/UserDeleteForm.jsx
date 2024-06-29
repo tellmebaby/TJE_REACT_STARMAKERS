@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../mypage/css/UserDeleteForm.module.css';
 
-const UserDeleteForm = ({ user, userNo, userDelete }) => {
+const UserDeleteForm = ({ userNo, userDelete }) => {
   const [show, setShow] = useState(false);
   const [checked, setChecked] = useState(false);
 

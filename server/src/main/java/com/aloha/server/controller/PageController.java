@@ -127,32 +127,35 @@ public class PageController {
      * @throws Exception
      */
     @DeleteMapping("/profile/{userNo}")
-public ResponseEntity<?> delete(@AuthenticationPrincipal CustomUser customUser, @PathVariable("userNo") int userNo) throws Exception {
-    try {
-        if (customUser == null) {
-            log.info("customUser가 null입니다.");
-            return ResponseEntity.status(400).body("User not authenticated");
-        }
-        Users user = customUser.getUser();
-        String email = user.getEmail();
-        log.info("email : " + email);
-        int result = userService.delete(user);
-        log.info("번호 : " + user);
-        if (result > 0) {
+    public ResponseEntity<?> deletePro(@AuthenticationPrincipal CustomUser customUser, @PathVariable("userNo") int userNo) throws Exception {
+        try {
+            log.info("Received request to delete user with userNo: " + userNo);
+            
+            if (customUser == null) {
+                log.info("customUser가 null입니다.");
+                return ResponseEntity.status(400).body("User not authenticated");
+            }
+            Users user = customUser.getUser();
+            String email = user.getEmail();
+            log.info("email : " + email);
+            int result = userService.delete(user);
             log.info("번호 : " + user);
-            log.info("탈퇴 성공!");
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            log.info("탈퇴 실패!");
-            return ResponseEntity.status(500).body("User deletion failed");
+            if (result > 0) {
+                log.info("번호 : " + user);
+                log.info("탈퇴 성공!");
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                log.info("탈퇴 실패!");
+                return ResponseEntity.status(500).body("User deletion failed");
+            }
+        } catch (Exception e) {
+            log.info("error : " + e);
+            log.info("탈퇴 실패2 : " + e);
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
-    } catch (Exception e) {
-        log.info("error : " + e);
-        log.info("탈퇴 실패2 : " + e);
-        return ResponseEntity.status(500).body("Internal Server Error");
     }
-}
-
+    
+    
     /**
      * Q&A 목록
      * @param page
