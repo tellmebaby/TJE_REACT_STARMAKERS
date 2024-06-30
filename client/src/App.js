@@ -16,6 +16,7 @@ import EventList from './pages/board/EventList';
 import Test from './pages/board/Test';
 import ProfileUpdate from './pages/mypage/ProfileUpdate';
 import AnList from './pages/board/AnList';
+import QnaMainList from './pages/board/QnaMainList';
 import ReviewList from './pages/board/ReviewList';
 import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
@@ -36,6 +37,7 @@ function App() {
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
           <Route path="/event" element={<EventList/>} />
           <Route path="/review" element={<ReviewList />}/>
+          <Route path="/qna/qnaList" element={<QnaMainList />}/>
           <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
           <Route path="/an" element={<AnList />}/>
           <Route path="/anInsert" element={<AnInsert/>}></Route>

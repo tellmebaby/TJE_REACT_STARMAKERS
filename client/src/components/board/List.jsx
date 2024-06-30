@@ -65,9 +65,25 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
             </tr>
           </thead>
           <tbody>
+          <tr className={styles.fixed}>
+              <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
+              <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>로그인 필수</b></td>
+              <td align="center">관리자</td>
+              <td align="center"><span>2024-05-28 18:59:37</span></td>
+              <td align="center"></td>
+              <td align="center">678</td>
+            </tr>
+            <tr className={styles.fixed}>
+              <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
+              <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>관리 원칙에 위배되는 글은 삭제될 수 있습니다.</b></td>
+              <td align="center">관리자</td>
+              <td align="center"><span>2024-05-28 18:40:37</span></td>
+              <td align="center"></td>
+              <td align="center">439</td>
+            </tr>
             {boardList.length === 0 ? (
               <tr>
-                <td colSpan="6" align="center" className={styles.emptyRow}>
+                <td colSpan="6" align="center" className={styles.emptyRow} style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
                   조회된 게시글이 없습니다.
                 </td>
               </tr>

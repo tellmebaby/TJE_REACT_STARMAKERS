@@ -53,7 +53,7 @@ public class QnaController {
             optionList.add(new Option("작성자", 3));
             response.put("optionList", optionList);
             
-            return new ResponseEntity<>(qnaList, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

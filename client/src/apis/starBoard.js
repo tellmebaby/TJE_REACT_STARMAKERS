@@ -1,42 +1,16 @@
 import axios from 'axios';
 
-// 목록
-// export const list = (type, page, option) => {
-//     let url = `/${type}`;
-//     if (page) {
-//       url += `&page=${page}`;
-//     }
-//     if (option) {
-//       for (const key in option) {
-//         if (option.hasOwnProperty(key)) {
-//           url += `&${key}=${option[key]}`;
-//         }
-//       }
-//     }
-//     return axios.get(url);
-//   }
-
+// 목록 조회
 export const list = async (type, page, option) => {
-  try {
-    console.log("Request URL:", `/${type}`);
-    console.log("Request Parameters:", { type, page, code: option.code, keyword: option.keyword });
-
-    const response = await axios.get(`/${type}`, {
-      params: {
-        page,
-        code: option.code,
-        keyword: option.keyword,
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error("Error in API request:", error);
-    throw error;
-  }
+    const params = {
+      page,
+      ...option,  // 추가적인 옵션이 있을 경우 params에 추가됨
+    };
+    return axios.get(`/${type}`, {params}).then(response => response.data)
 };
 
-// 조회
-export const select = (no) => axios.get(`/boards/${no}`)
+// 상세 조회
+export const select = (no) => axios.get(`/${no}`);
 
 // 등록
 // export const insert = (title, writer, content) => axios.post("/boards", {title, writer, content})
@@ -48,4 +22,5 @@ export const insert = (FormData, headers) => axios.post("/insertBoard", FormData
 export const update = (formData, headers) => axios.put("/updateBoard", formData, headers)
 
 // 삭제
-export const remove = (no) => axios.delete(`/boards/${no}`)
+export const remove = (no) => axios.delete(`/boards/${no}`);
+// no: 삭제할 데이터의 ID 또는 식별자
