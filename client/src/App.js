@@ -18,6 +18,7 @@ import ProfileUpdate from './pages/mypage/ProfileUpdate';
 import AnList from './pages/board/AnList';
 import ReviewList from './pages/board/ReviewList';
 import UserDelete from './pages/mypage/UserDelete';
+import StarInsert from './pages/board/StarInsert';
 
 function App() {
   return (
@@ -34,11 +35,12 @@ function App() {
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
           <Route path="/event" element={<EventList/>} />
-          <Route path="/anInsert" element={<AnInsert/>}></Route>
+          <Route path="/review" element={<ReviewList />}/>
           <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
           <Route path="/an" element={<AnList />}/>
-          <Route path="/review" element={<ReviewList />}/>
+          <Route path="/anInsert" element={<AnInsert/>}></Route>
           <Route path="/test" component={<Test/>} />
+          <Route path="/starInsert" element={<StarInsert/>}></Route>
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>
