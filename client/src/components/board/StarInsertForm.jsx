@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const StarInsertForm = ({ type, onInsert }) => {
     const { isLogin, logout } = useContext(LoginContext)
-    const [selectedButton, setSelectedButton] = useState('freePromo');
+    const [promoButton, setpromoButton] = useState('freePromo');
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [files, setFiles] = useState(null)
@@ -26,9 +26,8 @@ const StarInsertForm = ({ type, onInsert }) => {
     }
 
     const handlePromoClick = (promoType) => {
-        promoType.preventDefault()      // 기본 이벤트 방지
-        setSelectedButton(promoType);
-        console.log(selectedButton);
+        setpromoButton(promoType);
+        console.log(promoButton);
     };
 
     const handleDesignBtnClick = () => {
@@ -36,7 +35,7 @@ const StarInsertForm = ({ type, onInsert }) => {
       };
 
     const onSubmit = (e) => {
-       
+        promoType.preventDefault()      // 기본 이벤트 방지
         console.log("여기오나? onSubmit");
         // 유효성 검사 ✅
         // ...일단 생략
@@ -131,15 +130,15 @@ const StarInsertForm = ({ type, onInsert }) => {
 
                         <div className="d-flex align-items-center border-bottom border-dark" id="channel">
                             <button
-                                className={`btn btn-dark btn-lg col-4 border-0 rounded-1 ${selectedButton === 'freePromo' ? 'btn-dark' : 'btn-outline-dark'} ` }
+                                className={`btn btn-dark btn-lg col-4 border-0 rounded-1 ${promoButton === 'freePromo' ? 'btn-dark' : 'btn-outline-dark'} ` }
                                 onClick={() => handlePromoClick('freePromo')}
                             >무료홍보</button>
                             <button
-                                className={`btn btn-outline-dark btn-lg col-4 border-0 rounded-1 ${selectedButton === 'payPromo' ? 'btn-dark' : 'btn-outline-dark'}`}
+                                className={`btn btn-outline-dark btn-lg col-4 border-0 rounded-1 ${promoButton === 'payPromo' ? 'btn-dark' : 'btn-outline-dark'}`}
                                 onClick={() => handlePromoClick('payPromo')}
                             >유료홍보</button>
                             <button
-                                className={`btn btn-outline-dark btn-lg col-4 border-0 rounded-1 ${selectedButton === 'designBtn' ? 'btn-dark' : 'btn-outline-dark'}`}
+                                className={`btn btn-outline-dark btn-lg col-4 border-0 rounded-1 ${promoButton === 'designBtn' ? 'btn-dark' : 'btn-outline-dark'}`}
                                 onClick={handleDesignBtnClick}
                             >디자인의뢰</button>
                         </div>
@@ -298,18 +297,15 @@ const StarInsertForm = ({ type, onInsert }) => {
                             }}
                         />
                         <div className="d-flex justify-content-end mt-2">
-                            {/* <button type="button" className="btn btn-primary btn-submit col-1 border-1 btn-list" >목록</button> */}
                             <Link to={`/${type}`} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
-                            {/* <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>등록</button> */}
-                            {selectedButton === 'freePromo' && (
+                            {promoButton === 'freePromo' && (
                                 <div>
                                     <button id="sendPost" className={'btn btn-dark btn-submit col-1 border-0'} onClick={onSubmit()}>등록</button>
                                 </div>
                             )}
-                            {selectedButton === 'payPromo' && (
+                            {promoButton === 'payPromo' && (
                                 <div>
                                     <button className='btn btn-dark btn-sm border col-1' id="payBtn">결제</button>
-                                    <button id="starInsert">Star Insert Button</button>
                                 </div>
                             )}
                         </div>
