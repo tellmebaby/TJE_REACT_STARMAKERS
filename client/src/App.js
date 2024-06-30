@@ -14,6 +14,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import EventList from './pages/board/EventList';
 import Test from './pages/board/Test';
 import AnList from './pages/board/AnList';
+import QnaMainList from './pages/board/QnaMainList';
 import ReviewList from './pages/board/ReviewList';
 
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/event" element={<EventList/>} />
           <Route path="/an" element={<AnList />}/>
           <Route path="/review" element={<ReviewList />}/>
+          <Route path="/qna/qnaList" element={<QnaMainList />}/>
           <Route path="/anInsert" element={<Insert/>}></Route>
           <Route path="/test" component={<Test/>} />
         </Routes>

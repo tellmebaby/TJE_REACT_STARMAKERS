@@ -10,21 +10,16 @@ const ListContainer = ({ type, optionList, page, option }) => {
 
   const getBoardList = async () => {
     setLoading(true);
-    try {
-      const response = await starBoard.list(type, page, option);
-      const data = await response.data
-      setBoardList(data);
-      console.log(data);
-    } catch (error) {
-      console.error(`Error fetching ${type} list:`, error);
-    } finally {
-      setLoading(false);
-    }
+    const response = await starBoard.list(type, page, option);
+    // const data = await response.data
+    setBoardList(response.list || []);
+    console.log(response);
+    setLoading(false);
   };
 
   useEffect(() => {
     getBoardList();
-  }, [type, page.page, option]);
+  }, [type, page, option]);
 
   const toBoard = () => {
     switch (type) {
@@ -36,7 +31,7 @@ const ListContainer = ({ type, optionList, page, option }) => {
 
   return (
     <List
-      type={type}
+      type={type} 
       optionList={optionList}
       page={page}
       option={option}

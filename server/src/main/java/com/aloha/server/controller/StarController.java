@@ -677,7 +677,7 @@ public class StarController {
      * @throws Exception
      */
     @GetMapping("/an")
-    public ResponseEntity<?> anList( @RequestParam("page") Page page,  @RequestParam("option") Option option) throws Exception {
+    public ResponseEntity<?> anList( Page page, Option option) throws Exception {
 
         List<StarBoard> starList = starService.list("an", page, option);
         Map<String, Object> response = new HashMap<>();
