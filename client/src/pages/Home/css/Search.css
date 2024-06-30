@@ -1,0 +1,70 @@
+
+#main-search {
+    background-color: transparent; /* 배경색 없음 */
+    border: 1px solid white; /* 테두리 하얀색 */
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    margin-left: -1px; /* 왼쪽에 인풋과 겹치지 않도록 마진 설정 */
+    border-top-right-radius: 0; /* 버튼 왼쪽 상단 모서리를 둥글게 하지 않음 */
+    border-bottom-right-radius: 0; /* 버튼 왼쪽 하단 모서리를 둥글게 하지 않음 */
+    height: calc(100% - 2px); /* 버튼 높이를 인풋과 동일하게 설정 */
+    margin-right: -1px; /* 버튼과의 간격을 없애기 위해 추가 */
+}
+
+#btn-mainSearch {
+    background-color: transparent; /* 배경색 없음 */
+    border: 1px solid white; /* 테두리 하얀색 */
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    margin-left: -1px; /* 왼쪽에 인풋과 겹치지 않도록 마진 설정 */
+    border-top-left-radius: 0; /* 버튼 왼쪽 상단 모서리를 둥글게 하지 않음 */
+    border-bottom-left-radius: 0; /* 버튼 왼쪽 하단 모서리를 둥글게 하지 않음 */
+    height: calc(100% - 2px); /* 버튼 높이를 인풋과 동일하게 설정 */
+    width: 150px;
+    margin-right: -1px; /* 버튼과의 간격을 없애기 위해 추가 */
+}
+
+#main-search::placeholder {
+    color: white; /* 플레이스홀더 텍스트 색상을 흰색으로 설정 */
+}
+
+#btn-mainSearch:hover {
+    background-color: white; /* 마우스 오버시 배경색 흰색으로 변경 */
+    color: black; /* 텍스트 색상을 검은색으로 변경 */
+}
+
+.bg-image {
+    position: relative;
+    background-image: url('../../../../public/img/indexTopBackImg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+
+.bg-image .topOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* .bg-image의 높이에 맞춤 */
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.jumbotron {
+    height: 60vh; /* 화면 높이와 동일하게 설정 */
+    margin-bottom: 3%;
+}
+
+.jumbotron .topOverlay {
+    padding: 0 30px;
+    text-align: left;
+}

@@ -13,12 +13,13 @@ export const list = async (type, page, option) => {
 export const select = (no) => axios.get(`/${no}`);
 
 // 등록
-export const insert = (toBoard, FormData, headers) => axios.post(toBoard, FormData, headers);
-// toBoard: 요청 보낼 경로, FormData: 전송할 데이터, headers: 요청 헤더
+// export const insert = (title, writer, content) => axios.post("/boards", {title, writer, content})
+export const insert = (FormData, headers) => axios.post("/insertBoard", FormData, headers )
+// url, body, headers
 
 // 수정
-export const update = (formData, headers) => axios.put("/boards", formData, headers);
-// formData: 수정할 데이터, headers: 요청 헤더
+// export const update = (no, title, writer, content) => axios.put("/boards", {no, title, writer, content})
+export const update = (formData, headers) => axios.put("/updateBoard", formData, headers)
 
 // 삭제
 export const remove = (no) => axios.delete(`/boards/${no}`);

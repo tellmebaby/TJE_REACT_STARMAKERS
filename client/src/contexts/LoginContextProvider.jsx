@@ -119,14 +119,14 @@ const LoginContextProvider = ({ children }) => {
     // 🔐 로그인 세팅
     // 👩🏻‍💼 userData, 💍 accessToken(JWT)
     const loginSetting = (userData, accessToken) => {
-        const { no, userId, authList, email } = userData   // 👩🏻‍💼 Users (DTO) [JSON]
+        const { userNo, id, authList, email } = userData   // 👩🏻‍💼 Users (DTO) [JSON]
         const roleList = authList.map((auth) => auth.auth) // 🏷️ [ROLE_USER,ROLE_ADMIN]
     
-        // console.log(`no : ${no}`);
-        // console.log(`userId : ${userId}`);
-        // console.log(`email : ${email}`);
-        // console.log(`authList : ${authList}`);
-        // console.log(`roleList : ${roleList}`);
+        console.log(`userNo : ${userNo}`);          // 👩‍🏫 no ➡ userNo
+        console.log(`id : ${id}`);                  // 👩‍🏫 userId ➡ id    - TOOD: 왜 null 인지 체크
+        console.log(`email : ${email}`);
+        console.log(`authList : ${authList}`);      // TODO: 왜 권한이 안 넘어오는지 체크
+        console.log(`roleList : ${roleList}`);
 
         // axios common head - Authorization 헤더에 JWT emdfhr
         api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
@@ -136,7 +136,7 @@ const LoginContextProvider = ({ children }) => {
         setLogin(true)
         
         // 👩🏻‍💼 유저 정보 세팅
-        const updatedUserInfo = {no, userId, email, roleList}
+        const updatedUserInfo = {userNo, id, email, roleList}
         setUserInfo(updatedUserInfo)
 
         // 👩🏻‍🎨 권한 정보 세팅
@@ -165,7 +165,14 @@ const LoginContextProvider = ({ children }) => {
 
     
     // 🔓 로그아웃
-    const logout = () => {
+    const logout = (force=false) => {
+
+        // 확인창 없이 바로 로그아웃
+        if( force ) {
+            logoutSetting() // 로그아웃 세팅
+            navigate("/")   // 메인 페이지로 이동
+            return
+        }
 
         Swal.confirm("로그아웃 하시겠습니다?", "로그아웃을 진행합니다.", "warning",
             (result) => {
@@ -198,8 +205,10 @@ const LoginContextProvider = ({ children }) => {
         // 로그인 세팅을 한다. 그로그인 세팅은 컨텍스트의 로그인 여부 사용자 정보 권한정보를 등록
     },[])
 
+    // 👩‍🏫 
+    // Context 데이터로 userInfo 를 등록해야, 전체 컴포넌트에서 userInfo 가져와서 사용할 수 있음
   return (
-    <LoginContext.Provider value={{isLogin,login,logout,roles}}>
+    <LoginContext.Provider value={{isLogin,login,logout,userInfo,roles}}>
         {children}
     </LoginContext.Provider>
   )

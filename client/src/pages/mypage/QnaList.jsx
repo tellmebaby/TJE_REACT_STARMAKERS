@@ -1,12 +1,13 @@
 import React from 'react'
 import QnaListContainer from '../../containers/mypage/QnaListContainer'
-import Header from '../../components/Header'
+import MainLayout from '../../layouts/MainLayout'
 
 const QnaList = () => {
   return (
     <>
-        <Header />
+      <MainLayout>
         <QnaListContainer />
+      </MainLayout>
     </>
   )
 }

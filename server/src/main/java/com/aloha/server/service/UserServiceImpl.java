@@ -112,6 +112,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int update(Users user) throws Exception {
+        log.info("유저 정보 넘어오니 : " + user);
         int result = userMapper.update(user);
         return result;
     }

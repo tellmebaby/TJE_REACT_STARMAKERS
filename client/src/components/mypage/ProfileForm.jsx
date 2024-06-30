@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../mypage/css/ProfileForm.module.css';
 
-const MyPage = ({ user, file }) => {
+const ProfileForm = ({ user, file }) => {
     // const [uploadedImage, setUploadedImage] = useState(`/file/img/${file.fileNo}`);
     // const [fileInput, setFileInput] = useState(null);
 
@@ -80,12 +81,12 @@ const MyPage = ({ user, file }) => {
                 <div className="col-md-3">
                     <div className={styles.sideMenu}>
                         <div className={styles.navLinks}>
-                            <a href="/mypage/profile" className="active"><i className="fa-solid fa-user"></i>회원 정보</a>
-                            <a href="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</a>
-                            <a href="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</a>
-                            <a href="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</a>
-                            <a href="/mypage/QnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</a>
-                            <a href="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</a>
+                            <Link to="/mypage/profile" className={styles.active}><i className="fa-solid fa-user"></i>회원 정보</Link>
+                            <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
+                            <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
+                            <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
+                            <Link to="/mypage/QnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
+                            <Link to="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
                         </div>
                     </div>
                 </div>
@@ -121,9 +122,9 @@ const MyPage = ({ user, file }) => {
                             </tbody>
                         </table>
                         <div className={styles.buttonContainer}>
-                            <a href="/page/mypage/profileUpdate">
+                            <Link to="/mypage/profileUpdate">
                                 <input className={styles.button} type="button" value="정보 수정" />
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -141,4 +142,4 @@ const MyPage = ({ user, file }) => {
     );
 };
 
-export default MyPage;
+export default ProfileForm;

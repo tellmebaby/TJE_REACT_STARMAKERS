@@ -18,19 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aloha.server.dto.Files;
+import com.aloha.server.dto.CustomUser;
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
+import com.aloha.server.dto.Pay;
 import com.aloha.server.dto.QnaBoard;
 import com.aloha.server.dto.StarBoard;
+import com.aloha.server.dto.Users;
 import com.aloha.server.service.FileService;
+import com.aloha.server.service.PayService;
 import com.aloha.server.service.QnaService;
 import com.aloha.server.service.ReplyService;
 import com.aloha.server.service.StarService;
-import com.aloha.server.dto.Pay;
-import com.aloha.server.service.PayService;
-import com.aloha.server.dto.CustomUser;
-import com.aloha.server.dto.Users;
 import com.aloha.server.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -76,16 +75,16 @@ public class PageController {
             log.info("email : " + email);
             user = userService.read(email);
     
-            Integer fileNo = fileService.profileSelect(userNo);
-            Files file;
-            if (fileNo > 0) {
-                file = fileService.select(fileNo);
-                log.info("file : " + file);
-            } else {
-                file = new Files();
-                file.setFileNo(-1);
-                log.info("file123 : " + file);
-            }
+            // Integer fileNo = fileService.profileSelect(userNo);
+            // Files file;
+            // if (fileNo > 0) {
+            //     file = fileService.select(fileNo);
+            //     log.info("file : " + file);
+            // } else {
+            //     file = new Files();
+            //     file.setFileNo(-1);
+            //     log.info("file123 : " + file);
+            // }
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
             log.info("error : " + e);
@@ -102,42 +101,68 @@ public class PageController {
      */
     @PutMapping("/profile")
     public ResponseEntity<?> updatePro(@RequestBody Users user) throws Exception {
+        log.info("유정 수정 : " + user);
         try {
             int result = userService.update(user);
             log.info("수정 : " + user);
             if (result > 0) {
+                log.info("수정 완료 : " + result);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } else {
+                log.info("수정 실패" + result);
                 return ResponseEntity.status(500).body("Profile update failed");
             }
         } catch (Exception e) {
+            log.info("수정 실패 : " + e);
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
 
+    /**
+     * 사용자 탈퇴
+     * @param customUser
+     * @param userNo
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping("/profile/{userNo}")
     public ResponseEntity<?> deletePro(@AuthenticationPrincipal CustomUser customUser, @PathVariable("userNo") int userNo) throws Exception {
         try {
+            log.info("Received request to delete user with userNo: " + userNo);
+            
+            if (customUser == null) {
+                log.info("customUser가 null입니다.");
+                return ResponseEntity.status(400).body("User not authenticated");
+            }
             Users user = customUser.getUser();
-            // Users user = new Users();
-            // user.setUserNo(2);
-            // user.setEmail("user1@example.com");
             String email = user.getEmail();
             log.info("email : " + email);
             int result = userService.delete(user);
             log.info("번호 : " + user);
             if (result > 0) {
                 log.info("번호 : " + user);
+                log.info("탈퇴 성공!");
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } else {
+                log.info("탈퇴 실패!");
                 return ResponseEntity.status(500).body("User deletion failed");
             }
         } catch (Exception e) {
             log.info("error : " + e);
+            log.info("탈퇴 실패2 : " + e);
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-
+    
+    
+    /**
+     * Q&A 목록
+     * @param page
+     * @param option
+     * @param session
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/qnaList")
     public ResponseEntity<?> qnaList(Page page, Option option, HttpSession session) throws Exception {
         try {
@@ -149,6 +174,12 @@ public class PageController {
         }
     }
 
+    /**
+     * Q&A 조회
+     * @param qnaNo
+     * @return
+     * @throws Exception
+     */
     @GetMapping("/qna/{qnaNo}")
     public ResponseEntity<?> read(@PathVariable("qnaNo") int qnaNo) throws Exception {
         try {
@@ -160,6 +191,12 @@ public class PageController {
         }
     }
 
+    /**
+     * Q&A 수정
+     * @param qnaBoard
+     * @return
+     * @throws Exception
+     */
     @PutMapping("/qna")
     public ResponseEntity<?> updatePro(@RequestBody QnaBoard qnaBoard) throws Exception {
         try {
