@@ -22,11 +22,13 @@ import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
 import QnaInsert from './pages/board/QnaInsert';
 import Read from './pages/board/Read';
+import { SessionProvider } from './contexts/SessionContext';
 
 function App() {
   return (
     <BrowserRouter>
       <LoginContextProvider>
+        <SessionProvider>
         <Routes>
           <Route path="/" element={<Home/>}></Route>
           <Route path="/Login" element={<Login/>}></Route>
@@ -48,6 +50,7 @@ function App() {
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
         </Routes>
+        </SessionProvider>
       </LoginContextProvider>
     </BrowserRouter>
   );
