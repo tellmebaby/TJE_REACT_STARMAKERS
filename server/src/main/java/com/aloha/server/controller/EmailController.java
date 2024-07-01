@@ -32,7 +32,7 @@ public class EmailController {
         Email email = emailService.select(token);
 
         if (emailService.verifyToken(token)) {
-            email.setStatus("인증완료");
+            email.setStatus("인증완료" );
             emailService.update(email);
 
             model.addAttribute("email", email);
