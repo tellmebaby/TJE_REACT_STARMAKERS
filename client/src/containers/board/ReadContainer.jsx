@@ -32,7 +32,7 @@ const ReadContainer = ({starNo}) => {
   // ❓ hook
   useEffect( () => {
       getBoard()
-  }, [])
+  }, [starNo])
 return (
   <>
       <Read

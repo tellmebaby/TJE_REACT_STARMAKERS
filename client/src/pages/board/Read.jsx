@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import ReadContainer from '../../containers/board/ReadContainer'
+import MainLayout from '../../layouts/MainLayout'
 
 const Read = () => {
    // 파라미터 가져오기
@@ -9,7 +10,9 @@ const Read = () => {
  return (
    <>
        {/* Header */}
+       <MainLayout>
        <ReadContainer starNo={starNo}/>
+       </MainLayout>
        {/* Footer */}
    </>
  )
