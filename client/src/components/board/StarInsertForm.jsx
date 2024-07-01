@@ -31,11 +31,11 @@ const StarInsertForm = ({ type, onInsert }) => {
     };
 
     const handleDesignBtnClick = () => {
-        setSelectedButton('designBtn');
+        setpromoButton('designBtn');
       };
 
     const onSubmit = (e) => {
-        promoType.preventDefault()      // 기본 이벤트 방지
+        e.preventDefault()      // 기본 이벤트 방지
         console.log("여기오나? onSubmit");
         // 유효성 검사 ✅
         // ...일단 생략
