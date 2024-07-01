@@ -840,4 +840,38 @@ public class StarController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @GetMapping("/getBanner")
+    public ResponseEntity<?> getBanner() throws Exception {
+
+        List<StarBoard> bannerList = starService.getBanner();
+        if(bannerList != null){
+            return new ResponseEntity<>(bannerList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @GetMapping("/getFragByReview")
+    public ResponseEntity<?> getFragByReview() throws Exception {
+
+        String type = "review";
+        List<StarBoard> reviewList = starService.getFragByType(type);
+        if(reviewList != null){
+            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @GetMapping("/getFragByEvent")
+    public ResponseEntity<?> getFragByEvent() throws Exception {
+
+        String type = "event";
+        List<StarBoard> reviewList = starService.getFragByType(type);
+        if(reviewList != null){
+            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+
 }

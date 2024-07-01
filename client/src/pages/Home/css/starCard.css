@@ -1,14 +1,14 @@
 /* 기존 스타일 */
 #bannerCarousel img {
-    width: -webkit-fill-available;
+    /* width: -webkit-fill-available;
     height: 120px;
     border-radius: 15px;
-    border: 1px solid rgb(211, 212, 215);
+    border: 1px solid rgb(211, 212, 215); */
 }
 
 .event-banner {
-    text-align: center;
-    overflow: hidden;
+    /* text-align: center;
+    overflow: hidden; */
     /* margin: 20px 0; */
 }
 
@@ -52,21 +52,21 @@
 
 .carousel-control-prev,
 .carousel-control-next {
-    width: 40px;
+    /* width: 40px;
     color: black;
     left: -5%;
-    right: auto;
+    right: auto; */
 }
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: black;
-    border-radius: 50%;
+    /* background-color: black;
+    border-radius: 50%; */
 }
 
 .carousel-control-next {
-    left: auto;
-    right: -5%;
+    /* left: auto;
+    right: -5%; */
 }
 
 #promotionCarousel .row {
