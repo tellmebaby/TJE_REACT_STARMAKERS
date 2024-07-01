@@ -19,9 +19,10 @@ export const select = (no) => {
 };
 
 // 등록
-export const insert = (qnaBoard) => {
-  return axios.post('/qna', qnaBoard).then(response => response.data);
-};
+// export const insert = (qnaBoard) => {
+//   return axios.post('/qna', qnaBoard).then(response => response.data);
+// };
+export const insert = (FormData, headers) => axios.post("/qna", FormData, headers )
 
 // 수정
 export const update = (qnaBoard) => {

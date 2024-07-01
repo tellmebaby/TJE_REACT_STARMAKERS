@@ -120,9 +120,10 @@ public class QnaController {
 
 
     @PostMapping()
-    public ResponseEntity<?> insert(@RequestBody QnaBoard qnaBoard) {
+    public ResponseEntity<?> insert(QnaBoard qnaBoard) {
         try {
-            String username = qnaBoard.getUsername();
+
+            String username = qnaBoard.getWriter();
             QnaBoard newQnaBoard = qnaService.insert(qnaBoard, username);
 
             if (newQnaBoard != null) {

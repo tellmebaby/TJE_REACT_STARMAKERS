@@ -35,12 +35,12 @@ public interface FileService {
     public int upload(MultipartFile multipartFile, Integer star_no, int user_no) throws Exception;
 
     // 프로필 업로드
-    public boolean profileUpload(MultipartFile multipartFile, int user_no) throws Exception;
+    public boolean profileUpload(MultipartFile multipartFile, int userNo) throws Exception;
 
 
     // 파일 다운로드
     public Files download(int no) throws Exception;
 
-    public Files selectByUserNoAndStarNo(int userNo ) throws Exception;
+    public Files selectByUserNoAndStarNo(int userNo) throws Exception;
     
 }

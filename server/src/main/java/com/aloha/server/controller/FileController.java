@@ -195,23 +195,48 @@ public class FileController {
 
     // 준수야 이거 알아서 고쳐써라 연진이가 망가트려놨다
     @PostMapping("/profileUpload")
-    public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile multipartFile ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
+    public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile multipartFile,
+                                           @AuthenticationPrincipal CustomUser customUser) throws Exception {
         Users user = customUser.getUser();
         int userNo = user.getUserNo();
         boolean isUploaded = fileService.profileUpload(multipartFile, userNo);
         if (isUploaded) {
-            // 저장된 마지막 파일정보 가져와서 세션에 파일 번호 저장
             Files file = fileService.selectByUserNoAndStarNo(userNo);
-            int newFileNo = file.getFileNo();
-
-            return new ResponseEntity<>(newFileNo, HttpStatus.OK);
+            if (file == null) {
+                log.error("파일 정보가 데이터베이스에 저장되지 않았습니다.");
+                return new ResponseEntity<>("파일 업로드 성공했으나 데이터베이스에 파일 정보가 저장되지 않았습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            String filePath = "/file/img/" + file.getFileName(); // 파일 경로를 반환
+            log.info("파일 업로드 성공: 파일 경로 - " + filePath);
+            return new ResponseEntity<>(filePath, HttpStatus.OK); // 파일 경로 반환
         } else {
+            log.error("파일 업로드 실패");
             return new ResponseEntity<>("파일 업로드 실패", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    @DeleteMapping("/profileDelete/{userNo}")
+    public ResponseEntity<String> profileDelete(@PathVariable("userNo") int userNo) {
+        try {
+            // 파일 정보 가져오기
+            Integer fileNo = fileService.profileSelect(userNo);
+            if (fileNo != null && fileNo > 0) {
+                int result = fileService.allDelete(userNo);
+                if (result > 0) {
+                    return ResponseEntity.ok("파일이 성공적으로 삭제되었습니다.");
+                } else {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 삭제에 실패하였습니다.");
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("파일이 존재하지 않습니다.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 삭제 실패: " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/delete")
-    public ResponseEntity<String> delete(@RequestParam("user_no") int userNo) {
+    public ResponseEntity<String> delete(@PathVariable("userNo") int userNo) {
         try {
             // 파일 정보 가져오기
             Integer fileNo = fileService.profileSelect(userNo);
@@ -231,7 +256,7 @@ public class FileController {
     }
 
     @DeleteMapping("/allDelete")
-    public ResponseEntity<String> allDelete(@RequestParam("user_no") int userNo) {
+    public ResponseEntity<String> allDelete(@PathVariable("userNo") int userNo) {
         try {
             // 파일 정보 가져오기
             Integer fileNo = fileService.profileSelect(userNo);

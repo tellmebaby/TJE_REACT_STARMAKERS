@@ -737,20 +737,18 @@ public class StarController {
     }
 
     /**
-     * 공지 글 작성(insert)
-     * 
+     * 글 작성(insert)
      * @param starBoard
      * @return
      * @throws Exception
      */
     @PostMapping("/insertBoard")
     public ResponseEntity<?> anInsertPro(StarBoard starBoard) throws Exception {
-        // starBoard.setType("notice");
         StarBoard newBoard = starService.insert(starBoard);
         // 리다이렉트
         // 데이터 처리 성공
         if (newBoard != null) {
-            log.info(newBoard.toString());
+            log.info("글 정보" +  newBoard.toString());
             return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 

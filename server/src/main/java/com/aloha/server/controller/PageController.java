@@ -1,6 +1,8 @@
 package com.aloha.server.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aloha.server.dto.CustomUser;
+import com.aloha.server.dto.Files;
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
 import com.aloha.server.dto.Pay;
@@ -60,13 +63,13 @@ public class PageController {
 
     /**
      * 사용자 조회(CustomUser 아직 안되서 임의로 지정)
+     * 
      * @param customUser
      * @return
      */
     @GetMapping("/profile/{email}")
     public ResponseEntity<?> read(@AuthenticationPrincipal CustomUser customUser) {
         try {
-          
             Users user = customUser.getUser();
             log.info("customUser : " + customUser);
             log.info("user : " + user);
@@ -74,27 +77,35 @@ public class PageController {
             String email = user.getEmail();
             log.info("email : " + email);
             user = userService.read(email);
-    
-            // Integer fileNo = fileService.profileSelect(userNo);
-            // Files file;
-            // if (fileNo > 0) {
-            //     file = fileService.select(fileNo);
-            //     log.info("file : " + file);
-            // } else {
-            //     file = new Files();
-            //     file.setFileNo(-1);
-            //     log.info("file123 : " + file);
-            // }
-            return new ResponseEntity<>(user, HttpStatus.OK);
+
+            Integer fileNo = fileService.profileSelect(userNo);
+            log.info("fileNo: " + fileNo); // 파일 번호 로그 추가
+
+            Files file = null;
+            if (fileNo != null && fileNo > 0) {
+                file = fileService.select(fileNo);
+                log.info("file : " + file);
+            } else {
+                file = new Files();
+                file.setFileNo(-1);
+                log.info("file123 : " + file);
+            }
+
+            // 사용자 정보와 파일 정보를 함께 반환
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user);
+            response.put("file", file);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.info("error : " + e);
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-    
 
     /**
      * 사용자 수정
+     * 
      * @param user
      * @return
      * @throws Exception
@@ -120,16 +131,18 @@ public class PageController {
 
     /**
      * 사용자 탈퇴
+     * 
      * @param customUser
      * @param userNo
      * @return
      * @throws Exception
      */
     @DeleteMapping("/profile/{userNo}")
-    public ResponseEntity<?> deletePro(@AuthenticationPrincipal CustomUser customUser, @PathVariable("userNo") int userNo) throws Exception {
+    public ResponseEntity<?> deletePro(@AuthenticationPrincipal CustomUser customUser,
+            @PathVariable("userNo") int userNo) throws Exception {
         try {
             log.info("Received request to delete user with userNo: " + userNo);
-            
+
             if (customUser == null) {
                 log.info("customUser가 null입니다.");
                 return ResponseEntity.status(400).body("User not authenticated");
@@ -153,10 +166,10 @@ public class PageController {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-    
-    
+
     /**
      * Q&A 목록
+     * 
      * @param page
      * @param option
      * @param session
@@ -176,6 +189,7 @@ public class PageController {
 
     /**
      * Q&A 조회
+     * 
      * @param qnaNo
      * @return
      * @throws Exception
@@ -193,6 +207,7 @@ public class PageController {
 
     /**
      * Q&A 수정
+     * 
      * @param qnaBoard
      * @return
      * @throws Exception
@@ -228,19 +243,20 @@ public class PageController {
     }
     // @GetMapping("/payment")
     // public ResponseEntity<?> payList(HttpSession session) throws Exception {
-    //     try {
-    //         Users user = (Users) session.getAttribute("user");
-    //         int userNo = user.getUserNo();
-    //         List<Pay> payList = payService.userList(userNo);
-    //         log.info("userNo : " + userNo);
-    //         return ResponseEntity.ok(payList);
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(500).body("Internal Server Error");
-    //     }
+    // try {
+    // Users user = (Users) session.getAttribute("user");
+    // int userNo = user.getUserNo();
+    // List<Pay> payList = payService.userList(userNo);
+    // log.info("userNo : " + userNo);
+    // return ResponseEntity.ok(payList);
+    // } catch (Exception e) {
+    // return ResponseEntity.status(500).body("Internal Server Error");
+    // }
     // }
 
     @GetMapping("/promotion")
-    public ResponseEntity<?> promotionList(@AuthenticationPrincipal CustomUser customUser, Page page, Option option) throws Exception {
+    public ResponseEntity<?> promotionList(@AuthenticationPrincipal CustomUser customUser, Page page, Option option)
+            throws Exception {
         try {
             // Users user = customUser.getUser();
             Users user = new Users();
@@ -255,7 +271,8 @@ public class PageController {
     }
 
     @GetMapping("/event")
-    public ResponseEntity<?> reviewList(@RequestParam(value = "type", defaultValue = "review") String type, Page page, Option option, HttpSession session) throws Exception {
+    public ResponseEntity<?> reviewList(@RequestParam(value = "type", defaultValue = "review") String type, Page page,
+            Option option, HttpSession session) throws Exception {
         try {
             List<StarBoard> starList = starService.list(type, page, option);
             return new ResponseEntity<>(starList, HttpStatus.OK);
@@ -285,7 +302,7 @@ public class PageController {
             int commentCount = replyService.countByStarNo(starBoard.getStarNo());
             starBoard.setCommentCount(commentCount);
             starService.views(starNo);
-              return new ResponseEntity<>(starBoard, HttpStatus.OK);
+            return new ResponseEntity<>(starBoard, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
         }

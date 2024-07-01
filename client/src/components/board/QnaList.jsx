@@ -90,7 +90,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
                     </td>
                     <td align="center">{qnaBoard.writer}</td>
                     <td align="center"><span>{new Date(qnaBoard.regDate).toLocaleString()}</span></td>
-                    <td align="center" className={qnaBoard.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>{qnaBoard.status}</td>
+                    <td align="center" className={qnaBoard.status === '답변 대기' ? styles['status-waiting'] : styles['status-completed']}>{qnaBoard.status}</td>
                     <td align="center">{qnaBoard.views}</td>
                   </tr>
                 ))

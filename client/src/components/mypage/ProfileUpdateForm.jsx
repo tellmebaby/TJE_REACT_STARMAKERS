@@ -6,23 +6,25 @@ import styles from '../mypage/css/ProfileForm.module.css';
 const ProfileUpdateForm = ({ user }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: user.id || '',
-    name: user.name || '',
-    phone: user.phone || '',
-    email: user.email || '',
-    birth: user.birth || '',
-    address: user.address || '',
+    id: '',
+    name: '',
+    phone: '',
+    email: '',
+    birth: '',
+    address: '',
   });
 
   useEffect(() => {
-    setFormData({
-      id: user.id || '',
-      name: user.name || '',
-      phone: user.phone || '',
-      email: user.email || '',
-      birth: user.birth || '',
-      address: user.address || '',
-    });
+    if (user) {
+      setFormData({
+        id: user.id || '',
+        name: user.name || '',
+        phone: user.phone || '',
+        email: user.email || '',
+        birth: user.birth || '',
+        address: user.address || '',
+      });
+    }
   }, [user]);
 
   const handleChange = (e) => {
@@ -75,7 +77,7 @@ const ProfileUpdateForm = ({ user }) => {
                   <tr>
                     <td className="fw-bold fs-5 text-center align-middle border-0">이름</td>
                     <td className="fs-5 align-middle border-0">
-                      {user.name}
+                      {formData.name}
                       <input type="hidden" name="name" value={formData.name} />
                     </td>
                   </tr>
@@ -87,11 +89,11 @@ const ProfileUpdateForm = ({ user }) => {
                   </tr>
                   <tr>
                     <td className="fw-bold fs-5 text-center align-middle border-0">이메일</td>
-                    <td className="fs-5 align-middle border-0">{user.email}</td>
+                    <td className="fs-5 align-middle border-0">{formData.email}</td>
                   </tr>
                   <tr>
                     <td className="fw-bold fs-5 text-center align-middle border-0">생년월일</td>
-                    <td className="fs-5 align-middle border-0">{user.birth}</td>
+                    <td className="fs-5 align-middle border-0">{formData.birth}</td>
                   </tr>
                   <tr>
                     <td className="fw-bold fs-5 text-center align-middle border-0">주소</td>
