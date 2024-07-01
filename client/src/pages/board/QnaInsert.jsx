@@ -1,5 +1,4 @@
 import React from 'react'
-import InsertContainer from '../../containers/board/InsertContainer'
 import MainLayout from '../../layouts/MainLayout'
 import QnaInsertContainer from '../../containers/board/QnaInsertContainer'
 

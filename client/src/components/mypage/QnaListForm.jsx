@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as mypage from '../../apis/mypage';
 import styles from '../mypage/css/QnaListForm.module.css';
@@ -7,6 +7,11 @@ import { formatDate } from '../../apis/format';
 const QnaListForm = ({ qnaList, user }) => {
     const navigate = useNavigate();
     const [selectedQnaNos, setSelectedQnaNos] = useState([]);
+
+    useEffect(() => {
+        console.log('QnaListForm qnaList:', qnaList);
+        console.log('QnaListForm user:', user);
+    }, [qnaList, user]);
 
     const handleCheckboxChange = (qnaNo) => {
         setSelectedQnaNos((prevSelected) =>
@@ -51,7 +56,7 @@ const QnaListForm = ({ qnaList, user }) => {
         navigate(`/page/mypage/qnaUpdate?qnaNo=${qnaNo}`);
     };
 
-    const userQnaList = qnaList.filter(qna => qna.userNo === user.userNo);
+    const userQnaList = Array.isArray(qnaList) ? qnaList.filter(qna => qna.userNo === user.userNo) : [];
 
     return (
         <div className="container">
@@ -63,7 +68,7 @@ const QnaListForm = ({ qnaList, user }) => {
                             <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
                             <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
                             <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
-                            <Link to="/mypage/inquiry" className={styles.active}><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
+                            <Link to="/mypage/QnaList" className={styles.active}><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
                             <Link to="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
                         </div>
                     </div>
@@ -82,29 +87,29 @@ const QnaListForm = ({ qnaList, user }) => {
                                     <th style={{ width: '90px' }}>상태</th>
                                 </tr>
                             </thead>
-                                {userQnaList.map((qna) => (
-                                    <tr key={qna.qnaNo}>
-                                        <td>
-                                            <input
-                                                type="checkbox"
-                                                name="qnaNo"
-                                                value={qna.qnaNo}
-                                                onChange={() => handleCheckboxChange(qna.qnaNo)}
-                                            />
-                                        </td>
-                                        <td align="center">
-                                            <Link to={`/page/mypage/qnaPost?qnaNo=${qna.qnaNo}`}>
-                                                {qna.title}
-                                            </Link>
-                                        </td>
-                                        <td align="center">
-                                            <span>{formatDate(qna.regDate)}</span>
-                                        </td>
-                                        <td align="center" className={qna.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>
-                                            {qna.status}
-                                        </td>
-                                    </tr>
-                                ))}
+                            {userQnaList.map((qna) => (
+                                <tr key={qna.qnaNo}>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            name="qnaNo"
+                                            value={qna.qnaNo}
+                                            onChange={() => handleCheckboxChange(qna.qnaNo)}
+                                        />
+                                    </td>
+                                    <td align="center">
+                                        <Link to={`/page/mypage/qnaPost?qnaNo=${qna.qnaNo}`}>
+                                            {qna.title}
+                                        </Link>
+                                    </td>
+                                    <td align="center">
+                                        <span>{formatDate(qna.regDate)}</span>
+                                    </td>
+                                    <td align="center" className={qna.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>
+                                        {qna.status}
+                                    </td>
+                                </tr>
+                            ))}
                         </table>
                     ) : (
                         <p>질문이 없습니다.</p>
@@ -115,8 +120,8 @@ const QnaListForm = ({ qnaList, user }) => {
                     </div>
                     <center>
                         <div>
-                            <Link to="/mypage/qnaList?page=first">&laquo;</Link>
-                            <Link to="/mypage/qnaList?page=last">&raquo;</Link>
+                            <Link to="/page/mypage/inquiry?page=first">&laquo;</Link>
+                            <Link to="/page/mypage/inquiry?page=last">&raquo;</Link>
                         </div>
                     </center>
                 </div>

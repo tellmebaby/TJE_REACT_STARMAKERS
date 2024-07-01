@@ -3,16 +3,14 @@ import * as mypage from '../../apis/mypage';
 import QnaListForm from '../../components/mypage/QnaListForm';
 
 const QnaListContainer = () => {
-  // state
   const [qnaList, setQnaList] = useState([]);
-  const [user, setUser] = useState(null); // user 상태 추가
+  const [user, setUser] = useState(null);
 
-  // 함수
   const getQnaList = async () => {
     try {
       const response = await mypage.qnaList();
       const data = response.data;
-      setQnaList(data);
+      setQnaList(Array.isArray(data) ? data : []);
       console.log('QnaList:', data); // 데이터 확인
     } catch (error) {
       console.error('Error fetching QnA list:', error);
@@ -23,20 +21,13 @@ const QnaListContainer = () => {
     try {
       const response = await mypage.select(); // user 정보를 가져오는 API 호출
       const userData = response.data;
-      setUser(userData);
+      setUser(userData.user); // userData.user로 설정
       console.log('UserData:', userData); // 데이터 확인
     } catch (error) {
       console.error('Error fetching user:', error);
     }
   };
 
-  // 로그인한 사용자의 QnA 필터링
-  const filterQnaList = (qnaList, user) => {
-    if (!user) return [];
-    return qnaList.filter(qna => qna.userNo === user.userNo); // 필터링 조건 확인
-  };
-
-  // hook
   useEffect(() => {
     const fetchData = async () => {
       await getUser();
@@ -46,10 +37,12 @@ const QnaListContainer = () => {
     fetchData();
   }, []);
 
-  const filteredQnaList = filterQnaList(qnaList, user);
-  console.log('Filtered QnaList:', filteredQnaList); // 필터링된 리스트 확인
+  useEffect(() => {
+    console.log('Updated QnaList:', qnaList);
+    console.log('Updated User:', user);
+  }, [qnaList, user]);
 
-  return <QnaListForm qnaList={filteredQnaList} user={user} />;
+  return user ? <QnaListForm qnaList={qnaList} user={user} /> : <div>Loading...</div>;
 };
 
 export default QnaListContainer;
