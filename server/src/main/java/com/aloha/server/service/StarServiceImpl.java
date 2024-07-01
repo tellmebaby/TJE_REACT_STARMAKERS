@@ -52,6 +52,10 @@ public class StarServiceImpl implements StarService {
      */
     @Override
     public StarBoard insert(StarBoard starBoard) throws Exception {
+        Users user = userMapper.selectUserNo(starBoard.getUserNo());
+        log.info("user 정보" + user.toString());
+        starBoard.setWriter(user.getId());
+        log.info("작성자 이름 : " + user.getId());
         int result = starMapper.insert(starBoard);
         log.info("result : " + result);
         int newNo = starBoard.getStarNo();

@@ -5,7 +5,7 @@ import * as boards from '../../apis/starBoard'
 import { useNavigate } from 'react-router-dom'
 
 
-const InsertContainer = ({type, userInfo}) => {
+const InsertContainer = ({type}) => {
     const navigate = useNavigate()
 
 

@@ -16,6 +16,12 @@ const StarInsertForm = ({ type, onInsert }) => {
     const [content, setContent] = useState('')
     const [files, setFiles] = useState(null)
     const [category1, setCategory1] = useState(null)
+    const category = [
+        { name: 'youtube' },
+        { name: 'instagram' },
+        { name: 'afreeca' },
+        { name: 'chizizic' },
+      ];
     const [category2, setCategory2] = useState(null)
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
@@ -57,11 +63,11 @@ const StarInsertForm = ({ type, onInsert }) => {
         formData.append('content', content)
         formData.append('type', type)
         formData.append('userNo', userInfo.userNo)
-
+        formData.append('category1', category1)
         // 카테고리
-        for (let i = 0; i < category1.length; i++) {
-            formData.append(`category1[${i}]`, category1[i])
-        }
+        // for (let i = 0; i < category1.length; i++) {
+        //     formData.append(`category1[${i}]`, category1[i])
+        // }
         console.log("title : " + title);
         console.log("content : " + content);
 
