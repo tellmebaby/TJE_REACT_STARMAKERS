@@ -1,7 +1,6 @@
 import React from 'react'
-import Header from '../components/Header'
-import MainLayout from '../layouts/MainLayout'
 import JoinForm from '../components/Login/JoinForm'
+import MainLayout from '../layouts/MainLayout'
 
 const Join = () => {
   return (
