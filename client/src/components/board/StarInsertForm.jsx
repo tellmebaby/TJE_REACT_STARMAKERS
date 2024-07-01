@@ -42,13 +42,14 @@ const StarInsertForm = ({ type, onInsert }) => {
         // alert(promoButton);
     };
 
-    // const handleDesignBtnClick = () => {
-    //     setpromoButton('designBtn');
-    //   };
-
     const onSubmit = (e) => {
         e.preventDefault()      // 기본 이벤트 방지
         e.stopPropagation()
+    };
+
+
+    const onSubmit = (e) => {
+        e.preventDefault()      // 기본 이벤트 방지
         console.log("여기오나? onSubmit");
         // 유효성 검사 ✅
         // ...일단 생략
