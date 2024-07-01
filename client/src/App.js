@@ -21,6 +21,7 @@ import ReviewList from './pages/board/ReviewList';
 import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
 import QnaInsert from './pages/board/QnaInsert';
+import Read from './pages/board/Read';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/test" component={<Test/>} />
           <Route path="/starInsert" element={<StarInsert/>}></Route>
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
+          <Route path="/:starNo" element={<Read/>}></Route>
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>
