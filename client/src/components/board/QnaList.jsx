@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import styles from '../board/css/list.module.css';
 
 const QnaList = ({ qnaList, isLoading, optionList, page, option, onPageChange }) => {
-  console.log(qnaList);
+  console.log("리스트",qnaList);
+  console.log("검색",optionList)
 
   const handleClick = (event, pageNumber) => {
     // event.preventDefault();
@@ -79,7 +80,7 @@ const QnaList = ({ qnaList, isLoading, optionList, page, option, onPageChange })
                     </td>
                     <td align="center">{qnaBoard.writer}</td>
                     <td align="center"><span>{new Date(qnaBoard.regDate).toLocaleString()}</span></td>
-                    <td align="center" className={qnaBoard.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>{qnaBoard.status}</td>
+                    <td align="center" className={qnaBoard.status === '답변 대기' ? styles['status-waiting'] : styles['status-completed']}>{qnaBoard.status}</td>
                     <td align="center">{qnaBoard.views}</td>
                   </tr>
                 ))
