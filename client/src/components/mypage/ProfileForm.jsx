@@ -1,79 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../mypage/css/ProfileForm.module.css';
 
-const ProfileForm = ({ user, file }) => {
-    // const [uploadedImage, setUploadedImage] = useState(`/file/img/${file.fileNo}`);
-    // const [fileInput, setFileInput] = useState(null);
+const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
+    const [fileInput, setFileInput] = useState(null);
+    const [previewImage, setPreviewImage] = useState('');
 
-    // const handleImageClick = () => {
-    //     fileInput.click();
-    // };
+    useEffect(() => {
+        setPreviewImage(fileList);
+    }, [fileList]);
 
-    // const handleFileChange = (event) => {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
-    //         reader.onload = (e) => {
-    //             setUploadedImage(e.target.result);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     }
-    // };
+    const handleImageClick = () => {
+        if (fileInput) {
+            fileInput.click();
+        }
+    };
 
-    // const saveImage = () => {
-    //     const file = fileInput.files[0];
-    //     if (!file) {
-    //         alert("파일을 선택해 주세요.");
-    //         return;
-    //     }
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setPreviewImage(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
-    //     const formData = new FormData();
-    //     formData.append("file", file);
-    //     formData.append("user_no", user.userNo);
+    const saveImage = () => {
+        const file = fileInput.files[0];
+        if (!file) {
+            alert("파일을 선택해 주세요.");
+            return;
+        }
+        onSaveImage(file);
+    };
 
-    //     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    //     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    //     axios.post('/file/upload', formData, {
-    //         headers: {
-    //             [csrfHeader]: csrfToken
-    //         }
-    //     })
-    //     .then(response => {
-    //         setUploadedImage(URL.createObjectURL(file));
-    //         alert("이미지가 저장되었습니다.");
-    //     })
-    //     .catch(error => {
-    //         console.error('Error:', error);
-    //         alert('이미지 업로드 실패');
-    //     });
-    // };
-
-    // const deleteImage = () => {
-    //     const defaultImageUrl = 'path/to/default-image.jpg';
-
-    //     const formData = new FormData();
-    //     formData.append("user_no", user.userNo);
-
-    //     const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    //     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
-    //     axios.delete('/file/allDelete', {
-    //         data: formData,
-    //         headers: {
-    //             [csrfHeader]: csrfToken
-    //         }
-    //     })
-    //     .then(response => {
-    //         setUploadedImage(defaultImageUrl);
-    //         alert("기본 이미지로 변경되었습니다.");
-    //     })
-    //     .catch(error => {
-    //         console.error('Error:', error);
-    //         alert('이미지 삭제 실패');
-    //     });
-    // };
+    const deleteImage = () => {
+        onDeleteImage();
+    };
 
     return (
         <div className="container">
@@ -128,15 +93,15 @@ const ProfileForm = ({ user, file }) => {
                         </div>
                     </div>
                 </div>
-                {/* <div className="col-md-3">
+                <div className="col-md-3">
                     <div className={styles.tableMargin}></div>
                     <div className={styles.imageContainer} onClick={handleImageClick}>
-                        <img id="uploadedImage" src={uploadedImage} alt="" style={{ width: '100%' }} />
+                        <img id="uploadedImage" src={previewImage} alt="" style={{ width: '100%' }} />
                     </div>
                     <input type="file" id="fileInput" style={{ display: 'none' }} ref={input => setFileInput(input)} onChange={handleFileChange} />
                     <button className="btn btn-primary w-100 mt-1" onClick={saveImage}>이미지 저장</button>
                     <button className="btn btn-primary w-100 mt-1" onClick={deleteImage}>기본 이미지로 변경</button>
-                </div> */}
+                </div>
             </div>
         </div>
     );

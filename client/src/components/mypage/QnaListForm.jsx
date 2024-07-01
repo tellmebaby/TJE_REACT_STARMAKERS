@@ -115,8 +115,8 @@ const QnaListForm = ({ qnaList, user }) => {
                     </div>
                     <center>
                         <div>
-                            <Link to="/page/mypage/inquiry?page=first">&laquo;</Link>
-                            <Link to="/page/mypage/inquiry?page=last">&raquo;</Link>
+                            <Link to="/mypage/qnaList?page=first">&laquo;</Link>
+                            <Link to="/mypage/qnaList?page=last">&raquo;</Link>
                         </div>
                     </center>
                 </div>

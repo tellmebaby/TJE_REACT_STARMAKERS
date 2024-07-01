@@ -229,6 +229,7 @@ public class FileServiceImpl implements FileService {
         file.setOriginName(originName);
         file.setSize(fileSize);
         file.setUserNo(user_no);
+        file.setStarNo(0); // star_no 값을 0으로 설정
 
         fileMapper.insert(file);
 
