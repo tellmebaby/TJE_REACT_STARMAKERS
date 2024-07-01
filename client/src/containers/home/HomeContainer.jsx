@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Search from '../../components/main/Search';
 import * as cards from '../../apis/main/cards';
 import CardSlide from '../../components/main/CardSlide';
-import './css/star'
 
 const HomeContainer = () => {
     const [cardList, setCardList] = useState([]);
