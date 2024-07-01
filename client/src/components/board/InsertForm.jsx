@@ -36,7 +36,9 @@ const InsertForm = ({ type, onInsert }) => {
     const formData = new FormData()
     formData.append('title', title)
     formData.append('content', content)
-    formData.append('type', type)
+    if (type && type != "") {
+      formData.append('type', type)
+    }
     formData.append('userNo', userInfo.userNo)
 
     console.log("title : " + title);

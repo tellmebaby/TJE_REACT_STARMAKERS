@@ -20,7 +20,7 @@ const StarInsertForm = ({ type, onInsert }) => {
         { name: 'youtube' },
         { name: 'instagram' },
         { name: 'afreeca' },
-        { name: 'chizizic' },
+        { name: 'chzzc' },
       ];
     const [category2, setCategory2] = useState(null)
     const [startDate, setStartDate] = useState('')
@@ -38,7 +38,13 @@ const StarInsertForm = ({ type, onInsert }) => {
     
     // 카테고리
     const handleChangeCategory1 = (e) => {
+        let duplicated = false
+        for (let i = 0 ; i<category.length;i++){
+            
+        }
+        
         setCategory1(e.target.value)
+        
         console.log(category1);
     }
 
