@@ -110,7 +110,7 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
         </table>
       </div>
       <div className={styles['button-container']}>
-        <Link to={toBoard} className={styles.btnn} style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
+        <Link to={`/${type}Insert` } className={styles.btnn} style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
       </div>
       <center>
         <div className={styles.pagination}>
