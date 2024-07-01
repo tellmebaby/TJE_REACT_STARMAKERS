@@ -12,6 +12,7 @@ const QnaListContainer = ({ optionList, option }) => {
 
     const queryParams = new URLSearchParams(location.search);
     const currentPage = parseInt(queryParams.get('page')) || 1;
+    const code = queryParams.get('code') || '';
     const keyword = queryParams.get('keyword') || '';
 
     const getQnaList = async (page, keyword) => {
@@ -42,7 +43,7 @@ const QnaListContainer = ({ optionList, option }) => {
             optionList={optionList}
             page={pageInfo}
             option={{ code: queryParams.get('code') || '', keyword }}
-            onPageChange={handlePageChange} // 페이지 변경 함수 전달
+            onPageChange={handlePageChange}
         />
     );
 };
