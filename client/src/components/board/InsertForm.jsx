@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 const InsertForm = ({ type, onInsert }) => {
 
-  const { isLogin, logout } = useContext(LoginContext)
+  const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState(null)
@@ -27,16 +27,19 @@ const InsertForm = ({ type, onInsert }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()      // 기본 이벤트 방지
+    e.stopPropagation() 
     console.log("여기오나? onSubmit");
     // 유효성 검사 ✅
     // ...일단 생략
 
     // 파일 업로드에서는 
     // Content-Type : application/json -> multipart/form-data
+    console.log("userno? " + userInfo.userNo);
     const formData = new FormData()
     formData.append('title', title)
     formData.append('content', content)
     formData.append('type', type)
+    formData.append('userNo', userInfo.userNo)
 
     console.log("title : " + title);
     console.log("content : " + content);

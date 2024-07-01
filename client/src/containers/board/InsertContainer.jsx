@@ -5,16 +5,14 @@ import * as boards from '../../apis/starBoard'
 import { useNavigate } from 'react-router-dom'
 
 
-const InsertContainer = ({type}) => {
+const InsertContainer = ({type, userInfo}) => {
     const navigate = useNavigate()
 
 
     // 🎁 이벤트 함수
     // const onInsert = async (title, writer, content) => {
     const onInsert = async ( formData, headers) => {
-      // console.log("onInsert" + {toBoard});
       try {
-        // const response = await boards.insert(title, writer, content)
         const response = await boards.insert(formData, headers)
         const status = await response.status 
         console.log(`게시글 등록 요청 결과 : ${status}`);
