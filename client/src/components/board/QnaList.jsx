@@ -1,10 +1,15 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from '../board/css/list.module.css';
 
-const QnaList = ({ qnaList, isLoading, optionList, page, option }) => {
-    console.log(qnaList)
-    const navigate = useNavigate();
+const QnaList = ({ qnaList, isLoading, optionList, page, option, onPageChange }) => {
+  console.log(qnaList);
+
+  const handleClick = (event, pageNumber) => {
+    // event.preventDefault();
+    onPageChange(pageNumber);
+  };
+
   return (
     <div className="container">
       <h3 className={styles.notice}>Q&A</h3>
@@ -13,9 +18,9 @@ const QnaList = ({ qnaList, isLoading, optionList, page, option }) => {
       </div>
       <div className={styles['search-container']}>
         <form action="/qna/qnaList" method="get">
-          <select name="code">
+          <select name="code" defaultValue={option.code}>
             {optionList.map((option) => (
-              <option key={option.code} value={option.code} selected={option.code === option.code}>
+              <option key={option.code} value={option.code}>
                 {option.codeName}
               </option>
             ))}
@@ -37,7 +42,7 @@ const QnaList = ({ qnaList, isLoading, optionList, page, option }) => {
             </tr>
           </thead>
           <tbody>
-            <tr className={styles.fixed}>
+          <tr className={styles.fixed}>
               <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
               <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>로그인 필수</b></td>
               <td align="center">관리자</td>
@@ -53,27 +58,32 @@ const QnaList = ({ qnaList, isLoading, optionList, page, option }) => {
               <td align="center"></td>
               <td align="center">439</td>
             </tr>
-
-            {qnaList.length === 0 ? (
+            {isLoading ? (
               <tr>
-                <td colSpan="6" align="center" className={styles.emptyRow} style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
-                  조회된 게시글이 없습니다.
-                </td>
+                <td colSpan="6" align="center">Loading...</td>
               </tr>
             ) : (
-              qnaList.map((qnaBoard) => (
-                <tr key={qnaBoard.qnaNo}>
-                  <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
-                  <td>
-                    <Link to={`/qnaPost?qnaNo=${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
-                    {new Date(qnaBoard.regDate) > new Date() && <img src="/img/new.png" style={{ width: '15px', height: '15px' }} />}
+              qnaList.length === 0 ? (
+                <tr>
+                  <td colSpan="6" align="center" className={styles.emptyRow} style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
+                    조회된 게시글이 없습니다.
                   </td>
-                  <td align="center">{qnaBoard.writer}</td>
-                  <td align="center"><span>{new Date(qnaBoard.regDate).toLocaleString()}</span></td>
-                  <td align="center" className={qnaBoard.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>{qnaBoard.status}</td>
-                  <td align="center">{qnaBoard.views}</td>
                 </tr>
-              ))
+              ) : (
+                qnaList.map((qnaBoard) => (
+                  <tr key={qnaBoard.qnaNo}>
+                    <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
+                    <td>
+                      <Link to={`/qnaPost?qnaNo=${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
+                      {new Date(qnaBoard.regDate) > new Date() && <img src="/img/new.png" style={{ width: '15px', height: '15px' }} />}
+                    </td>
+                    <td align="center">{qnaBoard.writer}</td>
+                    <td align="center"><span>{new Date(qnaBoard.regDate).toLocaleString()}</span></td>
+                    <td align="center" className={qnaBoard.status === '답변 대기' ? styles.statusWaiting : styles.statusCompleted}>{qnaBoard.status}</td>
+                    <td align="center">{qnaBoard.views}</td>
+                  </tr>
+                ))
+              )
             )}
           </tbody>
         </table>
@@ -90,34 +100,35 @@ const QnaList = ({ qnaList, isLoading, optionList, page, option }) => {
       <center>
         <div className={styles.pagination}>
           {/* [ 처음으로 ] */}
-          <Link to={`/qna/qnaList?page=${page.first}&code=${option.code}&keyword=${option.keyword}`}>
+          <Link to={`/qna/qnaList?page=${page.first}&code=${option.code}&keyword=${option.keyword}`} onClick={() => handleClick(page.first)}>
             <span className="material-symbols-outlined">first_page</span>
           </Link>
 
           {/* [ 이전 ] */}
           {page.page !== page.first && (
-            <Link to={`/qna/qnaList?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`}>
+            <Link to={`/qna/qnaList?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`} onClick={() => handleClick(page.prev)}>
               <span className="material-symbols-outlined">chevron_backward</span>
             </Link>
           )}
 
+          {/* 페이지 번호 맵핑 */}
           {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map(no => (
             page.page === no ? (
               <b key={no}><span>{no}</span></b>
             ) : (
-              <Link key={no} to={`/qna/qnaList?page=${no}&code=${option.code}&keyword=${option.keyword}`} style={{ padding: '0 7px' }}>{no}</Link>
+              <Link key={no} to={`/qna/qnaList?page=${no}&code=${option.code}&keyword=${option.keyword}`} onClick={() => handleClick(no)} style={{ padding: '0 7px' }}>{no}</Link>
             )
           ))}
 
           {/* [ 다음 ] */}
           {page.page !== page.last && (
-            <Link to={`/qna/qnaList?page=${page.next}&code=${option.code}&keyword=${option.keyword}`}>
+            <Link to={`/qna/qnaList?page=${page.next}&code=${option.code}&keyword=${option.keyword}`} onClick={() => handleClick(page.next)}>
               <span className="material-symbols-outlined">chevron_forward</span>
             </Link>
           )}
 
           {/* [ 마지막 ] */}
-          <Link to={`/qna/qnaList?page=${page.last}&code=${option.code}&keyword=${option.keyword}`}>
+          <Link to={`/qna/qnaList?page=${page.last}&code=${option.code}&keyword=${option.keyword}`} onClick={() => handleClick(page.last)}>
             <span className="material-symbols-outlined">last_page</span>
           </Link>
         </div>
