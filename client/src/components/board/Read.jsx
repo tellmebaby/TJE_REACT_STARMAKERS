@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Read = () => {
+const Read = (starNo, board) => {
   return (
     <div>Read</div>
   )

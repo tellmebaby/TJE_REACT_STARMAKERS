@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../board/css/list.module.css'
 
-const List = ({ type, optionList, page, option, toBoard, boardList, setPage}) => {
+const List = ({ type, optionList, page, option, boardList, setPage, setCode, setKeyword}) => {
 
-  const navigate = useNavigate();
+  const keywordRef = useRef();
+
 
   const handleClick = (pageNumber) => {
     setPage(pageNumber);
   };
 
+  const handleCodeChange = (e) => {
+    setCode(e.target.value);
+  }
 
-  const handleSearch = (event) => {
-    event.preventDefault();
-    const code = event.target.code.value;
-    const keyword = event.target.keyword.value;
-    navigate(`/${type}?page=${page.page}&code=${code}&keyword=${keyword}`);
-  };
+  const handleSearch = (e) =>{
+    e.preventDefault();
+    setKeyword(keywordRef.current.value);
+  }
 
   const getTitle = () => {
     switch (type) {
@@ -44,16 +46,16 @@ const List = ({ type, optionList, page, option, toBoard, boardList, setPage}) =>
         <label>{getDescription()}</label>
       </div>
       <div className={styles['search-container']}>
-        <form onSubmit={handleSearch}>
-          <select name="code" className={styles.select}>
+        <form action={`/${type}`} method="get">
+          <select name="code" className={styles.select} onChange={handleCodeChange}>
             {optionList.map((option) => (
-              <option key={option.code} value={option.code} selected={option.code === option.code}>
+              <option key={option.code} value={option.code}>
                 {option.codeName}
               </option>
             ))}
           </select>
-          <input type="text" name="keyword" placeholder="검색어를 입력하세요" defaultValue={option.keyword} className={styles.input} />
-          <button type="submit" className={styles.button}>검색</button>
+          <input type="text" name="keyword" placeholder="검색어를 입력하세요" defaultValue={option.keyword} ref={keywordRef}/>
+          <button type="submit" className={styles.button} onClick={handleSearch}>검색</button>
         </form>
       </div>
       <div className={styles['table-container']}>
@@ -94,7 +96,7 @@ const List = ({ type, optionList, page, option, toBoard, boardList, setPage}) =>
             ) : (
               boardList.map((starBoard) => (
                 <tr key={starBoard.starNo}>
-                  <td align="center">{starBoard.type}</td>
+                  <td align="center">{starBoard.starNo}</td>
                   <td>
                     <Link to={`/${starBoard.starNo}`} className={styles.link}>{starBoard.title} [{starBoard.commentCount}]</Link>
                     {new Date(starBoard.regDate) > new Date() && (

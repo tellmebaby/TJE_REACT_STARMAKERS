@@ -69,12 +69,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
               <td align="center"></td>
               <td align="center">439</td>
             </tr>
-            {isLoading ? (
-              <tr>
-                <td colSpan="6" align="center">Loading...</td>
-              </tr>
-            ) : (
-              qnaList.length === 0 ? (
+            {qnaList.length === 0 ? (
                 <tr>
                   <td colSpan="6" align="center" className={styles.emptyRow} style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
                     조회된 게시글이 없습니다.
@@ -94,7 +89,6 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
                     <td align="center">{qnaBoard.views}</td>
                   </tr>
                 ))
-              )
             )}
           </tbody>
         </table>
@@ -102,7 +96,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
       <div className={styles['button-container']}>
         {/* 비 로그인 시 */}
         {/* 여기에는 아무것도 표시되지 않음 */}
-
+        <Link to={`/qnaInsert` } className={styles.btnn} style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
         {/* 로그인 시 */}
         {/* <a href="/page/board/qnaBoard/qnaInsert" className={`${styles.btnn}`} style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</a> */}
       </div>

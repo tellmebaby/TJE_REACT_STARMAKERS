@@ -4,10 +4,6 @@ import axios from 'axios';
 export const list = async (params) => {
 
   try {
-
-    console.log("--ddd-d--d")
-    console.log(params);
-
     const response = await axios.get(`/starCard/List`, { params });
     return response.data;
   } catch (error) {
@@ -17,7 +13,7 @@ export const list = async (params) => {
 };
 
 // 상세 조회
-export const select = (no) => axios.get(`/${no}`);
+export const select = (starNo) => axios.get(`/${starNo}`);
 
 // 등록
 // export const insert = (title, writer, content) => axios.post("/boards", {title, writer, content})

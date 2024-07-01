@@ -20,12 +20,8 @@ const ListContainer = ({ type }) => {
     keyword: keyword,
   };
 
-
-
-
   const getBoardList = async () => {
     setLoading(true);
-
 
     try {
       const params = {
@@ -61,6 +57,9 @@ const ListContainer = ({ type }) => {
       page={pageInfo}
       boardList={boardList}
       loading={isLoading}
+      setPage={setPage}
+      setCode={setCode}
+      setKeyword={setKeyword}
     />
   );
 };
