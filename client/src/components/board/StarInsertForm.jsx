@@ -42,10 +42,6 @@ const StarInsertForm = ({ type, onInsert }) => {
         // alert(promoButton);
     };
 
-    const onSubmit = (e) => {
-        e.preventDefault()      // 기본 이벤트 방지
-        e.stopPropagation()
-    };
 
 
     const onSubmit = (e) => {
