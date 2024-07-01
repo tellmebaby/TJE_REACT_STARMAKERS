@@ -179,8 +179,8 @@ public class PageController {
     @GetMapping("/qnaList")
     public ResponseEntity<?> qnaList(Page page, Option option, HttpSession session) throws Exception {
         try {
-            log.info("qna 목록");
             List<QnaBoard> qnaList = qnaService.list(page, option);
+            log.info("qna 목록 : " + qnaList);
             return new ResponseEntity<>(qnaList, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
