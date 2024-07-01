@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +33,7 @@ import com.aloha.server.dto.CustomUser;
 import com.aloha.server.dto.Files;
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
+import com.aloha.server.dto.QnaBoard;
 import com.aloha.server.dto.StarBoard;
 import com.aloha.server.dto.StarUser;
 import com.aloha.server.dto.Users;
@@ -170,8 +170,36 @@ public class StarController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // --------------------------------------------------------------------------
+    // 게시물 조회 통합
+    @GetMapping("/starCard/List")
+    public ResponseEntity<?> List(
+            @RequestParam(value = "type", required = false) String type,
+            Page page,
+            Option option) throws Exception {
 
+        try {
+            List<StarBoard> starList = starService.list(type, page, option);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("starList", starList);
+            response.put("page", page);
+            response.put("option", option);
+
+            List<Option> optionList = new ArrayList<Option>();
+            optionList.add(new Option("제목+내용", 0));
+            optionList.add(new Option("제목", 1));
+            optionList.add(new Option("내용", 2));
+            optionList.add(new Option("작성자", 3));
+            response.put("optionList", optionList);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // --------------------------------------------------------------------------
 
     /**
      * 홍보 달력 가져오기
@@ -369,7 +397,8 @@ public class StarController {
      * @throws Exception
      */
     @GetMapping("/starPayment/{no}")
-    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser) throws Exception {
+    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
+            throws Exception {
         Map<String, Object> response = new HashMap<>();
         Users user = customUser.getUser();
 
@@ -480,6 +509,7 @@ public class StarController {
 
     /**
      * 홍보 글 수정.. 없어도 될 것 같기도
+     * 
      * @param starBoard
      * @param file
      * @param customUser
@@ -607,7 +637,6 @@ public class StarController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    
     // 아래부터 review 게시판 ---------------------------------------------------------
 
     /**
@@ -646,8 +675,10 @@ public class StarController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     /**
      * 후기 글 작성(insert)
+     * 
      * @param starBoard
      * @return
      * @throws Exception
@@ -677,7 +708,7 @@ public class StarController {
      * @throws Exception
      */
     @GetMapping("/an")
-    public ResponseEntity<?> anList( Page page, Option option) throws Exception {
+    public ResponseEntity<?> anList(Page page, Option option) throws Exception {
 
         List<StarBoard> starList = starService.list("an", page, option);
         Map<String, Object> response = new HashMap<>();
@@ -704,8 +735,10 @@ public class StarController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     /**
      * 공지 글 작성(insert)
+     * 
      * @param starBoard
      * @return
      * @throws Exception
@@ -724,7 +757,6 @@ public class StarController {
         // 데이터 처리 실패
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
     // @PostMapping("/like")
     // public ResponseEntity<String> like(@RequestParam("userNo") int userNo,
@@ -777,7 +809,7 @@ public class StarController {
     public ResponseEntity<?> getMainStarList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
         log.info("시작이야");
         String type = "starCard";
-        if ( customUser != null){
+        if (customUser != null) {
             Users user = customUser.getUser();
             if (user != null) {
                 log.info("유저정보가 있어" + user);

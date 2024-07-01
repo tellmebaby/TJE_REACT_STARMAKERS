@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../board/css/list.module.css'
 
-const List = ({ type, optionList, page, option, toBoard, boardList}) => {
+const List = ({ type, optionList, page, option, toBoard, boardList, setPage}) => {
 
   const navigate = useNavigate();
+
+  const handleClick = (pageNumber) => {
+    setPage(pageNumber);
+  };
 
 
   const handleSearch = (event) => {
@@ -112,35 +116,41 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
       <div className={styles['button-container']}>
         <Link to={`/${type}Insert` } className={styles.btnn} style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
       </div>
+
+
+      {/* 페이지네이션 */}
       <center>
         <div className={styles.pagination}>
-          <Link to={`/${type}?page=${page.first}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-            <span className="material-symbols-outlined">first_page</span>
-          </Link>
+          {/* [ 처음으로 ] */}
+
+          <span className="material-symbols-outlined" onClick={() => handleClick(page.first)} >first_page</span>
+
+          {/* [ 이전 ] */}
           {page.page !== page.first && (
-            <Link to={`/${type}?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-              <span className="material-symbols-outlined">chevron_backward</span>
-            </Link>
+            <span className="material-symbols-outlined" onClick={() => handleClick(page.prev)} >chevron_backward</span>
           )}
-          {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map((no) => (
-            <React.Fragment key={no}>
-              {page.page === no ? (
-                <b><span className={styles.currentPage}>{no}</span></b>
-              ) : (
-                <Link to={`/${type}?page=${no}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>{no}</Link>
-              )}
-            </React.Fragment>
+
+          {/* 페이지 번호 맵핑 */}
+          {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map(no => (
+            page.page === no ? (
+              <b key={no}><span>{no}</span></b>
+            ) : (
+              <span onClick={() => handleClick(no)} style={{ padding: '0 7px' }}>{no}</span>
+            )
           ))}
+
+          {/* [ 다음 ] */}
           {page.page !== page.last && (
-            <Link to={`/${type}?page=${page.next}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-              <span className="material-symbols-outlined">chevron_forward</span>
-            </Link>
+            <span className="material-symbols-outlined" onClick={() => handleClick(page.next)} >chevron_forward</span>
           )}
-          <Link to={`/${type}?page=${page.last}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-            <span className="material-symbols-outlined">last_page</span>
-          </Link>
+
+          {/* [ 마지막 ] */}
+          <span className="material-symbols-outlined" onClick={() => handleClick(page.last)} >last_page</span>
+
         </div>
       </center>
+
+
     </div>
   );
   

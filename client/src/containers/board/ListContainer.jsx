@@ -3,39 +3,62 @@ import List from '../../components/board/List';
 import * as starBoard from '../../apis/starBoard'
 
 
-const ListContainer = ({ type, optionList, page, option }) => {
+const ListContainer = ({ type }) => {
 
   const [boardList, setBoardList] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [pageInfo, setPageInfo] = useState({});
+  const [optionList, setOptionList] = useState([]);
+
+  const [pageNo, setPage] = useState(1);
+  const [code, setCode] = useState(0);
+  const [keyword, setKeyword] = useState('');
+
+
+  const option = {
+    code: code,
+    keyword: keyword,
+  };
+
+
+
 
   const getBoardList = async () => {
     setLoading(true);
-    const response = await starBoard.list(type, page, option);
-    // const data = await response.data
-    setBoardList(response.list || []);
-    console.log(response);
+
+
+    try {
+      const params = {
+        type: type,
+        page: pageNo,
+        code: code,
+        keyword: keyword,
+      }
+
+      const response = await starBoard.list(params);
+      setBoardList(response.starList || []);
+      setPageInfo(response.page);
+      setOptionList(response.optionList);
+
+
+    } catch (error) {
+      console.error('Error fetching list:', error);
+    }
+
     setLoading(false);
+
   };
 
   useEffect(() => {
     getBoardList();
-  }, [type, page, option]);
-
-  const toBoard = () => {
-    switch (type) {
-      case 'event': return '/event';
-      case 'an': return '/an';
-      case 'review': return '/review';
-    }
-  };
+  }, [pageNo, keyword]);
 
   return (
     <List
-      type={type} 
+      type={type}
       optionList={optionList}
-      page={page}
       option={option}
-      toBoard={toBoard()}
+      page={pageInfo}
       boardList={boardList}
       loading={isLoading}
     />
