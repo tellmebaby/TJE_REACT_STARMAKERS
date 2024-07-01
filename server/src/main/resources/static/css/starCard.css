@@ -77,6 +77,22 @@
     flex: 0 0 24%;
 }
 
+.container {
+    width: 100%;
+    margin: auto;
+  }
+  
+  .slick-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card.standard {
+    margin: 10px;
+    width: 100%;
+  }
+  
 .board-h {
     display: flex;
     justify-content: space-between;
@@ -176,6 +192,7 @@
     color: black !important;
     text-decoration: none !important;
 }
+
 
 /* 카드 스타일 */
 .card {

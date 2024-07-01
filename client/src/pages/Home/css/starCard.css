@@ -40,6 +40,7 @@
 }
 
 .jumbotron {
+    min-height: 350px;
     height: 60vh; /* 화면 높이와 동일하게 설정 */
     margin-bottom: 3%;
 }
@@ -255,7 +256,6 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: left;
     text-align: left;
     padding: 10px;
@@ -294,17 +294,17 @@
 }
 
 .card-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* 최대 표시 줄 */
+    /* display: -webkit-box;
+    -webkit-line-clamp: 4; 
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 80%;
     line-height: 1.2em;
     margin-top: 2%;
-    max-height: 4.8em; /* 4줄의 최대 높이 */
-    min-height: 4.8em; /* 4줄의 최소 높이 */
-    background-color: transparent !important;;
+    max-height: 4.8em; 
+    min-height: 4.8em; 
+    background-color: transparent !important; */
 }
 
 .star {
@@ -328,21 +328,19 @@
 }
 
 .btn-custom {
-    color: white;
+    /* color: white;
     background-color: transparent;
     border: 1px solid white;
-    /* padding: 0.25em 0.25em; */
     padding: 0;
     text-align: center;
     font-size: 0.7em;
-    /* margin-top: 1%; */
     width: 40px;
     height: 18px;
-    align-content: center;
+    align-content: center; */
 }
 
 #asmr-link {
-    width: 42px;
+    /* width: 42px; */
 }
 
 .author-icon {
@@ -389,44 +387,44 @@
 
 .bottom-container {
     display: flex;
-    flex-direction: row; /* 수평 정렬 */
-    justify-content: space-between; /* 요소들 사이에 균등한 간격 */
+    flex-direction: row;
+    justify-content: space-between;
     align-items: end;
-    padding: 0; /* 패딩 설정 */
+    padding: 0;
     height: 20%;
 }
 
 .field-links {
-    flex: 3;
+    /* flex: 3;
     display: -webkit-box;
-    -webkit-line-clamp: 1; /* 최대 2줄까지 표시 */
+    -webkit-line-clamp: 1; 
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; */
     /* font-size: 70%; */
     /* max-height: 2.4em; */
     /* margin: 2px 0; */
 }
 
 .star-links {
-    flex: 1;
+    /* flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; */
     /* margin-top: 10px; */
 }
 
 .star-links > i {
-    width: 1.5em;
-    height: 1.5em;
+    /* width: 1.5em;
+    height: 1.5em; */
 }
 
 .star-links > span {
-    font-size: 0.5em;
+    /* font-size: 0.5em; */
 }
 .count {
     /* margin-top: 10px; */
-    font-size: 70%;
+    /* font-size: 70%; */
 }
 
 .shadow-icon {
