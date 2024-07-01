@@ -1,0 +1,21 @@
+.star-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    align-items: end;
+    /* margin-top: 10px; */
+}
+
+.star-links > i {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.star-links > span {
+    font-size: 0.5em;
+}
+.count {
+    /* margin-top: 10px; */
+    font-size: 70%;
+}

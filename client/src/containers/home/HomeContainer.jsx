@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Search from '../../components/main/Search';
 import * as cards from '../../apis/main/cards';
 import CardSlide from '../../components/main/CardSlide';
+import './css/star'
 
-const MainContainer = () => {
-  const [cardList, setCardList] = useState([]);
+const HomeContainer = () => {
+    const [cardList, setCardList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
   const getCardList = async () => {
@@ -23,13 +24,12 @@ const MainContainer = () => {
   useEffect(() => {
     getCardList();
   }, []);
-
   return (
     <>
       <Search />
       <CardSlide cardList={cardList} isLoading={isLoading} />
     </>
-  );
-};
+  )
+}
 
-export default MainContainer
+export default HomeContainer

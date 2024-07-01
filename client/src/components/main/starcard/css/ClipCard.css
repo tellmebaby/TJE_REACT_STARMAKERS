@@ -1,0 +1,43 @@
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.right-content {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    z-index: 5;
+}
+
+.right-content > svg {
+    width: 16px; /* 아이콘의 너비 설정 */
+    height: 16px; /* 아이콘의 높이 설정 */
+    fill: white; /* 아이콘의 색상을 흰색으로 설정 */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)); /* 그림자 설정 */
+}
+
+.clipboard-icon {
+    transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
+    opacity: 0;
+}
+
+.clipboard-icon.rotate-180:hover {
+    transform: rotate(0deg); /* 요소를 180도 회전시키는 변환 */
+    opacity: 1;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
+}
+
+.bi-three-dots-vertical.rotate-180 {
+    transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
+    opacity: 0; /* 투명도를 0으로 설정하여 요소가 서서히 사라지도록 함 */
+}
+
+.bi-three-dots-vertical.show {
+    transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
+    opacity: 1;
+    transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
+}

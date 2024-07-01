@@ -1,0 +1,31 @@
+.field-links {
+    flex: 3;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+    font-size: 50%;
+    max-height: 2.4em;
+    /* margin: 2px 0; */
+}
+
+.btn-custom {
+    color: white;
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 2px;
+    padding: 0;
+    text-align: center;
+    font-size: 1.2em;
+    margin-right: 5px;
+    /* width: 140px; */
+    height: 20px;
+    align-content: center;
+}
+
+#asmr-link {
+    width: 42px;
+}
+
