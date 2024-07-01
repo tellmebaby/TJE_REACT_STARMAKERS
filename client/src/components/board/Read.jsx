@@ -1,8 +1,9 @@
 import React from 'react'
 
-const Read = () => {
+const Read = (starNo, board) => {
   return (
-    <div>Read</div>
+    <div>아~어쩌란 말이냐 트위스트 추면서~
+    </div>
   )
 }
 

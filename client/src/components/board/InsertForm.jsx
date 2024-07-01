@@ -14,6 +14,7 @@ const InsertForm = ({ type, onInsert }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState(null)
+  
 
   // 🎁 함수
   const handleChangeTitle = (e) => {
