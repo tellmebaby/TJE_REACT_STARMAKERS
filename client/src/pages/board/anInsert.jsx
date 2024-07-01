@@ -1,7 +1,5 @@
 import React from 'react'
 import InsertContainer from '../../containers/board/InsertContainer'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
 import MainLayout from '../../layouts/MainLayout'
 
 const Insert = () => {
