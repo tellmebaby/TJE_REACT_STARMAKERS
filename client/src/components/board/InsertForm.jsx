@@ -14,7 +14,7 @@ const InsertForm = ({ type, onInsert }) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState(null)
-  const [status, setStatus] = useState('답변 대기');
+  
 
   // 🎁 함수
   const handleChangeTitle = (e) => {
@@ -41,7 +41,6 @@ const InsertForm = ({ type, onInsert }) => {
       formData.append('type', type)
     }
     formData.append('userNo', userInfo.userNo)
-    formData.append('status', status);
 
     console.log("title : " + title);
     console.log("content : " + content);
