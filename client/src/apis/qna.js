@@ -1,12 +1,16 @@
 import axios from 'axios';
 
 // 목록 조회
-export const qnaList = ({page, option}) => {
-  const params = {
-    page,
-    ...option,
-  };
-  return axios.get('/qna/qnaList', {params}).then(response => response.data);
+export const qnaList = async (params) => {
+ 
+  try {
+    const response = await axios.get(`/qna/qnaList`, { params });
+    return response.data;
+  } catch (error) {
+    // 에러 처리
+    console.error('Error fetching list:', error);
+    throw error; // 에러를 상위로 전파하거나 다른 처리 방법 선택
+  }
 };
 
 // 상세 조회

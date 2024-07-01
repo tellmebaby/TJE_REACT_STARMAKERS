@@ -1,12 +1,19 @@
 import axios from 'axios';
 
 // 목록 조회
-export const list = async (type, page, option) => {
-    const params = {
-      page,
-      ...option,  // 추가적인 옵션이 있을 경우 params에 추가됨
-    };
-    return axios.get(`/${type}`, {params}).then(response => response.data)
+export const list = async (params) => {
+
+  try {
+
+    console.log("--ddd-d--d")
+    console.log(params);
+
+    const response = await axios.get(`/starCard/List`, { params });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching list:', error);
+    throw error;
+  }
 };
 
 // 상세 조회
@@ -14,7 +21,7 @@ export const select = (no) => axios.get(`/${no}`);
 
 // 등록
 // export const insert = (title, writer, content) => axios.post("/boards", {title, writer, content})
-export const insert = (FormData, headers) => axios.post("/insertBoard", FormData, headers )
+export const insert = (FormData, headers) => axios.post("/insertBoard", FormData, headers)
 // url, body, headers
 
 // 수정
