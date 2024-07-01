@@ -17,7 +17,7 @@ const QnaListContainer = () => {
     const keyword = queryParams.get('keyword') || '';
 
 
-   
+//    const optionList = []
     const page2 = {
       page: currentPage,
     };
@@ -46,15 +46,12 @@ const QnaListContainer = () => {
     };
 
     useEffect(() => {
-        getQnaList(page2, keyword);
-    }, []);
+        getQnaList(page2, option);
+    }, [location.search]);
 
     useEffect(() => {
-    console.log("페이지 제발:", pageInfo); // pageInfo 상태 업데이트를 확인하기 위한 로그
-
-    // 페이지 정보가 변경될 때 추가적인 작업을 수행하고 싶다면 이 곳에 코드를 추가할 수 있습니다.
-
-}, [pageInfo]); // pageInfo 상태가 변경될 때 useEffect 실행
+    console.log("페이지 제발:", pageInfo); 
+}, [pageInfo]); 
 
     const handlePageChange = (page) => {
         navigate(`/qna/qnaList?page=${page}&code=${option.code}&keyword=${option.keyword}`);
@@ -73,3 +70,4 @@ const QnaListContainer = () => {
 };
 
 export default QnaListContainer;
+          
