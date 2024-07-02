@@ -25,6 +25,8 @@ import Read from './pages/board/Read';
 import { SessionProvider } from './contexts/SessionContext';
 import EventInsert from './pages/board/EventInsert';
 import QnaRead from './pages/board/QnaRead';
+import Update from './pages/board/Update';
+import QnaUpdate from './pages/board/QnaUpdate';
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>
+          <Route path="/update/:starNo" element={<Update/>}></Route>
+          <Route path="/qna/update/:qnaNo" element={<QnaUpdate/>}></Route>
         </Routes>
         </SessionProvider>
       </LoginContextProvider>
