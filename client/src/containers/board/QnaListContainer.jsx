@@ -32,7 +32,7 @@ const QnaListContainer = () => {
             setQnaList(response.qnaList || []); 
             setPageInfo(response.page);
             setOptionList(response.optionList);
-            
+            console.log("page", pageNo)
         } catch (error) {
             console.error('Error fetching QNA list:', error);
         }
