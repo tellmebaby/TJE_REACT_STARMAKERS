@@ -8,7 +8,7 @@ import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
 
-const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
+const UpdateForm = ({ isFile, qnaNo, qnaBoard, onUpdate, isLoading }) => {
   const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -38,7 +38,7 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     formData.append('title', title)
     formData.append('content', content)
     formData.append('userNo', userInfo.userNo)
-    formData.append('starNo', starNo)
+    formData.append('qnaNo', qnaNo)
     // if (status != null) {
     //   formData.append('status', status)
     // }
@@ -60,7 +60,7 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     }
 
     // onInsert(title, writer, content) // json
-    onUpdate(starNo, formData, headers)         // formData
+    onUpdate(qnaNo, formData, headers)         // formData
   }
   const customUploadAdapter = (loader) => {
     return {
@@ -96,11 +96,11 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     };
   };
   useEffect(() => {
-    if (starBoard) {
-      setTitle(starBoard.title)
-      setContent(starBoard.content)
+    if (qnaBoard) {
+      setTitle(qnaBoard.title)
+      setContent(qnaBoard.content)
     }
-  }, [starBoard])
+  }, [qnaBoard])
   function uploadPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       return customUploadAdapter(loader);
@@ -111,27 +111,8 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     <div className="update">
       <div class="body lg" >
         <cneter className="d-flex justify-content-center mb-3">
-        {
-          starBoard.type == 'an' ?
-            <h1>공지사항 수정</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'event' ?
-            <h1>이벤트 수정</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'review' ?
-            <h1>후기 수정</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'starCard' ?
-            <h1>홍보 수정</h1>
-          : <></>
-        }
-         </cneter>
+            <h1>Q&A 수정</h1>
+        </cneter>
         {
           !isLogin ?
             <div className="container content-box mt-3 mb-3">
@@ -153,7 +134,7 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
                     aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
                 </div>
                 {
-                  starBoard.type=='event' ?
+                  qnaBoard.type=='event' ?
                   <React.Fragment>
                        <div className="input-group mb-3">
                             <label className="input-group-text" for="inputGroupFile01">썸네일</label>
@@ -217,7 +198,7 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
                 />
                 <div className="d-flex justify-content-end mt-2">
                   {/* <button type="button" className="btn btn-primary btn-submit col-1 border-1 btn-list" >목록</button> */}
-                  <Link to={`/${type}`} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
+                  <Link to={'qna/qnaList'} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
                   <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>수정</button>
                 </div>
               </div>

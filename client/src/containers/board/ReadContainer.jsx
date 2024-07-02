@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import * as starBoard from '../../apis/starBoard'
+import * as starBoards from '../../apis/starBoard'
 import Read from '../../components/board/Read'
 
 const ReadContainer = ({starNo}) => {
   // 🧊 state
-  const [board, setBoard] = useState({})
+  const [starBoard, setStarBoard] = useState({})
   const [fileList, setFileList] = useState([])    // List는 배열이기 때문에 []
   const [isLoading, setLoading] = useState(false)
 
@@ -12,14 +12,16 @@ const ReadContainer = ({starNo}) => {
   const getBoard = async () => {
       // 로딩 시작
       setLoading(true)
-      const response = await starBoard.select(starNo)
+      const response = await starBoards.select(starNo)
       const data = await response.data        // ⭐ board 객체 + fileList
 
-      const board = data.board
-      const fileList = data.fileList
+      console.log(response);
 
-      setBoard(board)
-      setFileList(fileList)
+       console.log("container : " + response.data);
+      // const fileList = data.fileList
+
+      setStarBoard(data.starBoard)
+      // setFileList(fileList)
 
       // console.log(data)
       // setBoard(data)
@@ -31,12 +33,12 @@ const ReadContainer = ({starNo}) => {
 
   // ❓ hook
   useEffect( () => {
-      getBoard()
-  }, [starNo])
+    getBoard()
+  }, [])
 return (
   <>
       <Read
-      starNo={starNo} board={board} fileList={fileList} isLoading={isLoading}
+      starNo={starNo} starBoard={starBoard} fileList={fileList} isLoading={isLoading}
       />
   </>
 

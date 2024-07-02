@@ -10,15 +10,11 @@ export const update = (user) => axios.put('/mypage/profile', user)
 export const deleteUser = (userNo) => axios.delete(`/mypage/profile/${userNo}`)
 
 // 마이페이지 qnaList
-export const qnaList = () => axios.get("/mypage/qnaList");
+export const qnaList = (params) => axios.get(`/mypage/qnaList`, {params});
 
 // 선택된 QnA 항목 삭제
 export const deleteQna = (qnaNos) => axios.delete(`/qna/${qnaNos.join(',')}`);
 
-// qnaList 페이징
-export const fetchQnaList = (page, size) => {
-    return axios.get(`/mypage/qnaList?page=${page}&size=${size}`);
-};
 
 // 프로필 이미지 업로드
 export const profileUpload = (formData) => axios.post(`/file/profileUpload`, formData, {

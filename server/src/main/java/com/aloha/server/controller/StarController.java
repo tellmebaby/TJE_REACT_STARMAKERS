@@ -76,27 +76,29 @@ public class StarController {
     public ResponseEntity<?> select(@AuthenticationPrincipal CustomUser customUser,
             @PathVariable("no") Integer starNo) throws Exception {
 
-        Users user = customUser.getUser();
-        // StarBoard starBoard = starService.select(starNo);
+        log.info("starNo ? " + starNo);
+        Users user = new Users();
         StarBoard starBoard = null;
-        if (user != null) {
+        if (customUser != null) {
+            user = customUser.getUser();
+            // StarBoard starBoard = starService.select(starNo);
             int userNo = user.getUserNo();
             starBoard = starService.select(starNo, userNo);
         } else {
             starBoard = starService.select(starNo);
         }
-
         // 댓글수
         int commentCount = replyService.countByStarNo(starBoard.getStarNo());
         starBoard.setCommentCount(commentCount);
         // 조회수
         starService.views(starNo);
 
+        log.info("게시글 정보 : " + starBoard.toString());
         // 값 넘겨주기
         Map<String, Object> response = new HashMap<>();
         response.put("starBoard", starBoard);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<> (response, HttpStatus.OK);
     }
 
     /**
@@ -118,6 +120,7 @@ public class StarController {
         int starNo = starBoard.getStarNo();
         int result = starService.update(starBoard);
         log.info("수정 결과 :" + result);
+        log.info("수정한 게시글 : " + starBoard.toString());
 
         // 데이터 처리 성공
         if (result > 0) {
@@ -424,6 +427,7 @@ public class StarController {
 
         return new ResponseEntity<>(starBoard, HttpStatus.OK);
     }
+
 
 
     // @PostMapping("/like")

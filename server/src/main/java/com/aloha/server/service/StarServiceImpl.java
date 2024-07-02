@@ -112,6 +112,7 @@ public class StarServiceImpl implements StarService {
     @Override
     public int update(StarBoard starBoard) throws Exception {
         int result = starMapper.update(starBoard);
+        log.info("서비스의 수정 글 : " + starBoard.toString());
         return result;
     }
 

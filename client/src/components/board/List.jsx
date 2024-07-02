@@ -70,7 +70,7 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
               <th width="100">조회수</th>
             </tr>
           </thead>
-          <tbody>
+          
           <tr className={styles.fixed}>
               <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
               <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>로그인 필수</b></td>
@@ -112,7 +112,7 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
                 </tr>
               ))
             )}
-          </tbody>
+          
         </table>
       </div>
       <div className={styles['button-container']}>
