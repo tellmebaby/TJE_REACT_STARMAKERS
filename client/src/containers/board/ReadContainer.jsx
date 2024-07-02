@@ -14,8 +14,8 @@ const ReadContainer = ({starNo}) => {
       setLoading(true)
       const response = await starBoard.select(starNo)
       const data = await response.data        // ⭐ board 객체 + fileList
-
-      const board = data.board
+      //  console.log("container : " + response);
+      const board = response
       const fileList = data.fileList
 
       setBoard(board)
