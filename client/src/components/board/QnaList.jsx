@@ -4,6 +4,7 @@ import styles from '../board/css/list.module.css';
 import { useRef } from 'react';
 
 const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeyword, optionList  }) => {
+  console.log("컴포넌트page", page)
 
   const keywordRef = useRef();
 
