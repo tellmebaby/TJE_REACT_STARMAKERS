@@ -845,7 +845,13 @@ public class StarController {
 
         List<StarBoard> bannerList = starService.getBanner();
         if(bannerList != null){
-            return new ResponseEntity<>(bannerList, HttpStatus.OK);
+            List<StarBoard> filteredBannerList = new ArrayList<>();
+            for (StarBoard banner : bannerList) {
+                if (banner.getImgNo() != 0) {
+                    filteredBannerList.add(banner);
+                }
+            }
+            return new ResponseEntity<>(filteredBannerList, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -856,7 +862,13 @@ public class StarController {
         String type = "review";
         List<StarBoard> reviewList = starService.getFragByType(type);
         if(reviewList != null){
-            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+            List<StarBoard> filteredReviewList = new ArrayList<>();
+            for (StarBoard review : reviewList) {
+                if (review.getImgNo() != 0) {
+                    filteredReviewList.add(review);
+                }
+            }
+            return new ResponseEntity<>(filteredReviewList, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -865,9 +877,15 @@ public class StarController {
     public ResponseEntity<?> getFragByEvent() throws Exception {
 
         String type = "event";
-        List<StarBoard> reviewList = starService.getFragByType(type);
-        if(reviewList != null){
-            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        List<StarBoard> eventList = starService.getFragByType(type);
+        if(eventList != null){
+            List<StarBoard> filteredEventList = new ArrayList<>();
+            for (StarBoard event : eventList) {
+                if (event.getImgNo() != 0) {
+                    filteredEventList.add(event);
+                }
+            }
+            return new ResponseEntity<>(filteredEventList, HttpStatus.OK);
         }
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
