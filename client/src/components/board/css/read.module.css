@@ -109,7 +109,7 @@
           margin: 0 auto 15px;
 
           padding: 30px 30px;
-          border: 1px solid;
+          border: 1px solid #000;
           border-radius: 10px;
         }
         .title-container span {
@@ -120,14 +120,14 @@
           width: 100%;
           margin: 0 auto;
           padding: 30px 30px;
-          border: 1px solid;
+          border: 1px solid #000;
           /* text-align: center; */
         }
         .content-container2 {
             width: 100%;
             margin: 0 auto;
             padding: 30px 30px;
-            border: 1px solid;
+            border: 1px solid #000;
             border-radius: 5px;
             min-height: 200px;
             background-color: white;
@@ -232,7 +232,7 @@
             width: 720px;
             margin: 0 auto 15px;
             padding: 30px 30px;
-            border: 1px solid;
+            border: 1px solid #000;
             background-color: rgb(240, 240, 240);
         }
         .reply-box textarea {
@@ -589,3 +589,53 @@
         .button-box1 .like-btn i {
             
         }
+
+        .button-box button:first-child,
+.button-box input {
+  font-size: 13px;
+  color: #91accf;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: white;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+}
+
+.button-box button:first-child:hover,
+.button-box input:hover {
+  font-size: 13px;
+  color: white;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: #91accf;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+  box-shadow: 1px 1px 1px #3e6496;
+}
+
+
+
+.button-box button {
+  font-size: 13px;
+  color: white;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: #91accf;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+}
+
+.button-box button:hover {
+  font-size: 13px;
+  color: #91accf;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: white;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+  box-shadow: 1px 1px 1px #3e6496;
+}

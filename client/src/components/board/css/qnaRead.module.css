@@ -1,5 +1,4 @@
-.button-box button:first-child,
-.button-box input {
+.button-box button:first-child {
   font-size: 13px;
   color: #91accf;
   border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
@@ -10,8 +9,7 @@
   margin-left: 4px;
 }
 
-.button-box button:first-child:hover,
-.button-box input:hover {
+.button-box button:first-child:hover {
   font-size: 13px;
   color: white;
   border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
@@ -25,7 +23,8 @@
 
 
 
-.button-box button {
+.button-box button,
+.button-box input {
   font-size: 13px;
   color: white;
   border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
@@ -36,12 +35,13 @@
   margin-left: 4px;
 }
 
-.button-box button:hover {
+.button-box button:hover,
+.button-box input:hover {
   font-size: 13px;
-  color: white;
+  color: #91accf;
   border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
   border-radius: 10px;
-  background-color: #91accf;
+  background-color: white;
   width: 50px;
   height: 30px;
   margin-left: 4px;
