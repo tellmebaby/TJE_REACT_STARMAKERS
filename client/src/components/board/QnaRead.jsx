@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
-import styles from '../board/css/qnaRead.module.css'
-// import styles2 from '../board/css/read.module.css'
+import React, { useState, useEffect, useContext } from 'react';
+import styles from '../board/css/qnaRead.module.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
-  const [answer, setAnswer] = useState(qnaBoard.answer || '');
+
+const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, deleteAnswer }) => {
+  const [answer, setAnswer] = useState('');
   const [isEditingAnswer, setIsEditingAnswer] = useState(false);
+  const { isLogin, logout, userInfo } = useContext(LoginContext)
+  useEffect(() => {
+    setAnswer(qnaBoard.answer || '');
+  }, [qnaBoard]);
 
   const moveList = () => {
     window.location.href = '/qna/qnaList';
@@ -22,22 +27,28 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
     setAnswer(e.target.value);
   };
 
-  const submitAnswer = () => {
+  const handleAddAnswer = () => {
     if (answer.trim() === '') {
       alert('내용을 입력해주세요.');
       return;
     }
-    alert('답변이 등록되었습니다!');
-    // 실제 제출 로직은 여기에 추가
+    addAnswer(answer);
+    setIsEditingAnswer(false);
   };
 
-  const updateAnswer = () => {
+  const handleUpdateAnswer = () => {
     if (answer.trim() === '') {
       alert('내용을 입력해주세요.');
       return;
     }
-    alert('답변이 수정되었습니다!');
-    // 실제 제출 로직은 여기에 추가
+    updateAnswer(answer);
+    setIsEditingAnswer(false);
+  };
+
+  const handleDeleteAnswer = () => {
+    if (window.confirm('답변을 삭제하시겠습니까?')) {
+      deleteAnswer();
+    }
   };
 
   const actionDelete = () => {
@@ -46,14 +57,8 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
     }
   };
 
-  const deleteAnswer = () => {
-    if (window.confirm('답변을 삭제하시겠습니까?')) {
-      // 실제 삭제 로직은 여기에 추가
-    }
-  };
-
   return (
-    <div className="container2">
+    <div className="container2" style={{ padding: '10px' }}>
       <center>
         <h3 className={styles.notice}>Q&A</h3>
         <label className={styles.eventtext}>
@@ -64,24 +69,24 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
         <label>{qnaBoard.writer}</label>
         <label>{new Date(qnaBoard.regDate).toLocaleString()}</label>
       </div>
-      <div className={styles.titleContainer}>
+      <div className={styles['title-container']}>
         <span>{qnaBoard.title}</span>
         <hr />
       </div>
-      <div className={styles.contentContainer}>
+      <div className={styles['content-container']}>
         <div dangerouslySetInnerHTML={{ __html: qnaBoard.content }}></div>
       </div>
-      <div className={`${styles.dFlex} ${styles.justifyContentEnd} ${styles.mt2} ${styles.buttonBox}`}>
-        <button className={styles.btnList} type="button" onClick={moveList}>
+      <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
+        <button className={styles['btn-list']} type="button" onClick={moveList}>
           목록
         </button>
-        {user && user.userNo === qnaBoard.userNo && (
+        {userInfo.userNo === qnaBoard.userNo && (
           <>
-            <button className={styles.btnUpdate} type="button" onClick={update}>
+            <button className={styles['btn-update']} type="button" onClick={update}>
               수정
             </button>
             <input
-              className={styles.btnDelete}
+              className={styles['btn-delete']}
               type="button"
               onClick={actionDelete}
               value="삭제"
@@ -90,13 +95,12 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
         )}
       </div>
       <label className={styles.answer}>답변</label>
-      <form action="/page/board/qnaBoard/qnaPost" method="post" id="form">
-        {/* <input type="hidden" name={csrfToken.parameterName} value={csrfToken.token} /> */}
-        <div className={styles.answerContainer}>
-          {!isEditingAnswer && <span id="answer-span">{qnaBoard.answer}</span>}
+      <form>
+        <div className={styles['answer-container']}>
+          {!isEditingAnswer && <span className={styles['answer-span']}>{qnaBoard.answer}</span>}
           {isEditingAnswer && (
             <textarea
-              id="answer-textarea"
+              className={styles['answer-textarea']}
               name="answer"
               style={{ width: '100%', height: '150px' }}
               placeholder="답변을 입력하세요..."
@@ -106,36 +110,47 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
           )}
           <input type="hidden" name="qnaNo" id="qnaNo" value={qnaNo} />
         </div>
-        <div className={styles.buttonContainer1}>
-          {user && user.roles.includes('ROLE_ADMIN') && (
+        <div className={styles['button-container1']}>
+          {!qnaBoard.answer && !isEditingAnswer && (
+            <button className={styles['btn-answer']} type="button" onClick={toggleAnswer}>
+              답변 등록
+            </button>
+          )}
+          {isEditingAnswer && !qnaBoard.answer && (
+            <button className={styles['btn-answer']} type="button" onClick={handleAddAnswer}>
+              답변 제출
+            </button>
+          )}
+          {qnaBoard.answer && (
             <>
-              {!answer && (
-                <button type="button" id="toggle-button" onClick={toggleAnswer}>
-                  답변 등록
+              <div className={styles['button-container2']}>
+                {!isEditingAnswer ? (
+                  <button
+                    type="button"
+                    className={styles['btn-update-answer']}
+                    onClick={toggleAnswer}
+                  >
+                    수정
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={styles['btn-update-answer']}
+                    onClick={handleUpdateAnswer}
+                  >
+                    수정 완료
+                  </button>
+                )}
+              </div>
+              <div className={styles['button-container3']}>
+                <button
+                  type="button"
+                  className={styles['btn-delete-answer']}
+                  onClick={handleDeleteAnswer}
+                >
+                  삭제
                 </button>
-              )}
-              {answer && (
-                <div className={styles.buttonWrapper}>
-                  <div className={styles.buttonContainer2}>
-                    <button
-                      type="button"
-                      id="update-answer-button"
-                      onClick={updateAnswer}
-                    >
-                      수정
-                    </button>
-                  </div>
-                  <div className={styles.buttonContainer1}>
-                    <button
-                      type="button"
-                      id="delete-answer-button"
-                      onClick={deleteAnswer}
-                    >
-                      삭제
-                    </button>
-                  </div>
-                </div>
-              )}
+              </div>
             </>
           )}
         </div>
@@ -144,9 +159,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
         id="deleteForm"
         method="post"
         action={`/page/board/qnaBoard/qnaDelete?qnaNos=${qnaNo}`}
-      >
-        {/* <input type="hidden" name={csrfToken.parameterName} value={csrfToken.token} /> */}
-      </form>
+      ></form>
     </div>
   );
 };

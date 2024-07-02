@@ -38,19 +38,13 @@ public class UserController {
      */
     @GetMapping("/info")
     public ResponseEntity<?> userInfo(@AuthenticationPrincipal CustomUser customUser) {
-        
-        log.info("::::: customUser :::::");
-        log.info("customUser : "+ customUser);
-
         Users user = customUser.getUser();
-        log.info("user : " + user);
-
-        // 인증된 사용자 정보 
-        if( user != null )
-            return new ResponseEntity<>(user, HttpStatus.OK);
-
-        // 인증 되지 않음
-        return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        try {
+            Users loginUser = userService.select(user.getEmail());
+            return new ResponseEntity<>(loginUser, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     

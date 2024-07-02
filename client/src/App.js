@@ -22,6 +22,7 @@ import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
 import QnaInsert from './pages/board/QnaInsert';
 import Read from './pages/board/Read';
+import StarPayment from './pages/board/StarPayment';
 import { SessionProvider } from './contexts/SessionContext';
 import EventInsert from './pages/board/EventInsert';
 import QnaRead from './pages/board/QnaRead';
@@ -54,6 +55,7 @@ function App() {
           <Route path="/starInsert" element={<StarInsert/>}></Route>
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
+          <Route path="/StarPayment/:starNo" element={<StarPayment/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>
           <Route path="/update/:starNo" element={<Update/>}></Route>
           <Route path="/qna/update/:qnaNo" element={<QnaUpdate/>}></Route>

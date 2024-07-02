@@ -5,13 +5,27 @@ import QnaListForm from '../../components/mypage/QnaListForm';
 const QnaListContainer = () => {
   const [qnaList, setQnaList] = useState([]);
   const [user, setUser] = useState(null);
+  const [pageInfo, setPageInfo] = useState({ pageNumber: 1, itemsPerPage: 10 }); // 초기 상태 빈 객체로 설정
+
+  const [pageNo, setPage] = useState(1);
+  const [keyword, setKeyword] = useState('');
 
   const getQnaList = async () => {
     try {
-      const response = await mypage.qnaList();
+      const params = {
+        page: pageNo,
+        keyword: keyword
+      }
+      const response = await mypage.qnaList(params);
       const data = response.data;
-      setQnaList(Array.isArray(data) ? data : []);
+
+      console.log("데이터 확인");
+      console.log(data);
+
+      setQnaList(Array.isArray(data.qnaList) ? data.qnaList : []);
+      setPageInfo(data.page || {}); // response.page가 없을 경우 빈 객체로 설정
       console.log('QnaList:', data); // 데이터 확인
+      console.log('pageNo:', pageNo); // 데이터 확인
     } catch (error) {
       console.error('Error fetching QnA list:', error);
     }
@@ -35,14 +49,24 @@ const QnaListContainer = () => {
     };
 
     fetchData();
-  }, []);
+  }, [pageNo, keyword]);
 
   useEffect(() => {
     console.log('Updated QnaList:', qnaList);
     console.log('Updated User:', user);
   }, [qnaList, user]);
 
-  return user ? <QnaListForm qnaList={qnaList} user={user} /> : <div>Loading...</div>;
+  return user ? (
+    <QnaListForm
+      qnaList={qnaList}
+      user={user}
+      page={pageInfo}
+      setPage={setPage}
+      setKeyword={setKeyword}
+    />
+  ) : (
+    <div>Loading...</div>
+  );
 };
 
 export default QnaListContainer;

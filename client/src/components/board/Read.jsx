@@ -118,7 +118,26 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
 
   return (
     <div className="container2">
-      <center><h3 className="event">EVENT</h3></center>
+      <center> {
+          starBoard.type == 'an' ?
+            <h1>공지사항</h1>
+          : <></>
+        }
+        {
+          starBoard.type == 'event' ?
+            <h1>이벤트</h1>
+          : <></>
+        }
+        {
+          starBoard.type == 'review' ?
+            <h1>후기</h1>
+          : <></>
+        }
+        {
+          starBoard.type == 'starCard' ?
+            <h1>홍보</h1>
+          : <></>
+        }</center>
       {
         !isLoading && starBoard && (
           <><div className="writer">

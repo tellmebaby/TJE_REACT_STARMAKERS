@@ -10,6 +10,9 @@ public interface QnaService {
     // 목록 조회
     public List<QnaBoard> list(Page page, Option option) throws Exception;
 
+    // 마이페이지 목록 조회
+    public List<QnaBoard> mypageList(Page page, Option option, int userNo) throws Exception;
+
     // 글 조회
     public QnaBoard select(int qnaNo) throws Exception;
 
