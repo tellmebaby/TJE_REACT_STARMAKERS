@@ -1,4 +1,5 @@
-.container2 .button-box button {
+.button-box button:first-child,
+.button-box input {
   font-size: 13px;
   color: #91accf;
   border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
@@ -7,6 +8,44 @@
   width: 50px;
   height: 30px;
   margin-left: 4px;
+}
+
+.button-box button:first-child:hover,
+.button-box input:hover {
+  font-size: 13px;
+  color: white;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: #91accf;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+  box-shadow: 1px 1px 1px #3e6496;
+}
+
+
+
+.button-box button {
+  font-size: 13px;
+  color: white;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: #91accf;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+}
+
+.button-box button:hover {
+  font-size: 13px;
+  color: white;
+  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+  border-radius: 10px;
+  background-color: #91accf;
+  width: 50px;
+  height: 30px;
+  margin-left: 4px;
+  box-shadow: 1px 1px 1px #3e6496;
 }
 
 .notice {
@@ -84,12 +123,14 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  padding: 10px 0;
+  /* padding: 10px 0; */
   width: 100%;
 }
 
 .button-container1,
 .button-container2 {
+  display: flex;
+  justify-content: flex-end;
   text-align: right;
   padding: 10px 0;
 }
@@ -128,6 +169,17 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
   font-weight: bolder;
   color: white;
+}
+.button-container3 button {
+  background-color: rgba(37, 37, 37, 1);
+  color: white;
+}
+
+.button-container3 button:hover {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  font-weight: bolder;
+  color: black;
 }
 
 .answer {
