@@ -1,78 +1,4 @@
 /* 기존 스타일 */
-#bannerCarousel img {
-    /* width: -webkit-fill-available;
-    height: 120px;
-    border-radius: 15px;
-    border: 1px solid rgb(211, 212, 215); */
-}
-
-.event-banner {
-    /* text-align: center;
-    overflow: hidden; */
-    /* margin: 20px 0; */
-}
-
-.bg-image {
-    position: relative;
-    background-image: url('../../../../public/img/indexTopBackImg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 60vh; /* 이미지가 화면 높이만큼 차지하도록 설정 */
-    overflow: hidden; /* 오버플로우 숨기기 */
-    background-repeat: no-repeat;
-    background-color: black;
-}
-
-.bg-image .topOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%; /* .bg-image의 높이에 맞춤 */
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-}
-
-.jumbotron {
-    min-height: 350px;
-    height: 60vh; /* 화면 높이와 동일하게 설정 */
-    margin-bottom: 3%;
-}
-
-.jumbotron .topOverlay {
-    padding: 0 30px;
-    text-align: left;
-}
-
-.carousel-control-prev,
-.carousel-control-next {
-    /* width: 40px;
-    color: black;
-    left: -5%;
-    right: auto; */
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    /* background-color: black;
-    border-radius: 50%; */
-}
-
-.carousel-control-next {
-    /* left: auto;
-    right: -5%; */
-}
-
-#promotionCarousel .row {
-    display: flex;
-    /* gap: 17px; */
-}
 
 #promotionCarousel .col-lg-3 {
     flex: 0 0 24%;
@@ -293,19 +219,7 @@
     max-height: 2.4em;
 }
 
-.card-text {
-    /* display: -webkit-box;
-    -webkit-line-clamp: 4; 
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 80%;
-    line-height: 1.2em;
-    margin-top: 2%;
-    max-height: 4.8em; 
-    min-height: 4.8em; 
-    background-color: transparent !important; */
-}
+
 
 .star {
     color: yellow;
@@ -325,22 +239,6 @@
         transform: scale(6);
         opacity: 0;
     }
-}
-
-.btn-custom {
-    /* color: white;
-    background-color: transparent;
-    border: 1px solid white;
-    padding: 0;
-    text-align: center;
-    font-size: 0.7em;
-    width: 40px;
-    height: 18px;
-    align-content: center; */
-}
-
-#asmr-link {
-    /* width: 42px; */
 }
 
 .author-icon {
@@ -394,74 +292,12 @@
     height: 20%;
 }
 
-.field-links {
-    /* flex: 3;
-    display: -webkit-box;
-    -webkit-line-clamp: 1; 
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis; */
-    /* font-size: 70%; */
-    /* max-height: 2.4em; */
-    /* margin: 2px 0; */
-}
 
-.star-links {
-    /* flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center; */
-    /* margin-top: 10px; */
-}
-
-.star-links > i {
-    /* width: 1.5em;
-    height: 1.5em; */
-}
-
-.star-links > span {
-    /* font-size: 0.5em; */
-}
-.count {
-    /* margin-top: 10px; */
-    /* font-size: 70%; */
-}
 
 .shadow-icon {
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5));
 }
 
-#main-search {
-    background-color: transparent; /* 배경색 없음 */
-    border: 1px solid white; /* 테두리 하얀색 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    margin-left: -1px; /* 왼쪽에 인풋과 겹치지 않도록 마진 설정 */
-    border-top-right-radius: 0; /* 버튼 왼쪽 상단 모서리를 둥글게 하지 않음 */
-    border-bottom-right-radius: 0; /* 버튼 왼쪽 하단 모서리를 둥글게 하지 않음 */
-    height: calc(100% - 2px); /* 버튼 높이를 인풋과 동일하게 설정 */
-    margin-right: -1px; /* 버튼과의 간격을 없애기 위해 추가 */
-}
-
-#btn-mainSearch {
-    background-color: transparent; /* 배경색 없음 */
-    border: 1px solid white; /* 테두리 하얀색 */
-    color: white; /* 텍스트 색상을 흰색으로 설정 */
-    margin-left: -1px; /* 왼쪽에 인풋과 겹치지 않도록 마진 설정 */
-    border-top-left-radius: 0; /* 버튼 왼쪽 상단 모서리를 둥글게 하지 않음 */
-    border-bottom-left-radius: 0; /* 버튼 왼쪽 하단 모서리를 둥글게 하지 않음 */
-    height: calc(100% - 2px); /* 버튼 높이를 인풋과 동일하게 설정 */
-    width: 150px;
-    margin-right: -1px; /* 버튼과의 간격을 없애기 위해 추가 */
-}
-
-#main-search::placeholder {
-    color: white; /* 플레이스홀더 텍스트 색상을 흰색으로 설정 */
-}
-
-#btn-mainSearch:hover {
-    background-color: white; /* 마우스 오버시 배경색 흰색으로 변경 */
-    color: black; /* 텍스트 색상을 검은색으로 변경 */
-}
 
   .contentIcon-container {
     display: flex;
@@ -523,9 +359,6 @@
     background-size: cover;
   }
 
-  /* .contentIcon:hover {
-      background-color: #f9ebbf;
-    } */
     
     .contentIcon1:hover ~ .contentIcon-backMusic{
     background-image: url("../../../../public/img/categoryMusic.gif");
@@ -651,10 +484,6 @@
     .type-sub.checked label {
         color: black;
     }
-
-    /* .type-sub.checked #type-chzzk {
-        background-color: #f6fcf3 !important;
-    } */
 
     
 

@@ -319,24 +319,23 @@ public class StarController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    
+
 
     // 추가 화면 설정
-    @GetMapping("/starCard/starList/api")
+    @GetMapping("/starList/api")
     public ResponseEntity<List<StarBoard>> getMoreCards(
             @RequestParam(value = "type", defaultValue = "starCard") String type,
             Page page,
-            Option option,
-            HttpSession session, Model model) throws Exception {
-        Users user = (Users) session.getAttribute("user");
+            Option option, int userNo) throws Exception {
+
         List<StarBoard> starList;
 
         page.setRows(24); // 한 번에 불러올 행 수 설정
 
-        if (user != null) {
-            int userNo = user.getUserNo();
+        if ( userNo > 0 ) {
             starList = starService.getStarList(type, page, option, userNo);
         } else {
-            log.info("::::::::::찾았다 요놈!");
             starList = starService.list(type, page, option);
         }
 
@@ -347,15 +346,6 @@ public class StarController {
                 star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
             }
         });
-
-        // 승인 글만 리스트로 출력
-        // List<StarBoard> starList2 = new ArrayList();
-        // for (StarBoard starBoard : starList) {
-        // if(starBoard.getStatus() == "승인" || starBoard.getStatus().equals("승인")){
-        // starList2.add(starBoard);
-        // log.info(starBoard.getStatus());
-        // }
-        // }
 
         return new ResponseEntity<>(starList, HttpStatus.OK);
     }

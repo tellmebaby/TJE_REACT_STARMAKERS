@@ -20,6 +20,7 @@ import QnaMainList from './pages/board/QnaMainList';
 import ReviewList from './pages/board/ReviewList';
 import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
+import StarList from './pages/board/StarList';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/anInsert" element={<AnInsert/>}></Route>
           <Route path="/test" component={<Test/>} />
           <Route path="/starInsert" element={<StarInsert/>}></Route>
+          <Route path="/starList" element={<StarList />}></Route>
         </Routes>
       </LoginContextProvider>
     </BrowserRouter>
