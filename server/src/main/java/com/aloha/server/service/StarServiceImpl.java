@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
@@ -25,6 +26,9 @@ public class StarServiceImpl implements StarService {
 
     @Autowired
     private LikeMapper likeMapper;
+
+    @Autowired
+    private FileService fileService;
 
     /**
      * 게시글 목록
@@ -52,21 +56,18 @@ public class StarServiceImpl implements StarService {
      */
     @Override
     public StarBoard insert(StarBoard starBoard) throws Exception {
-        int result = starMapper.insert(starBoard);
-        log.info("result : " + result);
-        int newNo = starBoard.getStarNo();
-        StarBoard newBoard = starMapper.select(newNo);
 
-        // 파일 업로드
+        
+        starMapper.insert(starBoard);
+        starBoard.setStarNo(starBoard.getStarNo());
 
-        // starBoard.setUserNo(user.getUserNo());
-        // if (user.getId() == null || user.getId().equals("")) {
-        // starBoard.setWriter(user.getName());
-        // }else{
-        // starBoard.setWriter(user.getId());
-        // }
+        MultipartFile file = starBoard.getImage();
 
-        return newBoard;
+        if(starBoard.getImage() != null){
+            fileService.upload(file, starBoard.getStarNo(), starBoard.getUserNo());
+        }
+
+        return starBoard;
     }
 
     /**
@@ -111,6 +112,7 @@ public class StarServiceImpl implements StarService {
     @Override
     public int update(StarBoard starBoard) throws Exception {
         int result = starMapper.update(starBoard);
+        log.info("서비스의 수정 글 : " + starBoard.toString());
         return result;
     }
 

@@ -1,27 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Modal, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../mypage/css/UserDeleteForm.module.css';
 
-const UserDeleteForm = ({ userDelete }) => {
-  const [show, setShow] = useState(false);
+const UserDeleteForm = ({ handleShow }) => {
   const [checked, setChecked] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
+  const handleClick = () => {
     if (!checked) {
       alert('체크 박스를 체크해주세요.');
       return;
     }
-    setShow(true);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // console.log('handleSubmit 함수 호출, userNo:', userNo); // userNo 로그 출력
-    await userDelete();
-    setShow(false);
+    handleShow();
   };
 
   return (
@@ -34,7 +25,7 @@ const UserDeleteForm = ({ userDelete }) => {
               <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
               <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
               <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
-              <Link to="/mypage/inquiry"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
+              <Link to="/mypage/qnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
               <Link to="/mypage/userDelete" className={styles.active}><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
             </div>
           </div>
@@ -59,27 +50,12 @@ const UserDeleteForm = ({ userDelete }) => {
             <label htmlFor="checkbox" className={styles.noSelect} style={{ fontSize: '20px', marginLeft: '8px' }}>
               위 내용을 확인합니다.
             </label>
-            <Button className={styles.button} onClick={handleShow}>
+            <Button className={styles.button} onClick={handleClick}>
               탈퇴하기
             </Button>
           </div>
         </div>
       </div>
-
-      <Modal show={show} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>정말 탈퇴하시겠습니까?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>확인을 누르시면 바로 탈퇴가 진행됩니다.</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            취소
-          </Button>
-          <Button variant="primary" onClick={handleSubmit}>
-            확인
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

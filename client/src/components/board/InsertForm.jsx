@@ -2,19 +2,19 @@ import React, { useContext, useState } from 'react';
 // ckeditor5
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
 import 'bootstrap/dist/css/bootstrap.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
 
-const InsertForm = ({ type, onInsert }) => {
+const InsertForm = ({ type, onInsert, status, isFile }) => {
 
   const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [files, setFiles] = useState(null)
+  
 
   // 🎁 함수
   const handleChangeTitle = (e) => {
@@ -27,19 +27,22 @@ const InsertForm = ({ type, onInsert }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()      // 기본 이벤트 방지
-    e.stopPropagation() 
-    console.log("여기오나? onSubmit");
     // 유효성 검사 ✅
     // ...일단 생략
 
     // 파일 업로드에서는 
     // Content-Type : application/json -> multipart/form-data
-    console.log("userno? " + userInfo.userNo);
     const formData = new FormData()
     formData.append('title', title)
     formData.append('content', content)
-    formData.append('type', type)
+    if (type && type != "") {
+      formData.append('type', type)
+    }
     formData.append('userNo', userInfo.userNo)
+    formData.append('writer', userInfo.id)
+    if(status != null) {
+      formData.append('status', status)
+    }
 
     console.log("title : " + title);
     console.log("content : " + content);
@@ -127,6 +130,16 @@ const InsertForm = ({ type, onInsert }) => {
                     aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
                   {/* <input type="hidden" value={type}/> */}
                 </div>
+                {
+                  isFile && (
+                    <React.Fragment>
+                       <div className="input-group mb-3">
+                            <label className="input-group-text" for="inputGroupFile01">썸네일</label>
+                            <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
+                        </div>
+                    </React.Fragment>
+                  )
+               }
                 <CKEditor
                   editor={ClassicEditor}
                   config={{
@@ -177,8 +190,6 @@ const InsertForm = ({ type, onInsert }) => {
               </div>
             </form>
         }
-
-
 
       </div>
 

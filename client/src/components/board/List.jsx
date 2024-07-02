@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import styles from '../board/css/list.module.css'
 
-const List = ({ type, optionList, page, option, toBoard, boardList}) => {
+const List = ({ type, optionList, page, option, boardList, setPage, setCode, setKeyword}) => {
 
-  const navigate = useNavigate();
+  const keywordRef = useRef();
 
 
-  const handleSearch = (event) => {
-    event.preventDefault();
-    const code = event.target.code.value;
-    const keyword = event.target.keyword.value;
-    navigate(`/${type}?page=${page.page}&code=${code}&keyword=${keyword}`);
+  const handleClick = (pageNumber) => {
+    setPage(pageNumber);
   };
+
+  const handleCodeChange = (e) => {
+    setCode(e.target.value);
+  }
+
+  const handleSearch = (e) =>{
+    e.preventDefault();
+    setKeyword(keywordRef.current.value);
+  }
 
   const getTitle = () => {
     switch (type) {
@@ -40,16 +46,16 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
         <label>{getDescription()}</label>
       </div>
       <div className={styles['search-container']}>
-        <form onSubmit={handleSearch}>
-          <select name="code" className={styles.select}>
+        <form action={`/${type}`} method="get">
+          <select name="code" className={styles.select} onChange={handleCodeChange}>
             {optionList.map((option) => (
-              <option key={option.code} value={option.code} selected={option.code === option.code}>
+              <option key={option.code} value={option.code}>
                 {option.codeName}
               </option>
             ))}
           </select>
-          <input type="text" name="keyword" placeholder="검색어를 입력하세요" defaultValue={option.keyword} className={styles.input} />
-          <button type="submit" className={styles.button}>검색</button>
+          <input type="text" name="keyword" placeholder="검색어를 입력하세요" defaultValue={option.keyword} ref={keywordRef}/>
+          <button type="submit" className={styles.button} onClick={handleSearch}>검색</button>
         </form>
       </div>
       <div className={styles['table-container']}>
@@ -64,7 +70,7 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
               <th width="100">조회수</th>
             </tr>
           </thead>
-          <tbody>
+          
           <tr className={styles.fixed}>
               <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
               <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>로그인 필수</b></td>
@@ -90,7 +96,7 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
             ) : (
               boardList.map((starBoard) => (
                 <tr key={starBoard.starNo}>
-                  <td align="center">{starBoard.type}</td>
+                  <td align="center">{starBoard.starNo}</td>
                   <td>
                     <Link to={`/${starBoard.starNo}`} className={styles.link}>{starBoard.title} [{starBoard.commentCount}]</Link>
                     {new Date(starBoard.regDate) > new Date() && (
@@ -106,41 +112,47 @@ const List = ({ type, optionList, page, option, toBoard, boardList}) => {
                 </tr>
               ))
             )}
-          </tbody>
+          
         </table>
       </div>
       <div className={styles['button-container']}>
         <Link to={`/${type}Insert` } className={styles.btnn} style={{ backgroundColor: '#91ACCF' }}>✏글쓰기</Link>
       </div>
+
+
+      {/* 페이지네이션 */}
       <center>
         <div className={styles.pagination}>
-          <Link to={`/${type}?page=${page.first}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-            <span className="material-symbols-outlined">first_page</span>
-          </Link>
+          {/* [ 처음으로 ] */}
+
+          <span className="material-symbols-outlined" onClick={() => handleClick(page.first)} >first_page</span>
+
+          {/* [ 이전 ] */}
           {page.page !== page.first && (
-            <Link to={`/${type}?page=${page.prev}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-              <span className="material-symbols-outlined">chevron_backward</span>
-            </Link>
+            <span className="material-symbols-outlined" onClick={() => handleClick(page.prev)} >chevron_backward</span>
           )}
-          {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map((no) => (
-            <React.Fragment key={no}>
-              {page.page === no ? (
-                <b><span className={styles.currentPage}>{no}</span></b>
-              ) : (
-                <Link to={`/${type}?page=${no}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>{no}</Link>
-              )}
-            </React.Fragment>
+
+          {/* 페이지 번호 맵핑 */}
+          {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map(no => (
+            page.page === no ? (
+              <b key={no}><span>{no}</span></b>
+            ) : (
+              <span onClick={() => handleClick(no)} style={{ padding: '0 7px' }}>{no}</span>
+            )
           ))}
+
+          {/* [ 다음 ] */}
           {page.page !== page.last && (
-            <Link to={`/${type}?page=${page.next}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-              <span className="material-symbols-outlined">chevron_forward</span>
-            </Link>
+            <span className="material-symbols-outlined" onClick={() => handleClick(page.next)} >chevron_forward</span>
           )}
-          <Link to={`/${type}?page=${page.last}&code=${option.code}&keyword=${option.keyword}`} className={styles.pageLink}>
-            <span className="material-symbols-outlined">last_page</span>
-          </Link>
+
+          {/* [ 마지막 ] */}
+          <span className="material-symbols-outlined" onClick={() => handleClick(page.last)} >last_page</span>
+
         </div>
       </center>
+
+
     </div>
   );
   

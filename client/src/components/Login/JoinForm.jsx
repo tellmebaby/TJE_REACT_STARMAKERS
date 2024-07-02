@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './JoinForm.css';
 import * as auth from '../../apis/auth.js'
+import { useNavigate } from 'react-router-dom'
 
-const JoinForm = ({ navigate }) => {
+const JoinForm = () => {
   const [nickname, setNickname] = useState('');
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [password, setPassword] = useState('');
@@ -17,6 +18,8 @@ const JoinForm = ({ navigate }) => {
   const [address, setAddress] = useState('');
   const [addressDetail, setAddressDetail] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+
+  const navigate = useNavigate()
 
   const handleNicknameCheck = async () => {
     if (!nickname.trim()) {

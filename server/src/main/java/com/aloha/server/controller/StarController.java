@@ -1,8 +1,6 @@
 package com.aloha.server.controller;
 
 import java.text.NumberFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,27 +76,29 @@ public class StarController {
     public ResponseEntity<?> select(@AuthenticationPrincipal CustomUser customUser,
             @PathVariable("no") Integer starNo) throws Exception {
 
-        Users user = customUser.getUser();
-        // StarBoard starBoard = starService.select(starNo);
+        log.info("starNo ? " + starNo);
+        Users user = new Users();
         StarBoard starBoard = null;
-        if (user != null) {
+        if (customUser != null) {
+            user = customUser.getUser();
+            // StarBoard starBoard = starService.select(starNo);
             int userNo = user.getUserNo();
             starBoard = starService.select(starNo, userNo);
         } else {
             starBoard = starService.select(starNo);
         }
-
         // 댓글수
         int commentCount = replyService.countByStarNo(starBoard.getStarNo());
         starBoard.setCommentCount(commentCount);
         // 조회수
         starService.views(starNo);
 
+        log.info("게시글 정보 : " + starBoard.toString());
         // 값 넘겨주기
         Map<String, Object> response = new HashMap<>();
         response.put("starBoard", starBoard);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<> (response, HttpStatus.OK);
     }
 
     /**
@@ -121,6 +120,7 @@ public class StarController {
         int starNo = starBoard.getStarNo();
         int result = starService.update(starBoard);
         log.info("수정 결과 :" + result);
+        log.info("수정한 게시글 : " + starBoard.toString());
 
         // 데이터 처리 성공
         if (result > 0) {
@@ -170,8 +170,36 @@ public class StarController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // --------------------------------------------------------------------------
+    // 게시물 조회 통합
+    @GetMapping("/starCard/List")
+    public ResponseEntity<?> List(
+            @RequestParam(value = "type", required = false) String type,
+            Page page,
+            Option option) throws Exception {
 
+        try {
+            List<StarBoard> starList = starService.list(type, page, option);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("starList", starList);
+            response.put("page", page);
+            response.put("option", option);
+
+            List<Option> optionList = new ArrayList<Option>();
+            optionList.add(new Option("제목+내용", 0));
+            optionList.add(new Option("제목", 1));
+            optionList.add(new Option("내용", 2));
+            optionList.add(new Option("작성자", 3));
+            response.put("optionList", optionList);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // --------------------------------------------------------------------------
 
     /**
      * 홍보 달력 가져오기
@@ -227,68 +255,19 @@ public class StarController {
      * @throws Exception
      */
     @PostMapping("/starCard")
-    public ResponseEntity<?> insertPro(StarBoard starBoard,
-            @RequestParam(value = "image", required = false) MultipartFile file)
+    public ResponseEntity<?> insertPro(StarBoard starBoard)
             throws Exception {
 
         StarBoard newBoard = starService.insert(starBoard); // starBoard 등록
         int starNo = newBoard.getStarNo();
-        // 파일 처리
-        // if (file != null) {
-        // for (MultipartFile file : files) {
-        // fileService.upload(file, starNo, userNo); // file 등록
-        // }
-        // }
-
-        // Users user = (Users) session.getAttribute("user");
-        // int userNo = user.getUserNo();
-
-        // 리다이렉트
-        // 데이터 처리 성공
-        if (starNo > 0) {
-            // 파일 처리 로직
-            if (file != null && !file.isEmpty()) {
-                fileService.upload(file, starNo, 1); // file 등록
-            }
+        
+        if (starNo > 0) {          
             return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
-        // 데이터 처리 실패
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /**
-     * 홍보 게시판 목록 조회(list)
-     * 
-     * @param type
-     * @param keyword
-     * @param params
-     * @param page
-     * @param model
-     * @param session
-     * @param option
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/starCard")
-    public ResponseEntity<?> cardList(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam Map<String, String> params, // 모든 요청 파라미터를 받아오기 위한 Map
-            @AuthenticationPrincipal CustomUser customUser,
-            Page page,
-            Option option) throws Exception {
-        Users user = customUser.getUser();
-        // Users user = new Users();
-        // List<StarBoard> starList = null;
-        // List<StarBoard> starList = starService.list("starCard", page, option);
-        page.setRows(12 * 4);
-
-        // URL 파라미터로 받은 옵션 값 설정
-        params.forEach((key, value) -> {
-            if (value.equals("true")) {
-                option.setCategory(key, true);
-            }
-        });
 
         // 키워드가 있을 경우 검색 조건에 추가
         if (keyword != null && !keyword.isEmpty()) {
@@ -359,7 +338,8 @@ public class StarController {
      * @throws Exception
      */
     @GetMapping("/starPayment/{no}")
-    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser) throws Exception {
+    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
+            throws Exception {
         Map<String, Object> response = new HashMap<>();
         Users user = customUser.getUser();
 
@@ -468,252 +448,6 @@ public class StarController {
         return new ResponseEntity<>(starBoard, HttpStatus.OK);
     }
 
-    /**
-     * 홍보 글 수정.. 없어도 될 것 같기도
-     * @param starBoard
-     * @param file
-     * @param customUser
-     * @return
-     * @throws Exception
-     */
-    @PutMapping("/starCard")
-    public ResponseEntity<?> updatePro(StarBoard starBoard,
-            @RequestParam(value = "image", required = false) MultipartFile file,
-            @AuthenticationPrincipal CustomUser customUser) throws Exception {
-
-        int result = starService.update(starBoard);
-        int starNo = starBoard.getStarNo();
-
-        Users user = customUser.getUser();
-        int userNo = user.getUserNo();
-
-        // 파일 로직 추가
-
-        // 데이터 처리 성공
-        if (result > 0) {
-            // 파일 처리 로직
-
-            // log.info(file.toString()+"sadfasdfdsf");
-
-            if (file != null && !file.isEmpty()) { // file이 있을 경우 실행
-                // 기존에 올라간 파일 삭제
-                // 1. starNo로 기존에 올라가있는 파일 있는지 확인하고 있으면 파일 값 가져오기
-                // 2. starNo로 등록 된 파일 삭제
-                // 3. starNo로 새로운 파일 등록
-                log.info("새로 등록된 파일 있음");
-                Files file2 = new Files();
-                file2.setStarNo(starNo);
-                fileService.deleteByParent(file2); // 기존 파일 삭제
-
-                fileService.upload(file, starNo, userNo); // file 등록
-            } else {
-                log.info("새로 등록된 파일 없음");
-            }
-            return new ResponseEntity<>("게시글 수정 성공", HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>("게시글 수정 실패", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    // 아래부터 event 게시판 ---------------------------------------------------------
-
-    /**
-     * 이벤트 게시판 목록 조회
-     * 
-     * @param page
-     * @param option
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/event")
-    public ResponseEntity<?> eventList(Page page, Option option) throws Exception {
-
-        List<StarBoard> starListEvent = starService.list("event", page, option);
-        Map<String, Object> response = new HashMap<>();
-        response.put("starListEvent", starListEvent);
-        for (StarBoard starBoard : starListEvent) {
-            int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-            starBoard.setCommentCount(commentCount);
-        }
-
-        response.put("page", page);
-        response.put("option", option);
-        response.put("currentTime", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        log.info("first Page: " + page.getFirst());
-        log.info("List Page: " + page.getLast());
-        log.info("Total : " + page.getTotal());
-
-        List<Option> optionList = new ArrayList<Option>();
-        optionList.add(new Option("제목+내용", 0));
-        optionList.add(new Option("제목", 1));
-        optionList.add(new Option("내용", 2));
-        optionList.add(new Option("작성자", 3));
-
-        response.put("optionList", optionList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    /**
-     * 글 작성
-     * 
-     * @param starBoard
-     * @param file
-     * @param customUser
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/event")
-    public ResponseEntity<?> eventInsertPro(StarBoard starBoard,
-            @RequestParam(value = "image", required = false) MultipartFile file,
-            @AuthenticationPrincipal CustomUser customUser)
-            throws Exception {
-        // 타입 추가 - 게시판에서 insert할 때 추가하기
-        starBoard.setType("event");
-        // Users user = customUser.getUser();
-        Users user = new Users(); // 커스텀 유저 되기 전에 임시로 해놓은 유저
-        user.setUserNo(1);
-        int userNo = user.getUserNo();
-        starBoard.setUserNo(userNo);
-        StarBoard newBoard = starService.insert(starBoard); // starBoard 등록
-        int starNo = newBoard.getStarNo();
-
-        if (starNo > 0) {
-            log.info("보드 데이터" + newBoard.toString());
-            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
-        }
-        // 리다이렉트
-        // 데이터 처리 성공
-        // 데이터 처리 성공
-        if (starNo > 0) {
-            // 파일 처리 로직
-            if (file != null && !file.isEmpty()) {
-                fileService.upload(file, starNo, 1); // file 등록
-            }
-            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
-        }
-
-        // 데이터 처리 실패
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    
-    // 아래부터 review 게시판 ---------------------------------------------------------
-
-    /**
-     * review 게시판 List 조회
-     * 
-     * @param page
-     * @param option
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/review")
-    public ResponseEntity<?> reviewList(Page page, Option option) throws Exception {
-
-        List<StarBoard> starList = starService.list("review", page, option);
-        Map<String, Object> response = new HashMap<>();
-        response.put("starList", starList);
-        for (StarBoard starBoard : starList) {
-            int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-            starBoard.setCommentCount(commentCount);
-        }
-
-        response.put("page", page);
-        response.put("option", option);
-        response.put("currentTime", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        log.info("first Page: " + page.getFirst());
-        log.info("List Page: " + page.getLast());
-        log.info("Total : " + page.getTotal());
-
-        List<Option> optionList = new ArrayList<Option>();
-        optionList.add(new Option("제목+내용", 0));
-        optionList.add(new Option("제목", 1));
-        optionList.add(new Option("내용", 2));
-        optionList.add(new Option("작성자", 3));
-
-        response.put("optionList", optionList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    /**
-     * 후기 글 작성(insert)
-     * @param starBoard
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/review")
-    public ResponseEntity<?> reviewInsert(StarBoard starBoard) throws Exception {
-        starBoard.setType("review");
-        StarBoard newBoard = starService.insert(starBoard);
-        // 리다이렉트
-        // 데이터 처리 성공
-        if (newBoard != null) {
-            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
-        }
-
-        // 데이터 처리 실패
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    // 아래부터 공지게시판
-
-    /**
-     * 공지 게시판 목록 조회
-     * 
-     * @param page
-     * @param option
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/an")
-    public ResponseEntity<?> anList( Page page, Option option) throws Exception {
-
-        List<StarBoard> starList = starService.list("an", page, option);
-        Map<String, Object> response = new HashMap<>();
-        response.put("starList", starList);
-        for (StarBoard starBoard : starList) {
-            int commentCount = replyService.countByStarNo(starBoard.getStarNo());
-            starBoard.setCommentCount(commentCount);
-        }
-
-        response.put("page", page);
-        response.put("option", option);
-        response.put("currentTime", LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        log.info("first Page: " + page.getFirst());
-        log.info("List Page: " + page.getLast());
-        log.info("Total : " + page.getTotal());
-
-        List<Option> optionList = new ArrayList<Option>();
-        optionList.add(new Option("제목+내용", 0));
-        optionList.add(new Option("제목", 1));
-        optionList.add(new Option("내용", 2));
-        optionList.add(new Option("작성자", 3));
-
-        response.put("optionList", optionList);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    /**
-     * 공지 글 작성(insert)
-     * @param starBoard
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/insertBoard")
-    public ResponseEntity<?> anInsertPro(StarBoard starBoard) throws Exception {
-        // starBoard.setType("notice");
-        StarBoard newBoard = starService.insert(starBoard);
-        // 리다이렉트
-        // 데이터 처리 성공
-        if (newBoard != null) {
-            log.info(newBoard.toString());
-            return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
-        }
-
-        // 데이터 처리 실패
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
 
     // @PostMapping("/like")
@@ -767,11 +501,11 @@ public class StarController {
     public ResponseEntity<?> getMainStarList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
         log.info("시작이야");
         String type = "starCard";
-        if ( customUser != null){
+        if (customUser != null) {
             Users user = customUser.getUser();
             if (user != null) {
-                log.info("유저정보가 있어" + user);
-                int userNo = user.getUserNo();
+                log.info("유저정보가 있어"  + user);
+                int userNo= user.getUserNo();
                 List<StarBoard> starCardList = starService.getMainCardListForLoggedInUser(userNo, type);
                 return new ResponseEntity<>(starCardList, HttpStatus.OK);
             }

@@ -117,6 +117,9 @@ thead {
 tbody {
     padding-bottom: 400px;
 }
+tbody td {
+    height: 40px;
+}
 .no-data {
     height: 400px;
 }
@@ -270,7 +273,7 @@ a {
     padding: 10px 0;
     align-items: center;
 }
-.pagination a {
+.pagination > span {
     margin: 0 5px;
     /* padding: 4px 8px; */
     text-decoration: none;
@@ -289,7 +292,7 @@ a {
     transition: background-color 0.3s, color 0.3s;
     font-weight:bolder;
 }
-.pagination a:hover {
+.pagination > span:hover {
     background-color: rgba(145, 172, 207, 1);
     color: #fff;
 }

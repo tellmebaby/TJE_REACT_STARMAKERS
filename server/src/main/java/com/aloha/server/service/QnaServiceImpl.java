@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
 import com.aloha.server.dto.QnaBoard;
+import com.aloha.server.dto.Users;
 import com.aloha.server.mapper.QnaMapper;
 // import com.aloha.server.dto.Users;
 // import com.aloha.server.mapper.UserMapper;
+import com.aloha.server.mapper.UserMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,8 +23,8 @@ public class QnaServiceImpl implements QnaService {
     @Autowired
     private QnaMapper qnaMapper;
     
-    // @Autowired
-    // private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     // 목록 조회
     @Override
@@ -43,9 +45,9 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public QnaBoard insert(QnaBoard qnaBoard, String username) throws Exception {
         // 작성자 정보 불러오기
-        // Users user = userMapper.login(username);
+        Users user = userMapper.selectUserNo(qnaBoard.getUserNo());
         // qnaBoard.setUserNo(user.getUserNo());
-        // qnaBoard.setWriter(user.getId());
+        qnaBoard.setWriter(user.getId());
 
         // 정보 등록
         int result = qnaMapper.insert(qnaBoard);
@@ -94,6 +96,18 @@ public class QnaServiceImpl implements QnaService {
     public int views(int qnaNo) throws Exception {
         log.info(qnaNo + "번 게시글 조회수 증가");
         return qnaMapper.views(qnaNo);
+    }
+
+    // 목록 조회
+    @Override
+    public List<QnaBoard> mypageList(Page page, Option option, int userNo) throws Exception {
+        int total = qnaMapper.mypageCount(option, userNo);
+        page.setTotal(total);
+        log.info("qnauserNO : " + userNo);
+        log.info("total : " + total);
+        List<QnaBoard> qnaList = qnaMapper.mypageList(page, option, userNo);
+        log.info("---------------------------------------------- : " + qnaList);
+        return qnaList;
     }
 
     
