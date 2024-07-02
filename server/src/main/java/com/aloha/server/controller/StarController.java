@@ -269,24 +269,17 @@ public class StarController {
     }
 
 
-    //홍보카드 조회
-    @GetMapping("/starCard/starList/api")
-    public ResponseEntity<List<StarBoard>> getMoreCards(
-            @RequestParam(value = "type", defaultValue = "starCard") String type,
-            Page page,
-            Option option,
-            HttpSession session, Model model) throws Exception {
-        Users user = (Users) session.getAttribute("user");
+        // 키워드가 있을 경우 검색 조건에 추가
+        if (keyword != null && !keyword.isEmpty()) {
+            log.info("::::::::::검색어 들어왔다 " + keyword);
+            option.setKeyword(keyword);
+        }
         List<StarBoard> starList;
-
-        page.setRows(24); // 한 번에 불러올 행 수 설정
-
         if (user != null) {
             int userNo = user.getUserNo();
-            starList = starService.getStarList(type, page, option, userNo);
+            starList = starService.list("starCard", page, option, userNo);
         } else {
-            log.info("::::::::::찾았다 요놈!");
-            starList = starService.list(type, page, option);
+            starList = starService.list("starCard", page, option);
         }
 
         starList.forEach(star -> {
@@ -297,14 +290,41 @@ public class StarController {
             }
         });
 
-        // 승인 글만 리스트로 출력
-        // List<StarBoard> starList2 = new ArrayList();
-        // for (StarBoard starBoard : starList) {
-        // if(starBoard.getStatus() == "승인" || starBoard.getStatus().equals("승인")){
-        // starList2.add(starBoard);
-        // log.info(starBoard.getStatus());
-        // }
-        // }
+        Map<String, Object> response = new HashMap<>();
+        response.put("starList", starList);
+        response.put("starList", starList);
+        response.put("page", page);
+        response.put("option", option);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+    
+
+
+    // 추가 화면 설정
+    @GetMapping("/starList/api")
+    public ResponseEntity<List<StarBoard>> getMoreCards(
+            @RequestParam(value = "type", defaultValue = "starCard") String type,
+            Page page,
+            Option option, int userNo) throws Exception {
+
+        List<StarBoard> starList;
+
+        page.setRows(24); // 한 번에 불러올 행 수 설정
+
+        if ( userNo > 0 ) {
+            starList = starService.getStarList(type, page, option, userNo);
+        } else {
+            starList = starService.list(type, page, option);
+        }
+
+        starList.forEach(star -> {
+            if (star.getCategory1() != null) {
+                List<String> icons = Arrays.stream(star.getCategory1().split(","))
+                        .collect(Collectors.toList());
+                star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
+            }
+        });
 
         return new ResponseEntity<>(starList, HttpStatus.OK);
     }
@@ -543,5 +563,57 @@ public class StarController {
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping("/getBanner")
+    public ResponseEntity<?> getBanner() throws Exception {
+
+        List<StarBoard> bannerList = starService.getBanner();
+        if(bannerList != null){
+            List<StarBoard> filteredBannerList = new ArrayList<>();
+            for (StarBoard banner : bannerList) {
+                if (banner.getImgNo() != 0) {
+                    filteredBannerList.add(banner);
+                }
+            }
+            return new ResponseEntity<>(filteredBannerList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @GetMapping("/getFragByReview")
+    public ResponseEntity<?> getFragByReview() throws Exception {
+
+        String type = "review";
+        List<StarBoard> reviewList = starService.getFragByType(type);
+        if(reviewList != null){
+            List<StarBoard> filteredReviewList = new ArrayList<>();
+            for (StarBoard review : reviewList) {
+                if (review.getImgNo() != 0) {
+                    filteredReviewList.add(review);
+                }
+            }
+            return new ResponseEntity<>(filteredReviewList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @GetMapping("/getFragByEvent")
+    public ResponseEntity<?> getFragByEvent() throws Exception {
+
+        String type = "event";
+        List<StarBoard> eventList = starService.getFragByType(type);
+        if(eventList != null){
+            List<StarBoard> filteredEventList = new ArrayList<>();
+            for (StarBoard event : eventList) {
+                if (event.getImgNo() != 0) {
+                    filteredEventList.add(event);
+                }
+            }
+            return new ResponseEntity<>(filteredEventList, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
 
 }

@@ -72,4 +72,10 @@ public interface StarService {
 
     // 목록조회 getStarList
     public List<StarBoard> getStarList(String type, Page page, Option option, int userNo) throws Exception;
+
+    // 메인 배너 가져오기
+    public List<StarBoard> getBanner() throws Exception;
+
+    // 메인 리뷰 가져오기
+    public List<StarBoard> getFragByType(String type) throws Exception;
 }

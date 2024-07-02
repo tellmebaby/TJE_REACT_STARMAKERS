@@ -152,7 +152,49 @@
 
     <!-- 인기회원조회 -->
     <select id="starMemberList" resultType="StarUser">
-   SELECT 
+   WITH RankedStarBoard AS (
+    SELECT 
+        s.user_no,
+        s.writer,
+        s.views,
+        s.likes,
+        s.category2,
+        s.star_no,
+        COALESCE(s.views, 0) + COALESCE(s.likes, 0) AS total_score,
+        ROW_NUMBER() OVER (PARTITION BY s.user_no ORDER BY COALESCE(s.views, 0) + COALESCE(s.likes, 0) DESC) AS rnk
+    FROM 
+        star_board s
+    WHERE 
+        s.card IS NOT NULL
+),
+UniqueFiles AS (
+    SELECT 
+        f.user_no,
+        f.file_no,
+        ROW_NUMBER() OVER (PARTITION BY f.user_no ORDER BY f.file_no) AS file_rnk
+    FROM 
+        file f
+    WHERE 
+        f.star_no = 0
+)
+SELECT 
+    rs.writer,
+    rs.views,
+    rs.user_no,
+    rs.likes,
+    rs.category2,
+    rs.star_no,
+    uf.file_no AS userImgId
+FROM 
+    RankedStarBoard rs
+LEFT JOIN 
+    UniqueFiles uf ON rs.user_no = uf.user_no AND uf.file_rnk = 1
+WHERE 
+    rs.rnk = 1
+ORDER BY 
+    rs.total_score DESC
+LIMIT 5;
+   <!-- SELECT 
     sb.writer,
     sb.views,
     sb.user_no,
@@ -182,7 +224,7 @@ FROM (
         total_score DESC
     LIMIT 5
 ) AS sb
-LEFT JOIN file AS f ON sb.user_no = f.user_no AND f.star_no = 0
+LEFT JOIN file AS f ON sb.user_no = f.user_no AND f.star_no = 0 -->
 
     </select>
 

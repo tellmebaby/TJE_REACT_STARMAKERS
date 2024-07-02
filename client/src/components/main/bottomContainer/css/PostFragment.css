@@ -1,0 +1,66 @@
+/* 스크롤바 숨기기 */
+.flag-item::-webkit-scrollbar {
+    display: none; /* 웹킷 기반 브라우저에서 스크롤바 숨기기 */
+}
+
+
+.flag-wrap {
+    position: relative;
+    max-height: 150px;
+}
+
+.flag-item {
+    position: relative; /* 자식 요소들이 절대 위치를 사용할 수 있도록 함 */
+    width: 100%;
+    height: 298.5px;
+    overflow: hidden;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.flag-item img:nth-of-type(1) {
+    position: absolute; /* 부모 요소를 기준으로 절대 위치 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 60px;
+    padding: 5px;
+    margin: 10px;
+    z-index: -1; /* 이미지가 텍스트 뒤에 오도록 설정 */
+}
+
+.DisplayCon {
+    position: absolute; /* 부모 요소를 기준으로 절대 위치 */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 85%;
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 상하단에 요소들을 배치 */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.DisplayCon-Top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.DisplayCon-Bottom {
+    text-align: left; /* 제목과 작성자를 왼쪽 정렬 */
+    padding: 0 10px;
+}
+
+.DisplayCon p, .DisplayCon span, .DisplayCon h5 {
+    margin: 0;
+    color: white; /* 텍스트가 이미지 위에서 잘 보이도록 흰색으로 설정 */
+    text-shadow: 1px 1px 2px black; /* 텍스트에 그림자 효과를 추가하여 가독성을 높임 */
+}
+
+.flag-wrap:hover {
+    cursor: pointer;
+}

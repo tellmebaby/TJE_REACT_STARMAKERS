@@ -1,0 +1,18 @@
+.BottomCon-container {
+    /* background-color: red; */
+    display: flex;
+}
+
+.BottomCon-left {
+    width: 20%;
+}
+
+.BottomCon-left > div:nth-of-type(1) {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.BottomCon-right1 {
+    /* border: 1px solid yellow; */
+    width: 80%;
+}

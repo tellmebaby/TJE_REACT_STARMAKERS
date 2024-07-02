@@ -35,7 +35,7 @@ const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav" in={showCollapse}>
                         <Nav className="me-auto">
                             <Nav.Link as={Link} to="/IntroPage">소개</Nav.Link>
-                            <Nav.Link as={Link} to="/page/starCard/starList">홍보</Nav.Link>
+                            <Nav.Link as={Link} to="/starList">홍보</Nav.Link>
                             <Nav.Link as={Link} to="/event">이벤트</Nav.Link>
                             <Nav.Link as={Link} to="/review">후기</Nav.Link>
                             <Nav.Link as={Link} to="/qna/qnaList">Q&A</Nav.Link>

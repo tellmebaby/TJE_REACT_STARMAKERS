@@ -1,0 +1,34 @@
+.pop-con {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
+
+
+.pop-item {
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+}
+
+.pop-item:hover {
+    cursor: pointer;
+}
+
+.pop-item:hover > .user-icon {
+    border: 3px solid rgb(76, 243, 76);
+}
+
+.pop-item h5{
+    margin-left: 20px;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid green;
+    object-fit: cover;
+}
