@@ -98,5 +98,17 @@ public class QnaServiceImpl implements QnaService {
         return qnaMapper.views(qnaNo);
     }
 
+    // 목록 조회
+    @Override
+    public List<QnaBoard> mypageList(Page page, Option option, int userNo) throws Exception {
+        int total = qnaMapper.mypageCount(option, userNo);
+        page.setTotal(total);
+        log.info("qnauserNO : " + userNo);
+        log.info("total : " + total);
+        List<QnaBoard> qnaList = qnaMapper.mypageList(page, option, userNo);
+        log.info("---------------------------------------------- : " + qnaList);
+        return qnaList;
+    }
+
     
 }
