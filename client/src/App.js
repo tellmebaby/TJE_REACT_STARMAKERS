@@ -25,6 +25,7 @@ import Read from './pages/board/Read';
 import { SessionProvider } from './contexts/SessionContext';
 import EventInsert from './pages/board/EventInsert';
 import QnaRead from './pages/board/QnaRead';
+import Promotion from './pages/mypage/Promotion';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/mypage/Profile" element={<Profile/>}></Route>
           <Route path="/mypage/ProfileUpdate" element={<ProfileUpdate/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
+          <Route path="/mypage/Promotion" element={<Promotion/>}></Route>
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
           <Route path="/event" element={<EventList/>} />
           <Route path="/review" element={<ReviewList />}/>

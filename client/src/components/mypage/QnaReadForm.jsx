@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
 import styles from '../board/css/qnaRead.module.css';
-import { useNavigate } from 'react-router-dom';
 
-const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
+const QnaReadForm = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
   const [answer, setAnswer] = useState(qnaBoard.answer || '');
   const [isEditingAnswer, setIsEditingAnswer] = useState(false);
-  const navigate = useNavigate();
 
-  // const moveList = () => {
-  //   window.location.href = '/qna/qnaList';
-  // };
-
-  const handleBack = () => {
-    navigate(-1);  // -1은 뒤로 가기를 의미합니다.
+  const moveList = () => {
+    window.location.href = '/mypage/QnaList';
   };
 
   const update = () => {
@@ -77,7 +71,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
         <div dangerouslySetInnerHTML={{ __html: qnaBoard.content }}></div>
       </div>
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
-        <button className={styles['btn-list']} type="button" onClick={handleBack}>
+        <button className={styles['btn-list']} type="button" onClick={moveList}>
           목록
         </button>
         {user && user.userNo === qnaBoard.userNo && (
@@ -153,4 +147,4 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
   );
 };
 
-export default QnaRead;
+export default QnaReadForm;
