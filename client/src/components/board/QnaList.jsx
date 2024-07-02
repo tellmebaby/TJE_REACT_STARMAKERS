@@ -80,7 +80,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
                   <tr key={qnaBoard.qnaNo}>
                     <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
                     <td>
-                      <Link to={`/qna/qnaPost/${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
+                      <Link to={`/qna/qnaRead/${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
                       {new Date(qnaBoard.regDate) > new Date() && <img src="/img/new.png" style={{ width: '15px', height: '15px' }} />}
                     </td>
                     <td align="center">{qnaBoard.writer}</td>

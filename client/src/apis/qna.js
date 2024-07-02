@@ -15,7 +15,7 @@ export const qnaList = async (params) => {
 
 // 상세 조회
 export const select = (qnaNo) => {
-  return axios.get(`/qna/qnaPost/${qnaNo}`).then(response => response.data);
+  return axios.get(`/qna/qnaRead/${qnaNo}`).then(response => response.data);
 };
 
 // 등록
