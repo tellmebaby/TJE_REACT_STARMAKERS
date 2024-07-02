@@ -28,8 +28,6 @@ const HomeContainer = () => {
   return (
     <>
       <Search />
-      
-      
       <CardSlide cardList={cardList} isLoading={isLoading} />
       <BannerSlider />
       <BottomCon />
