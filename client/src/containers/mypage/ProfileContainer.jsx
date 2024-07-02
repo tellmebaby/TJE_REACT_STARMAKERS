@@ -12,6 +12,7 @@ const ProfileContainer = ({ email }) => {
             const response = await mypage.select(email);
             const data = response.data;
             setUser(data.user);
+            console.log(data);
 
             const file = data.file;
             if (file && file.fileNo !== -1) {
