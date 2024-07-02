@@ -9,11 +9,9 @@ const Read = () => {
    console.log(`starNo : ${starNo}`)
  return (
    <>
-       {/* Header */}
        <MainLayout>
        <ReadContainer starNo={starNo}/>
        </MainLayout>
-       {/* Footer */}
    </>
  )
 }

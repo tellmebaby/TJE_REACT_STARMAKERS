@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSession } from '../../contexts/SessionContext';
 
-const Read = ({ starNo, board, fileList, isLoading }) => {
+const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   const { session } = useSession();
   // const [likeCount, setLikeCount] = useState(board.likes || 0);
   const [comments, setComments] = useState([]);
@@ -10,7 +10,8 @@ const Read = ({ starNo, board, fileList, isLoading }) => {
   const [replyWriter, setReplyWriter] = useState('');
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentContent, setEditingCommentContent] = useState('');
-  const [starBoard, setStarBoard] = useState(null)
+  // const [starBoard, setStarBoard] = useState(null)
+
 
   // useEffect(() => {
   //   if (board.likes !== undefined) {
@@ -42,7 +43,7 @@ const Read = ({ starNo, board, fileList, isLoading }) => {
   //     console.error('좋아요 상태 변경 실패:', error);
   //   }
   // };
-  console.log("이거되나 ? ? ?  ? "  + board.writer);
+  console.log("이거되나 ? ? ?  ? "  + starBoard.writer);
 
 
   const handleDelete = async () => {
@@ -118,21 +119,25 @@ const Read = ({ starNo, board, fileList, isLoading }) => {
   return (
     <div className="container2">
       <center><h3 className="event">EVENT</h3></center>
-      <div className="writer">
-        <label>{board.writer}</label>
-        <label>{new Date(board.regDate).toLocaleString()}</label>
-      </div>
-      <div className="title-container">
-        <span>{board.title}</span>
-        <hr />
-      </div>
+      {
+        !isLoading && starBoard && (
+          <><div className="writer">
+            <label>{starBoard.writer}</label>
+            <label>{new Date(starBoard.regDate).toLocaleString()}</label>
+          </div><div className="title-container">
+              <span>{starBoard.title}</span>
+              <hr />
+            </div></>
+
+        )
+      }
       <div className="content-container">
         <div>
-          {fileList.length > 0 && (
+          {/* {fileList.length > 0 && (
             <img src={`/file/img/${fileList[0].imgNo}`} className="image rounded mt-auto" style={{ width: '800px' }} alt="썸네일" />
-          )}
+          )} */}
         </div>
-        <span dangerouslySetInnerHTML={{ __html: board.content }}></span>
+        <span dangerouslySetInnerHTML={{ __html: starBoard.content }}></span>
       </div>
       {/* <div className="button-box1">
         <button className="like-btn" onClick={handleLike} disabled={!session}>
@@ -142,7 +147,7 @@ const Read = ({ starNo, board, fileList, isLoading }) => {
       </div> */}
       <div className="d-flex justify-content-end mt-2 button-box">
         <button className="btn-list" type="button" onClick={() => window.location.href = '/page/board/eventBoard/eventList'}>목록</button>
-        {session && session.user && session.user.userNo === board.userNo && (
+        {session && session.user && session.user.userNo === starBoard.userNo && (
           <>
             <button className="btn-update" type="button" onClick={() => window.location.href = `/page/board/eventBoard/eventUpdate?starNo=${starNo}`}>수정</button>
             <button className="btn-delete" type="button" onClick={handleDelete}>삭제</button>
