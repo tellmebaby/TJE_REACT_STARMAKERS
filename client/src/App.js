@@ -22,7 +22,7 @@ import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
 import QnaInsert from './pages/board/QnaInsert';
 import Read from './pages/board/Read';
-import { SessionProvider } from './contexts/SessionContext';D
+import { SessionProvider } from './contexts/SessionContext';
 import EventInsert from './pages/board/EventInsert';
 import QnaRead from './pages/board/QnaRead';
 
