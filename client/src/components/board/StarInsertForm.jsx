@@ -60,7 +60,6 @@ const StarInsertForm = ({ type, onInsert }) => {
         }
         // 중복X -> 체크박스 지정 -> 추가
         if (!duplicated) category.push(cate)
-        console.log(`선택된 카테고리 : ${category}`);
         setCategory(category)
 
     }
@@ -80,75 +79,61 @@ const StarInsertForm = ({ type, onInsert }) => {
         if (!duplicated) category22.push(cate)
         console.log(`선택된 카테고리 : ${category22}`);
         setCategory22(category22)
-
-        // console.log(category1);
     }
 
     const handlePromoClick = (promoType) => {
-        // promoType.preventDefault() 
         setpromoButton(promoType);
-        // alert(promoButton);
     };
 
-
     const onSubmit = (e) => {
-        e.preventDefault()      // 기본 이벤트 방지
-        console.log("여기오나? onSubmit");
+        e.preventDefault();  // 기본 이벤트 방지
+    
         // 유효성 검사 ✅
         // ...일단 생략
-
+    
         // 파일 업로드에서는 
         // Content-Type : application/json -> multipart/form-data
-        const formData = new FormData()
-        formData.append('title', title)
-        formData.append('content', content)
-        formData.append('type', type)
-        formData.append('userNo', userInfo.userNo)
-        formData.append('category1', category)
-        formData.append('category2', category22)
-        formData.append('category2', category22)
-        formData.append('status', status)
-        formData.append('card', card)
-        console.log("startDate : " + startDate);
-        formData.append('startDate', startDate)
-        formData.append('endDate', endDate)
-
-        // 카테고리
-        // for (let i = 0; i < category1.length; i++) {
-        //     formData.append(`category1[${i}]`, category1[i])
-        // }
-        console.log("title : " + title);
-        console.log("content : " + content);
-
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('type', type);
+        formData.append('userNo', userInfo.userNo);
+        formData.append('writer', userInfo.id);
+        formData.append('category1', category);
+        formData.append('category2', category22);
+        formData.append('status', status);
+        formData.append('card', card);
+        formData.append('startDate', startDate);
+        formData.append('endDate', endDate);
+    
         // 헤더
         const headers = {
-            'Content-type': 'multipart/form-data'
-        }
-
+            'Content-Type': 'multipart/form-data'
+        };
+    
         // 파일 데이터 추가
         if (files) {
             for (let i = 0; i < files.length; i++) {
-                // const file = files[i];
-                // formData.append('files', file)
-                formData.append(`image`, files[i])
+                formData.append('image', files[i]);
             }
         }
-
-        // onInsert(title, writer, content) // json
-        onInsert(formData, headers)         // formData
-    }
+    
+        onInsert(formData, headers);  // formData
+    };
+    
 
     const payment = (e) => {
-        setCard('유료홍보')
-    }
-
+        e.preventDefault();
+        setCard('유료홍보');
+        onSubmit(e); // 함수 호출명 수정
+    };
+    
     const customUploadAdapter = (loader) => {
         return {
             upload() {
                 return new Promise((resolve, reject) => {
                     const formData = new FormData();
                     loader.file.then(async (file) => {
-                        console.log(file);
                         formData.append("parentTable", 'editor');
                         formData.append("file", file);
 
@@ -158,7 +143,6 @@ const StarInsertForm = ({ type, onInsert }) => {
 
                         let response = await filesAPI.upload(formData, headers);
                         let data = await response.data;
-                        console.log(`data : ${data}`);
 
                         // let newFile = data;
                         // let newFileNo = newFile.no;
@@ -394,7 +378,6 @@ const StarInsertForm = ({ type, onInsert }) => {
                             }}
                             onChange={(event, editor) => {
                                 const data = editor.getData();
-                                console.log({ event, editor, data });
                                 setContent(data);
                             }}
                             onBlur={(event, editor) => {

@@ -183,6 +183,7 @@ public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<?> insert(@RequestParam("file") MultipartFile multipartFile ,@AuthenticationPrincipal CustomUser customUser) throws Exception {
         Users user = customUser.getUser();
+
         int userNo = user.getUserNo();
         int fileNo = fileService.upload(multipartFile, null , userNo);
         if (fileNo>0) {
