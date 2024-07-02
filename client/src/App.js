@@ -23,6 +23,7 @@ import StarInsert from './pages/board/StarInsert';
 import QnaInsert from './pages/board/QnaInsert';
 import Read from './pages/board/Read';
 import { SessionProvider } from './contexts/SessionContext';
+import EventInsert from './pages/board/EventInsert';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/starInsert" element={<StarInsert/>}></Route>
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
+          <Route path="/eventInsert" element={<EventInsert/>}></Route>
         </Routes>
         </SessionProvider>
       </LoginContextProvider>

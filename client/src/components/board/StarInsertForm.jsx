@@ -9,10 +9,10 @@ import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
 import Calendar from './calendar.css';
-// import DatePicker from 'react-datepicker';
-import ReactDatePicker from '../ReactDatePicker';
+import styles from './css/Insert.module.css'
+
 import DatePicker from 'react-datepicker';
-// import 'react-datepicker/dist/react-datepicker.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const StarInsertForm = ({ type, onInsert }) => {
     const { isLogin, logout, userInfo } = useContext(LoginContext)
@@ -63,7 +63,6 @@ const StarInsertForm = ({ type, onInsert }) => {
         console.log(`선택된 카테고리 : ${category}`);
         setCategory(category)
 
-        // console.log(category1);
     }
 
     // 카테고리2 체크
@@ -224,7 +223,6 @@ const StarInsertForm = ({ type, onInsert }) => {
                                 <div className="item col-2">
                                     <b>채널</b>
                                 </div>
-                                <input type="hidden" name="status" value="홍보요청" id="status" />
 
                                 <div className="item col-8 d-flex justify-content-start column-gap-2">
                                     <div className="form-check form-check-inline d-flex align-items-center">
@@ -356,6 +354,7 @@ const StarInsertForm = ({ type, onInsert }) => {
                                 onChange={date => setEndDate(date)}
                                 dateFormat="yyyy-MM-dd"
                                 className="form-control col-5"
+                                minDate={new Date()}
                                 placeholderText="홍보 종료일"
                             />
                         </div>
@@ -405,16 +404,16 @@ const StarInsertForm = ({ type, onInsert }) => {
                                 console.log('Focus.', editor);
                             }}
                         />
-                        <div className="d-flex justify-content-end mt-2">
-                            <Link to={`/${type}`} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
+                        <div className="d-flex justify-content-end mt-2 p-0">
+                            <Link to={`/${type}`} className={styles.btnl} >목록</Link>
                             {promoButton === 'freePromo' && (
                                 <div>
-                                    <button id="sendPost" className={'btn btn-dark btn-submit col-1 border-0'} onClick={onSubmit}>등록</button>
+                                    <button id="sendPost" className={styles.btns} onClick={onSubmit}>등록</button>
                                 </div>
                             )}
                             {promoButton === 'payPromo' && (
                                 <div>
-                                    <button className='btn btn-dark btn-sm border col-1' id="payBtn" onClick={payment} >결제</button>
+                                    <button className={styles.btns}  id="payBtn" onClick={payment} >결제</button>
                                 </div>
                             )}
                         </div>

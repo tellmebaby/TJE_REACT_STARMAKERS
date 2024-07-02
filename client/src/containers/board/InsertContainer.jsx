@@ -5,7 +5,7 @@ import * as boards from '../../apis/starBoard'
 import { useNavigate } from 'react-router-dom'
 
 
-const InsertContainer = ({type}) => {
+const InsertContainer = ({type, isFile}) => {
     const navigate = useNavigate()
 
 
@@ -31,7 +31,7 @@ const InsertContainer = ({type}) => {
       <>
           {/* 게시글 등록 */}
           {/* <InsertForm onInsert={onInsert}/> */}
-          <InsertForm type={type} onInsert={onInsert}/>
+          <InsertForm type={type} onInsert={onInsert} isFile={isFile}/>
       </>
     )
 

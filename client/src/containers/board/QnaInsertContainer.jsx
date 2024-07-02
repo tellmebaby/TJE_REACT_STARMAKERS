@@ -30,7 +30,7 @@ const QnaInsertContainer = () => {
       <>
           {/* 게시글 등록 */}
           {/* <InsertForm onInsert={onInsert}/> */}
-          <InsertForm type={""} onInsert={onInsert}/>
+          <InsertForm type={""} onInsert={onInsert} status={'답변대기'}/>
       </>
     )
 
