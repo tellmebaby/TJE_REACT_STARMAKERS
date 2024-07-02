@@ -78,6 +78,7 @@ th {
 .prev:hover,
 .next:hover {
     color: #000;
+    cursor: pointer;
 }
 
 .list {
@@ -126,3 +127,41 @@ th {
     background-color: #1d5bc6;
 }
 
+
+/* 페이지네이션--------------------- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    align-items: center;
+    cursor: pointer;
+}
+.pagination > span {
+    margin: 0 5px;
+    /* padding: 4px 8px; */
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+.pagination b {
+    margin: 0 5px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight:bolder;
+}
+.pagination > span:hover {
+    background-color: rgba(145, 172, 207, 1);
+    color: #fff;
+}
+
+.pagination a.disabled {
+    pointer-events: none;
+    color: #ccc;
+    border-color: #ccc;
+}

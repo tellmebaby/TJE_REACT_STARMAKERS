@@ -177,11 +177,19 @@ public class PageController {
      * @throws Exception
      */
     @GetMapping("/qnaList")
-    public ResponseEntity<?> qnaList(Page page, Option option, HttpSession session) throws Exception {
+    public ResponseEntity<?> mypageList(Page page, Option option, @AuthenticationPrincipal CustomUser customUser) throws Exception {
         try {
-            List<QnaBoard> qnaList = qnaService.list(page, option);
+            Users user = customUser.getUser();
+            int userNo = user.getUserNo();
+
+            List<QnaBoard> qnaList = qnaService.mypageList(page, option, userNo);
+            log.info("qnaList : " + qnaList);
+            Map<String, Object> response = new HashMap<>();
+            response.put("qnaList", qnaList);
+            response.put("page", page);
+
             log.info("qna 목록 : " + qnaList);
-            return new ResponseEntity<>(qnaList, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
         }

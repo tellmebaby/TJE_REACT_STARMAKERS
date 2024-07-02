@@ -4,7 +4,9 @@ import * as mypage from '../../apis/mypage';
 import styles from '../mypage/css/QnaListForm.module.css';
 import { formatDate } from '../../apis/format';
 
-const QnaListForm = ({ qnaList, user }) => {
+const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
+    console.log("page : " + page);
+    console.log(page);
     const navigate = useNavigate();
     const [selectedQnaNos, setSelectedQnaNos] = useState([]);
 
@@ -55,6 +57,14 @@ const QnaListForm = ({ qnaList, user }) => {
         const qnaNo = selectedQnaNos[0];
         navigate(`/page/mypage/qnaUpdate?qnaNo=${qnaNo}`);
     };
+
+    const handleClick = (pageNumber) => {
+        setPage(pageNumber);
+    };
+
+    const handleCodeChange = (e) => {
+        setCode(e.target.value);
+    }
 
     const userQnaList = Array.isArray(qnaList) ? qnaList.filter(qna => qna.userNo === user.userNo) : [];
 
@@ -118,10 +128,35 @@ const QnaListForm = ({ qnaList, user }) => {
                         <button className={styles.button} onClick={handleUpdate}>수정</button>
                         <button className={styles.button} onClick={handleDelete}>삭제</button>
                     </div>
+                    {/* 페이지네이션 */}
                     <center>
-                        <div>
-                            <Link to="/page/mypage/inquiry?page=first">&laquo;</Link>
-                            <Link to="/page/mypage/inquiry?page=last">&raquo;</Link>
+                        <div className={styles.pagination}>
+                            {/* [ 처음으로 ] */}
+
+                            <span className="material-symbols-outlined" onClick={() => handleClick(page.first)} >first_page</span>
+
+                            {/* [ 이전 ] */}
+                            {page.page !== page.first && (
+                                <span className="material-symbols-outlined" onClick={() => handleClick(page.prev)} >chevron_backward</span>
+                            )}
+
+                            {/* 페이지 번호 맵핑 */}
+                            {Array.from({ length: page.end - page.start + 1 }, (_, i) => page.start + i).map(no => (
+                                page.page === no ? (
+                                    <b key={no}><span>{no}</span></b>
+                                ) : (
+                                    <span onClick={() => handleClick(no)} style={{ padding: '0 7px' }}>{no}</span>
+                                )
+                            ))}
+
+                            {/* [ 다음 ] */}
+                            {page.page !== page.last && (
+                                <span className="material-symbols-outlined" onClick={() => handleClick(page.next)} >chevron_forward</span>
+                            )}
+
+                            {/* [ 마지막 ] */}
+                            <span className="material-symbols-outlined" onClick={() => handleClick(page.last)} >last_page</span>
+
                         </div>
                     </center>
                 </div>
