@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import styles from '../board/css/qnaRead.module.css'
-// import styles2 from '../board/css/read.module.css'
+import React, { useState } from 'react';
+import styles from '../board/css/qnaRead.module.css';
 
 const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
   const [answer, setAnswer] = useState(qnaBoard.answer || '');
@@ -64,11 +63,11 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
         <label>{qnaBoard.writer}</label>
         <label>{new Date(qnaBoard.regDate).toLocaleString()}</label>
       </div>
-      <div className={styles.titleContainer}>
+      <div className={styles['title-container']}>
         <span>{qnaBoard.title}</span>
         <hr />
       </div>
-      <div className={styles.contentContainer}>
+      <div className={styles['content-container']}>
         <div dangerouslySetInnerHTML={{ __html: qnaBoard.content }}></div>
       </div>
       <div className={`${styles.dFlex} ${styles.justifyContentEnd} ${styles.mt2} ${styles.buttonBox}`}>
@@ -91,12 +90,11 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
       </div>
       <label className={styles.answer}>답변</label>
       <form action="/page/board/qnaBoard/qnaPost" method="post" id="form">
-        {/* <input type="hidden" name={csrfToken.parameterName} value={csrfToken.token} /> */}
-        <div className={styles.answerContainer}>
-          {!isEditingAnswer && <span id="answer-span">{qnaBoard.answer}</span>}
+        <div className={styles['answer-container']}>
+          {!isEditingAnswer && <span className={styles['answer-span']}>{qnaBoard.answer}</span>}
           {isEditingAnswer && (
             <textarea
-              id="answer-textarea"
+              className={styles['answer-textarea']}
               name="answer"
               style={{ width: '100%', height: '150px' }}
               placeholder="답변을 입력하세요..."
@@ -107,7 +105,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
           <input type="hidden" name="qnaNo" id="qnaNo" value={qnaNo} />
         </div>
         <div className={styles.buttonContainer1}>
-          {user && user.roles.includes('ROLE_ADMIN') && (
+          {/* {user && user.roles.includes('ROLE_ADMIN') && ( */}
             <>
               {!answer && (
                 <button type="button" id="toggle-button" onClick={toggleAnswer}>
@@ -137,16 +135,14 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
                 </div>
               )}
             </>
-          )}
+          {/* )} */}
         </div>
       </form>
       <form
         id="deleteForm"
         method="post"
         action={`/page/board/qnaBoard/qnaDelete?qnaNos=${qnaNo}`}
-      >
-        {/* <input type="hidden" name={csrfToken.parameterName} value={csrfToken.token} /> */}
-      </form>
+      ></form>
     </div>
   );
 };
