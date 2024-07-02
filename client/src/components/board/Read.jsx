@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSession } from '../../contexts/SessionContext';
+import { LoginContext } from '../../contexts/LoginContextProvider';
+import styles from '../board/css/read.module.css'
+
 
 const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   const { session } = useSession();
@@ -10,6 +13,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   const [replyWriter, setReplyWriter] = useState('');
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentContent, setEditingCommentContent] = useState('');
+  const { isLogin, logout, userInfo } = useContext(LoginContext)
   // const [starBoard, setStarBoard] = useState(null)
 
 
@@ -18,9 +22,9 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   //     setLikeCount(board.likes);
   //   }
   // }, [board.likes]);
-  // useEffect(() => {
-  //   fetchComments();
-  // }, []);
+  useEffect(() => {
+    fetchComments();
+  }, []);
 
   const fetchComments = async () => {
     try {
@@ -117,21 +121,40 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   };
 
   return (
-    <div className="container2">
-      <center><h3 className="event">EVENT</h3></center>
+    <div className="container2" style={{ padding: '10px' }}>
+      <center> {
+          starBoard.type == 'an' ?
+            <h1>공지사항</h1>
+          : <></>
+        }
+        {
+          starBoard.type == 'event' ?
+            <h1>이벤트</h1>
+          : <></>
+        }
+        {
+          starBoard.type == 'review' ?
+            <h1>후기</h1>
+          : <></>
+        }
+        {
+          starBoard.type == 'starCard' ?
+            <h1>홍보</h1>
+          : <></>
+        }</center>
       {
         !isLoading && starBoard && (
-          <><div className="writer">
+          <><div className={styles.writer}>
             <label>{starBoard.writer}</label>
             <label>{new Date(starBoard.regDate).toLocaleString()}</label>
-          </div><div className="title-container">
+          </div><div className={styles['title-container']}>
               <span>{starBoard.title}</span>
               <hr />
             </div></>
 
         )
       }
-      <div className="content-container">
+      <div className={styles['content-container']}>
         <div>
           {/* {fileList.length > 0 && (
             <img src={`/file/img/${fileList[0].imgNo}`} className="image rounded mt-auto" style={{ width: '800px' }} alt="썸네일" />
@@ -145,18 +168,18 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
         </button>
         <span id="like-count">{likeCount}</span>
       </div> */}
-      <div className="d-flex justify-content-end mt-2 button-box">
-        <button className="btn-list" type="button" onClick={() => window.location.href = '/page/board/eventBoard/eventList'}>목록</button>
-        {session && session.user && session.user.userNo === starBoard.userNo && (
+      <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
+        <button className={styles['btn-list']} type="button" onClick={() => window.location.href = `/${starBoard.type}`}>목록</button>
+        {userInfo.userNo === starBoard.userNo && (
           <>
-            <button className="btn-update" type="button" onClick={() => window.location.href = `/page/board/eventBoard/eventUpdate?starNo=${starNo}`}>수정</button>
-            <button className="btn-delete" type="button" onClick={handleDelete}>삭제</button>
+            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/page/board/eventBoard/eventUpdate?starNo=${starNo}`}>수정</button>
+            <button className={styles['btn-delete']} type="button" onClick={handleDelete}>삭제</button>
           </>
         )}
       </div>
-      <div className="reply-container">
-        <div className="reply-box">
-          <textarea value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다. 로그인 하신 분만 댓글을 작성할 수 있습니다." disabled={!session}></textarea>
+      <div className={styles['reply-container']}>
+        <div className={styles['reply-box']}>
+          <textarea value={replyContent} onChange={(e) => setReplyContent(e.target.value)} placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다. 로그인 하신 분만 댓글을 작성할 수 있습니다." disabled={!isLogin}></textarea>
           <button type="button" className="btn-reply" onClick={handleReplySubmit} disabled={!session}>등록</button>
         </div>
       </div>

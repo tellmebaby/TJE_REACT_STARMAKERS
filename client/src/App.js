@@ -20,12 +20,16 @@ import QnaMainList from './pages/board/QnaMainList';
 import ReviewList from './pages/board/ReviewList';
 import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
+import StarList from './pages/board/StarList';
 import QnaInsert from './pages/board/QnaInsert';
 import Read from './pages/board/Read';
+import StarPayment from './pages/board/StarPayment';
 import { SessionProvider } from './contexts/SessionContext';
 import EventInsert from './pages/board/EventInsert';
 import QnaRead from './pages/board/QnaRead';
 import Promotion from './pages/mypage/Promotion';
+import Update from './pages/board/Update';
+import QnaUpdate from './pages/board/QnaUpdate';
 
 function App() {
   return (
@@ -52,9 +56,13 @@ function App() {
           <Route path="/anInsert" element={<AnInsert/>}></Route>
           <Route path="/test" component={<Test/>} />
           <Route path="/starInsert" element={<StarInsert/>}></Route>
+          <Route path="/starList" element={<StarList />}></Route>
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
+          <Route path="/StarPayment/:starNo" element={<StarPayment/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>
+          <Route path="/update/:starNo" element={<Update/>}></Route>
+          <Route path="/qna/update/:qnaNo" element={<QnaUpdate/>}></Route>
         </Routes>
         </SessionProvider>
       </LoginContextProvider>

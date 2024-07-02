@@ -31,7 +31,7 @@
     color: black; /* 텍스트 색상을 검은색으로 변경 */
 }
 
-.bg-image {
+/* .bg-image {
     position: relative;
     background-image: url('../../../../public/img/indexTopBackImg.jpg');
     background-size: cover;
@@ -40,7 +40,7 @@
     overflow: hidden;
     background-repeat: no-repeat;
     background-color: black;
-}
+} */
 
 .bg-image .topOverlay {
     position: absolute;
@@ -59,11 +59,63 @@
 }
 
 .jumbotron {
-    height: 60vh; /* 화면 높이와 동일하게 설정 */
+    height: 500px; 
     margin-bottom: 3%;
 }
 
 .jumbotron .topOverlay {
     padding: 0 30px;
     text-align: left;
+}
+
+.Search-Btn-CategoryCon {
+    display: flex;
+    /* border: 1px solid red; */
+    width: 100%;
+    justify-content: center;
+    height: 100%;
+    align-items: flex-end;
+    margin-bottom: 45px;
+}
+
+.Search-Btn-CategoryArt {
+    display: flex;
+    width: 60%;
+    height: 50px;
+    /* border: 1px solid white; */
+    justify-content: space-around;
+}
+.atr {
+    align-content: center;
+    margin: 3px;
+    border: 2px solid rgb(219, 219, 219);
+    padding: 3px;
+    border-radius: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* .atr:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3);
+} */
+
+.bg-image {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-color: black;
+}
+
+.atr:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+
+.jumbo-top-margin {
+    height: 290px;
 }

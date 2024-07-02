@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
@@ -25,6 +26,9 @@ public class StarServiceImpl implements StarService {
 
     @Autowired
     private LikeMapper likeMapper;
+
+    @Autowired
+    private FileService fileService;
 
     /**
      * 게시글 목록
@@ -52,25 +56,18 @@ public class StarServiceImpl implements StarService {
      */
     @Override
     public StarBoard insert(StarBoard starBoard) throws Exception {
-        Users user = userMapper.selectUserNo(starBoard.getUserNo());
-        log.info("user 정보" + user.toString());
-        starBoard.setWriter(user.getId());
-        log.info("작성자 이름 : " + user.getId());
-        int result = starMapper.insert(starBoard);
-        log.info("result : " + result);
-        int newNo = starBoard.getStarNo();
-        StarBoard newBoard = starMapper.select(newNo);
 
-        // 파일 업로드
+        
+        starMapper.insert(starBoard);
+        starBoard.setStarNo(starBoard.getStarNo());
 
-        // starBoard.setUserNo(user.getUserNo());
-        // if (user.getId() == null || user.getId().equals("")) {
-        // starBoard.setWriter(user.getName());
-        // }else{
-        // starBoard.setWriter(user.getId());
-        // }
+        MultipartFile file = starBoard.getImage();
 
-        return newBoard;
+        if(starBoard.getImage() != null){
+            fileService.upload(file, starBoard.getStarNo(), starBoard.getUserNo());
+        }
+
+        return starBoard;
     }
 
     /**
@@ -115,6 +112,7 @@ public class StarServiceImpl implements StarService {
     @Override
     public int update(StarBoard starBoard) throws Exception {
         int result = starMapper.update(starBoard);
+        log.info("서비스의 수정 글 : " + starBoard.toString());
         return result;
     }
 
@@ -226,5 +224,16 @@ public class StarServiceImpl implements StarService {
         int total = starMapper.count(option, type);
         page.setTotal(total);
         return starMapper.getStarList(type, page, option, userNo);
+    }
+
+    // get Banner
+    // 메인 배너 가져오기
+    public List<StarBoard> getBanner() throws Exception{
+        return starMapper.getBanner();
+    }
+
+    // 메인 게시물조각 가져오기
+    public List<StarBoard> getFragByType(String type) throws Exception{
+        return starMapper.getFragByType(type);
     }
 }

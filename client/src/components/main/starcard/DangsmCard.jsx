@@ -7,6 +7,7 @@ import './css/StarCategory2.css';
 import StarLink from './StarLink';
 import CardContent from './CardContent';
 import './css/CardContent.css';
+import './css/DangsmCard.css';
 
 const DangsmCard = ({card}) => {
     return (
