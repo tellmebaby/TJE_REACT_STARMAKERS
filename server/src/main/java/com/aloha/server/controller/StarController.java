@@ -269,38 +269,6 @@ public class StarController {
     }
 
 
-        // 키워드가 있을 경우 검색 조건에 추가
-        if (keyword != null && !keyword.isEmpty()) {
-            log.info("::::::::::검색어 들어왔다 " + keyword);
-            option.setKeyword(keyword);
-        }
-        List<StarBoard> starList;
-        if (user != null) {
-            int userNo = user.getUserNo();
-            starList = starService.list("starCard", page, option, userNo);
-        } else {
-            starList = starService.list("starCard", page, option);
-        }
-
-        starList.forEach(star -> {
-            if (star.getCategory1() != null) {
-                List<String> icons = Arrays.stream(star.getCategory1().split(","))
-                        .collect(Collectors.toList());
-                star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
-            }
-        });
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("starList", starList);
-        response.put("starList", starList);
-        response.put("page", page);
-        response.put("option", option);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-    
-
-
     // 추가 화면 설정
     @GetMapping("/starList/api")
     public ResponseEntity<List<StarBoard>> getMoreCards(
