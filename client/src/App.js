@@ -22,8 +22,9 @@ import UserDelete from './pages/mypage/UserDelete';
 import StarInsert from './pages/board/StarInsert';
 import QnaInsert from './pages/board/QnaInsert';
 import Read from './pages/board/Read';
-import { SessionProvider } from './contexts/SessionContext';
+import { SessionProvider } from './contexts/SessionContext';D
 import EventInsert from './pages/board/EventInsert';
+import QnaRead from './pages/board/QnaRead';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
           <Route path="/event" element={<EventList/>} />
           <Route path="/review" element={<ReviewList />}/>
           <Route path="/qna/qnaList" element={<QnaMainList />}/>
+          <Route path="qna/qnaRead/:qnaNo" element={<QnaRead/>}/>
           <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
           <Route path="/an" element={<AnList />}/>
           <Route path="/anInsert" element={<AnInsert/>}></Route>

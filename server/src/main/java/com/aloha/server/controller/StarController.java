@@ -97,6 +97,7 @@ public class StarController {
 
         // 값 넘겨주기
         Map<String, Object> response = new HashMap<>();
+        log.info(starBoard.toString());
         response.put("starBoard", starBoard);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

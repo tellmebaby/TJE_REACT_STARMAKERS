@@ -14,8 +14,8 @@ export const qnaList = async (params) => {
 };
 
 // 상세 조회
-export const select = (no) => {
-  return axios.get(`/qna/qnaPost/${no}`).then(response => response.data);
+export const select = (qnaNo) => {
+  return axios.get(`/qna/qnaRead/${qnaNo}`).then(response => response.data);
 };
 
 // 등록
@@ -35,8 +35,8 @@ export const insertAnswer = (qnaBoard) => {
 };
 
 // 삭제
-export const remove = (no) => {
-  return axios.delete(`/qna/${no}`).then(response => response.data);
+export const remove = (qnaNo) => {
+  return axios.delete(`/qna/${qnaNo}`).then(response => response.data);
 };
 
 // 답변 삭제

@@ -4,6 +4,7 @@ import styles from '../board/css/list.module.css';
 import { useRef } from 'react';
 
 const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeyword, optionList  }) => {
+  console.log("컴포넌트page", page)
 
   const keywordRef = useRef();
 
@@ -22,7 +23,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
   }
 
   return (
-    <div className="container">
+    <div className="container" style={{ padding: '10px' }}>
       <h3 className={styles.notice}>Q&A</h3>
       <div className={styles.eventtext}>
         <label>당스만을 이용하면서 궁금한 점을 자유롭게 문의하세요:)</label>
@@ -52,7 +53,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
               <th width="100">조회수</th>
             </tr>
           </thead>
-          <tbody>
+          
             <tr className={styles.fixed}>
               <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
               <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>로그인 필수</b></td>
@@ -80,7 +81,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
                   <tr key={qnaBoard.qnaNo}>
                     <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
                     <td>
-                      <Link to={`/qnaPost?qnaNo=${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
+                      <Link to={`/qna/qnaRead/${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
                       {new Date(qnaBoard.regDate) > new Date() && <img src="/img/new.png" style={{ width: '15px', height: '15px' }} />}
                     </td>
                     <td align="center">{qnaBoard.writer}</td>
@@ -90,7 +91,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
                   </tr>
                 ))
             )}
-          </tbody>
+          
         </table>
       </div>
       <div className={styles['button-container']}>
