@@ -13,6 +13,7 @@ import styles from './css/Insert.module.css'
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+// import { formatDate } from 'react-datepicker/dist/date_utils';
 
 const StarInsertForm = ({ type, onInsert }) => {
     const { isLogin, logout, userInfo } = useContext(LoginContext)
@@ -90,7 +91,22 @@ const StarInsertForm = ({ type, onInsert }) => {
         // alert(promoButton);
     };
 
+    const onDesign = (e) => {
+        e.preventDefault()      // 기본 이벤트 방지
 
+        const formData = new FormData()
+
+        const headers = {
+            'Content-type': 'multipart/form-data'
+        }
+        formData.append('title', '디자인 의뢰')
+        formData.append('content', content)
+        formData.append('status', '디자인 의뢰')
+        formData.append('userNo', userInfo.userNo)
+        formData.append('type', 'design')
+
+        onInsert(formData, headers)
+    }
     const onSubmit = (e) => {
         e.preventDefault()      // 기본 이벤트 방지
         console.log("여기오나? onSubmit");
@@ -105,7 +121,6 @@ const StarInsertForm = ({ type, onInsert }) => {
         formData.append('type', type)
         formData.append('userNo', userInfo.userNo)
         formData.append('category1', category)
-        formData.append('category2', category22)
         formData.append('category2', category22)
         formData.append('status', status)
         formData.append('card', card)
@@ -187,7 +202,7 @@ const StarInsertForm = ({ type, onInsert }) => {
 
         <div className="insert">
             <div className="body lg" >
-                {/* {
+                {
                     !isLogin ?
                         <div className="container content-box mt-3 mb-3">
                             <div className="d-flex justify-content-center mb-5" >
@@ -198,228 +213,232 @@ const StarInsertForm = ({ type, onInsert }) => {
                                 <a href="/join" className="btn btn-primary m-1">회원가입 하러 가기</a>
                             </div>
                         </div>
-                        : */}
-                <div className="container">
-                    <form id="starInsert">
+                        :
+                        <div className="container">
+                            <form id="starInsert">
 
-                        <div className="d-flex align-items-center border-bottom border-dark" id="channel">
-                            <button type="button"
-                                className={`btn btn-lg col-4 border-0 rounded-1 ${promoButton === 'freePromo' ? 'btn-dark' : 'btn-outline-dark'} `}
-                                onClick={() => handlePromoClick('freePromo')}
-                            >무료홍보</button>
-                            <button type="button"
-                                className={`btn btn-lg col-4 border-0 rounded-1 ${promoButton === 'payPromo' ? 'btn-dark' : 'btn-outline-dark'}`}
-                                onClick={() => handlePromoClick('payPromo')}
-                            >유료홍보</button>
-                            <button type="button"
-                                className={`btn btn-lg col-4 border-0 rounded-1 ${promoButton === 'design' ? 'btn-dark' : 'btn-outline-dark'}`}
-                                onClick={() => handlePromoClick('design')}
-                            >디자인의뢰</button>
-                        </div>
+                                <div className="d-flex align-items-center border-bottom border-dark" id="channel">
+                                    <button type="button"
+                                        className={`btn btn-lg col-4 border-0 rounded-1 ${promoButton === 'freePromo' ? 'btn-dark' : 'btn-outline-dark'} `}
+                                        onClick={() => handlePromoClick('freePromo')}
+                                    >무료홍보</button>
+                                    <button type="button"
+                                        className={`btn btn-lg col-4 border-0 rounded-1 ${promoButton === 'payPromo' ? 'btn-dark' : 'btn-outline-dark'}`}
+                                        onClick={() => handlePromoClick('payPromo')}
+                                    >유료홍보</button>
+                                    <button type="button"
+                                        className={`btn btn-lg col-4 border-0 rounded-1 ${promoButton === 'design' ? 'btn-dark' : 'btn-outline-dark'}`}
+                                        onClick={() => handlePromoClick('design')}
+                                    >디자인의뢰</button>
+                                </div>
+                                {
+                                    promoButton == 'design' ?
+                                        <>
+                                            <div className="container item-align-center text-start noto-sans-kr" id="design">
+                                                <h1 className="mt-5 noto-sans-kr">"디자인이 어려우시면,</h1><br />
+                                                <h1 className="text-primary ms-5 noto-sans-kr">저희에게 맡겨주세요!"</h1><br />
+                                                <ul className="noto-sans-kr">
+                                                    <li>인스타그램 홍보 카드</li>
+                                                    <li>치지직/유튜브 홍보 인트로 영상</li>
+                                                    <li>배너 광고 이미지</li>
+                                                </ul><br />
+                                                <p className="noto-sans-kr">예비 스타님의 개성에 맞춘 홍보물을 만들어 드립니다!😆</p>
+                                            </div>
+                                        </>
+                                        :
+                                        <>
+                                            <div className="category my-4 bg-body-tertiary rounded">
+                                                <div className="site row py-2">
+                                                    <div className="item col-1"></div>
+                                                    <div className="item col-2">
+                                                        <b>채널</b>
+                                                    </div>
 
-                        <div className="category my-4 bg-body-tertiary rounded">
-                            <div className="site row py-2">
-                                <div className="item col-1"></div>
-                                <div className="item col-2">
-                                    <b>채널</b>
-                                </div>
+                                                    <div className="item col-8 d-flex justify-content-start column-gap-2">
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input " name="category1" type="checkbox" value="youtube" id="youtube" onChange={handleChangeCategory1} />
+                                                            <label className="form-check-label" for="youtube" >
+                                                                유튜브
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category1" type="checkbox" value="instagram" id="instagram" onChange={handleChangeCategory1} />
+                                                            <label className="form-check-label" for="instagram">
+                                                                인스타그램
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category1" type="checkbox" value="afreeca" id="afreeca" onChange={handleChangeCategory1} />
+                                                            <label className="form-check-label" for="afreeca">
+                                                                아프리카
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category1" type="checkbox" value="chzzk" id="chzzk" onChange={handleChangeCategory1} />
+                                                            <label className="form-check-label" for="chzzk">
+                                                                치지직
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                <div className="item col-8 d-flex justify-content-start column-gap-2">
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input " name="category1" type="checkbox" value="youtube" id="youtube" onChange={handleChangeCategory1} />
-                                        <label className="form-check-label" for="youtube" >
-                                            유튜브
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category1" type="checkbox" value="instagram" id="instagram" onChange={handleChangeCategory1} />
-                                        <label className="form-check-label" for="instagram">
-                                            인스타그램
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category1" type="checkbox" value="afreeca" id="afreeca" onChange={handleChangeCategory1} />
-                                        <label className="form-check-label" for="afreeca">
-                                            아프리카
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category1" type="checkbox" value="chzzk" id="chzzk" onChange={handleChangeCategory1} />
-                                        <label className="form-check-label" for="chzzk">
-                                            치지직
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                                                <div className="site row py-2">
+                                                    <div className="item col-1"></div>
+                                                    <div className="item col-2">
+                                                        <b>분야</b>
+                                                    </div>
+                                                    <div className="item col-9 d-flex justify-content-start column-gap-2">
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="food" id="food" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="food">
+                                                                음식
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="travel" id="travel" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="travel">
+                                                                여행
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input " name="category2" type="checkbox" value="game" id="game" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="game">
+                                                                게임
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="music" id="music" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="music">
+                                                                음악
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="animal" id="animal" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="animal">
+                                                                동물
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="workout" id="workOut" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="workOut">
+                                                                운동
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="asmr" id="asmr" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="asmr">
+                                                                ASMR
+                                                            </label>
+                                                        </div>
+                                                        <div className="form-check form-check-inline d-flex align-items-center">
+                                                            <input className="form-check-input" name="category2" type="checkbox" value="fashion" id="fashion" onChange={handleChangeCategory2} />
+                                                            <label className="form-check-label" for="fashion">
+                                                                패션
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="input-group mb-3">
+                                                <span className="input-group-text" id="addon-wrapping">제목</span>
+                                                <input type="text" className="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
+                                                    aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
+                                            </div>
+                                            <div className='input-group'>
+                                                <span className="input-group-text mb-3 col-2">
+                                                    홍보 기간
+                                                </span>
+                                                <span className='col-5'>
+                                                    <DatePicker
+                                                        selected={startDate}
+                                                        onChange={date => setStartDate(date)}
+                                                        dateFormat="yyyy-MM-dd"
+                                                        className="form-control col-5"
+                                                        calendarClassName={Calendar.calenderWrapper}
+                                                        minDate={new Date()}
+                                                        placeholderText="홍보 시작일"
+                                                    />
 
-                            <div className="site row py-2">
-                                <div className="item col-1"></div>
-                                <div className="item col-2">
-                                    <b>분야</b>
-                                </div>
-                                <div className="item col-9 d-flex justify-content-start column-gap-2">
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="food" id="food" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="food">
-                                            음식
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="travel" id="travel" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="travel">
-                                            여행
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input " name="category2" type="checkbox" value="game" id="game" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="game">
-                                            게임
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="music" id="music" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="music">
-                                            음악
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="animal" id="animal" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="animal">
-                                            동물
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="workout" id="workOut" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="workOut">
-                                            운동
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="asmr" id="asmr" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="asmr">
-                                            ASMR
-                                        </label>
-                                    </div>
-                                    <div className="form-check form-check-inline d-flex align-items-center">
-                                        <input className="form-check-input" name="category2" type="checkbox" value="fashion" id="fashion" onChange={handleChangeCategory2} />
-                                        <label className="form-check-label" for="fashion">
-                                            패션
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="input-group mb-3">
-                            <span className="input-group-text" id="addon-wrapping">제목</span>
-                            <input type="text" className="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
-                                aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
-                        </div>
-                        {/* <div className='input-group' id='datetimepicker1' data-td-target-input='nearest' data-td-target-toggle='nearest'>
-                            <span className="input-group-text mb-3 col-2">
-                                홍보 기간
-                            </span>
-                            <input type='date' name="startDate" id='datepicker' className='form-control' data-td-target='#datepicker'
-                                width="41.7%" aria-describedby="addon-wrapping" placeholder="홍보 시작일" readonly />
-                            <input type='date' name="endDate" id='datepicker2' className='form-control' data-td-target='#datepicker2'
-                                width="41.7%" aria-describedby="addon-wrapping" placeholder="홍보 종료일" readonly />
-                        </div> */}
-                        {/* <div class="input-group mb-3">
-                            <span class="input-group-text">홍보 기간</span>
-                            <input type="date" aria-label="First name" class="form-control" placeholder="홍보 시작일" value={startDate} />
-                            <input type="date" aria-label="Last name" class="form-control" placeholder="홍보 종료일" value={endDate} />
-                        </div> */}
-                        {/* <div class="input-group mb-3">
-                            <span class="input-group-text">홍보 기간</span>
-                            <ReactDatePicker onChange={handleStartDate}/>
-                            <ReactDatePicker onChange={handleEndDate}/>
-                        </div> */}
-                        <div className='input-group'>
-                            <span className="input-group-text mb-3 col-2">
-                                홍보 기간
-                            </span>
-                            <span className='col-5'>
-                                <DatePicker
-                                    selected={startDate}
-                                    onChange={date => setStartDate(date)}
-                                    dateFormat="yyyy-MM-dd"
-                                    className="form-control col-5"
-                                    calendarClassName={Calendar.calenderWrapper}
-                                    minDate={new Date()}
-                                    placeholderText="홍보 시작일"
+                                                </span>
+                                                <DatePicker
+                                                    selected={endDate}
+                                                    onChange={date => setEndDate(date)}
+                                                    dateFormat="yyyy-MM-dd"
+                                                    className="form-control col-5"
+                                                    minDate={new Date()}
+                                                    placeholderText="홍보 종료일"
+                                                />
+                                            </div>
+                                            <div className="input-group mb-3">
+                                                <label className="input-group-text" for="inputGroupFile01">썸네일</label>
+                                                <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
+                                            </div>
+                                        </>
+                                }
+
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    config={{
+                                        placeholder: "내용을 입력하세요.",
+                                        toolbar: {
+                                            items: [
+                                                'undo', 'redo',
+                                                '|', 'heading',
+                                                '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                                                '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                                                '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
+                                                '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
+                                                '|', 'mediaEmbed',
+                                            ],
+                                            shouldNotGroupWhenFull: false
+                                        },
+                                        editorConfig: {
+                                            height: 500, // Set the desired height in pixels
+                                        },
+                                        alignment: {
+                                            options: ['left', 'center', 'right', 'justify'],
+                                        },
+
+                                        extraPlugins: [uploadPlugin]            // 업로드 플러그인
+                                    }}
+                                    data=""         // ⭐ 기존 컨텐츠 내용 입력 (HTML)
+                                    onReady={editor => {
+                                        // You can store the "editor" and use when it is needed.
+                                        console.log('Editor is ready to use!', editor);
+                                    }}
+                                    onChange={(event, editor) => {
+                                        const data = editor.getData();
+                                        console.log({ event, editor, data });
+                                        setContent(data);
+                                    }}
+                                    onBlur={(event, editor) => {
+                                        console.log('Blur.', editor);
+                                    }}
+                                    onFocus={(event, editor) => {
+                                        console.log('Focus.', editor);
+                                    }}
                                 />
-
-                            </span>
-                            <DatePicker
-                                selected={endDate}
-                                onChange={date => setEndDate(date)}
-                                dateFormat="yyyy-MM-dd"
-                                className="form-control col-5"
-                                minDate={new Date()}
-                                placeholderText="홍보 종료일"
-                            />
-                        </div>
-                        <div className="input-group mb-3">
-                            <label className="input-group-text" for="inputGroupFile01">썸네일</label>
-                            <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
-                        </div>
-                        <CKEditor
-                            editor={ClassicEditor}
-                            config={{
-                                placeholder: "내용을 입력하세요.",
-                                toolbar: {
-                                    items: [
-                                        'undo', 'redo',
-                                        '|', 'heading',
-                                        '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-                                        '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
-                                        '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent',
-                                        '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
-                                        '|', 'mediaEmbed',
-                                    ],
-                                    shouldNotGroupWhenFull: false
-                                },
-                                editorConfig: {
-                                    height: 500, // Set the desired height in pixels
-                                },
-                                alignment: {
-                                    options: ['left', 'center', 'right', 'justify'],
-                                },
-
-                                extraPlugins: [uploadPlugin]            // 업로드 플러그인
-                            }}
-                            data=""         // ⭐ 기존 컨텐츠 내용 입력 (HTML)
-                            onReady={editor => {
-                                // You can store the "editor" and use when it is needed.
-                                console.log('Editor is ready to use!', editor);
-                            }}
-                            onChange={(event, editor) => {
-                                const data = editor.getData();
-                                console.log({ event, editor, data });
-                                setContent(data);
-                            }}
-                            onBlur={(event, editor) => {
-                                console.log('Blur.', editor);
-                            }}
-                            onFocus={(event, editor) => {
-                                console.log('Focus.', editor);
-                            }}
-                        />
-                        <div className="d-flex justify-content-end mt-2 p-0">
-                            <Link to={`/${type}`} className={styles.btnl} >목록</Link>
-                            {promoButton === 'freePromo' && (
-                                <div>
-                                    <button id="sendPost" className={styles.btns} onClick={onSubmit}>등록</button>
+                                <div className="d-flex justify-content-end mt-2 p-0">
+                                    <Link to={`/${type}`} className={styles.btnl} >목록</Link>
+                                    {promoButton === 'freePromo' && (
+                                        <div>
+                                            <button id="sendPost" className={styles.btns} onClick={onSubmit}>등록</button>
+                                        </div>
+                                    )}
+                                    {promoButton === 'payPromo' && (
+                                        <div>
+                                            <button className={styles.btns} id="payBtn" onClick={payment} >결제</button>
+                                        </div>
+                                    )}
+                                    {promoButton === 'design' && (
+                                        <div>
+                                            <button className={styles.btns} id="payBtn" onClick={onDesign} >의뢰</button>
+                                        </div>
+                                    )}
                                 </div>
-                            )}
-                            {promoButton === 'payPromo' && (
-                                <div>
-                                    <button className={styles.btns}  id="payBtn" onClick={payment} >결제</button>
-                                </div>
-                            )}
+                            </form>
                         </div>
-                    </form>
-                </div>
-                {/* } */}
+                }
 
 
 

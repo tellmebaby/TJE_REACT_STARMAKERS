@@ -21,7 +21,7 @@ const StarInsertContainer = ({type}) => {
         alert("게시글 등록 완료!")
 
         // -> 게시글 목록으로 이동
-        navigate(`/${type}`)
+        navigate('/starCard')
       } catch (error) {
         console.log(error);
       }
