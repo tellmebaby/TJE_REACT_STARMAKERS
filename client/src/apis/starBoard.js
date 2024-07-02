@@ -17,7 +17,7 @@ export const select = (starNo) => axios.get(`/${starNo}`);
 
 // 등록
 // export const insert = (title, writer, content) => axios.post("/boards", {title, writer, content})
-export const insert = (FormData, headers) => axios.post("/insertBoard", FormData, headers)
+export const insert = (FormData, headers) => axios.post("/starCard", FormData, headers)
 // url, body, headers
 
 // 수정

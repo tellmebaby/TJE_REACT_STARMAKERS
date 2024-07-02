@@ -29,7 +29,6 @@ const LoginContextProvider = ({ children }) => {
      const loginCheck = async () => {
         // accessToken 쿠키 확인
         const accessToken = Cookies.get("accessToken")
-        console.log(`accessToken : ${accessToken}`);
 
         // 💍in🍪 ❌
         if( !accessToken){
@@ -58,7 +57,6 @@ const LoginContextProvider = ({ children }) => {
         }
 
         data = response.data    // data = 👩🏻‍💼사용자정보
-        console.log(`data : ${data}`);
 
         // 인증 실패 ❌
         if ( data == 'UNAUTHORIZED' || response.status == 401 ) {
@@ -119,17 +117,13 @@ const LoginContextProvider = ({ children }) => {
     // 🔐 로그인 세팅
     // 👩🏻‍💼 userData, 💍 accessToken(JWT)
     const loginSetting = (userData, accessToken) => {
+
         const { userNo, id, authList, email } = userData   // 👩🏻‍💼 Users (DTO) [JSON]
         const roleList = authList.map((auth) => auth.auth) // 🏷️ [ROLE_USER,ROLE_ADMIN]
     
-        console.log(`userNo : ${userNo}`);          // 👩‍🏫 no ➡ userNo
-        console.log(`id : ${id}`);                  // 👩‍🏫 userId ➡ id    - TOOD: 왜 null 인지 체크
-        console.log(`email : ${email}`);
-        console.log(`authList : ${authList}`);      // TODO: 왜 권한이 안 넘어오는지 체크
-        console.log(`roleList : ${roleList}`);
-
         // axios common head - Authorization 헤더에 JWT emdfhr
-        api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+        // api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+        api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
         // 🛢️ Contetxt 에 정보 등록
         // 🔐로그인 여부 세팅

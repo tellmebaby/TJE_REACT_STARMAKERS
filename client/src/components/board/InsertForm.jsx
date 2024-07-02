@@ -27,13 +27,11 @@ const InsertForm = ({ type, onInsert }) => {
 
   const onSubmit = (e) => {
     e.preventDefault()      // 기본 이벤트 방지
-    console.log("여기오나? onSubmit");
     // 유효성 검사 ✅
     // ...일단 생략
 
     // 파일 업로드에서는 
     // Content-Type : application/json -> multipart/form-data
-    console.log("userno? " + userInfo.userNo);
     const formData = new FormData()
     formData.append('title', title)
     formData.append('content', content)
@@ -41,6 +39,7 @@ const InsertForm = ({ type, onInsert }) => {
       formData.append('type', type)
     }
     formData.append('userNo', userInfo.userNo)
+    formData.append('writer', userInfo.id)
 
     console.log("title : " + title);
     console.log("content : " + content);
