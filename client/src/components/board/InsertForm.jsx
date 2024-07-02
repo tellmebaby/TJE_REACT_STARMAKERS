@@ -8,7 +8,7 @@ import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
 
-const InsertForm = ({ type, onInsert }) => {
+const InsertForm = ({ type, onInsert, status, isFile }) => {
 
   const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [title, setTitle] = useState('')
@@ -41,6 +41,9 @@ const InsertForm = ({ type, onInsert }) => {
       formData.append('type', type)
     }
     formData.append('userNo', userInfo.userNo)
+    if(status != null) {
+      formData.append('status', status)
+    }
 
     console.log("title : " + title);
     console.log("content : " + content);
@@ -128,6 +131,16 @@ const InsertForm = ({ type, onInsert }) => {
                     aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
                   {/* <input type="hidden" value={type}/> */}
                 </div>
+                {
+                  isFile && (
+                    <React.Fragment>
+                       <div className="input-group mb-3">
+                            <label className="input-group-text" for="inputGroupFile01">썸네일</label>
+                            <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
+                        </div>
+                    </React.Fragment>
+                  )
+               }
                 <CKEditor
                   editor={ClassicEditor}
                   config={{
