@@ -12,6 +12,7 @@ const QnaReadContainer = ({qnaNo}) => {
     const response = await qna.select(qnaNo)
     
     setQnaBoard(response)
+    console.log("container : " +response.title);
     setLoading(false)
   }
 

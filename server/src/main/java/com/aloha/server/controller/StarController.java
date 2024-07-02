@@ -79,28 +79,29 @@ public class StarController {
     public ResponseEntity<?> select(@AuthenticationPrincipal CustomUser customUser,
             @PathVariable("no") Integer starNo) throws Exception {
 
-        Users user = customUser.getUser();
-        // StarBoard starBoard = starService.select(starNo);
+        log.info("starNo ? " + starNo);
+        Users user = new Users();
         StarBoard starBoard = null;
-        if (user != null) {
+        if (customUser != null) {
+            user = customUser.getUser();
+            // StarBoard starBoard = starService.select(starNo);
             int userNo = user.getUserNo();
             starBoard = starService.select(starNo, userNo);
         } else {
             starBoard = starService.select(starNo);
         }
-
         // 댓글수
         int commentCount = replyService.countByStarNo(starBoard.getStarNo());
         starBoard.setCommentCount(commentCount);
         // 조회수
         starService.views(starNo);
 
+        log.info("게시글 정보 : " + starBoard.toString());
         // 값 넘겨주기
         Map<String, Object> response = new HashMap<>();
-        log.info(starBoard.toString());
         response.put("starBoard", starBoard);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<> (response, HttpStatus.OK);
     }
 
     /**
@@ -739,6 +740,7 @@ public class StarController {
 
     /**
      * 글 작성(insert)
+     * 
      * @param starBoard
      * @return
      * @throws Exception
@@ -749,7 +751,7 @@ public class StarController {
         // 리다이렉트
         // 데이터 처리 성공
         if (newBoard != null) {
-            log.info("글 정보" +  newBoard.toString());
+            log.info("글 정보" + newBoard.toString());
             return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
