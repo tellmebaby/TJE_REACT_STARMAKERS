@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
 import com.aloha.server.dto.QnaBoard;
+import com.aloha.server.dto.Users;
 import com.aloha.server.service.QnaService;
+import com.aloha.server.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +36,9 @@ public class QnaController {
 
     @Autowired
     private QnaService qnaService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/qnaList")
     public ResponseEntity<?> list(Page page, Option option) throws Exception {
@@ -87,7 +92,7 @@ public class QnaController {
 
     @GetMapping("qnaRead/{qnaNo}")
     public ResponseEntity<?> read(@PathVariable("qnaNo") int qnaNo) {
-        log.info("Q&A 글 번호: ", qnaNo);
+        log.info("Q&A 글 번호 : ", qnaNo);
         try {
             QnaBoard qnaBoard = qnaService.select(qnaNo);
             qnaService.views(qnaNo);
@@ -143,10 +148,14 @@ public class QnaController {
      * 
      */
     @PutMapping()
-    public ResponseEntity<?> update(@RequestBody QnaBoard qnaBoard) {
+    public ResponseEntity<?> update(QnaBoard qnaBoard) {
         try {
             int qnaNo = qnaBoard.getQnaNo();
-            qnaBoard.setQnaNo(qnaNo);
+            log.info("update 글번호 : " + qnaNo);
+            Users user = userService.selectUserNo(qnaBoard.getUserNo());
+            String writer = user.getId();
+            log.info("update writer : " + writer);
+            qnaBoard.setWriter(writer);
             int result = qnaService.update(qnaBoard);
             if (result > 0) {
                 return new ResponseEntity<>(HttpStatus.OK);

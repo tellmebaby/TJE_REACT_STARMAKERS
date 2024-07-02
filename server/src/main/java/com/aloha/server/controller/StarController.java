@@ -123,6 +123,7 @@ public class StarController {
         int starNo = starBoard.getStarNo();
         int result = starService.update(starBoard);
         log.info("수정 결과 :" + result);
+        log.info("수정한 게시글 : " + starBoard.toString());
 
         // 데이터 처리 성공
         if (result > 0) {

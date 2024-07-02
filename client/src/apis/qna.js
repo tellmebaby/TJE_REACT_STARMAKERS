@@ -25,9 +25,10 @@ export const select = (qnaNo) => {
 export const insert = (FormData, headers) => axios.post("/qna", FormData, headers )
 
 // 수정
-export const update = (qnaBoard) => {
-  return axios.put('/qna', qnaBoard).then(response => response.data);
-};
+// export const update = (qnaBoard) => {
+//   return axios.put('/qna', qnaBoard).then(response => response.data);
+// };
+export const update = (formData, headers) => axios.put("/qna", formData, headers)
 
 // 답변 등록
 export const insertAnswer = (qnaBoard) => {
