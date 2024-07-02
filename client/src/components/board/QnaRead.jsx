@@ -52,7 +52,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
   };
 
   return (
-    <div className="container2">
+    <div className="container2" style={{ padding: '10px' }}>
       <center>
         <h3 className={styles.notice}>Q&A</h3>
         <label className={styles.eventtext}>
@@ -70,17 +70,17 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
       <div className={styles['content-container']}>
         <div dangerouslySetInnerHTML={{ __html: qnaBoard.content }}></div>
       </div>
-      <div className={`${styles.dFlex} ${styles.justifyContentEnd} ${styles.mt2} ${styles.buttonBox}`}>
-        <button className={styles.btnList} type="button" onClick={moveList}>
+      <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
+        <button className={styles['btn-list']} type="button" onClick={moveList}>
           목록
         </button>
         {user && user.userNo === qnaBoard.userNo && (
           <>
-            <button className={styles.btnUpdate} type="button" onClick={update}>
+            <button className={styles['btn-update']} type="button" onClick={update}>
               수정
             </button>
             <input
-              className={styles.btnDelete}
+              className={styles['btn-delete']}
               type="button"
               onClick={actionDelete}
               value="삭제"
@@ -104,7 +104,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
           )}
           <input type="hidden" name="qnaNo" id="qnaNo" value={qnaNo} />
         </div>
-        <div className={styles.buttonContainer1}>
+        <div className={styles['button-container1']}>
           {/* {user && user.roles.includes('ROLE_ADMIN') && ( */}
             <>
               {!answer && (
@@ -113,8 +113,8 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
                 </button>
               )}
               {answer && (
-                <div className={styles.buttonWrapper}>
-                  <div className={styles.buttonContainer2}>
+                <div className={styles['button-wrapper']}>
+                  <div className={styles['button-container2']}>
                     <button
                       type="button"
                       id="update-answer-button"
@@ -123,7 +123,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
                       수정
                     </button>
                   </div>
-                  <div className={styles.buttonContainer1}>
+                  <div className={styles['button-container1']}>
                     <button
                       type="button"
                       id="delete-answer-button"
