@@ -85,7 +85,7 @@ public class QnaController {
     //     return "/page/board/qnaBoard/qnaList";
     // }
 
-    @GetMapping("qnaPost/{qnaNo}")
+    @GetMapping("qnaRead/{qnaNo}")
     public ResponseEntity<?> read(@PathVariable("qnaNo") int qnaNo) {
         log.info("Q&A 글 번호: ", qnaNo);
         try {

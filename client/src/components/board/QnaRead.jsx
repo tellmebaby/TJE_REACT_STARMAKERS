@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import styles from '../board/css/qnaRead.module.css'
+// import styles2 from '../board/css/read.module.css'
 
 const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
   const [answer, setAnswer] = useState(qnaBoard.answer || '');
@@ -53,33 +55,33 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
   return (
     <div className="container2">
       <center>
-        <h3 className="notice">Q&A</h3>
-        <label className="eventtext">
+        <h3 className={styles.notice}>Q&A</h3>
+        <label className={styles.eventtext}>
           운영원칙에 위배되는 글은 관리자에 의해 무통보 삭제될 수 있습니다.
         </label>
       </center>
-      <div className="writer">
+      <div className={styles.writer}>
         <label>{qnaBoard.writer}</label>
         <label>{new Date(qnaBoard.regDate).toLocaleString()}</label>
       </div>
-      <div className="title-container">
+      <div className={styles.titleContainer}>
         <span>{qnaBoard.title}</span>
         <hr />
       </div>
-      <div className="content-container">
+      <div className={styles.contentContainer}>
         <div dangerouslySetInnerHTML={{ __html: qnaBoard.content }}></div>
       </div>
-      <div className="d-flex justify-content-end mt-2 button-box">
-        <button className="btn-list" type="button" onClick={moveList}>
+      <div className={`${styles.dFlex} ${styles.justifyContentEnd} ${styles.mt2} ${styles.buttonBox}`}>
+        <button className={styles.btnList} type="button" onClick={moveList}>
           목록
         </button>
         {user && user.userNo === qnaBoard.userNo && (
           <>
-            <button className="btn-update" type="button" onClick={update}>
+            <button className={styles.btnUpdate} type="button" onClick={update}>
               수정
             </button>
             <input
-              className="btn-delete"
+              className={styles.btnDelete}
               type="button"
               onClick={actionDelete}
               value="삭제"
@@ -87,11 +89,11 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
           </>
         )}
       </div>
-      <label className="answer">답변</label>
+      <label className={styles.answer}>답변</label>
       <form action="/page/board/qnaBoard/qnaPost" method="post" id="form">
         {/* <input type="hidden" name={csrfToken.parameterName} value={csrfToken.token} /> */}
-        <div className="answer-container">
-          {!isEditingAnswer && <span id="answer-span">{answer}</span>}
+        <div className={styles.answerContainer}>
+          {!isEditingAnswer && <span id="answer-span">{qnaBoard.answer}</span>}
           {isEditingAnswer && (
             <textarea
               id="answer-textarea"
@@ -104,7 +106,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
           )}
           <input type="hidden" name="qnaNo" id="qnaNo" value={qnaNo} />
         </div>
-        <div className="button-container1">
+        <div className={styles.buttonContainer1}>
           {user && user.roles.includes('ROLE_ADMIN') && (
             <>
               {!answer && (
@@ -113,8 +115,8 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
                 </button>
               )}
               {answer && (
-                <div className="button-wrapper">
-                  <div className="button-container2">
+                <div className={styles.buttonWrapper}>
+                  <div className={styles.buttonContainer2}>
                     <button
                       type="button"
                       id="update-answer-button"
@@ -123,7 +125,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, csrfToken }) => {
                       수정
                     </button>
                   </div>
-                  <div className="button-container1">
+                  <div className={styles.buttonContainer1}>
                     <button
                       type="button"
                       id="delete-answer-button"

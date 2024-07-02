@@ -43,7 +43,7 @@ function App() {
           <Route path="/event" element={<EventList/>} />
           <Route path="/review" element={<ReviewList />}/>
           <Route path="/qna/qnaList" element={<QnaMainList />}/>
-          <Route path="qna/qnaPost/:qnaNo" element={<QnaRead/>}/>
+          <Route path="qna/qnaRead/:qnaNo" element={<QnaRead/>}/>
           <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
           <Route path="/an" element={<AnList />}/>
           <Route path="/anInsert" element={<AnInsert/>}></Route>
