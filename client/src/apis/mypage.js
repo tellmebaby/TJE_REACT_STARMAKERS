@@ -19,6 +19,9 @@ export const qnaRead = (qnaNo) => { axios.get(`/mypage/qna/${qnaNo}`).then(respo
 // 선택된 QnA 항목 삭제
 export const deleteQna = (qnaNos) => axios.delete(`/qna/${qnaNos.join(',')}`);
 
+// 마이페이지 reviewList
+export const reviewList = (params) => { axios.get(`mypage/reviewList`, {params})}
+
 
 // 프로필 이미지 업로드
 export const profileUpload = (formData) => axios.post(`/file/profileUpload`, formData, {
