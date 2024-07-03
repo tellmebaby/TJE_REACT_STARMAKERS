@@ -13,7 +13,7 @@ export const deleteUser = (userNo) => api.delete(`/mypage/profile/${userNo}`)
 export const qnaList = (params) => api.get(`/mypage/qnaList`, {params});
 
 // 상세 조회
-export const qnaRead = (qnaNo) => { axios.get(`/mypage/qna/${qnaNo}`).then(response => response.data);
+export const qnaRead = (qnaNo) => { api.get(`/mypage/qna/${qnaNo}`).then(response => response.data);
   };
 
 // 선택된 QnA 항목 삭제
