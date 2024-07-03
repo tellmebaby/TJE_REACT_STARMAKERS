@@ -130,7 +130,7 @@
     filter: blur(10px);
     z-index: 1;
 }
-
+/* 
 .card-body {
     background: rgba(0, 0, 0, 0.5);
     border-radius: 25px;
@@ -142,26 +142,65 @@
     text-align: left;
     padding: 10px;
     box-sizing: border-box;
-}
+} */
+
+.card-body {
+    position: absolute;
+    bottom: -55%;
+    width: 100%;
+    transition: bottom 1s;
+    background: rgba(0, 0, 0, 0.5); /* 배경색 조정 */
+    border-radius: 25px;
+    height: 40%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    text-align: left; /* 왼쪽 정렬 */
+    padding: 10px;
+    box-sizing: border-box;
+    color: white; /* 텍스트 색상 조정 */
+  }
+  
 
 .card-body:hover {
     cursor: pointer;
 }
 
-.card:hover .overlay,
+/* .card:hover .overlay,
 .card:hover .card-body {
     bottom: 0;
+} */
+
+.card:hover .overlay,
+.card:hover .card-body {
+  bottom: 0;
 }
 
+
+/* .card:hover .overlay {
+    background-position: center bottom;
+} */
 .card:hover .overlay {
     background-position: center bottom;
-}
-
+  }
 .card-body h5,
 .card-body p {
     margin: 0;
 }
 
+/* .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 80%;
+    line-height: 1.2em;
+    max-height: 2.4em;
+} */
 .card-title {
     display: -webkit-box;
     -webkit-line-clamp: 1;
@@ -173,8 +212,9 @@
     font-size: 80%;
     line-height: 1.2em;
     max-height: 2.4em;
-}
-
+    color: white; /* 텍스트 색상 조정 */
+  }
+  
 
 
 .star {
@@ -186,12 +226,18 @@
     z-index: 1000;
 }
 
+/* .author-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+} */
 .author-icon {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin-right: 5px;
-}
+  }
 
 .top-container {
     display: flex;
@@ -256,3 +302,35 @@
     background: linear-gradient(to right, gold, goldenrod, yellow, lightyellow, palegoldenrod);
     border-radius: 1.25rem;
 }
+
+.click-star {
+    position: relative;
+}
+
+.Starrr {
+    position: absolute;
+    font-size: 5em;
+    z-index: 1000;
+    display: none;
+  }
+  
+  .Starrr.show {
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: star-burst 1s ease-out forwards;
+  }
+  
+  @keyframes star-burst {
+    0% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(3);
+    }
+  }
+  
+  /* 나머지 CSS는 이전과 동일 */

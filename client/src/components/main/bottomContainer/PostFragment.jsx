@@ -1,5 +1,6 @@
 import React from 'react';
 import './css/PostFragment.css'
+import { Link } from 'react-router-dom';
 
 const PostFragment = ({ dataList, isLoading }) => {
     return (
@@ -9,6 +10,7 @@ const PostFragment = ({ dataList, isLoading }) => {
                     <div>Loading...</div>
                 ) : (
                     dataList.map(data => (
+                        <Link to={`/${data.starNo}`} className='Post-link'>
                         <div key={data.userNo} className='flag-item'>
                             <img src={`/file/img/${data.imgNo}`} alt="Frag img" className='frag-img' />
                             <div className='DisplayCon'>
@@ -25,6 +27,7 @@ const PostFragment = ({ dataList, isLoading }) => {
                                 </div>
                             </div>
                         </div>
+                        </Link>
                     ))
                 )}
             </div>
