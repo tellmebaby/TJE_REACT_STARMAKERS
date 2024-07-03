@@ -6,6 +6,9 @@ const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
     const [fileInput, setFileInput] = useState(null);
     const [previewImage, setPreviewImage] = useState('');
 
+    console.log("dd");
+    console.log(previewImage);
+
     useEffect(() => {
         setPreviewImage(fileList);
     }, [fileList]);
@@ -59,7 +62,7 @@ const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
                     <div className="box">
                         <div className={styles.tableMargin}></div>
                         <table className="table">
-                            <tbody>
+                            <tbody className={styles.profile}>
                                 <tr>
                                     <td className="fw-bold fs-5 text-center align-middle border-0">닉네임</td>
                                     <td className="fs-5 align-middle border-0">{user.id}</td>

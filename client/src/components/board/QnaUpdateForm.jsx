@@ -6,9 +6,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const UpdateForm = ({ isFile, qnaNo, qnaBoard, onUpdate, isLoading }) => {
+const UpdateForm = ({ qnaNo, qnaBoard, onUpdate, isLoading }) => {
+  const navigate = useNavigate()
   const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -114,14 +115,10 @@ const UpdateForm = ({ isFile, qnaNo, qnaBoard, onUpdate, isLoading }) => {
             <h1>Q&A 수정</h1>
         </cneter>
         {
-          !isLogin ?
+          isLoading ?
             <div className="container content-box mt-3 mb-3">
               <div className="d-flex justify-content-center mb-5" >
-                <p>로그인이 필요한 페이지입니다.</p>
-              </div>
-              <div className="d-flex justify-content-center">
-                <a href="/login" className="btn btn-info m-1 " >로그인 하러 가기</a>
-                <a href="/join" className="btn btn-primary m-1">회원가입 하러 가기</a>
+                <p>로딩중</p>
               </div>
             </div>
             :
@@ -133,27 +130,6 @@ const UpdateForm = ({ isFile, qnaNo, qnaBoard, onUpdate, isLoading }) => {
                   <input type="text" className="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
                     aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
                 </div>
-                {
-                  qnaBoard.type=='event' ?
-                  <React.Fragment>
-                       <div className="input-group mb-3">
-                            <label className="input-group-text" for="inputGroupFile01">썸네일</label>
-                            <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
-                        </div>
-                    </React.Fragment>
-                  :
-                  <></>
-                }
-                {
-                  isFile && (
-                    <React.Fragment>
-                      <div className="input-group mb-3">
-                        <label className="input-group-text" for="inputGroupFile01">썸네일</label>
-                        <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
-                      </div>
-                    </React.Fragment>
-                  )
-                }
                 <CKEditor
                   editor={ClassicEditor}
                   config={{
@@ -197,9 +173,8 @@ const UpdateForm = ({ isFile, qnaNo, qnaBoard, onUpdate, isLoading }) => {
                   }}
                 />
                 <div className="d-flex justify-content-end mt-2">
-                  {/* <button type="button" className="btn btn-primary btn-submit col-1 border-1 btn-list" >목록</button> */}
-                  <Link to={'qna/qnaList'} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
-                  <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>수정</button>
+                <button className='btn btn-secondary btn-submit col-1 border-0' type="button" onClick={() => navigate(-2)}>목록</button> {/* 뒤로가기 기능 */}
+                <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>수정</button>
                 </div>
               </div>
             </form>

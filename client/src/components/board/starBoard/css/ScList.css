@@ -1,0 +1,248 @@
+.items-eventType,
+.items-category1,
+.items-category2 {
+    display: flex;
+}
+
+#type-chzzk {
+    background: black;
+}
+
+.type-sub .hide-check {
+    display: none;
+}
+
+
+/* 타입 버튼 마우스 올릴시 스타일 */
+.type-sub:hover {
+    background-color: #fff;
+    box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+}
+
+
+@media (max-width: 768px) {
+    
+    .starList-detail {
+        margin-top: 20px;
+
+    }
+
+    .type-sub {
+        align-content: center;
+        width: 55px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.7em;
+        text-align: center;
+        margin: 2px 4px;
+        height: 36px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        /* display: inline-block; */
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+
+    .type-sub img{
+        width: 38px;
+    }
+    
+    .type-sub i{
+        height: 1.6em;
+        font-size: 1.6em;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+
+    .starList-detail {
+        margin-top: 20px;
+    }
+
+    .type-sub {
+        align-content: center;
+        width: 65px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.9em;
+        text-align: center;
+        margin: 2px 4px;
+        height: 36px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        /* display: inline-block; */
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+
+    .type-sub img{
+        width: 38px;
+    }
+    
+    .type-sub i{
+        height: 1.6em;
+        font-size: 1.6em;
+    }
+
+}
+
+@media (min-width: 993px) and (max-width: 1199px) {
+
+    .starList-detail {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+
+    .type-sub {
+        align-content: center;
+        width: 55px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.9em;
+        text-align: center;
+        margin: 0px 4px;
+        height: 45px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        /* display: inline-block; */
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+
+    .type-sub img{
+        width: 42px;
+    }
+    
+    .type-sub i{
+        height: 1.8em;
+        font-size: 1.8em;
+    }
+
+}
+
+@media (min-width: 1200px) {
+
+    .starList-detail {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+
+    .type-sub {
+        align-content: center;
+        width: 55px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.9em;
+        text-align: center;
+        margin: 0px 4px;
+        height: 45px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        /* display: inline-block; */
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+
+    .type-sub img{
+        width: 42px;
+    }
+    
+    .type-sub i{
+        height: 1.8em;
+        font-size: 1.8em;
+    }
+}
+
+
+/* 검색창 부분 */
+
+.container-starSearch {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    height: 30px;
+    margin-top: 41px;
+    margin-bottom: 40px;
+}
+
+.sub-searchInput {
+    display: flex;
+    align-content: center;
+    background-color: transparent;
+    border: 1px solid rgb(230, 230, 230);
+    border-radius: 17px;
+    color: gray;
+    height: 40px;
+    margin-right: 10px;
+    background-color: #fff;
+}
+
+.sub-searchInput input{
+    background-color: transparent;
+    border-color: transparent;
+
+}
+
+.sub-searchInput input:focus {
+    outline: none;
+}
+
+#icon-inSearchBar {
+    align-content: center;
+    width: 22px;
+    margin-left: 10px;
+}
+
+/* 캘린더 입력하기 버튼 스타일 */
+.sub-btn-calendar,
+.sub-btn-insertCard{
+    align-content: center;
+    width: 65px;
+    border: 1px solid rgb(220, 223, 225);
+    border-radius: 17px;
+    font-size: 0.9em;
+    text-align: center;
+    margin: 0px 4px;
+    height: 40px;
+    background-color: #fff;
+    color: rgb(105, 108, 115);
+    box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+}
+
+.sub-btn-calendar:hover{
+    background-color: #fff;
+    box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sub-btn-calendar:hover i{
+    color: black;
+}
+
+.sub-btn-insertCard:hover{
+    background-color: #fff;
+    box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+}
+
+.sub-btn-insertCard:hover i{
+    color: black;
+}
+
+.sub-btn-calendar i{
+    color: rgb(105, 108, 115);
+    font-size: 1.5em;
+}
+
+.sub-btn-insertCard i{
+    color: rgb(105, 108, 115);
+    font-size: 1.5em;
+}
+
+.container-typeTitle {
+    width: 100%;
+    position: relative;
+}

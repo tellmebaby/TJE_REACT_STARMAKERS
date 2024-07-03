@@ -1,34 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // useNavigate 훅 추가
 import { useSession } from '../../contexts/SessionContext';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import styles from '../board/css/read.module.css'
+import styles from '../board/css/read.module.css';
 
 
-const Read = ({ starNo, starBoard, fileList, isLoading }) => {
+const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
+  const navigate = useNavigate()
   const { session } = useSession();
-  // const [likeCount, setLikeCount] = useState(board.likes || 0);
   const [comments, setComments] = useState([]);
   const [replyContent, setReplyContent] = useState('');
   const [replyWriter, setReplyWriter] = useState('');
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editingCommentContent, setEditingCommentContent] = useState('');
-  const { isLogin, logout, userInfo } = useContext(LoginContext)
-  // const [starBoard, setStarBoard] = useState(null)
+  const { isLogin, logout, userInfo } = useContext(LoginContext);
 
-
-  // useEffect(() => {
-  //   if (board.likes !== undefined) {
-  //     setLikeCount(board.likes);
-  //   }
-  // }, [board.likes]);
   useEffect(() => {
     fetchComments();
   }, []);
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`/page/reply/${starNo}`);
+      const response = await axios.get(`/reply/${starNo}`);
       setComments(response.data);
     } catch (error) {
       console.error('댓글을 불러오는데 실패했습니다.', error);
@@ -47,21 +41,14 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   //     console.error('좋아요 상태 변경 실패:', error);
   //   }
   // };
-  console.log("이거되나 ? ? ?  ? "  + starBoard.writer);
 
 
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
-    if (confirmDelete) {
-      try {
-        await axios.post('/page/board/eventBoard/delete', { starNo, _csrf: session._csrf });
-        alert('삭제되었습니다.');
-        window.location.href = '/page/board/eventBoard/eventList';
-      } catch (error) {
-        console.error('삭제 실패:', error);
-      }
+  const handleDelete = () => {
+    const check = window.confirm("정말로 삭제하시겠습니까?")
+    if (check) {
+      onDelete(starNo)
     }
-  };
+  }
 
   const handleReplySubmit = async () => {
     if (replyContent.trim() === '') {
@@ -122,57 +109,32 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
 
   return (
     <div className="container2" style={{ padding: '10px' }}>
-      <center> {
-          starBoard.type == 'an' ?
-            <h1>공지사항</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'event' ?
-            <h1>이벤트</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'review' ?
-            <h1>후기</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'starCard' ?
-            <h1>홍보</h1>
-          : <></>
-        }</center>
-      {
-        !isLoading && starBoard && (
-          <><div className={styles.writer}>
+      <center>
+        {starBoard.type === 'an' && <h1>공지사항</h1>}
+        {starBoard.type === 'event' && <h1>이벤트</h1>}
+        {starBoard.type === 'review' && <h1>후기</h1>}
+        {starBoard.type === 'starCard' && <h1>홍보</h1>}
+      </center>
+      {!isLoading && starBoard && (
+        <>
+          <div className={styles.writer}>
             <label>{starBoard.writer}</label>
             <label>{new Date(starBoard.regDate).toLocaleString()}</label>
-          </div><div className={styles['title-container']}>
-              <span>{starBoard.title}</span>
-              <hr />
-            </div></>
-
-        )
-      }
+          </div>
+          <div className={styles['title-container']}>
+            <span>{starBoard.title}</span>
+            <hr />
+          </div>
+        </>
+      )}
       <div className={styles['content-container']}>
-        <div>
-          {/* {fileList.length > 0 && (
-            <img src={`/file/img/${fileList[0].imgNo}`} className="image rounded mt-auto" style={{ width: '800px' }} alt="썸네일" />
-          )} */}
-        </div>
         <span dangerouslySetInnerHTML={{ __html: starBoard.content }}></span>
       </div>
-      {/* <div className="button-box1">
-        <button className="like-btn" onClick={handleLike} disabled={!session}>
-          <i className={`fa fa-star ${board.action === 'liked' ? 'fa-solid' : 'fa-regular'}`}></i>
-        </button>
-        <span id="like-count">{likeCount}</span>
-      </div> */}
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
-        <button className={styles['btn-list']} type="button" onClick={() => window.location.href = `/${starBoard.type}`}>목록</button>
-        {userInfo.userNo === starBoard.userNo && (
+        <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button> {/* 뒤로가기 기능 */}
+        {userInfo && userInfo.userNo === starBoard.userNo && (
           <>
-            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/page/board/eventBoard/eventUpdate?starNo=${starNo}`}>수정</button>
+            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={handleDelete}>삭제</button>
           </>
         )}
@@ -183,12 +145,12 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
           <button type="button" className="btn-reply" onClick={handleReplySubmit} disabled={!session}>등록</button>
         </div>
       </div>
-      <div className="top-reply-list">
+      <div className={styles['top-reply-list']}>
         <label className="reply">댓글</label>
         <label className="reply-count">{comments.length} 개</label>
       </div>
-      <div id="reply-listbox">
-        <div id="reply-list">
+      <div id={styles['reply-listbox']}>
+        <div id={styles['reply-writer']}>
           {comments.map(comment => (
             <div key={comment.id} className="reply">
               {editingCommentId === comment.id ? (
@@ -199,9 +161,9 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
                 </>
               ) : (
                 <>
-                  <div className="reply-writer">{comment.writer}</div>
-                  <div className="reply-content">{comment.content}</div>
-                  <div className="reply-date">{new Date(comment.date).toLocaleString()}</div>
+                  <div className={styles['reply-writer']}>{comment.writer}</div>
+                  <div className={styles['reply-content']}>{comment.content}</div>
+                  <div className={styles['reply-date']}>{new Date(comment.regDate).toLocaleString()}</div>
                   {session && session.user && session.user.userNo === comment.userNo && (
                     <>
                       <button onClick={() => handleEditComment(comment.id)}>수정</button>
@@ -216,6 +178,6 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Read;

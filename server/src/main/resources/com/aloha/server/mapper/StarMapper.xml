@@ -119,6 +119,29 @@
         LIMIT #{page.index}, #{page.rows}
     </select>
 
+    <!-- 게시판 목록 -->
+    <select id="mypageList" resultType="StarBoard">
+        SELECT s.*, file_no as imgNo
+        FROM star_board s 
+        left join file f
+        ON f.star_no=s.star_no 
+        WHERE user_no = #{userNo}
+        AND
+        <if test="type != null">
+            type = #{type}
+
+            <if test="type=='starCard'">
+            AND s.status = '승인'
+            </if>
+        </if>
+        <if test="type == null">
+            1 = 1
+        </if>
+    
+        ORDER BY star_no DESC
+        LIMIT #{page.index}, #{page.rows}
+    </select>
+
 
 
     <!-- 새 메인 카드 리스트 요청 : 승인된 글만 보여야 함-->
@@ -205,6 +228,39 @@
         SELECT COUNT(*)
         FROM star_board
          WHERE 
+        <if test="type != null">
+            type = #{type}
+        </if>
+        <if test="type == null">
+            1 = 1
+        </if>
+        <if test="option != null and option.keyword != null and option.keyword != ''">
+            AND
+            <if test="option.code == 0">
+                (title LIKE CONCAT('%', #{option.keyword}, '%')
+                OR content LIKE CONCAT('%', #{option.keyword}, '%'))
+            </if>
+            <if test="option.code == 1">
+                title LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 2">
+                content LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 3">
+                writer LIKE CONCAT('%', #{option.keyword}, '%')
+            </if>
+            <if test="option.code == 4">
+                user_no = #{option.keyword}
+            </if>
+        </if>
+    </select>
+
+      <!-- 데이터 개수 조회 - [검색] -->
+    <select id="mypageCount" resultType="int">
+        SELECT COUNT(*)
+        FROM star_board
+        WHERE user_no = #{userNo}
+        AND
         <if test="type != null">
             type = #{type}
         </if>
@@ -367,7 +423,7 @@
     <update id="update">
         UPDATE star_board
         SET title = #{title},
-            <!-- writer = #{writer}, -->
+            writer = #{writer},
             content = #{content},
             likes=#{likes},
             views=#{views},

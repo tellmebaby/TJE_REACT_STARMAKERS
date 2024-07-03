@@ -36,8 +36,8 @@ const UpdateContainer = ({starNo}) => {
       alert("게시글 수정 완료!"+starNo)
       
 
-      // 게시글 조회로 이동
-      navigate('/'+starNo)
+      // 수정 후 게시글 조회 화면으로 이동
+      navigate(-2)
 
     } catch (error) {
       console.log(error);

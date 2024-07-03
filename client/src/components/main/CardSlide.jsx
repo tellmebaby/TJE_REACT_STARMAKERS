@@ -3,9 +3,12 @@ import Slider from 'react-slick';
 import DangsmCard from './starcard/DangsmCard';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import "./css/CardSlide.css";
 
 const CardSlide = ({ cardList, isLoading }) => {
   const settings = {
+    centerMode: true,
+    centerPadding: '0', // 필요에 따라 패딩 조절
     dots: true,
     infinite: true,
     speed: 500,
@@ -15,7 +18,7 @@ const CardSlide = ({ cardList, isLoading }) => {
     autoplaySpeed: 2000,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1000,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 1,
@@ -24,9 +27,9 @@ const CardSlide = ({ cardList, isLoading }) => {
         }
       },
       {
-        breakpoint: 600,
+        breakpoint: 769,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1
         }
       }
@@ -38,19 +41,14 @@ const CardSlide = ({ cardList, isLoading }) => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className="container" id="promotionCarousel">
-          <div className='cards row' >
+        <div className='slider-container'>
           <Slider {...settings}>
             {cardList.map(card => (
-              <div key={card.starNo} className=''style={{ width: '170px' }}>
-                <div className="card standard" style={{ width: '178px' }}>
+              <div key={card.starNo} className='star-card-slide'>
                   <DangsmCard card={card} />
-                </div>
               </div>
             ))}
           </Slider>
-
-          </div>
         </div>
       )}
     </div>

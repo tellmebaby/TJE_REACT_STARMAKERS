@@ -8,7 +8,7 @@ const PromotionContainer = () => {
   const [promotionList, setPromotionList] = useState([]);
 
   console.log("넘오오냐");
-  console.log(userInfo);
+  console.log(userInfo?.userNo);
 
   const getPromotionList = async () => {
     try {

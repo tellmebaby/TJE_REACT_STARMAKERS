@@ -1,0 +1,38 @@
+.slider-container {
+    width: 100%;
+    margin: 0 auto; /* 중앙 정렬을 위해 마진을 자동으로 설정 */
+    margin-left: 0px;
+  }
+  
+  .star-card-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .slick-slider {
+    width: 100%;
+  }
+  
+  .slick-list {
+    width: 100%;
+  }
+  
+  .slick-track {
+    width: 100%;
+  }
+
+@media (max-width: 768px) {
+    #promotionCarousel {
+        
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+
+}
+
+@media (min-width: 993px) {
+
+}

@@ -30,8 +30,11 @@ import QnaRead from './pages/board/QnaRead';
 import Promotion from './pages/mypage/Promotion';
 import Update from './pages/board/Update';
 import QnaUpdate from './pages/board/QnaUpdate';
+
 import StarPaymentSuccess from './pages/board/StarPaymentSuccess';
 import StarPaymentFail from './pages/board/StarPaymentFail';
+import MyReviewList from './pages/mypage/MyReviewList';
+import StarUpdate from './pages/board/StarUpdate';
 
 function App() {
   return (
@@ -48,25 +51,33 @@ function App() {
           <Route path="/mypage/ProfileUpdate" element={<ProfileUpdate/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/mypage/Promotion" element={<Promotion/>}></Route>
+          <Route path="/mypage/myReviewList" element={<MyReviewList/>}></Route>
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
+
           <Route path="/event" element={<EventList/>} />
+          
           <Route path="/review" element={<ReviewList />}/>
+          <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
+
           <Route path="/qna/qnaList" element={<QnaMainList />}/>
           <Route path="qna/qnaRead/:qnaNo" element={<QnaRead/>}/>
-          <Route path="/reviewInsert" element={<ReviewInsert/>}></Route>
+          <Route path="/qna/update/:qnaNo" element={<QnaUpdate/>}></Route>
           <Route path="/an" element={<AnList />}/>
           <Route path="/anInsert" element={<AnInsert/>}></Route>
+          
           <Route path="/test" component={<Test/>} />
-          <Route path="/starInsert" element={<StarInsert/>}></Route>
+
           <Route path="/starList" element={<StarList />}></Route>
-          <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
+          <Route path="/starInsert" element={<StarInsert/>}></Route>
+          <Route path="/starUpdate/:starNo" element={<StarUpdate/>}></Route>
+
+          <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/StarPayment/:starNo" element={<StarPayment/>}></Route>
           <Route path="/payments/success" element={<StarPaymentSuccess/>}></Route>
           <Route path="/payments/fail" element={<StarPaymentFail/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>
           <Route path="/update/:starNo" element={<Update/>}></Route>
-          <Route path="/qna/update/:qnaNo" element={<QnaUpdate/>}></Route>
         </Routes>
         </SessionProvider>
       </LoginContextProvider>
