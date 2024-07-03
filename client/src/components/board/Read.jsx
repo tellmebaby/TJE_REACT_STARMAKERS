@@ -7,7 +7,7 @@ import styles from '../board/css/read.module.css';
 
 
 const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
-
+  const navigate = useNavigate()
   const { session } = useSession();
   const [comments, setComments] = useState([]);
   const [replyContent, setReplyContent] = useState('');
@@ -132,7 +132,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
       </div>
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button> {/* 뒤로가기 기능 */}
-        {userInfo.userNo === starBoard.userNo && (
+        {userInfo && userInfo.userNo === starBoard.userNo && (
           <>
             <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={handleDelete}>삭제</button>
