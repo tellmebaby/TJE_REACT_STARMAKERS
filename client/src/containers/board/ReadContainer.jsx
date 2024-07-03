@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as starBoards from '../../apis/starBoard';
 import Read from '../../components/board/Read';
+import { useNavigate } from 'react-router-dom';
 
 const ReadContainer = ({ starNo }) => {
   const [starBoard, setStarBoard] = useState({});
@@ -8,6 +9,7 @@ const ReadContainer = ({ starNo }) => {
   const [replies, setReplies] = useState([]);
   const [newReply, setNewReply] = useState("");
   const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // 🌞 함수
   const getBoard = async () => {
@@ -45,6 +47,16 @@ const ReadContainer = ({ starNo }) => {
     getReplies();
   };
 
+  const onDelete = async (starNo) => {
+    const response = await starBoards.remove(starNo)
+    const status = await response.status
+    console.log(`게시글 삭제 요청 결과 : ${status}`)
+    alert("삭제 완료!")
+
+    // -> 목록으로 이동
+    navigate(`/${starBoard.type}`)
+}
+
   // ❓ hook
   useEffect(() => {
     getBoard();
@@ -63,6 +75,7 @@ const ReadContainer = ({ starNo }) => {
         handleNewReplyChange={handleNewReplyChange}
         handleReplySubmit={handleReplySubmit}
         handleReplyDelete={handleReplyDelete}
+        onDelete={onDelete}
       />
     </>
   );

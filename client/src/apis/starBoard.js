@@ -27,7 +27,7 @@ export const insert = (FormData, headers) => api.post("/starCard", FormData, hea
 export const update = (formData, headers) => api.put("/updateBoard", formData, headers)
 
 // 삭제
-export const remove = (no) => api.delete(`/boards/${no}`);
+export const remove = (starNo) => api.delete(`/${starNo}`);
 // no: 삭제할 데이터의 ID 또는 식별자
 
 // 댓글 목록 조회

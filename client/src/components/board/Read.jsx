@@ -5,8 +5,9 @@ import { useSession } from '../../contexts/SessionContext';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import styles from '../board/css/read.module.css';
 
-const Read = ({ starNo, starBoard, fileList, isLoading }) => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+
+const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
+
   const { session } = useSession();
   const [comments, setComments] = useState([]);
   const [replyContent, setReplyContent] = useState('');
@@ -21,7 +22,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`/page/reply/${starNo}`);
+      const response = await axios.get(`/reply/${starNo}`);
       setComments(response.data);
     } catch (error) {
       console.error('댓글을 불러오는데 실패했습니다.', error);
@@ -42,18 +43,12 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   // };
 
 
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
-    if (confirmDelete) {
-      try {
-        await axios.post('/page/board/eventBoard/delete', { starNo, _csrf: session._csrf });
-        alert('삭제되었습니다.');
-        navigate('/page/board/eventBoard/eventList');
-      } catch (error) {
-        console.error('삭제 실패:', error);
-      }
+  const handleDelete = () => {
+    const check = window.confirm("정말로 삭제하시겠습니까?")
+    if (check) {
+      onDelete(starNo)
     }
-  };
+  }
 
   const handleReplySubmit = async () => {
     if (replyContent.trim() === '') {
@@ -150,12 +145,12 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
           <button type="button" className="btn-reply" onClick={handleReplySubmit} disabled={!session}>등록</button>
         </div>
       </div>
-      <div className="top-reply-list">
+      <div className={styles['top-reply-list']}>
         <label className="reply">댓글</label>
         <label className="reply-count">{comments.length} 개</label>
       </div>
-      <div id="reply-listbox">
-        <div id="reply-list">
+      <div id={styles['reply-listbox']}>
+        <div id={styles['reply-writer']}>
           {comments.map(comment => (
             <div key={comment.id} className="reply">
               {editingCommentId === comment.id ? (
@@ -166,9 +161,9 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
                 </>
               ) : (
                 <>
-                  <div className="reply-writer">{comment.writer}</div>
-                  <div className="reply-content">{comment.content}</div>
-                  <div className="reply-date">{new Date(comment.date).toLocaleString()}</div>
+                  <div className={styles['reply-writer']}>{comment.writer}</div>
+                  <div className={styles['reply-content']}>{comment.content}</div>
+                  <div className={styles['reply-date']}>{new Date(comment.regDate).toLocaleString()}</div>
                   {session && session.user && session.user.userNo === comment.userNo && (
                     <>
                       <button onClick={() => handleEditComment(comment.id)}>수정</button>
