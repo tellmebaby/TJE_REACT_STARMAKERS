@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import StarCardList from './StarCardList';
 import './css/ScList.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const ScList = () => {
   const [selectedOptions, setSelectedOptions] = useState(new Map());
@@ -182,9 +183,7 @@ const ScList = () => {
           </div>
         </div>
       </div>
-      <div className='testalign'>
       <StarCardList options={selectedOptions} />
-      </div>
     </div>
   );
 };

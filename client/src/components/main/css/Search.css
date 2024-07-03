@@ -31,17 +31,6 @@
     color: black; /* 텍스트 색상을 검은색으로 변경 */
 }
 
-/* .bg-image {
-    position: relative;
-    background-image: url('../../../../public/img/indexTopBackImg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 60vh;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    background-color: black;
-} */
-
 .bg-image .topOverlay {
     position: absolute;
     top: 0;
