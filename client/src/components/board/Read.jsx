@@ -5,7 +5,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import styles from '../board/css/read.module.css'
 
 
-const Read = ({ starNo, starBoard, fileList, isLoading, onDelete, replies, newReply, handleNewReplyChange, handleReplySubmit, handleReplyDelete }) => {
+const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
   const { session } = useSession();
   // const [likeCount, setLikeCount] = useState(board.likes || 0);
   const [comments, setComments] = useState([]);
