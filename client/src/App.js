@@ -35,6 +35,7 @@ import StarPaymentSuccess from './pages/board/StarPaymentSuccess';
 import StarPaymentFail from './pages/board/StarPaymentFail';
 import MyReviewList from './pages/mypage/MyReviewList';
 import StarUpdate from './pages/board/StarUpdate';
+import Payment from './pages/mypage/Payment';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
           <Route path="/mypage/ProfileUpdate" element={<ProfileUpdate/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/mypage/Promotion" element={<Promotion/>}></Route>
+          <Route path="/mypage/Payment" element={<Payment/>}></Route>
           <Route path="/mypage/myReviewList" element={<MyReviewList/>}></Route>
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
 

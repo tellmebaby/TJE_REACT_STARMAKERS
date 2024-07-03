@@ -451,6 +451,7 @@
     <!-- 마이페이지 쓴 글 조회 -->
     <select id="promotionList" resultType="StarBoard">
         SELECT 
+            sb.star_no,
             sb.user_no,
             sb.title, 
             sb.category1, 

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -237,14 +235,18 @@ public class PageController {
     @GetMapping("/payment")
     public ResponseEntity<?> payList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
         try {
-            // Users user = customUser.getUser();
-            Users user = new Users();
-            user.setUserNo(15);
-            user.setEmail("joeun@naver.com");
+            Users user = customUser.getUser();
+            // Users user = new Users();
+            // user.setUserNo(15);
+            // user.setEmail("joeun@naver.com");
             int userNo = user.getUserNo();
             List<Pay> payList = payService.userList(userNo);
             log.info("userNo : " + userNo);
-            return new ResponseEntity<>(payList, HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("payList", payList);
+            response.put("user", user);
+            
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
@@ -272,6 +274,7 @@ public class PageController {
             // user.setEmail("joeun@naver.com");
             int userNo = user.getUserNo();
             List<StarBoard> promotionList = starService.promotionList(userNo, page, option);
+            log.info("promotionList : " + promotionList);
             Map<String, Object> response = new HashMap<>();
             response.put("promotionList", promotionList);
             return new ResponseEntity<>(response, HttpStatus.OK);

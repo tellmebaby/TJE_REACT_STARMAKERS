@@ -28,8 +28,11 @@ export const deleteReview = (starNos) => api.delete(`/mypage/review/${starNos.jo
 // 프로필 이미지 업로드
 export const profileUpload = (formData, headers) => api.post(`/file/profileUpload`, formData, headers);
 
-
+// 프로필 이미지 삭제
 export const profileDelete = (userNo) => api.delete(`/file/profileDelete/${userNo}`);
 
 // 마이페이지 프로모션
 export const promotionList = (params) => api.get(`/mypage/promotion`, {params})
+
+// 마이페이지 결제내역
+export const payList = (params) => api.get(`/mypage/payment`, params);
