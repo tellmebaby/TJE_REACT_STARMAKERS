@@ -5,7 +5,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import styles from '../board/css/read.module.css'
 
 
-const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
+const Read = ({ starNo, starBoard, fileList, isLoading, onDelete, replies, newReply, handleNewReplyChange, handleReplySubmit, handleReplyDelete }) => {
   const { session } = useSession();
   // const [likeCount, setLikeCount] = useState(board.likes || 0);
   const [comments, setComments] = useState([]);
@@ -28,7 +28,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
 
   const fetchComments = async () => {
     try {
-      const response = await axios.get(`/page/reply/${starNo}`);
+      const response = await axios.get(`/reply/${starNo}`);
       setComments(response.data);
     } catch (error) {
       console.error('댓글을 불러오는데 실패했습니다.', error);
@@ -177,12 +177,12 @@ const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
           <button type="button" className="btn-reply" onClick={handleReplySubmit} disabled={!session}>등록</button>
         </div>
       </div>
-      <div className="top-reply-list">
+      <div className={styles['top-reply-list']}>
         <label className="reply">댓글</label>
         <label className="reply-count">{comments.length} 개</label>
       </div>
-      <div id="reply-listbox">
-        <div id="reply-list">
+      <div id={styles['reply-listbox']}>
+        <div id={styles['reply-writer']}>
           {comments.map(comment => (
             <div key={comment.id} className="reply">
               {editingCommentId === comment.id ? (
@@ -193,9 +193,9 @@ const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
                 </>
               ) : (
                 <>
-                  <div className="reply-writer">{comment.writer}</div>
-                  <div className="reply-content">{comment.content}</div>
-                  <div className="reply-date">{new Date(comment.date).toLocaleString()}</div>
+                  <div className={styles['reply-writer']}>{comment.writer}</div>
+                  <div className={styles['reply-content']}>{comment.content}</div>
+                  <div className={styles['reply-date']}>{new Date(comment.regDate).toLocaleString()}</div>
                   {session && session.user && session.user.userNo === comment.userNo && (
                     <>
                       <button onClick={() => handleEditComment(comment.id)}>수정</button>
