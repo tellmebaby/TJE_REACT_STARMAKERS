@@ -21,14 +21,16 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [files, setFiles] = useState(null)
-    const [category1, setCategory1] = useState(null)
-    const [category2, setCategory2] = useState(null)
+    const [category1, setCategory1] = useState([])
+    const [category2, setCategory2] = useState([])
     const [category, setCategory] = useState([])    // category1
     const [category22, setCategory22] = useState([])    // category2
     const [status, setStatus] = useState('홍보요청')
     const [duplicated, setDuplicated] = useState(false)
     const [duplicated2, setDuplicated2] = useState(false)
 
+    const [cate1, setCate1] = useState(false)
+    const [cate2, setCate2] = useState(false)
 
     // 🎁 함수
     const handleChangeTitle = (e) => {
@@ -40,48 +42,51 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         setFiles(e.target.files)
     }
 
+    // ✅ 카테고리1 : 유튜브,인스타,아프리카,치지직
     const handleChangeCategory1 = (e) => {
-        setCategory1(e.target.value)
-        handleCate1(e.target.value)
-    }
+        setCate1(true)
+        const cate = e.target.value
 
-    const handleChangeCategory2 = (e) => {
-        setCategory2(e.target.value)
-        handleCate2(e.target.value)
-    }
-    // 카테고리1 체크
-    const handleCate1 = (cate) => {
+        let checked = false
         for (let i = 0; i < category.length; i++) {
-            setDuplicated(false)
             const checkCategory = category[i];
             // 중복 : 체크박스 해제
             if (checkCategory == cate) {
                 category.splice(i, 1)
-                setDuplicated(true)
+                setCategory(category)
+                checked = true
+                break
             }
         }
-        // 중복X -> 체크박스 지정 -> 추가
-        if (!duplicated) category.push(cate)
-        setCategory(category)
-
+        console.log(`category1 [] : ${category}`);
+        if( !checked ) {
+            const updatedCategory = [cate, ...category]
+            console.log(`category1 [] : ${updatedCategory}`);
+            setCategory(updatedCategory)
+        }
     }
 
-    // 카테고리2 체크
-    const handleCate2 = (cate) => {
-        // let duplicated = false
-        setDuplicated2(false)
+    const handleChangeCategory2 = (e) => {
+        setCate2(true)
+        const cate = e.target.value
+
+        let checked = false
         for (let i = 0; i < category22.length; i++) {
             const checkCategory = category22[i];
             // 중복 : 체크박스 해제
             if (checkCategory == cate) {
                 category22.splice(i, 1)
-                setDuplicated2(true)
+                setCategory(category22)
+                checked = true
+                break
             }
         }
-        // 중복X -> 체크박스 지정 -> 추가
-        if (!duplicated) category22.push(cate)
-        console.log(`선택된 카테고리 : ${category22}`);
-        setCategory22(category22)
+        console.log(`category22 [] : ${category22}`);
+        if( !checked ) {
+            const updatedCategory = [cate, ...category22]
+            console.log(`category22 [] : ${updatedCategory}`);
+            setCategory22(updatedCategory)
+        }
     }
 
     const onSubmit = (e) => {
@@ -98,8 +103,16 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         formData.append('content', content);
         formData.append('userNo', userInfo.userNo);
         formData.append('writer', userInfo.id);
-        formData.append('category1', category);
-        formData.append('category2', category22);
+        if(cate1){
+            formData.append('category1', category);
+        } else {
+            formData.append('category1', category1)
+        }
+        if(cate2){
+            formData.append('category2', category22);
+        } else {
+            formData.append('category2', category2)
+        }
         formData.append('status', status);
         formData.append('starNo', starNo)
 
@@ -158,12 +171,13 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         };
     };
     useEffect(() => {
-        if (starBoard  && !isLoading ) {
-            setTitle(starBoard.title)
-            setContent(starBoard.content)
-            setCategory1(starBoard.category1)
-            setCategory2(starBoard.category2)
-            console.log(starBoard.category1);
+        if (starBoard) {
+            console.log(`starBoard.category1 : ${starBoard.category1}`);
+
+            setTitle(starBoard.title);
+            setContent(starBoard.content);
+            setCategory1(starBoard.category1);
+            setCategory2(starBoard.category2);
 
             const cat1Inputs = document.querySelectorAll('input[name="category1"]');
             const cat1List = Array.from(cat1Inputs).map(input => input.value);
@@ -171,27 +185,48 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
             const cat2Inputs = document.querySelectorAll('input[name="category2"]');
             const cat2List = Array.from(cat2Inputs).map(input => input.value);
 
-            cat1List.forEach(cat1Value => {
-                if (category1.includes(cat1Value)) {
-                    const inputElement = document.querySelector(`input[id="${cat1Value}"]`);
-                    if (inputElement) {
-                        inputElement.checked = true;
-                        setDuplicated(true)
+            // category1 (문자열) : instagram,youtube 
+            if (category1) {
+                let newCategory = []
+                cat1List.forEach(cat1Value => {
+                    if (category1.includes(cat1Value)) {
+                        const inputElement = document.querySelector(`input[id="${cat1Value}"]`);
+                        if (inputElement) {
+                            inputElement.checked = true;
+                            newCategory = [cat1Value, ...newCategory]
+                            console.log(`newCategory : ${newCategory}`);
+                            // console.log("category1 : " + category1);
+                            // setDuplicated(false);
+                            // handleCate1(inputElement)
+                        }
                     }
-                }
-            });
+                });
+                setCategory(newCategory)
+            }
 
-            cat2List.forEach(cat2Value => {
-                if (category2.includes(cat2Value)) {
-                    const inputElement = document.querySelector(`input[value="${cat2Value}"]`);
-                    if (inputElement) {
-                        inputElement.checked = true;
-                        setDuplicated2(true)
+            if (category2) {
+                let newCategory = []
+                cat2List.forEach(cat2Value => {
+                    if (category2.includes(cat2Value)) {
+                        const inputElement = document.querySelector(`input[value="${cat2Value}"]`);
+                        if (inputElement) {
+                            inputElement.checked = true;
+                            newCategory = [cat2Value, ...newCategory]
+                            console.log(`newCategory2 : ${newCategory}`);
+                            console.log("category2 : " + category2);
+
+                            // setDuplicated2(false);
+                            // if (!duplicated2) category22.push(inputElement)
+                            //     console.log(`category2 : ${category22}`);
+                            //     setCategory22(category22)
+                        }
                     }
-                }
-            });
+                });
+                setCategory22(newCategory)
+            }
         }
-    }, [starBoard])
+    }, [starBoard]);
+
 
     function uploadPlugin(editor) {
         editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {

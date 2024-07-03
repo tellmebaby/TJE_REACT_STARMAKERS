@@ -20,12 +20,9 @@ const StarUpdateContainer = ({ starNo }) => {
         const response = await boards.select(starNo)
         const data = await response.data    // board 객체 + fileList 객체
         // console.log("확인용 " + data)
-
-        const board = data.starBoard
+        const board =  await data.starBoard
         console.log(board)
-
-        setStarBoard(board)
-
+        await setStarBoard(board)
         // 로딩 끝 ⌛
         setLoading(false)
     }
