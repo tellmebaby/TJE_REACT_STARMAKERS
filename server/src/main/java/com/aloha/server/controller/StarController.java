@@ -138,32 +138,14 @@ public class StarController {
             @AuthenticationPrincipal CustomUser customUser,
             MultipartFile file) throws Exception {
 
-        // Users user = customUser.getUser();
-        // int userNo = user.getUserNo();
-        int starNo = starBoard.getStarNo();
+        Users user = customUser.getUser();
+        int userNo = user.getUserNo();
         int result = starService.update(starBoard);
         log.info("수정 결과 :" + result);
         log.info("수정한 게시글 : " + starBoard.toString());
 
         // 데이터 처리 성공
         if (result > 0) {
-            // 파일 처리 로직
-
-            // if (file != null && !file.isEmpty()) { // file이 있을 경우 실행
-            //     // 기존에 올라간 파일 삭제
-            //     // 1. starNo로 기존에 올라가있는 파일 있는지 확인하고 있으면 파일 값 가져오기
-            //     // 2. starNo로 등록 된 파일 삭제
-            //     // 3. starNo로 새로운 파일 등록
-            //     log.info("새로 등록된 파일 있음");
-            //     Files file2 = new Files();
-            //     file2.setStarNo(starNo);
-            //     fileService.deleteByParent(file2); // 기존 파일 삭제
-
-            //     fileService.upload(file, starNo, 1); // file 등록
-            // } else {
-            //     log.info("새로 등록된 파일 없음");
-            // }
-
             return new ResponseEntity<>("게시글 수정 완료", HttpStatus.OK);
         }
 
