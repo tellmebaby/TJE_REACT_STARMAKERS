@@ -7,7 +7,7 @@ import styles from '../board/css/read.module.css';
 
 
 const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
-
+  const navigate = useNavigate();
   const { session } = useSession();
   const [comments, setComments] = useState([]);
   const [replyContent, setReplyContent] = useState('');
