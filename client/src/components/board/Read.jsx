@@ -5,7 +5,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import styles from '../board/css/read.module.css'
 
 
-const Read = ({ starNo, starBoard, fileList, isLoading }) => {
+const Read = ({ starNo, starBoard, fileList, isLoading, onDelete }) => {
   const { session } = useSession();
   // const [likeCount, setLikeCount] = useState(board.likes || 0);
   const [comments, setComments] = useState([]);
@@ -50,18 +50,12 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   console.log("이거되나 ? ? ?  ? "  + starBoard.writer);
 
 
-  const handleDelete = async () => {
-    const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
-    if (confirmDelete) {
-      try {
-        await axios.post('/page/board/eventBoard/delete', { starNo, _csrf: session._csrf });
-        alert('삭제되었습니다.');
-        window.location.href = '/page/board/eventBoard/eventList';
-      } catch (error) {
-        console.error('삭제 실패:', error);
-      }
+  const handleDelete = () => {
+    const check = window.confirm("정말로 삭제하시겠습니까?")
+    if (check) {
+      onDelete(starNo)
     }
-  };
+  }
 
   const handleReplySubmit = async () => {
     if (replyContent.trim() === '') {
