@@ -12,9 +12,10 @@ const Read = ({
   isLoading,
   replyList,
   newReply,
-  onNewReplyChange,
+  replyUpdate,
   onReplySubmit,
-  onReplyDelete,
+  handleReplyDelete,
+  handleReplyUpdate,
   onDelete,
   handleReplySubmit,
   handleNewReplyChange,
@@ -85,8 +86,9 @@ const Read = ({
             key={reply.replyNo} 
             reply={reply} 
             sessionUser={session ? session.user : null} 
-            deleteReply={onReplyDelete} 
-            insertAnswer={onReplySubmit} 
+            deleteReply={handleReplyDelete}
+            updateReply={handleReplyUpdate} 
+            insertAnswer={onReplySubmit}
           />
         ))}
       </div>

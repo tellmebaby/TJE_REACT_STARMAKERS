@@ -33,6 +33,17 @@ const ReadContainer = ({ starNo }) => {
     setReplyList(data.replyList);
   };
 
+    
+  const onDelete = async (starNo) => {
+    const response = await starBoards.remove(starNo)
+    const status = await response.status
+    console.log(`게시글 삭제 요청 결과 : ${status}`)
+    alert("삭제 완료!")
+
+    // -> 목록으로 이동
+    navigate(`/${starBoard.type}`)
+}
+
   const handleReplySubmit = async (e) => {
     e.preventDefault();
   
@@ -46,7 +57,7 @@ const ReadContainer = ({ starNo }) => {
         // username: "?"
       };
       console.log("아이디 제발 : ",userInfo.id)
-
+      
       if (newReply.trim() === "") {
         alert("댓글을 입력하세요.");
         return;
@@ -54,7 +65,7 @@ const ReadContainer = ({ starNo }) => {
   
       console.log("replyData");
       console.log(replyData);
-  
+      
       const response = await starBoards.insertReply(replyData);
       // const data = await response.data
       console.log("데이터 가져와");
@@ -67,32 +78,37 @@ const ReadContainer = ({ starNo }) => {
       console.error('댓글 등록 실패:', error);
     }
   };
-  
+
+
   const handleReplyDelete = async (replyNo) => {
     await starBoards.deleteReply(replyNo);
+    alert("삭제 완료!")
     getReplyList();
   };
 
-  const onDelete = async (starNo) => {
-    const response = await starBoards.remove(starNo)
-    const status = await response.status
-    console.log(`게시글 삭제 요청 결과 : ${status}`)
-    alert("삭제 완료!")
-
-    // -> 목록으로 이동
-    navigate(`/${starBoard.type}`)
-}
-
-  // 새로운 댓글 내용을 변경하는 함수
-  const handleNewReplyChange = (e) => {
-    setNewReply(e.target.value);
+  const handleReplyUpdate = async (replyNo, content) => {
+    try {
+      const writer = userInfo.id
+      const response = await starBoards.updateReply({ replyNo, writer, content });
+      console.log("수정 될거야 말거야", response.data);
+      getReplyList();
+    } catch (error) {
+      console.error('댓글 수정 실패:', error);
+    }
   };
+
+
+  // // 새로운 댓글 내용을 변경하는 함수
+  // const replyUpdate = (e) => {
+  //   setNewReply(e.target.value);
+  // };
 
   // ❓ hook
   useEffect(() => {
     getBoard();
     getReplyList();
   }, [starNo]);
+
 
   return (
     <>
@@ -103,9 +119,10 @@ const ReadContainer = ({ starNo }) => {
         isLoading={isLoading}
         replyList={replyList}
         newReply={newReply}
-        handleNewReplyChange={handleNewReplyChange}
+        // replyUpdate={replyUpdate}
         handleReplySubmit={handleReplySubmit}
         handleReplyDelete={handleReplyDelete}
+        handleReplyUpdate={handleReplyUpdate}
         onDelete={onDelete}
         userInfo={userInfo}
         isLogin={isLogin}
