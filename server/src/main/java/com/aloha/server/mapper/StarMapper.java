@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.core.ExceptionDepthComparator;
 
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
@@ -81,4 +82,10 @@ public interface StarMapper {
 
     // 목록조회 getStarList
     public List<StarBoard> getStarList(@Param("type") String type, @Param("page") Page page, @Param("option") Option option, @Param("userNo") int userNo ) throws Exception;
+
+    // 메인 배너 가져오기
+    public List<StarBoard> getBanner() throws Exception;
+
+    // 메인 리뷰 가져오기
+    public List<StarBoard> getFragByType(String type) throws Exception;
 }

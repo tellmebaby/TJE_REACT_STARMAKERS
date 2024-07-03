@@ -1,0 +1,244 @@
+
+.icon {
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.icon-body {
+    background-color: #b0d5ff;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.detail-search {
+    padding: 20px;
+    background-color: #E7ECF6;
+    border-radius: 10px;
+}
+
+.form-check-inline {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.form-check-input {
+    margin-right: 5px;
+}
+
+.form-check-label {
+    margin-right: 15px;
+    color: #495057;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    flex: 1 1 33%;
+    padding: 10px;
+}
+
+.search-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#cardContainer {
+    margin-top: 65px;
+}
+
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+/* 카드 스타일 */
+.card {
+    position: relative;
+    /* overflow: hidden; */
+    transition: opacity 0.5s, transform 0.5s;
+    border-radius: 25px;
+    padding: 3px;
+    background-clip: padding-box;
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+.card.standard {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #4e5d6c, #6c7a89, #bfc9d1, #6c7a89, #4e5d6c);
+    background-clip: padding-box;
+}
+
+.card.prime {
+    border: 1px solid transparent;
+    background: linear-gradient(to right, pink, purple, lightblue, cyan, lime, yellow, orange);
+}
+
+.card.gold {
+    border: 1px solid transparent;
+    background: linear-gradient(to right, gold, goldenrod, yellow, lightyellow, palegoldenrod);
+}
+
+.card.clicked {
+    opacity: 0.5;
+    transform: scale(1.2);
+    animation: revertAnimation 0.5s 0.5s forwards;
+}
+
+@keyframes revertAnimation {
+    from {
+        opacity: 0.5;
+        transform: scale(3);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.custom-card {
+    height: 330px;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    overflow: hidden;
+    border-radius: 25px;
+}
+
+.overlay,
+.card-body {
+    position: absolute;
+    bottom: -55%;
+    width: 100%;
+    transition: bottom 1s;
+}
+
+.overlay {
+    height: 40%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 60%;
+    filter: blur(10px);
+    z-index: 1;
+}
+
+.card-body {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    height: 40%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.card-body:hover {
+    cursor: pointer;
+}
+
+.card:hover .overlay,
+.card:hover .card-body {
+    bottom: 0;
+}
+
+.card:hover .overlay {
+    background-position: center bottom;
+}
+
+.card-body h5,
+.card-body p {
+    margin: 0;
+}
+
+.card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: 80%;
+    line-height: 1.2em;
+    max-height: 2.4em;
+}
+
+
+
+.star {
+    color: yellow;
+    font-size: 24px;
+    position: absolute;
+    display: none;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.author-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.left-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.content-icon {
+    width: 1.2em;
+    height: 1.2em;
+    margin-bottom: 5px;
+    border-radius: 50%;
+}
+
+.right-content {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    z-index: 5;
+}
+
+
+.right-content > svg {
+    width: 16px; /* 아이콘의 너비 설정 */
+    height: 16px; /* 아이콘의 높이 설정 */
+    fill: white; /* 아이콘의 색상을 흰색으로 설정 */
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)); /* 그림자 설정 */
+}
+
+.bottom-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: end;
+    padding: 0;
+    height: 20%;
+}
+
+
+
+
+
+

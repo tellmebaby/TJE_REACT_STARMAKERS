@@ -55,13 +55,10 @@ const InsertForm = ({ type, onInsert, status, isFile }) => {
     // 파일 데이터 추가
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        // const file = files[i];
-        // formData.append('files', file)
-        formData.append(`files[${i}]`, files[i])
+        formData.append('image', files[i])
       }
     }
 
-    // onInsert(title, writer, content) // json
     onInsert(formData, headers)         // formData
   }
   const customUploadAdapter = (loader) => {

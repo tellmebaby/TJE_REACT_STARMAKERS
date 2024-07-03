@@ -225,4 +225,15 @@ public class StarServiceImpl implements StarService {
         page.setTotal(total);
         return starMapper.getStarList(type, page, option, userNo);
     }
+
+    // get Banner
+    // 메인 배너 가져오기
+    public List<StarBoard> getBanner() throws Exception{
+        return starMapper.getBanner();
+    }
+
+    // 메인 게시물조각 가져오기
+    public List<StarBoard> getFragByType(String type) throws Exception{
+        return starMapper.getFragByType(type);
+    }
 }

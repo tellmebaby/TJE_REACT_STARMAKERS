@@ -266,19 +266,21 @@ public class PageController {
     public ResponseEntity<?> promotionList(@AuthenticationPrincipal CustomUser customUser, Page page, Option option)
             throws Exception {
         try {
-            // Users user = customUser.getUser();
-            Users user = new Users();
-            user.setUserNo(15);
-            user.setEmail("joeun@naver.com");
+            Users user = customUser.getUser();
+            // Users user = new Users();
+            // user.setUserNo(15);
+            // user.setEmail("joeun@naver.com");
             int userNo = user.getUserNo();
             List<StarBoard> promotionList = starService.promotionList(userNo, page, option);
-            return new ResponseEntity<>(promotionList, HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("promotionList", promotionList);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
 
-    @GetMapping("/event")
+    @GetMapping("/review")
     public ResponseEntity<?> reviewList(@RequestParam(value = "type", defaultValue = "review") String type, Page page,
             Option option, HttpSession session) throws Exception {
         try {
@@ -289,7 +291,7 @@ public class PageController {
         }
     }
 
-    @DeleteMapping("/event/{starNos}")
+    @DeleteMapping("/review/{starNos}")
     public ResponseEntity<?> reviewDelete(@PathVariable("starNos") String starNos) throws Exception {
         try {
             int result = starService.delete(starNos);

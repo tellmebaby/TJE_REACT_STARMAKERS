@@ -108,7 +108,7 @@ const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
                                         />
                                     </td>
                                     <td align="center">
-                                        <Link to={`/page/mypage/qnaPost?qnaNo=${qna.qnaNo}`}>
+                                        <Link to={`/qna/qnaRead/${qna.qnaNo}`}>
                                             {qna.title}
                                         </Link>
                                     </td>

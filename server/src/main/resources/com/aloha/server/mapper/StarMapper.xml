@@ -550,4 +550,74 @@
 
     </select>
 
+    <select id="getBanner" resultType="StarBoard">
+    SELECT 
+        sb.star_no,
+        sb.title,
+        sb.writer,
+        sb.content,
+        sb.reg_date,
+        sb.upd_date,
+        sb.views,
+        sb.user_no,
+        sb.pay_no,
+        sb.likes,
+        sb.status,
+        sb.card,
+        sb.category1,
+        sb.category2,
+        sb.type,
+        sb.start_date,
+        sb.end_date,
+        f.file_no imgNo,
+        f.file_name,
+        f.origin_name,
+        f.size AS file_size,
+        f.reg_date AS file_reg_date,
+        f.user_no AS file_user_no
+    FROM 
+        star_board sb
+    LEFT JOIN 
+        file f
+    ON 
+        sb.star_no = f.star_no
+    WHERE 
+        sb.type = 'event'
+    </select>
+
+<select id="getFragByType" resultType="StarBoard">
+    SELECT 
+        sb.star_no,
+        sb.title,
+        sb.writer,
+        sb.content,
+        sb.reg_date,
+        sb.upd_date,
+        sb.views,
+        sb.user_no,
+        sb.pay_no,
+        sb.likes,
+        sb.status,
+        sb.card,
+        sb.category1,
+        sb.category2,
+        sb.type,
+        sb.start_date,
+        sb.end_date,
+        f.file_no imgNo,
+        f.file_name,
+        f.origin_name,
+        f.size AS file_size,
+        f.reg_date AS file_reg_date,
+        f.user_no AS file_user_no
+    FROM 
+        star_board sb
+    LEFT JOIN 
+        file f
+    ON 
+        sb.star_no = f.star_no
+    WHERE 
+        sb.type = #{type}
+    </select>
+
 </mapper>

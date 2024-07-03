@@ -1,4 +1,16 @@
 .ck-content {
     height: 500px;
+    z-index: -1;
 }
 
+.ck-button {
+    z-index: 0;
+}
+
+.image {
+    z-index: -1;
+}
+
+img {
+    z-index: -1;
+}
