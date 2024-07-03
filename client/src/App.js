@@ -30,6 +30,8 @@ import QnaRead from './pages/board/QnaRead';
 import Promotion from './pages/mypage/Promotion';
 import Update from './pages/board/Update';
 import QnaUpdate from './pages/board/QnaUpdate';
+import StarPaymentSuccess from './pages/board/StarPaymentSuccess';
+import StarPaymentFail from './pages/board/StarPaymentFail';
 
 function App() {
   return (
@@ -60,6 +62,8 @@ function App() {
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/:starNo" element={<Read/>}></Route>
           <Route path="/StarPayment/:starNo" element={<StarPayment/>}></Route>
+          <Route path="/payments/success" element={<StarPaymentSuccess/>}></Route>
+          <Route path="/payments/fail" element={<StarPaymentFail/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>
           <Route path="/update/:starNo" element={<Update/>}></Route>
           <Route path="/qna/update/:qnaNo" element={<QnaUpdate/>}></Route>
