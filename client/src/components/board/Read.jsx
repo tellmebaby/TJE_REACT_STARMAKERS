@@ -172,7 +172,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
         <button className={styles['btn-list']} type="button" onClick={() => window.location.href = `/${starBoard.type}`}>목록</button>
         {userInfo && userInfo.userNo === starBoard.userNo && (
           <>
-            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/page/board/eventBoard/eventUpdate?starNo=${starNo}`}>수정</button>
+            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={handleDelete}>삭제</button>
           </>
         )}

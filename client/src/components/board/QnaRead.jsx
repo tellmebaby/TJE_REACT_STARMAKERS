@@ -22,7 +22,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
   };
 
   const update = () => {
-    window.location.href = `/page/board/qnaBoard/qnaUpdate?qnaNo=${qnaNo}`;
+    window.location.href = `/qna/update/${qnaNo}`;
   };
 
   const handleDelete = () => {
