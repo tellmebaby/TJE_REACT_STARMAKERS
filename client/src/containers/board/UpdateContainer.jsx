@@ -37,7 +37,7 @@ const UpdateContainer = ({starNo}) => {
       
 
       // 수정 후 게시글 조회 화면으로 이동
-      navigate('/'+starNo)
+      navigate(-2)
 
     } catch (error) {
       console.log(error);

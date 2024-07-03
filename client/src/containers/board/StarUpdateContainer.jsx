@@ -23,10 +23,9 @@ const StarUpdateContainer = ({ starNo }) => {
 
         const board = data.starBoard
         console.log(board)
-        // const fileList = data.fileList
 
         setStarBoard(board)
-        // setFileList(fileList)
+
         // 로딩 끝 ⌛
         setLoading(false)
     }
@@ -40,7 +39,7 @@ const StarUpdateContainer = ({ starNo }) => {
 
 
             // 게시글 조회로 이동
-            navigate('/' + starNo)
+            navigate(-2)
 
         } catch (error) {
             console.log(error);
@@ -53,7 +52,7 @@ const StarUpdateContainer = ({ starNo }) => {
     }, [])
     return (
         <>
-            <StarUpdateForm starNo={starNo} starBoard={starBoard} />
+            <StarUpdateForm starNo={starNo} starBoard={starBoard} onUpdate={onUpdate} isLoading={isLoading} />
         </>
     )
 }

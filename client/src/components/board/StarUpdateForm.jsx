@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Calendar from './css/calendar.module.css';
 import styles from './css/Insert.module.css'
 
@@ -15,7 +15,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
-    const { isLogin, logout, userInfo } = useContext(LoginContext)
+    const navigate = useNavigate()
+
+    const { userInfo } = useContext(LoginContext)
     const [title, setTitle] = useState('')
     const [content, setContent] = useState('')
     const [files, setFiles] = useState(null)
@@ -24,6 +26,8 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
     const [category, setCategory] = useState([])    // category1
     const [category22, setCategory22] = useState([])    // category2
     const [status, setStatus] = useState('홍보요청')
+    const [duplicated, setDuplicated] = useState(false)
+    const [duplicated2, setDuplicated2] = useState(false)
 
 
     // 🎁 함수
@@ -47,13 +51,13 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
     }
     // 카테고리1 체크
     const handleCate1 = (cate) => {
-        let duplicated = false
         for (let i = 0; i < category.length; i++) {
+            setDuplicated(false)
             const checkCategory = category[i];
             // 중복 : 체크박스 해제
             if (checkCategory == cate) {
                 category.splice(i, 1)
-                duplicated = true
+                setDuplicated(true)
             }
         }
         // 중복X -> 체크박스 지정 -> 추가
@@ -64,13 +68,14 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
 
     // 카테고리2 체크
     const handleCate2 = (cate) => {
-        let duplicated = false
+        // let duplicated = false
+        setDuplicated2(false)
         for (let i = 0; i < category22.length; i++) {
             const checkCategory = category22[i];
             // 중복 : 체크박스 해제
             if (checkCategory == cate) {
                 category22.splice(i, 1)
-                duplicated = true
+                setDuplicated2(true)
             }
         }
         // 중복X -> 체크박스 지정 -> 추가
@@ -91,15 +96,12 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('content', content);
-        formData.append('type', type);
         formData.append('userNo', userInfo.userNo);
         formData.append('writer', userInfo.id);
         formData.append('category1', category);
         formData.append('category2', category22);
         formData.append('status', status);
-        // if (status != null) {
-        //   formData.append('status', status)
-        // }
+        formData.append('starNo', starNo)
 
         console.log("title : " + title);
         console.log("content : " + content);
@@ -113,13 +115,15 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         if (files) {
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-                formData.append('files', file)
+                formData.append('image', file)
             }
         }
 
         // onInsert(title, writer, content) // json
         onUpdate(starNo, formData, headers)         // formData
     }
+
+
     const customUploadAdapter = (loader) => {
         return {
             upload() {
@@ -154,11 +158,41 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         };
     };
     useEffect(() => {
-        if (starBoard) {
+        if (starBoard  && !isLoading ) {
             setTitle(starBoard.title)
             setContent(starBoard.content)
+            setCategory1(starBoard.category1)
+            setCategory2(starBoard.category2)
+            console.log(starBoard.category1);
+
+            const cat1Inputs = document.querySelectorAll('input[name="category1"]');
+            const cat1List = Array.from(cat1Inputs).map(input => input.value);
+
+            const cat2Inputs = document.querySelectorAll('input[name="category2"]');
+            const cat2List = Array.from(cat2Inputs).map(input => input.value);
+
+            cat1List.forEach(cat1Value => {
+                if (category1.includes(cat1Value)) {
+                    const inputElement = document.querySelector(`input[id="${cat1Value}"]`);
+                    if (inputElement) {
+                        inputElement.checked = true;
+                        setDuplicated(true)
+                    }
+                }
+            });
+
+            cat2List.forEach(cat2Value => {
+                if (category2.includes(cat2Value)) {
+                    const inputElement = document.querySelector(`input[value="${cat2Value}"]`);
+                    if (inputElement) {
+                        inputElement.checked = true;
+                        setDuplicated2(true)
+                    }
+                }
+            });
         }
     }, [starBoard])
+
     function uploadPlugin(editor) {
         editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
             return customUploadAdapter(loader);
@@ -168,18 +202,17 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
     return (
         <div className="update">
             <div class="body lg" >
-                <cneter className="d-flex justify-content-center mb-3">
-                    <h1>홍보 수정</h1>
-                </cneter>
+                <h1 class="d-flex justify-content-center mb-3 mt-3">
+                    홍보 수정
+                </h1>
+                <p class="d-flex justify-content-center text-secondary mb-3">
+                    수정 시, 관리자 확인 후 글이 재등록됩니다.<br />자세한 문의사항은 1:1 채팅 또는 Q&A 게시판을 이용해주세요:D
+                </p>
                 {
-                    !isLogin ?
+                    isLoading ?
                         <div className="container content-box mt-3 mb-3">
                             <div className="d-flex justify-content-center mb-5" >
-                                <p>로그인이 필요한 페이지입니다.</p>
-                            </div>
-                            <div className="d-flex justify-content-center">
-                                <a href="/login" className="btn btn-info m-1 " >로그인 하러 가기</a>
-                                <a href="/join" className="btn btn-primary m-1">회원가입 하러 가기</a>
+                                <p>로딩 중</p>
                             </div>
                         </div>
                         :
@@ -357,7 +390,7 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
                                 />
                                 <div className="d-flex justify-content-end mt-2">
                                     {/* <button type="button" className="btn btn-primary btn-submit col-1 border-1 btn-list" >목록</button> */}
-                                    <Link to={'qna/qnaList'} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
+                                    <button className='btn btn-secondary btn-submit col-1 border-0' type="button" onClick={() => navigate(-2)}>목록</button> {/* 뒤로가기 기능 */}
                                     <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>수정</button>
                                 </div>
                             </div>

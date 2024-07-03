@@ -113,10 +113,10 @@ public class StarServiceImpl implements StarService {
     public int update(StarBoard starBoard) throws Exception {
         int result = starMapper.update(starBoard);
         log.info("서비스의 수정 글 : " + starBoard.toString());
-        MultipartFile file = starBoard.getImage();
 
         if (starBoard.getImage() != null) {
             log.info("새로 등록된 파일 있음");
+            MultipartFile file = starBoard.getImage();
             Files file2 = new Files();
             file2.setStarNo(starBoard.getStarNo());
             fileService.deleteByParent(file2); // 기존 파일 삭제
