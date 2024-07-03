@@ -28,6 +28,20 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
     }
   };
 
+  // const handleLike = async () => {
+  //   try {
+  //     const response = await axios.post('/page/like', { userNo: session.user.userNo, starNo });
+  //     if (response.data.liked) {
+  //       setLikeCount(likeCount + 1);
+  //     } else {
+  //       setLikeCount(likeCount - 1);
+  //     }
+  //   } catch (error) {
+  //     console.error('좋아요 상태 변경 실패:', error);
+  //   }
+  // };
+
+
   const handleDelete = async () => {
     const confirmDelete = window.confirm('정말로 삭제하시겠습니까?');
     if (confirmDelete) {
@@ -125,7 +139,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button> {/* 뒤로가기 기능 */}
         {userInfo.userNo === starBoard.userNo && (
           <>
-            <button className={styles['btn-update']} type="button" onClick={() => navigate(`/page/board/eventBoard/eventUpdate?starNo=${starNo}`)}>수정</button>
+            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={handleDelete}>삭제</button>
           </>
         )}

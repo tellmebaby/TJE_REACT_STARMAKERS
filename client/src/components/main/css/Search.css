@@ -31,17 +31,6 @@
     color: black; /* 텍스트 색상을 검은색으로 변경 */
 }
 
-/* .bg-image {
-    position: relative;
-    background-image: url('../../../../public/img/indexTopBackImg.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 60vh;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    background-color: black;
-} */
-
 .bg-image .topOverlay {
     position: absolute;
     top: 0;
@@ -59,7 +48,7 @@
 }
 
 .jumbotron {
-    height: 500px; 
+    min-height: 500px; 
     margin-bottom: 3%;
 }
 
@@ -70,12 +59,9 @@
 
 .Search-Btn-CategoryCon {
     display: flex;
-    /* border: 1px solid red; */
-    width: 100%;
-    justify-content: center;
     height: 100%;
-    align-items: flex-end;
     margin-bottom: 45px;
+    align-items: flex-end;
 }
 
 .Search-Btn-CategoryArt {

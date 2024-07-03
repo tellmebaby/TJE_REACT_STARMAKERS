@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../board/css/list.module.css'
 
-const List = ({ type, optionList, page, option, boardList, setPage, setCode, setKeyword}) => {
+const List = ({ type, optionList, page, option, boardList, setPage, setCode, setKeyword, isLoading}) => {
 
   const keywordRef = useRef();
 
@@ -87,7 +87,7 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
               <td align="center"></td>
               <td align="center">439</td>
             </tr>
-            {boardList.length === 0 ? (
+            {isLoading && boardList.length === 0 ? (
               <tr>
                 <td colSpan="6" align="center" className={styles.emptyRow} style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
                   조회된 게시글이 없습니다.

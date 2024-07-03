@@ -12,6 +12,7 @@
     "@tosspayments/payment-widget-sdk": "^0.11.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
     "popper.js": "^1.16.1",
