@@ -26,11 +26,7 @@ export const reviewList = (params) => api.get(`/mypage/reviewList`, {params})
 export const deleteReview = (starNos) => api.delete(`/mypage/review/${starNos.join(',')}`);
 
 // 프로필 이미지 업로드
-export const profileUpload = (formData) => api.post(`/file/profileUpload`, formData, {
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-});
+export const profileUpload = (formData, headers) => api.post(`/file/profileUpload`, formData, headers);
 
 
 export const profileDelete = (userNo) => api.delete(`/file/profileDelete/${userNo}`);

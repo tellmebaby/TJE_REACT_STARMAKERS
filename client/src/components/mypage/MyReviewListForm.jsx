@@ -53,7 +53,7 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
     }
 
     const starNo = selectedStarNos[0];
-    window.location.href = `/mypage/reviewUpdate?reviewNo=${starNo}`;
+    window.location.href = `/update/${starNo}`;
   };
 
   const handleClick = (pageNumber) => {

@@ -45,30 +45,34 @@ const PromotionForm = ({ promotionList, userInfo }) => {
                 <th style={{ width: '100px' }}>작성일자</th>
               </tr>
             </thead>
-            {userPromotionList.slice(0, visibleItems).map((promotion, index) => (
-              <>
-                <tr className={index >= 4 ? styles.hidden : ''}>
-                  <td className="border-0 pt-4">{promotion.title}</td>
+            <tbody>
+              {userPromotionList.slice(0, visibleItems).map((promotion) => (
+                <>
+                
+                <tr key={promotion.starNo}>
                   <td className="border-0 pt-4">
-                    <span className="category-container">{promotion.category1}</span>
+                  <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
+                  </td>
+                  <td className="border-0 pt-4">
+                    <span className={styles.categoryContainer}>{promotion.category1}</span>
                   </td>
                   <td className="border-0 pt-4">
                     <span>{promotion.starPrice.toLocaleString()}원</span>
                   </td>
                   <td className="border-0 pt-4">{new Date(promotion.regDate).toLocaleDateString()}</td>
                 </tr>
-                <tr className={index >= 4 ? styles.hidden : ''}>
-                  <td colSpan="3"></td>
-                  <td>
+                <tr>
+                <td colSpan="4">
                     <div className={styles.buttonContainer}>
                       <button className={`${styles.btnReview} ${styles.statusPending}`} disabled>{promotion.status}</button>
                     </div>
                   </td>
                 </tr>
-              </>
-            ))}
+                </>
+              ))}
+            </tbody>
           </table>
-          {visibleItems < promotionList.length && (
+          {visibleItems < userPromotionList.length && (
             <div className={styles.loadMoreBtn}>
               <button type="button" onClick={loadMore}>더보기</button>
             </div>
