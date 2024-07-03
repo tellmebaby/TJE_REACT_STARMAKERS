@@ -6,6 +6,9 @@ const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
     const [fileInput, setFileInput] = useState(null);
     const [previewImage, setPreviewImage] = useState('');
 
+    console.log("dd");
+    console.log(previewImage);
+
     useEffect(() => {
         setPreviewImage(fileList);
     }, [fileList]);
