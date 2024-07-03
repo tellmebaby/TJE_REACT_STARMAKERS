@@ -3,7 +3,7 @@ import styles from '../board/css/qnaRead.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 
-const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, deleteAnswer }) => {
+const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, deleteAnswer, onDelete }) => {
   const [answer, setAnswer] = useState('');
   const [isEditingAnswer, setIsEditingAnswer] = useState(false);
   const { isLogin, logout, userInfo } = useContext(LoginContext)
@@ -18,6 +18,13 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
   const update = () => {
     window.location.href = `/page/board/qnaBoard/qnaUpdate?qnaNo=${qnaNo}`;
   };
+
+  const handleDelete = () => {
+    const check = window.confirm("정말로 삭제하시겠습니까?")
+    if (check) {
+      onDelete(qnaNo)
+    }
+  }
 
   const toggleAnswer = () => {
     setIsEditingAnswer(!isEditingAnswer);
@@ -80,7 +87,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
         <button className={styles['btn-list']} type="button" onClick={moveList}>
           목록
         </button>
-        {userInfo.userNo === qnaBoard.userNo && (
+        {userInfo && userInfo.userNo === qnaBoard.userNo && (
           <>
             <button className={styles['btn-update']} type="button" onClick={update}>
               수정
@@ -88,7 +95,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
             <input
               className={styles['btn-delete']}
               type="button"
-              onClick={actionDelete}
+              onClick={handleDelete}
               value="삭제"
             />
           </>

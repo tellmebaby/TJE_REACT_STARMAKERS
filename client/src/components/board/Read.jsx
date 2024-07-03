@@ -170,7 +170,7 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
       </div> */}
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
         <button className={styles['btn-list']} type="button" onClick={() => window.location.href = `/${starBoard.type}`}>목록</button>
-        {userInfo.userNo === starBoard.userNo && (
+        {userInfo && userInfo.userNo === starBoard.userNo && (
           <>
             <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/page/board/eventBoard/eventUpdate?starNo=${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={handleDelete}>삭제</button>
