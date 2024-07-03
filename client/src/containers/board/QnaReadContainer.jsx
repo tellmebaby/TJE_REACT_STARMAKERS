@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import * as qna from '../../apis/qna';
 import QnaRead from '../../components/board/QnaRead';
+import { useNavigate } from 'react-router-dom';
 
 const QnaReadContainer = ({ qnaNo }) => {
   // 🧊 state
   const [qnaBoard, setQnaBoard] = useState({});
   const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const getQnaBoard = async () => {
     setLoading(true);
@@ -55,6 +57,16 @@ const QnaReadContainer = ({ qnaNo }) => {
     }
   };
 
+  const onDelete = async (qnaNo) => {
+    const response = await qna.remove(qnaNo)
+    const status = await response.status
+    console.log(`게시글 삭제 요청 결과 : ${status}`)
+    alert("삭제 완료!")
+
+    // -> 목록으로 이동
+    navigate("/qna/qnaList")
+}
+
   // hook
   useEffect(() => {
     getQnaBoard();
@@ -69,6 +81,7 @@ const QnaReadContainer = ({ qnaNo }) => {
         addAnswer={addAnswer}
         updateAnswer={updateAnswer}
         deleteAnswer={deleteAnswer}
+        onDelete={onDelete}
       />
     </>
   );

@@ -70,7 +70,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
               <td align="center"></td>
               <td align="center">439</td>
             </tr>
-            {qnaList.length === 0 ? (
+            {isLoading && qnaList.length === 0 ? (
                 <tr>
                   <td colSpan="6" align="center" className={styles.emptyRow} style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
                     조회된 게시글이 없습니다.

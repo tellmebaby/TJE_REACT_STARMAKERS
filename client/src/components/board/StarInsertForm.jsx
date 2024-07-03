@@ -8,12 +8,11 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
-import Calendar from './calendar.css';
+import Calendar from './css/calendar.module.css';
 import styles from './css/Insert.module.css'
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import { formatDate } from 'react-datepicker/dist/date_utils';
 
 const StarInsertForm = ({ type, onInsert }) => {
     const { isLogin, logout, userInfo } = useContext(LoginContext)
@@ -125,7 +124,7 @@ const StarInsertForm = ({ type, onInsert }) => {
         formData.append('card', card);
         formData.append('startDate', startDate);
         formData.append('endDate', endDate);
-    
+     
 
         // 헤더
         const headers = {
@@ -342,7 +341,7 @@ const StarInsertForm = ({ type, onInsert }) => {
                                                         selected={startDate}
                                                         onChange={date => setStartDate(date)}
                                                         dateFormat="yyyy-MM-dd"
-                                                        className="form-control col-5"
+                                                        className="form-control col-5 "
                                                         calendarClassName={Calendar.calenderWrapper}
                                                         minDate={new Date()}
                                                         placeholderText="홍보 시작일"
@@ -354,7 +353,7 @@ const StarInsertForm = ({ type, onInsert }) => {
                                                     onChange={date => setEndDate(date)}
                                                     dateFormat="yyyy-MM-dd"
                                                     className="form-control col-5"
-                                                    minDate={new Date()}
+                                                    minDate={startDate}
                                                     placeholderText="홍보 종료일"
                                                 />
                                             </div>

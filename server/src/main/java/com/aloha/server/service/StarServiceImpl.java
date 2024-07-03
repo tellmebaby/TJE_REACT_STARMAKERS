@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aloha.server.dto.Files;
 import com.aloha.server.dto.Option;
 import com.aloha.server.dto.Page;
 import com.aloha.server.dto.StarBoard;
@@ -57,13 +58,12 @@ public class StarServiceImpl implements StarService {
     @Override
     public StarBoard insert(StarBoard starBoard) throws Exception {
 
-        
         starMapper.insert(starBoard);
         starBoard.setStarNo(starBoard.getStarNo());
 
         MultipartFile file = starBoard.getImage();
 
-        if(starBoard.getImage() != null){
+        if (starBoard.getImage() != null) {
             fileService.upload(file, starBoard.getStarNo(), starBoard.getUserNo());
         }
 
@@ -113,6 +113,15 @@ public class StarServiceImpl implements StarService {
     public int update(StarBoard starBoard) throws Exception {
         int result = starMapper.update(starBoard);
         log.info("서비스의 수정 글 : " + starBoard.toString());
+        MultipartFile file = starBoard.getImage();
+
+        if (starBoard.getImage() != null) {
+            log.info("새로 등록된 파일 있음");
+            Files file2 = new Files();
+            file2.setStarNo(starBoard.getStarNo());
+            fileService.deleteByParent(file2); // 기존 파일 삭제
+            fileService.upload(file, starBoard.getStarNo(), starBoard.getUserNo());
+        }
         return result;
     }
 
@@ -228,12 +237,12 @@ public class StarServiceImpl implements StarService {
 
     // get Banner
     // 메인 배너 가져오기
-    public List<StarBoard> getBanner() throws Exception{
+    public List<StarBoard> getBanner() throws Exception {
         return starMapper.getBanner();
     }
 
     // 메인 게시물조각 가져오기
-    public List<StarBoard> getFragByType(String type) throws Exception{
+    public List<StarBoard> getFragByType(String type) throws Exception {
         return starMapper.getFragByType(type);
     }
 
