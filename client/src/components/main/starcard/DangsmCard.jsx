@@ -54,16 +54,16 @@ const DangsmCard = ({ card }) => {
             <StarCategory1 card={updatedCard} />
             <ClipCard card={updatedCard} />
           </div>
-          <div className="overlay" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}></div>
+          <div className="card-overlay" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}></div>
           <Link to={`/${card.starNo}`} className="card-body">
             <h5 className="card-title">
               <img src={`/file/img/${card.userImgId}`} alt="작성자 아이콘" className="author-icon" />
               {`${card.title}`}
             </h5>
-            <CardContent card={updatedCard} />
+            {/* <CardContent card={updatedCard} /> */}
             <div className="bottom-container">
               <StarCategory2 card={updatedCard} />
-              <StarLink card={updatedCard} />
+              <StarLink className='starLink' card={updatedCard} />
             </div>
           </Link>
         </div>
