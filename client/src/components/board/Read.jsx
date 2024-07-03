@@ -87,7 +87,7 @@ const Read = ({
             reply={reply} 
             sessionUser={session ? session.user : null} 
             deleteReply={handleReplyDelete}
-            updateReply={handleReplyUpdate} 
+            updateReply={handleReplyUpdate}
             insertAnswer={onReplySubmit}
           />
         ))}

@@ -97,6 +97,11 @@ const ReadContainer = ({ starNo }) => {
     }
   };
 
+  // 새로운 댓글 내용을 변경하는 함수
+  const handleNewReplyChange = (e) => {
+    setNewReply(e.target.value);
+  };
+
 
   // // 새로운 댓글 내용을 변경하는 함수
   // const replyUpdate = (e) => {
@@ -120,6 +125,7 @@ const ReadContainer = ({ starNo }) => {
         replyList={replyList}
         newReply={newReply}
         // replyUpdate={replyUpdate}
+        handleNewReplyChange={handleNewReplyChange}
         handleReplySubmit={handleReplySubmit}
         handleReplyDelete={handleReplyDelete}
         handleReplyUpdate={handleReplyUpdate}
