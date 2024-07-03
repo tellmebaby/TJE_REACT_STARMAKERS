@@ -1,0 +1,15 @@
+
+.calenderWrapper {
+    width: auto;
+    background-color: #fff;
+    position: relative;
+    z-index: 100000000000000000000000000000000000000 !important;
+}
+
+.react-datepicker__week {
+    z-index: 10000000000000000000 !important;
+}
+
+.react-datepicker__day {
+    z-index: 111111 !important;
+}
