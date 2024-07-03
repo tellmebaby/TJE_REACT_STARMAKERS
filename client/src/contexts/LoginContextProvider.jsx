@@ -119,7 +119,7 @@ const LoginContextProvider = ({ children }) => {
     // 👩🏻‍💼 userData, 💍 accessToken(JWT)
     const loginSetting = (userData, accessToken) => {
 
-        const { userNo, id, authList, email } = userData   // 👩🏻‍💼 Users (DTO) [JSON]
+        const { userNo, id, authList, email, name, phone } = userData   // 👩🏻‍💼 Users (DTO) [JSON]
         const roleList = authList.map((auth) => auth.auth) // 🏷️ [ROLE_USER,ROLE_ADMIN]
 
         // axios common head - Authorization 헤더에 JWT emdfhr
@@ -131,7 +131,7 @@ const LoginContextProvider = ({ children }) => {
         setLogin(true)
 
         // 👩🏻‍💼 유저 정보 세팅
-        const updatedUserInfo = { userNo, id, email, roleList }
+        const updatedUserInfo = { userNo, id, email, roleList, name, phone }
         setUserInfo(updatedUserInfo)
 
         // 👩🏻‍🎨 권한 정보 세팅

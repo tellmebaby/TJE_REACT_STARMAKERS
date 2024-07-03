@@ -289,62 +289,62 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/starPayment/{no}")
-    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
-            throws Exception {
-        Map<String, Object> response = new HashMap<>();
-        Users user = customUser.getUser();
+    // @GetMapping("/starPayment/{no}")
+    // public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
+    //         throws Exception {
+    //     Map<String, Object> response = new HashMap<>();
+    //     Users user = customUser.getUser();
 
-        if (user != null) {
-            response.put("user", user);
-        }
-        StarBoard starBoard = starService.select(starNo);
+    //     if (user != null) {
+    //         response.put("user", user);
+    //     }
+    //     StarBoard starBoard = starService.select(starNo);
 
-        Date strDate = starBoard.getStartDate();
-        Date endDate = starBoard.getEndDate();
-        int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
-        int price = dif * 1000; // 결제 금액
-        response.put("dif", dif);
-        response.put("price", price);
+    //     Date strDate = starBoard.getStartDate();
+    //     Date endDate = starBoard.getEndDate();
+    //     int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
+    //     int price = dif * 1000; // 결제 금액
+    //     response.put("dif", dif);
+    //     response.put("price", price);
 
-        price = (int) (dif * 1000); // 결제 금액
-        NumberFormat format = NumberFormat.getInstance();
-        String formattedPrice = format.format(price);
-        response.put("formattedPrice", formattedPrice);
+    //     price = (int) (dif * 1000); // 결제 금액
+    //     NumberFormat format = NumberFormat.getInstance();
+    //     String formattedPrice = format.format(price);
+    //     response.put("formattedPrice", formattedPrice);
 
-        response.put("starBoard", starBoard);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    //     response.put("starBoard", starBoard);
+    //     return new ResponseEntity<>(response, HttpStatus.OK);
+    // }
 
-    @PostMapping("/starPayment")
-    public ResponseEntity<?> paymentPro(StarBoard starBoard,
-            @RequestParam(value = "image", required = false) MultipartFile file,
-            @AuthenticationPrincipal CustomUser customUser) throws Exception {
-        // 결제 버튼 클릭 시,
-        // 홍보글 정보 insert로 db등록
-        // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
+    // @PostMapping("/starPayment")
+    // public ResponseEntity<?> paymentPro(StarBoard starBoard,
+    //         @RequestParam(value = "image", required = false) MultipartFile file,
+    //         @AuthenticationPrincipal CustomUser customUser) throws Exception {
+    //     // 결제 버튼 클릭 시,
+    //     // 홍보글 정보 insert로 db등록
+    //     // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
 
-        // StarBoard starBoard1 = starBoard;
-        StarBoard newBoard;
-        // if (newBoard != null) {
-        // starBoard.setCard("유료홍보");
-        // newBoard = starService.insert(starBoard);
-        // }
+    //     // StarBoard starBoard1 = starBoard;
+    //     StarBoard newBoard;
+    //     // if (newBoard != null) {
+    //     // starBoard.setCard("유료홍보");
+    //     // newBoard = starService.insert(starBoard);
+    //     // }
 
-        Date strDate = starBoard.getStartDate();
-        Date endDate = starBoard.getEndDate();
-        int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
-        int price = dif * 1000; // 결제 금액
-        Map<String, Object> response = new HashMap<>();
-        response.put("dif", dif);
-        response.put("price", price);
+    //     Date strDate = starBoard.getStartDate();
+    //     Date endDate = starBoard.getEndDate();
+    //     int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
+    //     int price = dif * 1000; // 결제 금액
+    //     Map<String, Object> response = new HashMap<>();
+    //     response.put("dif", dif);
+    //     response.put("price", price);
 
-        Users user = customUser.getUser();
-        int userNo = user.getUserNo();
-        String userName = user.getName();
-        response.put("userName", userName);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    //     Users user = customUser.getUser();
+    //     int userNo = user.getUserNo();
+    //     String userName = user.getName();
+    //     response.put("userName", userName);
+    //     return new ResponseEntity<>(response, HttpStatus.OK);
+    // }
 
     /**
      * 홍보 글 1개 조회
