@@ -70,11 +70,11 @@ const Header = () => {
                     <Nav className="box p-4 d-grid gap-1 text-center">
                         <h5 className="text-center">메뉴</h5>
                         <Nav.Link as={Link} to="/IntroPage">소개</Nav.Link>
-                        <Nav.Link as={Link} to="/page/starCard/starList">홍보</Nav.Link>
-                        <Nav.Link as={Link} to="/page/board/eventBoard/eventList">이벤트</Nav.Link>
-                        <Nav.Link as={Link} to="/page/board/reviewBoard/reviewList">후기</Nav.Link>
-                        <Nav.Link as={Link} to="/page/board/qnaBoard/qnaList">Q&A</Nav.Link>
-                        <Nav.Link as={Link} to="/page/board/anBoard/anList">공지사항</Nav.Link>
+                        <Nav.Link as={Link} to="/starList">홍보</Nav.Link>
+                        <Nav.Link as={Link} to="/event">이벤트</Nav.Link>
+                        <Nav.Link as={Link} to="/review">후기</Nav.Link>
+                        <Nav.Link as={Link} to="/qna/qnaList">Q&A</Nav.Link>
+                        <Nav.Link as={Link} to="/an">공지사항</Nav.Link>
                     </Nav>
                     <div className="box p-4 d-grid gap-1 text-center">
                         {!isLogin ? (
@@ -85,7 +85,7 @@ const Header = () => {
                         ) : (
                             <>                                
                                 <form onSubmit={handleLogout}>
-                                    <Link to="/mypage/profile" style={{ textDecoration: 'none', color: 'black' }}>
+                                    <Link to="/mypage/Profile" style={{ textDecoration: 'none', color: 'black' }}>
                                         <Button variant="outline-secondary" className="btn-block">마이페이지</Button>
                                     </Link>
                                     <Button type="submit" variant="outline-secondary" className="btn-block">로그아웃</Button>

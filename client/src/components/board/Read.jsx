@@ -47,7 +47,6 @@ const Read = ({ starNo, starBoard, fileList, isLoading }) => {
   //     console.error('좋아요 상태 변경 실패:', error);
   //   }
   // };
-  console.log("이거되나 ? ? ?  ? "  + starBoard.writer);
 
 
   const handleDelete = async () => {
