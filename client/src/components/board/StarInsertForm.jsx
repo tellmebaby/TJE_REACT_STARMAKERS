@@ -13,7 +13,6 @@ import styles from './css/Insert.module.css'
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import { formatDate } from 'react-datepicker/dist/date_utils';
 
 const StarInsertForm = ({ type, onInsert }) => {
     const { isLogin, logout, userInfo } = useContext(LoginContext)

@@ -133,27 +133,6 @@ const UpdateForm = ({ isFile, qnaNo, qnaBoard, onUpdate, isLoading }) => {
                   <input type="text" className="form-control" placeholder="글 제목을 입력해주세요" aria-label="tilte"
                     aria-describedby="addon-wrapping" value={title} onChange={handleChangeTitle} />
                 </div>
-                {
-                  qnaBoard.type=='event' ?
-                  <React.Fragment>
-                       <div className="input-group mb-3">
-                            <label className="input-group-text" for="inputGroupFile01">썸네일</label>
-                            <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
-                        </div>
-                    </React.Fragment>
-                  :
-                  <></>
-                }
-                {
-                  isFile && (
-                    <React.Fragment>
-                      <div className="input-group mb-3">
-                        <label className="input-group-text" for="inputGroupFile01">썸네일</label>
-                        <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
-                      </div>
-                    </React.Fragment>
-                  )
-                }
                 <CKEditor
                   editor={ClassicEditor}
                   config={{
