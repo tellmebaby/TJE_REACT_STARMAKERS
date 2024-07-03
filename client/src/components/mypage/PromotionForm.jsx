@@ -5,6 +5,8 @@ import styles from '../mypage/css/Promotion.module.css';
 const PromotionForm = ({ promotionList, userInfo }) => {
   const [visibleItems, setVisibleItems] = useState(4);
 
+  console.log("ddd");
+  console.log(promotionList);
   const loadMore = () => {
     setVisibleItems((prevVisibleItems) => prevVisibleItems + 4);
   };
@@ -48,26 +50,26 @@ const PromotionForm = ({ promotionList, userInfo }) => {
             <tbody>
               {userPromotionList.slice(0, visibleItems).map((promotion) => (
                 <>
-                
-                <tr key={promotion.starNo}>
-                  <td className="border-0 pt-4">
-                  <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
-                  </td>
-                  <td className="border-0 pt-4">
-                    <span className={styles.categoryContainer}>{promotion.category1}</span>
-                  </td>
-                  <td className="border-0 pt-4">
-                    <span>{promotion.starPrice.toLocaleString()}원</span>
-                  </td>
-                  <td className="border-0 pt-4">{new Date(promotion.regDate).toLocaleDateString()}</td>
-                </tr>
-                <tr>
-                <td colSpan="4">
-                    <div className={styles.buttonContainer}>
-                      <button className={`${styles.btnReview} ${styles.statusPending}`} disabled>{promotion.status}</button>
-                    </div>
-                  </td>
-                </tr>
+
+                  <tr key={promotion.starNo}>
+                    <td className="border-0 pt-4">
+                      <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
+                    </td>
+                    <td className="border-0 pt-4">
+                      <span className={styles.categoryContainer}>{promotion.category1}</span>
+                    </td>
+                    <td className="border-0 pt-4">
+                      <span>{promotion.starPrice.toLocaleString()}원</span>
+                    </td>
+                    <td className="border-0 pt-4">{new Date(promotion.regDate).toLocaleDateString()}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan="4">
+                      <div className={styles.buttonContainer}>
+                        <button className={`${styles.btnReview} ${styles.statusPending}`} disabled>{promotion.status}</button>
+                      </div>
+                    </td>
+                  </tr>
                 </>
               ))}
             </tbody>
