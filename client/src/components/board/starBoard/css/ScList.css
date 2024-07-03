@@ -1,0 +1,112 @@
+.testalign {
+    border: 1px solid red;
+    
+  }
+
+
+@media (max-width: 768px) {
+    .starList-detail {
+        margin-top: 20px;
+    }
+    .type-sub {
+        align-content: center;
+        width: 60px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.7em;
+        text-align: center;
+        margin: 2px 4px;
+        height: 36px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        display: inline-block;
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .starList-detail {
+        margin-top: 20px;
+    }
+    .type-sub {
+        align-content: center;
+        width: 65px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.9em;
+        text-align: center;
+        margin: 2px 4px;
+        height: 55px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        display: inline-block;
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+}
+
+@media (min-width: 993px) {
+    .starList-detail {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+    .type-sub {
+        align-content: center;
+        width: 65px;
+        border: 1px solid rgb(220, 223, 225);
+        border-radius: 23px;
+        font-size: 0.9em;
+        text-align: center;
+        margin: 0px 4px;
+        height: 55px;
+        background-color: #fff;
+        color: rgb(105, 108, 115);
+        cursor: pointer;
+        display: inline-block;
+        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
+    }
+}
+
+.items-eventType,
+.items-category1,
+.items-category2 {
+    display: flex;
+}
+
+
+.type-sub img{
+    width: 50px;
+}
+
+.type-sub i{
+    height: 2em;
+    font-size: 2em;
+}
+
+
+#type-chzzk {
+    background: black;
+}
+
+.type-sub .hide-check {
+    display: none;
+}
+
+.type-sub.checked {
+    background-color: #dcffca !important;
+}
+
+.type-sub.checked label {
+    color: black;
+}
+
+
+
+/* 타입 버튼 마우스 올릴시 스타일 */
+.type-sub:hover {
+    background-color: #fff;
+    box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
+}

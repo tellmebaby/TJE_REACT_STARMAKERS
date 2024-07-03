@@ -59,7 +59,7 @@
 }
 
 .jumbotron {
-    height: 500px; 
+    min-height: 500px; 
     margin-bottom: 3%;
 }
 
@@ -70,12 +70,9 @@
 
 .Search-Btn-CategoryCon {
     display: flex;
-    /* border: 1px solid red; */
-    width: 100%;
-    justify-content: center;
     height: 100%;
-    align-items: flex-end;
     margin-bottom: 45px;
+    align-items: flex-end;
 }
 
 .Search-Btn-CategoryArt {

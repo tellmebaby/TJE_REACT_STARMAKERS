@@ -1,7 +1,6 @@
 import React from 'react'
 import StarCategory1 from './StarCategory1';
 import ClipCard from './ClipCard';
-import './css/StarCard.css';
 import StarCategory2 from './StarCategory2';
 import './css/StarCategory2.css';
 import StarLink from './StarLink';
@@ -11,7 +10,8 @@ import './css/DangsmCard.css';
 
 const DangsmCard = ({card}) => {
     return (
-        <div style={{ width: '170px' }}>
+        <div>
+          <div className="card standard" style={{ width: '145px' }}>
               <div className="cards custom-card" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}>
               <div className='top-container'>
                 <StarCategory1 card={card}/> 
@@ -30,6 +30,7 @@ const DangsmCard = ({card}) => {
                 </div>
               </div>
               </div>
+          </div>
         </div>
       )
     
