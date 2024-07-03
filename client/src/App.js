@@ -30,6 +30,7 @@ import QnaRead from './pages/board/QnaRead';
 import Promotion from './pages/mypage/Promotion';
 import Update from './pages/board/Update';
 import QnaUpdate from './pages/board/QnaUpdate';
+import MyReviewList from './pages/mypage/MyReviewList';
 import StarUpdate from './pages/board/StarUpdate';
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/mypage/ProfileUpdate" element={<ProfileUpdate/>}></Route>
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/mypage/Promotion" element={<Promotion/>}></Route>
+          <Route path="/mypage/myReviewList" element={<MyReviewList/>}></Route>
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
 
           <Route path="/event" element={<EventList/>} />

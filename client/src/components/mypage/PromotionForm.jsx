@@ -32,7 +32,7 @@ const PromotionForm = ({ promotionList, userInfo }) => {
             <Link to="/mypage/promotion">
               <h2 style={{ color: '#000' }} className={styles.juaRegular}>홍보글</h2>
             </Link>
-            <Link to="/mypage/event">
+            <Link to="/mypage/myReviewList">
               <h2 style={{ color: '#545454' }} className={styles.juaRegular}>이벤트 후기</h2>
             </Link>
           </div>

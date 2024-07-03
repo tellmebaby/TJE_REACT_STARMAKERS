@@ -32,7 +32,12 @@ public interface StarMapper {
             
     // 목록 조회 - 페이징, 검색
     public List<StarBoard> list(@Param("type") String type,
-            @Param("page") Page page, @Param("option") Option option, @Param("userNo") int userNo, @Param("status") int status) throws Exception;
+    @Param("page") Page page, @Param("option") Option option, @Param("userNo") int userNo, @Param("status") int status) throws Exception;
+    
+    
+    // 목록 조회 - 페이징, 검색
+    public List<StarBoard> mypageList(@Param("type") String type,
+            @Param("page") Page page, @Param("option") Option option, @Param("userNo") int userNo) throws Exception;
 
     // 목록 조회 - 갯수 조회
     public List<StarBoard> countList() throws Exception;
@@ -57,6 +62,9 @@ public interface StarMapper {
 
     // 게시글 데이터 개수 조회
     public int count(@Param("option") Option option, @Param("type") String type) throws Exception;
+
+    // 마이페이지 게시글 데이터 개수 조회
+    public int mypageCount(@Param("option") Option option, @Param("type") String type, @Param("userNo") int userNo) throws Exception;
 
     // 게시글 목록 - [검색]
     public List<StarBoard> search(@Param("option") Option option) throws Exception;
