@@ -17,7 +17,7 @@ export const qnaRead = (qnaNo) => { api.get(`/mypage/qna/${qnaNo}`).then(respons
   };
 
 // 선택된 QnA 항목 삭제
-export const deleteQna = (qnaNos) => api.delete(`/qna/${q1naNos.join(',')}`);
+export const deleteQna = (qnaNos) => api.delete(`/qna/${qnaNos.join(',')}`);
 
 // 마이페이지 reviewList
 export const reviewList = (params) => api.get(`/mypage/reviewList`, {params})
