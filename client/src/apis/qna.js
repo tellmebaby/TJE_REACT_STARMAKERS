@@ -1,10 +1,10 @@
-import axios from 'axios';
+import api from './api';
 
 // 목록 조회
 export const qnaList = async (params) => {
  
   try {
-    const response = await axios.get(`/qna/qnaList`, { params });
+    const response = await api.get(`/qna/qnaList`, { params });
     return response.data;
   } catch (error) {
     // 에러 처리
@@ -15,32 +15,32 @@ export const qnaList = async (params) => {
 
 // 상세 조회
 export const select = (qnaNo) => {
-  return axios.get(`/qna/qnaRead/${qnaNo}`).then(response => response.data);
+  return api.get(`/qna/qnaRead/${qnaNo}`).then(response => response.data);
 };
 
 // 등록
 // export const insert = (qnaBoard) => {
-//   return axios.post('/qna', qnaBoard).then(response => response.data);
+//   return api.post('/qna', qnaBoard).then(response => response.data);
 // };
-export const insert = (FormData, headers) => axios.post("/qna", FormData, headers )
+export const insert = (FormData, headers) => api.post("/qna", FormData, headers )
 
 // 수정
 // export const update = (qnaBoard) => {
-//   return axios.put('/qna', qnaBoard).then(response => response.data);
+//   return api.put('/qna', qnaBoard).then(response => response.data);
 // };
-export const update = (formData, headers) => axios.put("/qna", formData, headers)
+export const update = (formData, headers) => api.put("/qna", formData, headers)
 
 // 답변 등록
 export const insertAnswer = (qnaBoard) => {
-  return axios.put('/qna/answer', qnaBoard).then(response => response.data);
+  return api.put('/qna/answer', qnaBoard).then(response => response.data);
 };
 
 // 삭제
 export const remove = (qnaNo) => {
-  return axios.delete(`/qna/${qnaNo}`).then(response => response.data);
+  return api.delete(`/qna/${qnaNo}`).then(response => response.data);
 };
 
 // 답변 삭제
 export const deleteAnswer = (qnaBoard) => {
-  return axios.put('/qna/deleteAnswer', qnaBoard).then(response => response.data);
+  return api.put('/qna/deleteAnswer', qnaBoard).then(response => response.data);
 };
