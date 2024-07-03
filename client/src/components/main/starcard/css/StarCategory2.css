@@ -1,14 +1,11 @@
 .field-links {
-    flex: 3;
-    display: -webkit-box;
-    -webkit-line-clamp: 1; 
-    -webkit-box-orient: vertical;
+    width: 100%;
+    height: 35px;
     overflow: hidden;
-    text-overflow: ellipsis;
     color: white;
     font-size: 50%;
-    max-height: 2.4em;
-    /* margin: 2px 0; */
+    /* max-height: 2.4em; */
+    margin: 2px 0;
 }
 
 .btn-custom {
@@ -20,8 +17,9 @@
     text-align: center;
     font-size: 1.2em;
     margin-right: 5px;
-    /* width: 140px; */
-    height: 20px;
+    width: 30px;
+    height: 16px;
+    margin: 1px;
     align-content: center;
 }
 

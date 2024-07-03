@@ -1,10 +1,11 @@
 .card-text {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    /* display: -webkit-box; */
+    /* -webkit-line-clamp: 3; */
+    /* -webkit-box-orient: vertical; */
+    color: white;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 80%;
+    font-size: 20%;
     line-height: 1.2em;
     margin-top: 2%;
     margin-bottom: 1%;
