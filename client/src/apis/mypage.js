@@ -20,10 +20,10 @@ export const qnaRead = (qnaNo) => { api.get(`/mypage/qna/${qnaNo}`).then(respons
 export const deleteQna = (qnaNos) => api.delete(`/qna/${qnaNos.join(',')}`);
 
 // 마이페이지 reviewList
-export const reviewList = (params) => axios.get(`/mypage/reviewList`, {params})
+export const reviewList = (params) => api.get(`/mypage/reviewList`, {params})
 
 // 선택된 QnA 항목 삭제
-export const deleteReview = (starNos) => axios.delete(`/mypage/review/${starNos.join(',')}`);
+export const deleteReview = (starNos) => api.delete(`/mypage/review/${starNos.join(',')}`);
 
 // 프로필 이미지 업로드
 export const profileUpload = (formData) => api.post(`/file/profileUpload`, formData, {
