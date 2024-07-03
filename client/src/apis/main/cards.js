@@ -14,3 +14,13 @@ export const cardListToStarBoard = (options, userNo, page = 1) => {
     },
   });
 };
+
+// 좋아요
+export const StarLike = (userNo, starNo) => {
+  return axios.post("/like", null, {
+    params: {
+      userNo,
+      starNo,
+    },
+  });
+};

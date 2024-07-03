@@ -157,87 +157,6 @@
     }
 
 
-    .container-starSearch {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        justify-content: center;
-        height: 30px;
-        margin-top: 41px;
-    }
-
-    .sub-searchInput {
-        display: flex;
-        align-content: center;
-        background-color: transparent;
-        border: 1px solid rgb(230, 230, 230);
-        border-radius: 17px;
-        color: gray;
-        height: 40px;
-        margin-right: 10px;
-        background-color: #fff;
-    }
-
-    .sub-searchInput input{
-        background-color: transparent;
-        border-color: transparent;
-
-    }
-
-    .sub-searchInput input:focus {
-        outline: none;
-    }
-
-    #icon-inSearchBar {
-        align-content: center;
-        width: 22px;
-        margin-left: 10px;
-    }
-
-    /* 캘린더 입력하기 버튼 스타일 */
-    .sub-btn-calendar,
-    .sub-btn-insertCard{
-        align-content: center;
-        width: 65px;
-        border: 1px solid rgb(220, 223, 225);
-        border-radius: 17px;
-        font-size: 0.9em;
-        text-align: center;
-        margin: 0px 4px;
-        height: 40px;
-        background-color: #fff;
-        color: rgb(105, 108, 115);
-        box-shadow: -3px 0 1px rgba(0, 0, 0, 0.08), 0 3px 1px rgba(0, 0, 0, 0.08);
-    }
-
-    .sub-btn-calendar:hover{
-        background-color: #fff;
-        box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .sub-btn-calendar:hover i{
-        color: black;
-    }
-
-    .sub-btn-insertCard:hover{
-        background-color: #fff;
-        box-shadow: -4px 0 3px rgba(0, 0, 0, 0.1), 0 4px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .sub-btn-insertCard:hover i{
-        color: black;
-    }
-
-    .sub-btn-calendar i{
-        color: rgb(105, 108, 115);
-        font-size: 1.5em;
-    }
-
-    .sub-btn-insertCard i{
-        color: rgb(105, 108, 115);
-        font-size: 1.5em;
-    }
-
     /* 타입 버튼 클릭시 변경 스타일*/
     .type-sub.checked label,
     .type-sub.checked i,
@@ -285,10 +204,6 @@
         transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
     }
 
-    .container-typeTitle {
-        width: 100%;
-        position: relative;
-    }
 
   
 

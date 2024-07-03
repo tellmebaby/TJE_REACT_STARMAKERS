@@ -24,7 +24,7 @@ const BannerSlider = () => {
                     {starListEvent.map((starBoard, index) => (
                         <div key={starBoard.starNo} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
                             <div className="event-banner align-items-start">
-                                <Link to={`/board/eventBoard/eventPost?starNo=${starBoard.starNo}`}>
+                                <Link to={`/${starBoard.starNo}`}>
                                     <img src={`/file/img/${starBoard.imgNo}`} className="image rounded mt-auto" alt="썸네일" />
                                 </Link>
                             </div>
