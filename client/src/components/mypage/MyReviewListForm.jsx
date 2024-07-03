@@ -112,7 +112,7 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
                       />
                     </td>
                     <td>
-                      <Link to={`/reviewPost?reviewNo=${review.starNo}`}>{review.title}</Link>
+                      <Link to={`/${review.starNo}`}>{review.title}</Link>
                     </td>
                     <td align="center">
                       <span>{new Date(review.regDate).toLocaleString()}</span>
