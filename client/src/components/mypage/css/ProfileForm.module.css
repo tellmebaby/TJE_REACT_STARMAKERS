@@ -44,7 +44,7 @@
     margin-top: 20px;
 }
 
-tbody {
+tbody.profile {
     width: 600px;
     height: 350px;
 }

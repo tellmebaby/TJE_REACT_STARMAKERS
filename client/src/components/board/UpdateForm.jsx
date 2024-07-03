@@ -54,8 +54,7 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     // 파일 데이터 추가
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        formData.append('files', file)
+        formData.append('image', files[i])
       }
     }
 
@@ -95,12 +94,14 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
       },
     };
   };
+  
   useEffect(() => {
     if (starBoard) {
       setTitle(starBoard.title)
       setContent(starBoard.content)
     }
   }, [starBoard])
+
   function uploadPlugin(editor) {
     editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
       return customUploadAdapter(loader);
@@ -162,16 +163,6 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
                     </React.Fragment>
                   :
                   <></>
-                }
-                {
-                  isFile && (
-                    <React.Fragment>
-                      <div className="input-group mb-3">
-                        <label className="input-group-text" for="inputGroupFile01">썸네일</label>
-                        <input type="file" name="image" className="form-control" id="inputGroupFile01" onChange={handleChangeFile} />
-                      </div>
-                    </React.Fragment>
-                  )
                 }
                 <CKEditor
                   editor={ClassicEditor}

@@ -105,7 +105,7 @@
 }
 
 .custom-card {
-    height: 330px;
+    height: 250px;
     position: relative;
     background-size: cover;
     background-position: center;
@@ -238,7 +238,21 @@
 }
 
 
+.card.standard {
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, #4e5d6c, #6c7a89, #bfc9d1, #6c7a89, #4e5d6c);
+    background-clip: padding-box;
+    border-radius: 1.25rem;
+}
 
+.card.prime {
+    border: 1px solid transparent;
+    background: linear-gradient(to right, pink, purple, lightblue, cyan, lime, yellow, orange);
+    border-radius: 1.25rem;
+}
 
-
-
+.card.gold {
+    border: 1px solid transparent;
+    background: linear-gradient(to right, gold, goldenrod, yellow, lightyellow, palegoldenrod);
+    border-radius: 1.25rem;
+}

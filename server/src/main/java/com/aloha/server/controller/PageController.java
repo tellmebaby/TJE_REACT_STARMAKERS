@@ -280,12 +280,21 @@ public class PageController {
         }
     }
 
-    @GetMapping("/review")
+    @GetMapping("/reviewList")
     public ResponseEntity<?> reviewList(@RequestParam(value = "type", defaultValue = "review") String type, Page page,
-            Option option, HttpSession session) throws Exception {
+            Option option, @AuthenticationPrincipal CustomUser customUser) throws Exception {
         try {
-            List<StarBoard> starList = starService.list(type, page, option);
-            return new ResponseEntity<>(starList, HttpStatus.OK);
+            Users user = customUser.getUser();
+            int userNo = user.getUserNo();
+
+            List<StarBoard> reviewList = starService.mypageList(type, page, option, userNo);
+            log.info("reviewList : " + reviewList);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("starList", reviewList);
+            response.put("page", page);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
