@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import * as starBoards from '../../apis/starBoard';
 import Read from '../../components/board/Read';
 import { useNavigate } from 'react-router-dom';
+import { useSession } from '../../contexts/SessionContext';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ReadContainer = ({ starNo }) => {
+  const { isLogin, logout, userInfo } = useContext(LoginContext)
+  const { session } = useSession();
   const [starBoard, setStarBoard] = useState({});
   const [fileList, setFileList] = useState([]);
-  const [replies, setReplies] = useState([]);
+  const [replyList, setReplyList] = useState([]);
   const [newReply, setNewReply] = useState("");
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,30 +25,52 @@ const ReadContainer = ({ starNo }) => {
     setLoading(false);
   };
 
-  const getReplies = async () => {
-    const replyList = await starBoards.replyList(starNo);
-    setReplies(replyList);
-  };
-
-  const handleNewReplyChange = (e) => {
-    setNewReply(e.target.value);
+  const getReplyList = async () => {
+    const response = await starBoards.replyList(starNo);
+    const data = response.data;
+    console.log("댓글 데이터");
+    console.log(data);
+    setReplyList(data.replyList);
   };
 
   const handleReplySubmit = async (e) => {
     e.preventDefault();
-    const replyData = {
-      starNo,
-      content: newReply,
-      username: 'currentUser', // 현재 로그인된 사용자 이름을 입력하세요
-    };
-    await starBoards.insertReply(replyData);
-    setNewReply("");
-    getReplies();
-  };
+  
+  
+    try {
+      const replyData = {
+        starNo,
+        content: newReply,
+        userNo: userInfo.userNo,
+        writer: userInfo.id
+        // username: "?"
+      };
+      console.log("아이디 제발 : ",userInfo.id)
 
+      if (newReply.trim() === "") {
+        alert("댓글을 입력하세요.");
+        return;
+      }
+  
+      console.log("replyData");
+      console.log(replyData);
+  
+      const response = await starBoards.insertReply(replyData);
+      // const data = await response.data
+      console.log("데이터 가져와");
+      // console.log(data);
+      console.log("Reply submission response:", response.data);
+      setNewReply("");
+      console.log("new리플", newReply)
+      getReplyList();
+    } catch (error) {
+      console.error('댓글 등록 실패:', error);
+    }
+  };
+  
   const handleReplyDelete = async (replyNo) => {
     await starBoards.deleteReply(replyNo);
-    getReplies();
+    getReplyList();
   };
 
   const onDelete = async (starNo) => {
@@ -57,10 +83,15 @@ const ReadContainer = ({ starNo }) => {
     navigate(`/${starBoard.type}`)
 }
 
+  // 새로운 댓글 내용을 변경하는 함수
+  const handleNewReplyChange = (e) => {
+    setNewReply(e.target.value);
+  };
+
   // ❓ hook
   useEffect(() => {
     getBoard();
-    getReplies();
+    getReplyList();
   }, [starNo]);
 
   return (
@@ -70,12 +101,14 @@ const ReadContainer = ({ starNo }) => {
         starBoard={starBoard}
         fileList={fileList}
         isLoading={isLoading}
-        replies={replies}
+        replyList={replyList}
         newReply={newReply}
         handleNewReplyChange={handleNewReplyChange}
         handleReplySubmit={handleReplySubmit}
         handleReplyDelete={handleReplyDelete}
         onDelete={onDelete}
+        userInfo={userInfo}
+        isLogin={isLogin}
       />
     </>
   );

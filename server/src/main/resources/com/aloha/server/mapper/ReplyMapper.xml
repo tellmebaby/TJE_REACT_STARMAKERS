@@ -35,6 +35,7 @@
      VALUES (#{userNo}, #{starNo}, #{parentNo}, #{writer}, #{content})
 </insert>
 
+
 <!-- 댓글 수정 -->
 <update id="update">
      UPDATE reply                       <!-- 댓글 수정할 때 parentNo 수정할 필요 X-->

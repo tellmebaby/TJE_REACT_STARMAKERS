@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import com.aloha.server.dto.Reply;
 import com.aloha.server.mapper.ReplyMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ReplyServiceImpl implements ReplyService {
 
@@ -38,7 +41,9 @@ public class ReplyServiceImpl implements ReplyService {
         // Users user = userMapper.login(userId);
         // reply.setUserNo(user.getUserNo());
         int result = replyMapper.insert(reply);
+        log.info("댓글result : " + result);
         int parentNo = reply.getParentNo();
+        log.info("parentNo : " + parentNo);
 
         // 댓글 등록
         // - 댓글 번호(reply_no)와 부모 번호(parent_no) 를 똑같이 수정

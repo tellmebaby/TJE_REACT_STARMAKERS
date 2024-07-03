@@ -1,6 +1,8 @@
 package com.aloha.server.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,7 +46,10 @@ public class ReplyController {
 
         try {
             List<Reply> replyList = replyService.listByStarNo(starNo);
-            return new ResponseEntity<>(replyList, HttpStatus.OK);
+            Map<String, Object> response = new HashMap<>();
+            response.put("replyList", replyList);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

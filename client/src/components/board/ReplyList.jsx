@@ -1,8 +1,11 @@
 import React, { useContext } from 'react';
 import styles from '../board/css/read.module.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer }) => {
   const { isLogin, logout, userInfo } = useContext(LoginContext)
+
+  
   return (
     <div>
       {/* 댓글인 경우 */}
@@ -13,7 +16,7 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer }) => {
             <span className={styles['reply-writer']}>{reply.writer}</span>
             <span className={styles['reply-regDate']}>
               {new Date(reply.regDate).toLocaleString()} {/* 날짜 포맷 변환 예시 */}
-              <i className="fa-regular fa-thumbs-up icon"></i>
+              {/* <i className="fa-regular fa-thumbs-up icon"></i> */}
             </span>
           </div>
           {/* 댓글 내용/ 수정 삭제 버튼 */}
@@ -45,7 +48,7 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer }) => {
               <span className={styles['rereply-writer']}>{reply.writer}</span>
               <span className={styles['rereply-regDate']}>
                 {new Date(reply.regDate).toLocaleString()} {/* 날짜 포맷 변환 예시 */}
-                <i className="fa-regular fa-thumbs-up icon"></i>
+                {/* <i className="fa-regular fa-thumbs-up icon"></i> */}
               </span>
             </div>
             {/* 답글 내용/ 수정 삭제 버튼 */}
@@ -53,7 +56,7 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer }) => {
               <div className={styles['rereply-middle']}>
                 <p className={styles['rereply-content']}>{reply.content}</p>
                 <div className={styles['rereply-button']}>
-                  {sessionUser !== null && sessionUser.id === reply.writer && (
+                  {userInfo && userInfo.userNo === reply.userNo && (
                     <>
                       <button className={styles['btn-rereply-update']} data-replyno={reply.replyNo}>수정</button>
                       <button className={styles['btn-rereply-delete']} onClick={() => deleteReply(reply.replyNo)}>삭제</button>
