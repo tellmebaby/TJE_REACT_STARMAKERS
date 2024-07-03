@@ -27,7 +27,7 @@ const StarInsertForm = ({ type, onInsert }) => {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [status, setStatus] = useState('홍보요청')
-    const [card, setCard] = useState('무료홍보')
+    const [card, setCard] = useState('standard')
 
 
     // 🎁 함수

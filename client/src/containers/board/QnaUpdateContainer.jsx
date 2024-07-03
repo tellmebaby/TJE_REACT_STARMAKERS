@@ -36,8 +36,8 @@ const UpdateContainer = ({qnaNo}) => {
       alert("게시글 수정 완료!"+qnaNo)
       
 
-      // 게시글 조회로 이동
-      navigate('/qna/qnaRead/'+qnaNo)
+      // 게시글 목록으로 이동
+      navigate(-2)
 
     } catch (error) {
       console.log(error);

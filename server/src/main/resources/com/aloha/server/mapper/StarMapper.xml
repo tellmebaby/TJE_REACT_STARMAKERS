@@ -423,7 +423,7 @@
     <update id="update">
         UPDATE star_board
         SET title = #{title},
-            <!-- writer = #{writer}, -->
+            writer = #{writer},
             content = #{content},
             likes=#{likes},
             views=#{views},

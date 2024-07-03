@@ -6,9 +6,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
+  const navigate = useNavigate()
+  
   const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -207,8 +209,7 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
                   }}
                 />
                 <div className="d-flex justify-content-end mt-2">
-                  {/* <button type="button" className="btn btn-primary btn-submit col-1 border-1 btn-list" >목록</button> */}
-                  <Link to={`/${type}`} className='btn btn-secondary btn-submit col-1 border-0'>목록</Link>
+                  <button className='btn btn-secondary btn-submit col-1 border-0' type="button" onClick={() => navigate(-2)}>목록</button> {/* 뒤로가기 기능 */}
                   <button className="btn btn-primary btn-submit col-1 border-0" onClick={onSubmit}>수정</button>
                 </div>
               </div>

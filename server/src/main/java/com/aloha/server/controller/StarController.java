@@ -138,32 +138,14 @@ public class StarController {
             @AuthenticationPrincipal CustomUser customUser,
             MultipartFile file) throws Exception {
 
-        // Users user = customUser.getUser();
-        // int userNo = user.getUserNo();
-        int starNo = starBoard.getStarNo();
+        Users user = customUser.getUser();
+        int userNo = user.getUserNo();
         int result = starService.update(starBoard);
         log.info("수정 결과 :" + result);
         log.info("수정한 게시글 : " + starBoard.toString());
 
         // 데이터 처리 성공
         if (result > 0) {
-            // 파일 처리 로직
-
-            // if (file != null && !file.isEmpty()) { // file이 있을 경우 실행
-            //     // 기존에 올라간 파일 삭제
-            //     // 1. starNo로 기존에 올라가있는 파일 있는지 확인하고 있으면 파일 값 가져오기
-            //     // 2. starNo로 등록 된 파일 삭제
-            //     // 3. starNo로 새로운 파일 등록
-            //     log.info("새로 등록된 파일 있음");
-            //     Files file2 = new Files();
-            //     file2.setStarNo(starNo);
-            //     fileService.deleteByParent(file2); // 기존 파일 삭제
-
-            //     fileService.upload(file, starNo, 1); // file 등록
-            // } else {
-            //     log.info("새로 등록된 파일 없음");
-            // }
-
             return new ResponseEntity<>("게시글 수정 완료", HttpStatus.OK);
         }
 
@@ -307,62 +289,62 @@ public class StarController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/starPayment/{no}")
-    public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
-            throws Exception {
-        Map<String, Object> response = new HashMap<>();
-        Users user = customUser.getUser();
+    // @GetMapping("/starPayment/{no}")
+    // public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
+    //         throws Exception {
+    //     Map<String, Object> response = new HashMap<>();
+    //     Users user = customUser.getUser();
 
-        if (user != null) {
-            response.put("user", user);
-        }
-        StarBoard starBoard = starService.select(starNo);
+    //     if (user != null) {
+    //         response.put("user", user);
+    //     }
+    //     StarBoard starBoard = starService.select(starNo);
 
-        Date strDate = starBoard.getStartDate();
-        Date endDate = starBoard.getEndDate();
-        int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
-        int price = dif * 1000; // 결제 금액
-        response.put("dif", dif);
-        response.put("price", price);
+    //     Date strDate = starBoard.getStartDate();
+    //     Date endDate = starBoard.getEndDate();
+    //     int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
+    //     int price = dif * 1000; // 결제 금액
+    //     response.put("dif", dif);
+    //     response.put("price", price);
 
-        price = (int) (dif * 1000); // 결제 금액
-        NumberFormat format = NumberFormat.getInstance();
-        String formattedPrice = format.format(price);
-        response.put("formattedPrice", formattedPrice);
+    //     price = (int) (dif * 1000); // 결제 금액
+    //     NumberFormat format = NumberFormat.getInstance();
+    //     String formattedPrice = format.format(price);
+    //     response.put("formattedPrice", formattedPrice);
 
-        response.put("starBoard", starBoard);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    //     response.put("starBoard", starBoard);
+    //     return new ResponseEntity<>(response, HttpStatus.OK);
+    // }
 
-    @PostMapping("/starPayment")
-    public ResponseEntity<?> paymentPro(StarBoard starBoard,
-            @RequestParam(value = "image", required = false) MultipartFile file,
-            @AuthenticationPrincipal CustomUser customUser) throws Exception {
-        // 결제 버튼 클릭 시,
-        // 홍보글 정보 insert로 db등록
-        // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
+    // @PostMapping("/starPayment")
+    // public ResponseEntity<?> paymentPro(StarBoard starBoard,
+    //         @RequestParam(value = "image", required = false) MultipartFile file,
+    //         @AuthenticationPrincipal CustomUser customUser) throws Exception {
+    //     // 결제 버튼 클릭 시,
+    //     // 홍보글 정보 insert로 db등록
+    //     // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
 
-        // StarBoard starBoard1 = starBoard;
-        StarBoard newBoard;
-        // if (newBoard != null) {
-        // starBoard.setCard("유료홍보");
-        // newBoard = starService.insert(starBoard);
-        // }
+    //     // StarBoard starBoard1 = starBoard;
+    //     StarBoard newBoard;
+    //     // if (newBoard != null) {
+    //     // starBoard.setCard("유료홍보");
+    //     // newBoard = starService.insert(starBoard);
+    //     // }
 
-        Date strDate = starBoard.getStartDate();
-        Date endDate = starBoard.getEndDate();
-        int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
-        int price = dif * 1000; // 결제 금액
-        Map<String, Object> response = new HashMap<>();
-        response.put("dif", dif);
-        response.put("price", price);
+    //     Date strDate = starBoard.getStartDate();
+    //     Date endDate = starBoard.getEndDate();
+    //     int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
+    //     int price = dif * 1000; // 결제 금액
+    //     Map<String, Object> response = new HashMap<>();
+    //     response.put("dif", dif);
+    //     response.put("price", price);
 
-        Users user = customUser.getUser();
-        int userNo = user.getUserNo();
-        String userName = user.getName();
-        response.put("userName", userName);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-    }
+    //     Users user = customUser.getUser();
+    //     int userNo = user.getUserNo();
+    //     String userName = user.getName();
+    //     response.put("userName", userName);
+    //     return new ResponseEntity<>(response, HttpStatus.OK);
+    // }
 
     /**
      * 홍보 글 1개 조회

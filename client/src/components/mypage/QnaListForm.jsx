@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as mypage from '../../apis/mypage';
 import styles from '../mypage/css/QnaListForm.module.css';
 import { formatDate } from '../../apis/format';
@@ -7,7 +7,6 @@ import { formatDate } from '../../apis/format';
 const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
     console.log("page : " + page);
     console.log(page);
-    const navigate = useNavigate();
     const [selectedQnaNos, setSelectedQnaNos] = useState([]);
 
     useEffect(() => {
@@ -55,7 +54,7 @@ const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
         }
 
         const qnaNo = selectedQnaNos[0];
-        navigate(`/page/mypage/qnaUpdate?qnaNo=${qnaNo}`);
+        window.location.href = `/qna/update/${qnaNo}`;
     };
 
     const handleClick = (pageNumber) => {

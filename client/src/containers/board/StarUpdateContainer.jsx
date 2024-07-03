@@ -20,13 +20,9 @@ const StarUpdateContainer = ({ starNo }) => {
         const response = await boards.select(starNo)
         const data = await response.data    // board 객체 + fileList 객체
         // console.log("확인용 " + data)
-
-        const board = data.starBoard
+        const board =  await data.starBoard
         console.log(board)
-        // const fileList = data.fileList
-
-        setStarBoard(board)
-        // setFileList(fileList)
+        await setStarBoard(board)
         // 로딩 끝 ⌛
         setLoading(false)
     }
@@ -40,7 +36,7 @@ const StarUpdateContainer = ({ starNo }) => {
 
 
             // 게시글 조회로 이동
-            navigate('/' + starNo)
+            navigate(-2)
 
         } catch (error) {
             console.log(error);
@@ -53,7 +49,7 @@ const StarUpdateContainer = ({ starNo }) => {
     }, [])
     return (
         <>
-            <StarUpdateForm starNo={starNo} starBoard={starBoard} />
+            <StarUpdateForm starNo={starNo} starBoard={starBoard} onUpdate={onUpdate} isLoading={isLoading} />
         </>
     )
 }

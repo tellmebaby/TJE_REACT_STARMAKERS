@@ -134,3 +134,12 @@ a {
     font-weight: 400;
     font-style: normal;
 }
+
+.categoryContainer {
+    background-color: #007bff;
+    color: white;
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin-right: 5px;
+    display: inline-block;
+}
