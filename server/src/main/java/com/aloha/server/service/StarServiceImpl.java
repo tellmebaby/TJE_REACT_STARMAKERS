@@ -236,4 +236,16 @@ public class StarServiceImpl implements StarService {
     public List<StarBoard> getFragByType(String type) throws Exception{
         return starMapper.getFragByType(type);
     }
+
+    @Override
+    public List<StarBoard> mypageList(String type, Page page, Option option, int userNo) throws Exception {
+        int total = starMapper.mypageCount(option, type, userNo);
+        page.setTotal(total);
+        log.info(page.toString());
+        log.info(option.toString());
+        // log.info(":::여기는 서비스 옵션값을 볼까? " + option.getKeyword());
+        List<StarBoard> starList = starMapper.list(type, page, option);
+
+        return starList;
+    }
 }

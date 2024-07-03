@@ -31,6 +31,13 @@ public interface StarService {
                                 ,Page page
                                 ,Option option,
                                 int userNo) throws Exception;
+
+    public List<StarBoard> mypageList(String type 
+                                ,Page page
+                                ,Option option,
+                                int userNo) throws Exception;
+
+    
                                 
     // 목록 조회 - 갯수 조회
     public List<StarBoard> countList() throws Exception;

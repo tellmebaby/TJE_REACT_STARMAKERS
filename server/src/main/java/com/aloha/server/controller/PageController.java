@@ -285,12 +285,13 @@ public class PageController {
             Option option, @AuthenticationPrincipal CustomUser customUser) throws Exception {
         try {
             Users user = customUser.getUser();
+            int userNo = user.getUserNo();
 
-            List<StarBoard> starList = starService.list(type, page, option);
+            List<StarBoard> reviewList = starService.mypageList(type, page, option, userNo);
+            log.info("reviewList : " + reviewList);
 
             Map<String, Object> response = new HashMap<>();
-            response.put("starList", starList);
-            response.put("user", user);
+            response.put("starList", reviewList);
             response.put("page", page);
 
             return new ResponseEntity<>(response, HttpStatus.OK);

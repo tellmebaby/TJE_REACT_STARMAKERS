@@ -1,57 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import * as mypage from '../../apis/mypage';
 import MyReviewListForm from '../../components/mypage/MyReviewListForm';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const MyReviewListContainer = () => {
+  const { userInfo } = useContext(LoginContext);
+
   const [reviewList, setReviewList] = useState([]);
-  const [user, setUser] = useState(null);
   const [pageInfo, setPageInfo] = useState({ pageNumber: 1, itemsPerPage: 10 });
 
   const [pageNo, setPage] = useState(1);
   const [keyword, setKeyword] = useState('');
+
+  console.log("리뷰");
+  console.log(reviewList);
+  console.log("리뷰유저");
+  console.log(userInfo?.userNo);
+  console.log("리뷰페이지");
+  console.log(pageInfo);
 
   const getReviewList = async () => {
     try {
       const params = {
         page: pageNo,
         keyword: keyword,
-        user : user
-      }
-      const response = await mypage.reviewList(params);
+        type: 'review',
+        userNo: userInfo?.userNo
+      };
+      const response = await mypage.reviewList(params); // await 키워드 추가
       const data = response.data;
-      console.log("review");
+      console.log('review');
       console.log(data);
 
-      setReviewList(Array.isArray(data.reviewList) ? data.reviewList : []);
+      setReviewList(Array.isArray(data.starList) ? data.starList : []);
       setPageInfo(data.page || {});
     } catch (error) {
       console.error('Error fetching review list:', error);
-    }
-  };
-
-  const getUser = async () => {
-    try {
-      const response = await mypage.select();
-      const userData = response.data;
-      setUser(userData.user);
-    } catch (error) {
-      console.error('Error fetching user:', error);
+      if (error.response) {
+        console.error('Error response:', error.response);
+      }
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getUser();
-      await getReviewList();
-    };
+    if (userInfo?.userNo) {
+      getReviewList();
+    }
+  }, [userInfo, pageNo, keyword]);
 
-    fetchData();
-  }, [pageNo, keyword]);
-
-  return user ? (
+  return userInfo ? (
     <MyReviewListForm
       reviewList={reviewList}
-      user={user}
+      setReviewList={setReviewList}
+      user={userInfo}
       page={pageInfo}
       setPage={setPage}
       setKeyword={setKeyword}
