@@ -2,17 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import * as starBoards from '../../apis/starBoard';
 import Read from '../../components/board/Read';
 import { useNavigate } from 'react-router-dom';
-import { useSession } from '../../contexts/SessionContext';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ReadContainer = ({ starNo }) => {
-  const { isLogin, userInfo } = useContext(LoginContext);
-  const { session } = useSession();
+  const { isLogin, logout, userInfo } = useContext(LoginContext)
   const [starBoard, setStarBoard] = useState({});
   const [fileList, setFileList] = useState([]);
   const [replyList, setReplyList] = useState([]);
   const [newReply, setNewReply] = useState("");
+  const [answerContent, setAnswerContent] = useState('');
   const [isLoading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const [likes, setLikes] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -61,27 +61,102 @@ const ReadContainer = ({ starNo }) => {
     }
   };
 
-  // 댓글 등록
+
+ // 댓글--------------------------------------------댓글
   const handleReplySubmit = async (e) => {
-    e.preventDefault();
-    if (newReply.trim() === "") {
-      alert("댓글을 입력하세요.");
-      return;
-    }
-    const replyData = {
-      starNo,
-      content: newReply,
-      userNo: userInfo.userNo,
-      writer: userInfo.id,
-    };
+    // e.preventDefault();
+  
+  
     try {
-      await starBoards.insertReply(replyData);
-      setNewReply("");
+      const replyData = {
+        starNo,
+        content: newReply,
+        userNo: userInfo.userNo,
+        writer: userInfo.id
+        
+        // username: "?"
+      };
+      console.log("아이디 제발 : ",userInfo.id)
+      
+      if (newReply.trim() === "") {
+        alert("댓글을 입력하세요.");
+        return;
+      }
+  
+      console.log("replyData");
+      console.log(replyData);
+      
+      const response = await starBoards.insertReply(replyData);
+      // const data = await response.data
+      console.log("데이터 가져와");
+      // console.log(data);
+      console.log("Reply submission response:", response.data);} catch {}
+    }
+  // 댓글 등록
+  // const handleReplySubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (newReply.trim() === "") {
+  //     alert("댓글을 입력하세요.");
+  //     return;
+  //   }
+  //   const replyData = {
+  //     starNo,
+  //     content: newReply,
+  //     userNo: userInfo.userNo,
+  //     writer: userInfo.id,
+  //   };
+  //   try {
+  //     await starBoards.insertReply(replyData);
+  //     setNewReply("");
+  //     getReplyList();
+  //   } catch (error) {
+  //     console.error('댓글 등록 실패:', error);
+  //   }
+  // };
+
+
+ // 답글--------------------------------------------답글
+  const handleRereplySubmit = async (showAnswerBox, answerContent) => {
+    // e.preventDefault();
+  
+  
+    try {
+      const replyData = {
+        starNo,
+        content: answerContent,
+        userNo: userInfo.userNo,
+        writer: userInfo.id,
+        parentNo:showAnswerBox
+        // username: "?"
+      };
+      console.log("답글 아이디 제발 : ",userInfo.id)
+      
+      if (answerContent.trim() === "") {
+        alert("댓글을 입력하세요.");
+        return;
+      }
+  
+      console.log("replyData");
+      console.log(replyData);
+      
+      const response = await starBoards.insertReply(replyData);
+      // const data = await response.data
+      console.log("데이터 가져와");
+      // console.log(data);
+      console.log("Rereply submission response:", response.data);
+      setAnswerContent("");
+      console.log("new리리플", answerContent)
       getReplyList();
     } catch (error) {
       console.error('댓글 등록 실패:', error);
     }
   };
+
+
+  const handleReplyDelete = async (replyNo) => {
+    await starBoards.deleteReply(replyNo);
+    window.confirm("삭제하시겠습니까?")
+    getReplyList();
 
   // 댓글 삭제
   const handleReplyDelete = async (replyNo) => {
@@ -92,6 +167,7 @@ const ReadContainer = ({ starNo }) => {
     } catch (error) {
       console.error('댓글 삭제 실패:', error);
     }
+
   };
 
   // 댓글 수정
@@ -117,6 +193,17 @@ const ReadContainer = ({ starNo }) => {
     }
   };
 
+  const handleNewRereplyChange = (e) => {
+    setAnswerContent(e.target.value);
+  };
+
+
+  // // 새로운 댓글 내용을 변경하는 함수
+  // const replyUpdate = (e) => {
+  //   setNewReply(e.target.value);
+  // };
+
+  // ❓ hook
   useEffect(() => {
     if(userInfo){
       getBoard();
@@ -133,10 +220,14 @@ const ReadContainer = ({ starNo }) => {
         isLoading={isLoading}
         replyList={replyList}
         newReply={newReply}
-        handleNewReplyChange={(e) => setNewReply(e.target.value)}
+        answerContent={answerContent}
+        handleNewReplyChange={handleNewReplyChange}
+        handleNewRereplyChange={handleNewRereplyChange}
         handleReplySubmit={handleReplySubmit}
+        handleRereplySubmit={handleRereplySubmit}
         handleReplyDelete={handleReplyDelete}
         handleReplyUpdate={handleReplyUpdate}
+        setAnswerContent={setAnswerContent}
         onDelete={onDelete}
         userInfo={userInfo}
         isLogin={isLogin}
@@ -147,5 +238,6 @@ const ReadContainer = ({ starNo }) => {
     </>
   );
 };
+}
 
 export default ReadContainer;

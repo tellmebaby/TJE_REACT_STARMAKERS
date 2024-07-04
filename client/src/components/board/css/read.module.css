@@ -309,108 +309,95 @@ h1 {
     margin: 5px 10px;
 }
 
-/* 댓글!!!! 목록 */
-#reply-list {
-    display: block;
-    /* border-bottom: 0.7px solid #000; */
-    width: 100%;
-    display: block;
-    padding: 10px 5px;
-    box-sizing: border-box;
-}
-
-#reply-line {
-    border-top: 0.7px solid #000;
-}
-
-#reply-listbox {
-    border-bottom: 0.7px solid #000;
-}
-
-.reply-top {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.reply-writer {
-    font-weight: bold;
-}
-
-.reply-regDate {
-    color: rgba(192, 190, 183, 1);
-}
-
-.reply-regDate .icon {
-    color: #000;
-    margin: 0 20px;
-}
-
-.reply-middle {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-}
-
-.reply-content {
-    flex-grow: 1;
-    margin-right: 20px;
-}
-
-.reply-button {
-    flex-shrink: 0;
-    padding: 5px 0;
-    text-align: right;
-    display: flex;
-}
-
-.btn-reply-update {
-    padding: 5px 10px;
-    background-color: rgba(192, 190, 183, 1);
-    border-radius: 3px;
-    color: black;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: normal;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-reply-delete {
-    margin-left: 5px;
-    padding: 5px 10px;
-    background-color: rgba(37, 37, 37, 1);
-    border-radius: 3px;
-    color: white;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: normal;
-    border: none;
-    cursor: pointer;
-}
-
-.btn-reply-cancel {
-    margin-left: 5px;
-    padding: 5px 10px;
-    background-color: rgba(37, 37, 37, 1);
-    border-radius: 3px;
-    color: white;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: normal;
-    border: none;
-    cursor: pointer;
-}
-
-.reply-rereply {
-    align-items: left;
-    padding: 5px 0px;
-}
+        /* 댓글!!!! 목록 */
+        #reply-list {
+            display: block;
+            /* border-bottom: 0.7px solid #000; */
+            width: 100%;
+            display: block;
+            padding: 10px 5px;
+            box-sizing: border-box;
+        }
+        .reply-line {
+            border-top: 0.7px solid #000;
+        }
+        #reply-listbox {
+            border-bottom: 0.7px solid #000;
+        }
+        .reply-top {
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .reply-writer {
+            font-weight: bold;
+        }
+        .reply-regDate {
+            color: rgba(192, 190, 183, 1);
+        }
+        .reply-regDate .icon {
+            color: #000;
+            margin: 0 20px;
+        }
+        .reply-middle {
+            padding: 5px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        .reply-content {
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+        .reply-button {
+            flex-shrink: 0;
+            padding: 5px 0;
+            text-align: right;
+            display: flex;
+        }
+        .btn-reply-update {
+            padding: 5px 10px;
+            background-color: rgba(192, 190, 183, 1);
+            border-radius: 3px;
+            color: black;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: normal;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-reply-delete {
+            margin-left: 5px;
+            padding: 5px 10px;
+            background-color: rgba(37, 37, 37, 1);
+            border-radius: 3px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: normal;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-reply-cancel {
+            margin-left: 5px;
+            padding: 5px 10px;
+            background-color: rgba(37, 37, 37, 1);
+            border-radius: 3px;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: normal;
+            border: none;
+            cursor: pointer;
+        }
+        .reply-rereply {
+            align-items: left;
+            padding: 5px 0px;
+        }
 
 /* 답글 버튼*/
 .btn-rereply {
@@ -437,26 +424,10 @@ h1 {
     width: 100%;
     /* border-bottom: 0.7px solid rgba(192, 190, 183, 1); */
 
-    visibility: hidden;
-    /* 숨김 */
-    height: 0;
-    /* 높이 0으로 설정 */
-    overflow: hidden;
-    /* 콘텐츠 오버플로우 숨김 */
-}
-
-.rereply-container.visible {
-    visibility: visible;
-    /* 보임 */
-    height: auto;
-    /* 원래 높이로 설정 */
-    padding: 0;
-    padding-left: 70px;
-    transition: visibility 0.3s, height 0.3s;
-}
-
-.rereply {
-    /* margin-left: 30px;
+        }
+        
+        .rereply {
+            /* margin-left: 30px;
             font-weight: bold;
             font-size: 20px; */
     margin-left: 70px;
