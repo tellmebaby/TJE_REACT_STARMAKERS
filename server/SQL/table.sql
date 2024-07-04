@@ -178,6 +178,7 @@ CREATE TABLE user
   gender   VARCHAR(10) NULL COMMENT '성별',
   birth    VARCHAR(20) NULL COMMENT '생년월일',
   socia_code VARCHAR(100) NULL COMMENT '소셜시리얼',
+  point INT  NOT NULL DEFAULT 0 COMMENT '포인트',
   PRIMARY KEY (user_no)
 ) COMMENT '회원정보';
 
@@ -208,7 +209,16 @@ CREATE TABLE password_reset_token
   PRIMARY KEY (id)
 ) COMMENT '비밀번호 변경 인증이메일 토큰';
 
-
+CREATE TABLE point 
+(
+  `point_no`  INT       NOT NULL AUTO_INCREMENT COMMENT '결제번호',
+  `point`     INT      NOT NULL COMMENT '포인트(충전or사용)',
+  `reg_date`  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '사용 일자',
+  `user_no`   INT       NOT NULL     COMMENT '회원번호',
+  `star_no`   INT       NULL     COMMENT '사용한글번호',
+  `type`    VARCHAR(50) NOT NULL COMMENT '사용타입', -- 적절한 길이를 설정했습니다.
+  PRIMARY KEY (point_no)
+)
 
 
 -- ALTER TABLE star_board

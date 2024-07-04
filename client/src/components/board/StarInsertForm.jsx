@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 // ckeditor5
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -28,6 +28,7 @@ const StarInsertForm = ({ type, onInsert }) => {
     const [endDate, setEndDate] = useState(null)
     const [status, setStatus] = useState('홍보요청')
     const [card, setCard] = useState('standard')
+
 
 
     // 🎁 함수
@@ -104,11 +105,10 @@ const StarInsertForm = ({ type, onInsert }) => {
     }
 
     const onSubmit = (e) => {
-        e.preventDefault();  // 기본 이벤트 방지
-    
+
         // 유효성 검사 ✅
         // ...일단 생략
-    
+
         // 파일 업로드에서는 
         // Content-Type : application/json -> multipart/form-data
 
@@ -124,30 +124,37 @@ const StarInsertForm = ({ type, onInsert }) => {
         formData.append('card', card);
         formData.append('startDate', startDate);
         formData.append('endDate', endDate);
+
      
 
         // 헤더
         const headers = {
             'Content-Type': 'multipart/form-data'
         };
-    
+
         // 파일 데이터 추가
         if (files) {
             for (let i = 0; i < files.length; i++) {
                 formData.append('image', files[i]);
             }
         }
-    
+
         onInsert(formData, headers);  // formData
     };
-    
+
 
     const payment = (e) => {
         e.preventDefault();
+        setStatus(null);
         setCard('유료홍보');
-        onSubmit(e); // 함수 호출명 수정
     };
-    
+
+
+    useEffect((e) => {
+        if(userInfo && title) onSubmit();
+    }, [card]);
+
+
     const customUploadAdapter = (loader) => {
         return {
             upload() {
@@ -188,7 +195,7 @@ const StarInsertForm = ({ type, onInsert }) => {
     }
 
     return (
-            <div className="insert">
+        <div className="insert">
             <div className="body lg" >
                 {
                     !isLogin ?
@@ -410,12 +417,12 @@ const StarInsertForm = ({ type, onInsert }) => {
                                     <Link to={`/${type}`} className={styles.btnl} >목록</Link>
                                     {promoButton === 'freePromo' && (
                                         <div>
-                                            <button id="sendPost" className={styles.btns} onClick={onSubmit}>등록</button>
+                                            <button type="button" id="sendPost" className={styles.btns} onClick={onSubmit}>등록</button>
                                         </div>
                                     )}
                                     {promoButton === 'payPromo' && (
                                         <div>
-                                            <button className={styles.btns} id="payBtn" onClick={payment} >결제</button>
+                                            <button type="button" className={styles.btns} id="payBtn" onClick={payment} >결제</button>
                                         </div>
                                     )}
                                     {promoButton === 'design' && (

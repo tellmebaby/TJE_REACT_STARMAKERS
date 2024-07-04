@@ -32,14 +32,14 @@ const LoginContextProvider = ({ children }) => {
 
         // 💍in🍪 ❌
         if (!accessToken) {
-            console.log(`쿠키에 accessToken(JWT) 가 없음`);
+            // console.log(`쿠키에 accessToken(JWT) 가 없음`);
             // 로그아웃 세팅
             logoutSetting()
             return
         }
 
         // 💍in🍪 ⭕️
-        console.log(`쿠키에 JWT(accessToken) 이 저장되어 있음`);
+        // console.log(`쿠키에 JWT(accessToken) 이 저장되어 있음`);
         // axios common header 에 등록
         api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 

@@ -43,7 +43,7 @@ public class LikeServiceImpl implements LikeService {
         starBoard.setLikes(likes);
         int result = starMapper.update(starBoard);
         if( result > 0 ){
-            log.info("업데이트 성공");
+            // log.info("업데이트 성공");
         }
 
 
@@ -59,6 +59,12 @@ public class LikeServiceImpl implements LikeService {
     public int checkLiked(int userNo, int starNo) throws Exception {
         Integer like = likeMapper.select(userNo, starNo);
         return like != null ? like.intValue() : 0;
+    }
+
+    @Override
+    public int likeCount(int starNo) throws Exception {
+
+        return likeMapper.likeCount(starNo);
     }
     
 }

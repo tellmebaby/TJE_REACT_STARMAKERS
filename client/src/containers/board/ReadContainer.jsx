@@ -14,35 +14,53 @@ const ReadContainer = ({ starNo }) => {
   const [isLoading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
 
-  // 🌞 함수
+  // 게시글 조회
   const getBoard = async () => {
     setLoading(true);
-    const response = await starBoards.select(starNo);
-    const data = await response.data;
-    setStarBoard(data.starBoard);
-    setFileList(data.fileList || []);
+    try {
+      const response = await starBoards.select(starNo);
+      const data = await response.data;
+      setStarBoard(await data.starBoard);
+      setFileList(await data.fileList || []);
+      setLikes(await data.starBoard.likes);
+      console.log(data.starBoard.likes);
+      // 좋아요 상태 확인
+      const likeResponse = await starBoards.checkLiked(userInfo.userNo, starNo);
+      console.log("넘버 가져와라");
+      console.log(await userInfo.userNo);
+      setLiked(likeResponse.data);
+      // if (userInfo.userNo) {
+      // }
+    } catch (error) {
+      console.error('게시글 조회 실패:', error);
+    }
     setLoading(false);
   };
 
+  // 댓글 목록 조회
   const getReplyList = async () => {
-    const response = await starBoards.replyList(starNo);
-    const data = response.data;
-    console.log("댓글 데이터");
-    console.log(data);
-    setReplyList(data.replyList);
+    try {
+      const response = await starBoards.replyList(starNo);
+      setReplyList(response.data.replyList);
+    } catch (error) {
+      console.error('댓글 조회 실패:', error);
+    }
   };
 
-    
+  // 게시글 삭제
   const onDelete = async (starNo) => {
-    const response = await starBoards.remove(starNo)
-    const status = await response.status
-    console.log(`게시글 삭제 요청 결과 : ${status}`)
-    alert("삭제 완료!")
+    try {
+      await starBoards.remove(starNo);
+      alert("삭제 완료!");
+      navigate(`/${starBoard.type}`);
+    } catch (error) {
+      console.error('게시글 삭제 실패:', error);
+    }
+  };
 
-    // -> 목록으로 이동
-    navigate(`/${starBoard.type}`)
-}
 
  // 댓글--------------------------------------------댓글
   const handleReplySubmit = async (e) => {
@@ -72,14 +90,30 @@ const ReadContainer = ({ starNo }) => {
       // const data = await response.data
       console.log("데이터 가져와");
       // console.log(data);
-      console.log("Reply submission response:", response.data);
-      setNewReply("");
-      console.log("new리플", newReply)
-      getReplyList();
-    } catch (error) {
-      console.error('댓글 등록 실패:', error);
+      console.log("Reply submission response:", response.data);} catch {}
     }
-  };
+  // 댓글 등록
+  // const handleReplySubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (newReply.trim() === "") {
+  //     alert("댓글을 입력하세요.");
+  //     return;
+  //   }
+  //   const replyData = {
+  //     starNo,
+  //     content: newReply,
+  //     userNo: userInfo.userNo,
+  //     writer: userInfo.id,
+  //   };
+  //   try {
+  //     await starBoards.insertReply(replyData);
+  //     setNewReply("");
+  //     getReplyList();
+  //   } catch (error) {
+  //     console.error('댓글 등록 실패:', error);
+  //   }
+  // };
+
 
  // 답글--------------------------------------------답글
   const handleRereplySubmit = async (showAnswerBox, answerContent) => {
@@ -123,22 +157,40 @@ const ReadContainer = ({ starNo }) => {
     await starBoards.deleteReply(replyNo);
     window.confirm("삭제하시겠습니까?")
     getReplyList();
+
+  // 댓글 삭제
+  const handleReplyDelete = async (replyNo) => {
+    try {
+      await starBoards.deleteReply(replyNo);
+      alert("삭제 완료!");
+      getReplyList();
+    } catch (error) {
+      console.error('댓글 삭제 실패:', error);
+    }
+
   };
 
+  // 댓글 수정
   const handleReplyUpdate = async (replyNo, content) => {
     try {
-      const writer = userInfo.id
-      const response = await starBoards.updateReply({ replyNo, writer, content });
-      console.log("수정 될거야 말거야", response.data);
+      await starBoards.updateReply({ replyNo, writer: userInfo.id, content });
       getReplyList();
     } catch (error) {
       console.error('댓글 수정 실패:', error);
     }
   };
 
-  // 새로운 댓글 내용을 변경하는 함수
-  const handleNewReplyChange = (e) => {
-    setNewReply(e.target.value);
+  // 좋아요 토글
+  const handleLikeToggle = async () => {
+    try {
+      const response = await starBoards.toggleLike(userInfo.userNo, starNo);
+      setLiked(response.data.liked);
+      setLikes(response.data.likeCount);
+      console.log("좋아용");
+      console.log(response.data.liked);
+    } catch (error) {
+      console.error('좋아요 토글 실패:', error);
+    }
   };
 
   const handleNewRereplyChange = (e) => {
@@ -153,10 +205,11 @@ const ReadContainer = ({ starNo }) => {
 
   // ❓ hook
   useEffect(() => {
-    getBoard();
-    getReplyList();
-  }, [starNo]);
-
+    if(userInfo){
+      getBoard();
+      getReplyList();
+    }
+  }, [starNo,userInfo]);
 
   return (
     <>
@@ -178,9 +231,13 @@ const ReadContainer = ({ starNo }) => {
         onDelete={onDelete}
         userInfo={userInfo}
         isLogin={isLogin}
+        likes={likes}
+        liked={liked}
+        onLikeToggle={handleLikeToggle}
       />
     </>
   );
 };
+}
 
 export default ReadContainer;

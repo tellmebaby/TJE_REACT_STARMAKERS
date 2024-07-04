@@ -17,7 +17,7 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
   useEffect(() => {
     console.log(reviewList);
     console.log(user);
-}, [reviewList, user]);
+  }, [reviewList, user]);
 
   const handleDelete = async () => {
     if (selectedStarNos.length === 0) {
@@ -41,24 +41,34 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
     }
   };
 
-  const handleUpdate = () => {
-    if (selectedStarNos.length === 0) {
-      alert('하나의 게시물을 선택하십시오.');
+  const handleAllDelete = async () => {
+    const allStarNos = userReviewList.map(review => review.starNo);
+    if (allStarNos.length === 0) {
+      alert('삭제할 게시물이 없습니다.');
       return;
     }
 
-    if (selectedStarNos.length > 1) {
-      alert('수정할 게시물 하나만 선택하십시오.');
+    const confirmDelete = window.confirm('모든 게시물을 삭제하시겠습니까?');
+    if (!confirmDelete) {
       return;
     }
 
-    const starNo = selectedStarNos[0];
-    window.location.href = `/update/${starNo}`;
+    console.log('Deleting all reviews:', allStarNos);
+
+    try {
+      await mypage.deleteReview(allStarNos);
+      alert('모든 게시물이 삭제되었습니다.');
+      window.location.reload();
+    } catch (error) {
+      console.error('Error deleting all reviews:', error);
+    }
   };
 
   const handleClick = (pageNumber) => {
     setPage(pageNumber);
   };
+
+  const userReviewList = Array.isArray(reviewList) ? reviewList.filter(review => review.userNo === user.userNo) : [];
 
   return (
     <div className="container">
@@ -93,15 +103,15 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
                 <th style={{ width: '100px' }}>조회수</th>
               </tr>
             </thead>
-            {reviewList.length === 0 ? (
-              <tr>
-                <td colSpan="6" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
-                  조회된 게시글이 없습니다.
-                </td>
-              </tr>
-            ) : (
-              reviewList.map((review) => (
-                review.userNo === user.userNo && (
+            <tbody>
+              {userReviewList.length === 0 ? (
+                <tr>
+                  <td colSpan="4" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
+                    조회된 게시글이 없습니다.
+                  </td>
+                </tr>
+              ) : (
+                userReviewList.map((review) => (
                   <tr key={review.starNo}>
                     <td>
                       <input
@@ -119,13 +129,13 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
                     </td>
                     <td align="center">{review.views}</td>
                   </tr>
-                )
-              ))
-            )}
+                ))
+              )}
+            </tbody>
           </table>
           <div className={styles.buttonContainer}>
-            <button className={styles.button} onClick={handleUpdate}>수정</button>
             <button className={styles.button} onClick={handleDelete}>삭제</button>
+            <button className={styles.button} onClick={handleAllDelete}>전체삭제</button>
           </div>
           {/* 페이지네이션 */}
           <center>

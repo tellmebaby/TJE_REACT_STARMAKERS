@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import UpdateForm from '../../components/board/UpdateForm'
 import * as boards from '../../apis/starBoard'
 import { useNavigate } from 'react-router-dom'
+import { LoginContext } from '../../contexts/LoginContextProvider'
 
-const UpdateContainer = ({starNo}) => {
+const UpdateContainer = ({ starNo }) => {
+
+  const { userInfo } = useContext(LoginContext)
+  console.log(userInfo);
+
   const navigate = useNavigate()
 
   // 🧊 state
@@ -30,11 +35,12 @@ const UpdateContainer = ({starNo}) => {
 
   const onUpdate = async (starNo, formData, headers) => {
     try {
+      formData.append('writer', userInfo.id)
       const response = await boards.update(formData, headers)
-      const status = await response.status
+      const status = response.status
       console.log(`게시글 수정 요청 결과 : ${status}`);
-      alert("게시글 수정 완료!"+starNo)
-      
+      alert("게시글 수정 완료!" + starNo)
+
 
       // 수정 후 게시글 조회 화면으로 이동
       navigate(-2)
@@ -50,7 +56,7 @@ const UpdateContainer = ({starNo}) => {
   }, [])
 
   return (
-    <UpdateForm starNo={starNo}  starBoard={starBoard} onUpdate={onUpdate} isLoading={isLoading}/>
+    <UpdateForm starNo={starNo} starBoard={starBoard} onUpdate={onUpdate} isLoading={isLoading} />
   )
 }
 

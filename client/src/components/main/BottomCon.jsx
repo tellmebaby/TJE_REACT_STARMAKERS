@@ -8,7 +8,7 @@ const BottomCon = () => {
     <div className='BottomCon-container'>
         <div className='BottomCon-left'>
             <div>
-            <spna>인기회원</spna>
+            <span>인기회원</span>
             </div>
             <PopularMembers/> 
         </div>

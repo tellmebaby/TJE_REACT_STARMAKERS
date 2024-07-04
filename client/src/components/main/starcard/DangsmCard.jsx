@@ -1,21 +1,25 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import StarCategory1 from './StarCategory1';
 import ClipCard from './ClipCard';
 import StarCategory2 from './StarCategory2';
 import './css/StarCategory2.css';
 import StarLink from './StarLink';
-import CardContent from './CardContent';
 import './css/CardContent.css';
 import './css/DangsmCard.css';
 import { LoginContext } from '../../../contexts/LoginContextProvider';
 import { StarLike } from '../../../apis/main/cards';
+import * as Swal from '../../../apis/alert'
+
 
 const DangsmCard = ({ card }) => {
   const { userInfo } = useContext(LoginContext);
   const cardType = card.card ? card.card : 'standard';
   const [showStar, setShowStar] = useState(false);
   const [updatedCard, setUpdatedCard] = useState(card);
+
+      // 페이지 이동
+      const navigate = useNavigate()
 
   const handleDoubleClick = async () => {
     if (userInfo) {
@@ -37,12 +41,14 @@ const DangsmCard = ({ card }) => {
         console.error('error by dangsmCard:', error);
       }
     } else {
-      alert("로그인해");
+      Swal.alert("로그인 해주세요", "로그인 화면으로 이동합니다.", "LOGIN",
+        () => { navigate("/login") }
+    )
     }
   };
 
   useEffect(() => {
-    console.log('Updated card:', updatedCard);
+    // console.log('Updated card:', updatedCard);
   }, [updatedCard]);
 
   return (
@@ -62,8 +68,12 @@ const DangsmCard = ({ card }) => {
             </h5>
             {/* <CardContent card={updatedCard} /> */}
             <div className="bottom-container">
-              <StarCategory2 card={updatedCard} />
-              <StarLink className='starLink' card={updatedCard} />
+              <div className='starCategory2-con'>
+                <StarCategory2 card={updatedCard} />
+              </div>
+              <div className='starLink-con'>
+                <StarLink card={updatedCard} />
+              </div>
             </div>
           </Link>
         </div>

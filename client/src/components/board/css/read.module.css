@@ -1,4 +1,3 @@
-
 .notice {
     font-family: "Montserrat Subrayada", sans-serif;
     font-weight: 700;
@@ -7,35 +6,39 @@
     padding-top: 50px;
     font-size: 50px;
 }
+
 .event {
     font-family: "Honk", system-ui;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
     font-variation-settings:
-    "MORF" 15,
-    "SHLN" 50;
+        "MORF" 15,
+        "SHLN" 50;
     text-align: center;
     padding-top: 50px;
     font-size: 50px;
     position: relative;
     overflow: hidden;
 }
+
 .event::before {
     content: '';
     position: absolute;
-    top: -50%; 
+    top: -50%;
     left: -50%;
-    width: 150%; 
+    width: 150%;
     height: 150%;
     background: linear-gradient(13deg, rgba(255, 255, 255, 0.3) 0%, transparent 80%);
     z-index: 1;
     animation: shine 2s infinite alternate;
 }
+
 @keyframes shine {
     from {
         transform: translateY(-50%) rotate(-45deg);
     }
+
     to {
         transform: translateY(50%) rotate(45deg);
     }
@@ -43,11 +46,16 @@
 
 .event span {
     position: relative;
-    z-index: 2; /* 텍스트가 가장 위에 오도록 설정 */
-    color: #FFF; /* 텍스트의 색상을 밝은 색으로 설정 */
-    display: inline-block; /* 텍스트의 너비만큼 요소를 설정 */
-    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7); /* 텍스트에 반사되는 빛 효과를 줍니다. */
+    z-index: 2;
+    /* 텍스트가 가장 위에 오도록 설정 */
+    color: #FFF;
+    /* 텍스트의 색상을 밝은 색으로 설정 */
+    display: inline-block;
+    /* 텍스트의 너비만큼 요소를 설정 */
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7);
+    /* 텍스트에 반사되는 빛 효과를 줍니다. */
 }
+
 .eventtext {
     font-family: "Noto Sans KR", sans-serif;
     font-optical-sizing: auto;
@@ -57,20 +65,25 @@
     padding-bottom: 50px;
     text-align: center;
 }
+
 .black-han-sans-regular {
     font-family: "Black Han Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
-    margin: 0;padding: 0;
+    margin: 0;
+    padding: 0;
     text-align: center;
     padding-top: 50px;
 }
+
 .black-han-sans-regular p {
-    color:#91ACCF;
+    color: #91ACCF;
     font-size: 50px;
-    margin: 0;padding: 0;
+    margin: 0;
+    padding: 0;
     /* border-bottom: 1px solid black; */
 }
+
 .noto-sans-kr {
     font-family: "Noto Sans KR", sans-serif;
     font-optical-sizing: auto;
@@ -79,199 +92,222 @@
     text-align: center;
     padding-top: 10px;
     padding-bottom: 50px;
-  }
-        .container2 {
-          max-width: 960px;
-          margin: 0 auto;
-          padding: 0 10px;
-          box-sizing: border-box;
-        }
-        .writer {
-            display: flex;
-            justify-content: space-around;
-            gap: 10px;
-            padding: 10px 0;
-            width: 100%;
-            margin-top: 50px;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
-        .writer label:first-child {
-            font-size: 15px;
-            font-weight: 500;
-        }
-        .writer label:last-child {
-            font-size: 15px;
-            color: rgba(192, 190, 183, 1);
-        }
-       .title-container {
-          width: 100%;
-          margin: 0 auto 15px;
+}
 
-          padding: 30px 30px;
-          border: 1px solid #000;
-          border-radius: 10px;
-        }
-        .title-container span {
-          font-weight: bold;
-          font-size: 20px;
-        }
-        .content-container {
-          width: 100%;
-          margin: 0 auto;
-          padding: 30px 30px;
-          border: 1px solid #000;
-          /* text-align: center; */
-        }
-        .content-container2 {
-            width: 100%;
-            margin: 0 auto;
-            padding: 30px 30px;
-            border: 1px solid #000;
-            border-radius: 5px;
-            min-height: 200px;
-            background-color: white;
-            /* text-align: center; */
-          }
-        .title-container hr {
-          margin-top: 10px;
-        }
-        h1 {
-          margin-top: 40px;
-          margin-bottom: 10px;
-        }
+.container2 {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
 
-        /* 버튼 */
-        .button-wrapper {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding: 10px 0;
-            width: 100%;
-        }
-        .button-container1 {
-            text-align: right;
-            padding: 10px 0;
-        }
-        .button-container1 button {
-            margin-left: 5px;
-            padding: 7px 20px;
-            background-color: rgba(37, 37, 37, 1);
-            border-radius: 3px;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: normal;
-            border: none;
-            cursor: pointer;
-        }
-        .button-container1 button:hover {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-            font-weight: bolder;
-            color: black;
-        }
-        .button-container2 {
-            text-align: right;
-            padding: 10px 0;
-        }
-        .button-container2 button {
-            margin-left: 5px;
-            padding: 7px 20px;
-            background-color: rgba(192, 190, 183, 1);
-            border-radius: 3px;
-            color: black;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: normal;
-            border: none;
-            cursor: pointer;
-        }
-        .button-container2 button:hover {
-            background-color: black;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-            font-weight: bolder;
-            color: white;
-        }
-        .button-container3 {
-            text-align: right;
-            padding: 10px 0;
-        }
-        .button-container3 input {
-            margin-left: 5px;
-            padding: 7px 20px;
-            border-radius: 3px;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: normal;
-            border: none;
-            cursor: pointer;
-        }
+.writer {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    padding: 10px 0;
+    width: 100%;
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
-        /* 댓글!!!! 입력*/
-        .reply-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px 0;
-            width: 100%;
-        }
-        .reply {
-            margin-left: 30px;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .reply-box {
-            flex-grow: 1;
-            display: flex;
-            justify-content: space-between;
-            width: 720px;
-            margin: 0 auto 15px;
-            padding: 30px 30px;
-            border: 1px solid #000;
-            background-color: rgb(240, 240, 240);
-        }
-        .reply-box textarea {
-            /* flex-grow: 1;  */
-            margin-right: 5px;
-            display: block;
-            width: 90%;
-            height: 100px;
-            overflow-y: scroll;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+.writer label:first-child {
+    font-size: 15px;
+    font-weight: 500;
+}
 
-        .reply-container button {
-            margin-left: 5px; 
-            padding: 10px 20px;
-            background-color: white;
-            color: black;
-            cursor: pointer;
-            border: 1px solid rgba(192, 190, 183, 1);
-            height: 100px;
-            border-radius: 3px;
-        }
-        .reply-container button:hover {
-            background-color: black;
-            color: white;
-            font-weight: bolder;
-        }
-        
-        /* 댓글 타이틀 */
-        .top-reply-list {
-            border-bottom: 1.7px solid #000;
-            width: 100%;
-        }
-        .top-reply-list label {
-            margin: 5px 10px;
-        }
+.writer label:last-child {
+    font-size: 15px;
+    color: rgba(192, 190, 183, 1);
+}
+
+.title-container {
+    width: 100%;
+    margin: 0 auto 15px;
+
+    padding: 30px 30px;
+    border: 1px solid #000;
+    border-radius: 10px;
+}
+
+.title-container span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.content-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px 30px;
+    border: 1px solid #000;
+    /* text-align: center; */
+}
+
+.content-container2 {
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px 30px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    min-height: 200px;
+    background-color: white;
+    /* text-align: center; */
+}
+
+.title-container hr {
+    margin-top: 10px;
+}
+
+h1 {
+    margin-top: 40px;
+    margin-bottom: 10px;
+}
+
+/* 버튼 */
+.button-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.button-container1 {
+    text-align: right;
+    padding: 10px 0;
+}
+
+.button-container1 button {
+    margin-left: 5px;
+    padding: 7px 20px;
+    background-color: rgba(37, 37, 37, 1);
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    cursor: pointer;
+}
+
+.button-container1 button:hover {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    color: black;
+}
+
+.button-container2 {
+    text-align: right;
+    padding: 10px 0;
+}
+
+.button-container2 button {
+    margin-left: 5px;
+    padding: 7px 20px;
+    background-color: rgba(192, 190, 183, 1);
+    border-radius: 3px;
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    cursor: pointer;
+}
+
+.button-container2 button:hover {
+    background-color: black;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    font-weight: bolder;
+    color: white;
+}
+
+.button-container3 {
+    text-align: right;
+    padding: 10px 0;
+}
+
+.button-container3 input {
+    margin-left: 5px;
+    padding: 7px 20px;
+    border-radius: 3px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    cursor: pointer;
+}
+
+/* 댓글!!!! 입력*/
+.reply-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.reply {
+    margin-left: 30px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.reply-box {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    width: 720px;
+    margin: 0 auto 15px;
+    padding: 30px 30px;
+    border: 1px solid #000;
+    background-color: rgb(240, 240, 240);
+}
+
+.reply-box textarea {
+    /* flex-grow: 1;  */
+    margin-right: 5px;
+    display: block;
+    width: 90%;
+    height: 100px;
+    overflow-y: scroll;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.reply-container button {
+    margin-left: 5px;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    border: 1px solid rgba(192, 190, 183, 1);
+    height: 100px;
+    border-radius: 3px;
+}
+
+.reply-container button:hover {
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+}
+
+/* 댓글 타이틀 */
+.top-reply-list {
+    border-bottom: 1.7px solid #000;
+    width: 100%;
+}
+
+.top-reply-list label {
+    margin: 5px 10px;
+}
 
         /* 댓글!!!! 목록 */
         #reply-list {
@@ -363,29 +399,30 @@
             padding: 5px 0px;
         }
 
-        /* 답글 버튼*/
-        .btn-rereply {
-            padding: 7px 15px;
-            margin-right: 5px;
-            border: none;
-            border-radius: 3px;
-            background-color: transparent;
-            color: rgba(192, 190, 183, 1);
-        }
+/* 답글 버튼*/
+.btn-rereply {
+    padding: 7px 15px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 3px;
+    background-color: transparent;
+    color: rgba(192, 190, 183, 1);
+}
+
 /* ---------------------------------------------------------헷갈릴까봐 나눠놓기 
     답글 입력과 답글 목록은 부모댓글 목록 안에!!!! 있음*/
-         /* 답글!!!! 입력*/
-         /* 답글 눌렀을 때 보이게 하기 */
-         .rereply-container {
-            /* display: none; */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px 0;
-            /* padding-left: 20px; */
-            width: 100%;
-            /* border-bottom: 0.7px solid rgba(192, 190, 183, 1); */
+/* 답글!!!! 입력*/
+/* 답글 눌렀을 때 보이게 하기 */
+.rereply-container {
+    /* display: none; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    /* padding-left: 20px; */
+    width: 100%;
+    /* border-bottom: 0.7px solid rgba(192, 190, 183, 1); */
 
         }
         
@@ -393,259 +430,326 @@
             /* margin-left: 30px;
             font-weight: bold;
             font-size: 20px; */
-            margin-left: 70px;
-        }
-        .rereply-box {
-            flex-grow: 1;
-            display: flex;
-            justify-content: space-between;
-            width: 720px;
-            margin: 0 auto 15px;
-            padding: 20px 20px;
-            border: 1px solid rgba(192, 190, 183, 1);
-            border-radius: 3px;
-            margin-right: 10px;
-        }
-        .rereply-box textarea {
-            /* flex-grow: 1;  */
-            margin-right: 5px;
-            display: block;
-            width: 90%;
-            height: 100px;
-            overflow-y: scroll;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    margin-left: 70px;
+}
 
-        .rereply-container button {
-            margin-left: 5px; 
-            padding: 10px 20px;
-            background-color: white;
-            color: black;
-            cursor: pointer;
-            border: 1px solid rgba(192, 190, 183, 1);
-            height: 100px;
-            border-radius: 3px;
-        }
-        .rereply-container button:hover {
-            background-color: black;
-            color: white;
-            font-weight: bolder;
-        }
+.rereply-box {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    width: 720px;
+    margin: 0 auto 15px;
+    padding: 20px 20px;
+    border: 1px solid rgba(192, 190, 183, 1);
+    border-radius: 3px;
+    margin-right: 10px;
+}
 
-          /* .reply-textarea {
+.rereply-box textarea {
+    /* flex-grow: 1;  */
+    margin-right: 5px;
+    display: block;
+    width: 90%;
+    height: 100px;
+    overflow-y: scroll;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.rereply-container button {
+    margin-left: 5px;
+    padding: 10px 20px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    border: 1px solid rgba(192, 190, 183, 1);
+    height: 100px;
+    border-radius: 3px;
+}
+
+.rereply-container button:hover {
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+}
+
+/* .reply-textarea {
             width: 100%;
             height: 80px;
             margin-bottom: 10px;
           } */
 
-        /* 답글!!!! 목록 */
-        #rereply-list {
-            display: block;
-            width: 100%;
-            display: block;
-            padding: 0 10px 5px;
-            box-sizing: border-box;
-            border-top: 0.7px solid rgba(192, 190, 183, 1);
-            /* border-top: 0.7px solid red; */
-        }
-        .rereply-top {
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
+/* 답글!!!! 목록 */
+#rereply-list {
+    display: block;
+    width: 100%;
+    display: block;
+    padding: 0 10px 5px;
+    box-sizing: border-box;
+    border-top: 0.7px solid rgba(192, 190, 183, 1);
+    /* border-top: 0.7px solid red; */
+}
 
-        }
-        .rereply-writer {
-            font-weight: bold;
-        }
-        .rereply-regDate {
-            color: rgba(192, 190, 183, 1);
-        }
-        .rereply-regDate .icon {
-            color: #000;
-            margin: 0 20px;
-        }
-        .rereply-middle {
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-        .rereply-content {
-            flex-grow: 1;
-            margin-right: 20px;
-        }
-        .rereply-button {
-            flex-shrink: 0;
-            padding: 5px 0;
-            text-align: right;
-            display: flex;
-        }
-        .btn-rereply-update {
-            padding: 5px 10px;
-            background-color: rgba(192, 190, 183, 1);
-            border-radius: 3px;
-            color: black;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: normal;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-rereply-delete {
-            margin-left: 5px;
-            padding: 5px 10px;
-            background-color: rgba(37, 37, 37, 1);
-            border-radius: 3px;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            font-weight: normal;
-            border: none;
-            cursor: pointer;
-        }
-        .rereply-rereply {
-            align-items: left;
-            padding: 5px 0px;
-        }
+.rereply-top {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
 
-        /* 댓글 수정 */
-        .inner {
-            padding: 5px 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+}
 
-        .main-image {
-            position: relative;
-            display: block;
-            width: 100%;
-            max-width: 960px; /* 컨테이너 안으로 */
-            margin: 0 auto;
-        }
-        
-        .main-image img {
-            width: 100%;
-            height: auto;
-            max-height: 450px;
-            object-fit: cover;
-        }
-        
-        .main-image .text {
-            position: absolute;
-            /* top: 80%; */
-            bottom: 10px;
-            left: 10px;
-            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-            /* width: 100%; */
-            /* transform: translate(-50%, -50%); */
-            padding: 10px;
-      
-            width: 92%;
-            color: #FFF;
-          
-        }
-        
-        .main-image .icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
+.rereply-writer {
+    font-weight: bold;
+}
 
-        .container2 .button-box button {
-            font-size: 13px;
-            color : #91ACCF;
-            border: 1px #91ACCF solid;
-            border-radius : 10px;
-            background-color: white;
-            width: 50px;
-            height: 30px;
-            margin-left : 4px;
-        }
+.rereply-regDate {
+    color: rgba(192, 190, 183, 1);
+}
 
-        .container2 .button-box input {
-            font-size: 13px;
-            color : white;
-            border: 1px #91ACCF solid;
-            border-radius : 10px;
-            background-color: #91ACCF;
-            width: 50px;
-            height: 30px;
-            margin-left : 4px;
-        }
+.rereply-regDate .icon {
+    color: #000;
+    margin: 0 20px;
+}
 
-        .body {
-            background-color: rgb(241, 241, 242) ;
-        }
+.rereply-middle {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
 
-        .container2 .read-top span {
-            font-size: 12px;
-        }
+.rereply-content {
+    flex-grow: 1;
+    margin-right: 20px;
+}
 
-        .button-box1 .like-btn {
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            border: 1px solid rgb(0, 0, 0);
-            border-radius: 10px;
-        }
+.rereply-button {
+    flex-shrink: 0;
+    padding: 5px 0;
+    text-align: right;
+    display: flex;
+}
 
-        .button-box1 .like-btn i {
-            
-        }
+.btn-rereply-update {
+    padding: 5px 10px;
+    background-color: rgba(192, 190, 183, 1);
+    border-radius: 3px;
+    color: black;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    cursor: pointer;
+}
 
-        .button-box button:first-child,
+.btn-rereply-delete {
+    margin-left: 5px;
+    padding: 5px 10px;
+    background-color: rgba(37, 37, 37, 1);
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    border: none;
+    cursor: pointer;
+}
+
+.rereply-rereply {
+    align-items: left;
+    padding: 5px 0px;
+}
+
+/* 댓글 수정 */
+.inner {
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-image {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 960px;
+    /* 컨테이너 안으로 */
+    margin: 0 auto;
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+}
+
+.main-image .text {
+    position: absolute;
+    /* top: 80%; */
+    bottom: 10px;
+    left: 10px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    /* width: 100%; */
+    /* transform: translate(-50%, -50%); */
+    padding: 10px;
+
+    width: 92%;
+    color: #FFF;
+
+}
+
+.main-image .icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.container2 .button-box button {
+    font-size: 13px;
+    color: #91ACCF;
+    border: 1px #91ACCF solid;
+    border-radius: 10px;
+    background-color: white;
+    width: 50px;
+    height: 30px;
+    margin-left: 4px;
+}
+
+.container2 .button-box input {
+    font-size: 13px;
+    color: white;
+    border: 1px #91ACCF solid;
+    border-radius: 10px;
+    background-color: #91ACCF;
+    width: 50px;
+    height: 30px;
+    margin-left: 4px;
+}
+
+.body {
+    background-color: rgb(241, 241, 242);
+}
+
+.container2 .read-top span {
+    font-size: 12px;
+}
+
+.button-box1 .like-btn {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    color: #91accf;
+}
+
+.button-box1 .like-btn:hover {
+    color: white;
+    background-color: #91accf;
+    border-color: #91accf;
+    box-shadow: 1px 1px 1px #3e6496;
+}
+
+.like-span {
+    margin-left: 8px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.button-box1 .like-btn i {}
+
+.button-box button:first-child,
 .button-box input {
-  font-size: 13px;
-  color: #91accf;
-  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
-  border-radius: 10px;
-  background-color: white;
-  width: 50px;
-  height: 30px;
-  margin-left: 4px;
+    font-size: 13px;
+    color: #91accf;
+    border: 1px solid #91accf;
+    /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+    border-radius: 10px;
+    background-color: white;
+    width: 50px;
+    height: 30px;
+    margin-left: 4px;
 }
 
 .button-box button:first-child:hover,
 .button-box input:hover {
-  font-size: 13px;
-  color: white;
-  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
-  border-radius: 10px;
-  background-color: #91accf;
-  width: 50px;
-  height: 30px;
-  margin-left: 4px;
-  box-shadow: 1px 1px 1px #3e6496;
+    font-size: 13px;
+    color: white;
+    border: 1px solid #91accf;
+    /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+    border-radius: 10px;
+    background-color: #91accf;
+    width: 50px;
+    height: 30px;
+    margin-left: 4px;
+    box-shadow: 1px 1px 1px #3e6496;
 }
 
 
 
 .button-box button {
-  font-size: 13px;
-  color: white;
-  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
-  border-radius: 10px;
-  background-color: #91accf;
-  width: 50px;
-  height: 30px;
-  margin-left: 4px;
+    font-size: 13px;
+    color: white;
+    border: 1px solid #91accf;
+    /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+    border-radius: 10px;
+    background-color: #91accf;
+    width: 50px;
+    height: 30px;
+    margin-left: 4px;
 }
 
 .button-box button:hover {
-  font-size: 13px;
-  color: #91accf;
-  border: 1px solid #91accf; /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
-  border-radius: 10px;
-  background-color: white;
-  width: 50px;
-  height: 30px;
-  margin-left: 4px;
-  box-shadow: 1px 1px 1px #3e6496;
+    font-size: 13px;
+    color: #91accf;
+    border: 1px solid #91accf;
+    /* border 속성에 solid를 추가하여 실선으로 테두리를 생성합니다. */
+    border-radius: 10px;
+    background-color: white;
+    width: 50px;
+    height: 30px;
+    margin-left: 4px;
+    box-shadow: 1px 1px 1px #3e6496;
 }
+
+.mainImage {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 960px;
+    /* 컨테이너 안으로 */
+    margin: 0 auto;
+}
+
+.mainImage img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+}
+
+.text {
+    position: absolute;
+    /* top: 80%; */
+    bottom: 10px;
+    left: 10px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    /* width: 100%; */
+    /* transform: translate(-50%, -50%); */
+    padding: 10px;
+
+    width: 92%;
+    color: #FFF;
+
+}
+
+/* .mainImage .icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+} */
