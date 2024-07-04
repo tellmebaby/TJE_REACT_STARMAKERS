@@ -1,13 +1,35 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { LoginContext } from '../contexts/LoginContextProvider';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Container, Offcanvas, Button } from 'react-bootstrap';
 import './Header.css';
 
 const Header = () => {
-    const { isLogin, logout, roles } = useContext(LoginContext);
+    const { userInfo, isLogin, logout, roles } = useContext(LoginContext);
     const [showOffcanvas, setShowOffcanvas] = useState(false);
     const [showCollapse, setShowCollapse] = useState(false);
+    const [userImgUrl, setUserImgUrl] = useState('');
+
+    useEffect(() => {
+        if (userInfo && userInfo.userNo) {
+            fetchUserImage(userInfo.userNo);
+        }
+    }, [userInfo]);
+
+    const fetchUserImage = async (userNo) => {
+        try {
+            const response = await fetch(`/file/api/getFile?userNo=${userNo}`);
+            if (response.ok) {
+                const userImgId = await response.json();
+                setUserImgUrl(`/file/img/${userImgId}`);
+            } else {
+                throw new Error('Failed to fetch image ID');
+            }
+        } catch (error) {
+            console.error('Error fetching image ID:', error);
+        }
+    };
+
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -48,7 +70,8 @@ const Header = () => {
                                     <Nav.Link as={Link} to="/join">회원가입</Nav.Link>
                                 </>
                             ) : (
-                                <NavDropdown title={<img id="thumbnail" className="rounded-circle rounded-circle-custom" alt="Thumbnail Image" />} id="profileDropdown">
+                                // <NavDropdown title={<img id="thumbnail" className="rounded-circle rounded-circle-custom" alt="Thumbnail Image" />} id="profileDropdown">
+                                <NavDropdown title={<img src={userImgUrl} className="rounded-circle rounded-circle-custom" alt="User Thumbnail" />} id="profileDropdown">
                                     {roles.isAdmin && (
                                         <NavDropdown.Item as={Link} to="/admin">관리자</NavDropdown.Item>
                                     )}

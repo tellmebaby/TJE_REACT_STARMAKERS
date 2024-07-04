@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './css/Search.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { cardListToStarBoard } from '../../apis/main/cards';
 
 const Search = () => {
   const bgImageRef = useRef(null);
-  const [bgImage, setBgImage] = useState('../../../../public/img/indexTopBackImg.jpg');
+  const [bgImage, setBgImage] = useState('/img/indexTopBackImg.jpg');
   const [searchKeyword, setSearchKeyword] = useState('');
   const navigate = useNavigate();
 
@@ -63,6 +64,11 @@ const Search = () => {
       navigate('/starList', { state: { keyword: searchKeyword } });
     }
   };
+
+  const handleCategoryClick = (category) => {
+    navigate(`/starList?option=${category}`);
+  };
+
   return (
     <div className="container">
       <div
@@ -94,14 +100,70 @@ const Search = () => {
           </div>
           <div className='Search-Btn-CategoryCon'>
             <div className='Search-Btn-CategoryArt'>
-              <div className='atr' onMouseOver={handleMouseOverMu} onMouseOut={handleMouseOut}>MUSIC</div>
-              <div className='atr' onMouseOver={handleMouseOverTr} onMouseOut={handleMouseOut}>TRAVEL</div>
-              <div className='atr' onMouseOver={handleMouseOverFd} onMouseOut={handleMouseOut}>FOOD</div>
-              <div className='atr' onMouseOver={handleMouseOverGm} onMouseOut={handleMouseOut}>GAME</div>
-              <div className='atr' onMouseOver={handleMouseOverAm} onMouseOut={handleMouseOut}>ANIMAL</div>
-              <div className='atr' onMouseOver={handleMouseOverWo} onMouseOut={handleMouseOut}>WORKOUT</div>
-              <div className='atr' onMouseOver={handleMouseOverFs} onMouseOut={handleMouseOut}>FASHION</div>
-              <div className='atr' onMouseOver={handleMouseOverAs} onMouseOut={handleMouseOut}>ASMR</div>
+           <div 
+                className='atr' 
+                onMouseOver={handleMouseOverMu} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('music')}
+              >
+                MUSIC
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverTr} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('travel')}
+              >
+                TRAVEL
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverFd} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('food')}
+              >
+                FOOD
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverGm} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('game')}
+              >
+                GAME
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverAm} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('animal')}
+              >
+                ANIMAL
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverWo} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('workOut')}
+              >
+                WORKOUT
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverFs} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('fashion')}
+              >
+                FASHION
+              </div>
+              <div 
+                className='atr' 
+                onMouseOver={handleMouseOverAs} 
+                onMouseOut={handleMouseOut}
+                onClick={() => handleCategoryClick('asmr')}
+              >
+                ASMR
+              </div>
             </div>
           </div>
         </div>
