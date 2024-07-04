@@ -4,6 +4,7 @@ import ReplyList from './ReplyList';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useSession } from '../../contexts/SessionContext';
+import swal from "sweetalert2";
 
 const Read = ({
   starNo,
@@ -110,7 +111,7 @@ const Read = ({
       </div>
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button>
-        {userInfo && userInfo.userNo === starBoard.userNo && (
+        {userInfo && userInfo.userNo === starBoard.userNo?
           <>
             {starBoard.type == "starCard" ?
               <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/starUpdate/${starNo}`}>수정</button>
@@ -119,7 +120,11 @@ const Read = ({
             }
             <button className={styles['btn-delete']} type="button" onClick={() => onDelete(starNo)}>삭제</button>
           </>
-        )}
+         :
+         <>
+            <button className={styles['btn-update']} type="button" >후원</button>
+         </>
+        }
       </div>
       <div className={styles['reply-container']}>
         <div className={styles['reply-box']}>
