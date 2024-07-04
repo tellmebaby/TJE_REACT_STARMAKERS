@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StarCardList from './StarCardList';
 import './css/ScList.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link } from 'react-router-dom';
 
-const ScList = () => {
+const ScList = ({option}) => {
   const [selectedOptions, setSelectedOptions] = useState(new Map());
   const [searchKeyword, setSearchKeyword] = useState('');
+
+
+  useEffect(() => {
+    if (option) {
+      setSelectedOptions(new Map([[option, true]]));
+    }
+  }, [option]);
 
   const handleInputClick = (option, value = true) => {
     setSelectedOptions((prevOptions) => {

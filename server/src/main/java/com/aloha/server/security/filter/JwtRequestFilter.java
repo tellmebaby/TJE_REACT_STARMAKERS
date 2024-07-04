@@ -36,7 +36,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // HTTP 헤더에서 토큰을 가져옴
         String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
-        log.info("authorization : " + header);
+        // log.info("authorization : " + header);
 
         
         //✅ Bearer + {jwt} 체크

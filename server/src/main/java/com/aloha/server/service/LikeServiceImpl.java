@@ -43,7 +43,7 @@ public class LikeServiceImpl implements LikeService {
         starBoard.setLikes(likes);
         int result = starMapper.update(starBoard);
         if( result > 0 ){
-            log.info("업데이트 성공");
+            // log.info("업데이트 성공");
         }
 
 

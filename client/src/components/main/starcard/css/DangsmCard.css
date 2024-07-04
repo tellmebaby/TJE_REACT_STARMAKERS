@@ -295,10 +295,25 @@ height: 40%;
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     width: 100%;
     height: 100%;
     align-items: end;
     /* padding: 0; */
     /* height: 20%; */
 }
+
+.starLink-con {
+    display: flex;
+    align-items: end;
+    text-align: center;
+    height: 100%;
+    width: 35%;
+}
+
+.starCategory2-con {
+    /* display: flex; */
+    /* flex-direction: column-reverse; */
+    /* align-items: flex-start; */
+    width: 65%;
+  }
+  

@@ -260,6 +260,9 @@ public class StarController {
             Page page,
             Option option, int userNo) throws Exception {
 
+        if ( option != null ){
+            log.info("받아온 옵션값 :::::::::::::::: " + option);
+        }
         List<StarBoard> starList;
 
         page.setRows(24); // 한 번에 불러올 행 수 설정
@@ -451,7 +454,7 @@ public class StarController {
 
     @GetMapping("/mainlist")
     public ResponseEntity<?> getMainStarList(@AuthenticationPrincipal CustomUser customUser) throws Exception {
-        log.info("시작이야");
+        // log.info("시작이야");
         String type = "starCard";
         if (customUser != null) {
             Users user = customUser.getUser();
@@ -464,7 +467,7 @@ public class StarController {
         }
         // 로그인 안했잖아 그래도 줄게 카드리스트
         List<StarBoard> starCardList = starService.mainCardList(type);
-        log.info("성공했어 데이터를 가져왔어 : " + starCardList.size());
+        // log.info("성공했어 데이터를 가져왔어 : " + starCardList.size());
         return new ResponseEntity<>(starCardList, HttpStatus.OK);
     }
 
@@ -478,7 +481,7 @@ public class StarController {
     public ResponseEntity<?> starMember() throws Exception {
         try {
             List<StarUser> starMemberList = userService.starMemberList();
-            log.info("인기회원 문제없이 불러왔습니다 주인님 불러온 리스트 수: " + starMemberList.size());
+            // log.info("인기회원 문제없이 불러왔습니다 주인님 불러온 리스트 수: " + starMemberList.size());
             return new ResponseEntity<>(starMemberList, HttpStatus.OK);
         } catch (Exception e) {
             log.info("인기회원 불러오다 문제가 생겨버렸네요 히힉");
@@ -495,7 +498,7 @@ public class StarController {
     public ResponseEntity<?> newStarMember() throws Exception {
         try {
             List<StarUser> newStarMember = userService.newMemberList();
-            log.info("신인회원 문제없이 불러왔습니다 주인님 불러온 리스트 수: " + newStarMember.size());
+            // log.info("신인회원 문제없이 불러왔습니다 주인님 불러온 리스트 수: " + newStarMember.size());
             return new ResponseEntity<>(newStarMember, HttpStatus.OK);
         } catch (Exception e) {
             log.info("신인회원 불러오다 문제가 생겨버렸네요 히힉 여기는 starController");
