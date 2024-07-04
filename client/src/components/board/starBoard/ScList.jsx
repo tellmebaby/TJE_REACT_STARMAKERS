@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import StarCardList from './StarCardList';
 import './css/ScList.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+// import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link } from 'react-router-dom';
 
 const ScList = () => {

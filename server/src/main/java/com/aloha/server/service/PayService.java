@@ -23,4 +23,7 @@ public interface PayService {
 
     // 관리자 회원별 결제조회
     public Pay totalPrice(int userNo) throws Exception;
+
+
+    public Pay select_code(String code);
 }

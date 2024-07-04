@@ -38,8 +38,23 @@ public class PayController {
 
 
     // 결제완료요청
-    @PostMapping("/success")
+    @PostMapping("")
     public ResponseEntity<Map<String, Object>> paymentSuccess(@RequestBody Pay pay) throws Exception {
+
+        Map<String, Object> response = new HashMap<>();
+
+        String code = pay.getCode();
+        Pay chk = payService.select_code(code);
+
+        log.info("code :" + chk);
+        
+        // 중복결제시도
+        if(chk!=null){
+            response.put("status", "success");
+            response.put("msg", "결제완료상태");
+            response.put("pay", chk);
+            return ResponseEntity.ok(response);
+        }
 
         pay.setProductTitle("홍보카드 기간제 상품");
         pay.setStatus("결제완료");
@@ -51,15 +66,15 @@ public class PayController {
         starBoard.setStatus("홍보요청");
         starService.update(starBoard);
 
-        Map<String, Object> response = new HashMap<>();
+        
 
         if (payNo > 0)
             response.put("status", "success");
         else
             response.put("status", "fail");
 
-        // response.put("payNo", payNo);
-        response.put("starNo", pay.getStarNo());
+        pay.setPayNo(payNo);
+        response.put("pay", pay);
 
         return ResponseEntity.ok(response);
     }
