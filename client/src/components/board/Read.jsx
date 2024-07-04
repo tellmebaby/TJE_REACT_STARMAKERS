@@ -12,13 +12,17 @@ const Read = ({
   isLoading,
   replyList,
   newReply,
+  answerContent,
+  setAnswerContent,
   replyUpdate,
   onReplySubmit,
   handleReplyDelete,
   handleReplyUpdate,
   onDelete,
   handleReplySubmit,
+  handleRereplySubmit,
   handleNewReplyChange,
+  handleNewRereplyChange,
   userInfo,
   isLogin
 }) => {
@@ -84,11 +88,17 @@ const Read = ({
       {Array.isArray(replyList) && replyList.map(reply => (
           <ReplyList 
             key={reply.replyNo} 
-            reply={reply} 
+            reply={reply}
             sessionUser={session ? session.user : null} 
             deleteReply={handleReplyDelete}
             updateReply={handleReplyUpdate}
             insertAnswer={onReplySubmit}
+            handleReplySubmit={handleReplySubmit}
+            handleRereplySubmit={handleRereplySubmit}
+            handleNewReplyChange={handleNewReplyChange}
+            handleNewRereplyChange={handleNewRereplyChange}
+            answerContent={answerContent}
+            setAnswerContent={setAnswerContent}
           />
         ))}
       </div>

@@ -282,7 +282,7 @@
             padding: 10px 5px;
             box-sizing: border-box;
         }
-        #reply-line {
+        .reply-line {
             border-top: 0.7px solid #000;
         }
         #reply-listbox {
@@ -387,17 +387,8 @@
             width: 100%;
             /* border-bottom: 0.7px solid rgba(192, 190, 183, 1); */
 
-            visibility: hidden; /* 숨김 */
-            height: 0; /* 높이 0으로 설정 */
-            overflow: hidden; /* 콘텐츠 오버플로우 숨김 */
         }
-        .rereply-container.visible {
-            visibility: visible; /* 보임 */
-            height: auto; /* 원래 높이로 설정 */
-            padding: 0;
-            padding-left: 70px;
-            transition: visibility 0.3s, height 0.3s;
-        }
+        
         .rereply {
             /* margin-left: 30px;
             font-weight: bold;
