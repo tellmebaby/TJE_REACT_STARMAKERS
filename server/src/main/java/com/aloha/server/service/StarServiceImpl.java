@@ -44,7 +44,7 @@ public class StarServiceImpl implements StarService {
         List<StarBoard> starList = starMapper.list(type, page, option);
         if (starList != null && !starList.isEmpty()) {
             for (StarBoard starBoard : starList) {
-                log.info("글 목록 : " + starBoard.toString());
+                // log.info("글 목록 : " + starBoard.toString());
             }
         } else {
             log.info("게시판 조회가 안 됩니다..");
@@ -179,7 +179,7 @@ public class StarServiceImpl implements StarService {
 
     @Override
     public List<StarBoard> getMainCardListForLoggedInUser(int userNo, String type) throws Exception {
-        log.info("유저번호 받아왔나 여기는 서비스 : " + userNo);
+        // log.info("유저번호 받아왔나 여기는 서비스 : " + userNo);
         List<StarBoard> starList = starMapper.getMainCardListForLoggedInUser(userNo, type);
         return starList;
     }

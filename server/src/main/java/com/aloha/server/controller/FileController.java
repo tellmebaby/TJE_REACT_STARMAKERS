@@ -276,4 +276,16 @@ public class FileController {
         }
     }
 
+    //유저 이미지 정보
+    @GetMapping("/api/getFile")
+    public ResponseEntity<?> getFileByUserNo(@RequestParam("userNo") int userNo) throws Exception {
+        Files file = fileService.selectByUserNoAndStarNo(userNo);
+        if (file != null) {
+            int userImgId = file.getFileNo();
+            return ResponseEntity.ok(userImgId);  // 성공적으로 파일 번호만 반환
+        } else {
+            return ResponseEntity.notFound().build();  // 파일 정보가 없으면 Not Found 반환
+        }
+    } 
+
 }

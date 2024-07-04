@@ -31,11 +31,11 @@ const PopularMembers = () => {
                     <div>Loading...</div>
                 ) : (
                     popsList.map(pops => (
-                        <Link to={`/${pops.starNo}`} className='pop-link' >
-                        <div key={pops.userNo} className="pop-item">
-                            <img src={`/file/img/${pops.userImgId}`} alt="User Icon" className="user-icon" />
-                            <h5>{pops.writer}</h5>
-                        </div>
+                        <Link key={pops.userNo} to={`/${pops.starNo}`} className='pop-link'>
+                            <div className="pop-item">
+                                <img src={`/file/img/${pops.userImgId}`} alt="User Icon" className="user-icon" />
+                                <h5>{pops.writer}</h5>
+                            </div>
                         </Link>
                     ))
                 )}

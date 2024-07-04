@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import com.aloha.server.dto.Pay;
 import com.aloha.server.mapper.PayMapper;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @Service
 public class PayServiceImpl implements PayService {
 
@@ -53,6 +57,11 @@ public class PayServiceImpl implements PayService {
        return totalPrice;
         
         
+    }
+
+    @Override
+    public Pay select_code(String code) {
+        return payMapper.select_code(code);
     }
     
 }
