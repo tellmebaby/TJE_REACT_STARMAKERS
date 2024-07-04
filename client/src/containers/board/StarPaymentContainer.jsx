@@ -1,66 +1,74 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import * as starBoards from '../../apis/starBoard'
 import Payment from '../../components/board/Payment'
 import { useNavigate, useSearchParams } from "react-router-dom";
+import * as pay from '../../apis/pay';
+
 
 const StarPaymentContainer = ({ starNo }) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [starBoard, setStarBoard] = useState({})
-  const [isLoading, setLoading] = useState(false)
+  const [starBoard, setStarBoard] = useState({});
+  const [isLoading, setLoading] = useState(false);
+  const [status, setStatus] = useState(0);
 
-  // 🌞 함수
-  const getBoard = async () => {
-    setLoading(true)
-    const response = await starBoards.select(starNo)
-    const data = await response.data
-
-    setStarBoard(data.starBoard)
-    setLoading(false)
-
-  }
+  const getBoard = useCallback(async (starNo) => {
+    setLoading(true);
+    try {
+      const response = await starBoards.select(starNo);
+      const data = response.data;
+      setStarBoard(data.starBoard);
+    } catch (error) {
+      console.error("별 게시판을 가져오는 중 에러 발생:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (starNo > 0) {
-      getBoard();
+      getBoard(starNo);
     } else {
-      const requestData = {
-        orderId: searchParams.get("orderId"),
-        amount: searchParams.get("amount"),
-        paymentKey: searchParams.get("paymentKey"),
-      };
-
-      async function confirm() {
-        const response = await fetch("/confirm", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        });
-
-        const json = await response.json();
-
-        if (!response.ok) {
-          // 결제 실패 비즈니스 로직을 구현하세요.
-          // navigate(`/payments/fail?message=${json.message}&code=${json.code}`);
-          return;
-        } else {
-          // 결제 성공 비즈니스 로직을 구현하세요.
-        }
-      }
+      setStatus(1);
       confirm();
     }
-  }, [starNo, getBoard, searchParams]);
+  }, [starNo]);
 
+  const confirm = useCallback(async () => {
+    const orderId = searchParams.get("orderId");
+    const amount = searchParams.get("amount");
+    const paymentKey = searchParams.get("paymentKey");
+    const starNoParam = searchParams.get("starNo");
+    const userNo = searchParams.get("userNo");
+
+    const requestData = {
+      code: orderId,
+      price: amount,
+      paymentKey: paymentKey,
+      starNo: starNoParam,
+      userNo: userNo
+    };
+
+    try {
+      const response = await pay.payInsert(requestData);
+      const data = response.data;
+
+      if (response.status !== 200) {
+        navigate(`/payments/fail`);
+        return;
+      }
+
+      const starNo_select = data.pay.starNo;
+      getBoard(starNo_select);
+    } catch (error) {
+      console.error("결제 확인 중 에러 발생:", error);
+      navigate(`/payments/fail`);
+    }
+  }, [searchParams, navigate, getBoard]);
 
   return (
-    starNo > 0 ? (
-      <Payment starBoard={starBoard} isLoading={isLoading} />
-    ) : (
-      <div>스타 정보가 없습니다.</div>
-    )
-  )
-}
+    <Payment starBoard={starBoard} isLoading={isLoading} status={status} />
+  );
+};
 
-export default StarPaymentContainer
+export default StarPaymentContainer;

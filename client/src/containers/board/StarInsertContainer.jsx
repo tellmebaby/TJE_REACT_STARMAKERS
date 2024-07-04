@@ -14,12 +14,13 @@ const StarInsertContainer = ({type}) => {
       try {
         const response = await boards.insert(formData, headers)
         const data = await response.data 
-        alert("게시글 등록 완료!")
+        
 
         if(data.card=='유료홍보'){
           navigate(`/starPayment/`+data.starNo);
         }else{
-          navigate('/starCard')
+          alert("게시글 등록 완료!")
+          navigate('/starList')
         }
 
       } catch (error) {
