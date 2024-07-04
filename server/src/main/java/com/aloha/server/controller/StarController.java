@@ -455,35 +455,34 @@ public class StarController {
     // }
 
     // read 페이지에서 적용되게 하려고 수정해본 것...혹시 몰라 위에 원래 코드는 주석처리 해둠요
+    
     @PostMapping("/like")
-    public ResponseEntity<Map<String, Object>> like(@RequestParam("userNo") int userNo,
-            @RequestParam("starNo") int starNo) {
+    public ResponseEntity<Map<String, Object>> like(@AuthenticationPrincipal CustomUser customUser, 
+                                                    @RequestBody Map<String, Integer> payload) {
         Map<String, Object> response = new HashMap<>();
         try {
+            int starNo = payload.get("starNo");
+            int userNo = customUser.getUser().getUserNo(); // CustomUser에서 userNo를 가져옴
             boolean liked = likeService.toggleLike(userNo, starNo);
+            int likeCount = likeService.likeCount(starNo);
             response.put("liked", liked);
+            response.put("likeCount", likeCount);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("error", "An error occurred: " + e.getMessage());
             return ResponseEntity.status(500).body(response);
         }
     }
+    
 
     @PostMapping("/checkLike")
-    public ResponseEntity<Integer> checkLiked(@RequestBody Map<String, Integer> payload, HttpSession session)
-            throws Exception {
+    public ResponseEntity<Integer> checkLiked(@AuthenticationPrincipal CustomUser customUser,
+                                              @RequestBody Map<String, Integer> payload) throws Exception {
         int starNo = payload.get("starNo");
-        Users user = (Users) session.getAttribute("user");
+        Users user = customUser.getUser();
         if (user != null) {
             int result = likeService.checkLiked(user.getUserNo(), starNo);
-            int likeCheck;
-            if (result > 0) {
-                likeCheck = 1;
-            } else {
-                likeCheck = 0;
-            }
-            // log.info("있나 유저 넘 이랑 스타 넘 : " + user.getUserNo() + "," + starNo + "=" +
-            // likeCheck);
+            int likeCheck = (result > 0) ? 1 : 0;
             return ResponseEntity.ok(likeCheck);
         }
         return ResponseEntity.ok(0);

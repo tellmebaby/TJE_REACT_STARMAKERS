@@ -60,5 +60,11 @@ public class LikeServiceImpl implements LikeService {
         Integer like = likeMapper.select(userNo, starNo);
         return like != null ? like.intValue() : 0;
     }
+
+    @Override
+    public int likeCount(int starNo) throws Exception {
+
+        return likeMapper.likeCount(starNo);
+    }
     
 }
