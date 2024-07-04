@@ -20,8 +20,8 @@ const ReadContainer = ({ starNo }) => {
     setLoading(true);
     const response = await starBoards.select(starNo);
     const data = await response.data;
-    setStarBoard(data.starBoard);
-    setFileList(data.fileList || []);
+    setStarBoard(await data.starBoard);
+    setFileList(await data.fileList || []);
     setLoading(false);
   };
 

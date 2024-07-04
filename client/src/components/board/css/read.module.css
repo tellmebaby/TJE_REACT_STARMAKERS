@@ -658,3 +658,39 @@
   margin-left: 4px;
   box-shadow: 1px 1px 1px #3e6496;
 }
+
+.mainImage {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 960px; /* 컨테이너 안으로 */
+    margin: 0 auto;
+}
+
+.mainImage img {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+}
+
+.text {
+    position: absolute;
+    /* top: 80%; */
+    bottom: 10px;
+    left: 10px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    /* width: 100%; */
+    /* transform: translate(-50%, -50%); */
+    padding: 10px;
+
+    width: 92%;
+    color: #FFF;
+  
+}
+
+/* .mainImage .icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+} */
