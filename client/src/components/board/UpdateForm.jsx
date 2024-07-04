@@ -114,29 +114,12 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     <div className="update">
       <div class="body lg" >
         <cneter className="d-flex justify-content-center mb-3">
-        {
-          starBoard.type == 'an' ?
-            <h1>공지사항 수정</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'event' ?
-            <h1>이벤트 수정</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'review' ?
-            <h1>후기 수정</h1>
-          : <></>
-        }
-        {
-          starBoard.type == 'starCard' ?
-            <h1>홍보 수정</h1>
-          : <></>
-        }
+        {starBoard.type === 'an' && <h1>공지사항 수정</h1>}
+        {starBoard.type === 'event' && <h1>이벤트 수정</h1>}
+        {starBoard.type === 'review' && <h1>후기 수정</h1>}
          </cneter>
         {
-          !isLogin ?
+          !isLogin || isLoading ?
             <div className="container content-box mt-3 mb-3">
               <div className="d-flex justify-content-center mb-5" >
                 <p>로그인이 필요한 페이지입니다.</p>
