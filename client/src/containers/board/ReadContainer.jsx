@@ -63,56 +63,56 @@ const ReadContainer = ({ starNo }) => {
 
 
  // 댓글--------------------------------------------댓글
-  const handleReplySubmit = async (e) => {
-    // e.preventDefault();
-  
-  
-    try {
-      const replyData = {
-        starNo,
-        content: newReply,
-        userNo: userInfo.userNo,
-        writer: userInfo.id
-        
-        // username: "?"
-      };
-      console.log("아이디 제발 : ",userInfo.id)
-      
-      if (newReply.trim() === "") {
-        alert("댓글을 입력하세요.");
-        return;
-      }
-  
-      console.log("replyData");
-      console.log(replyData);
-      
-      const response = await starBoards.insertReply(replyData);
-      // const data = await response.data
-      console.log("데이터 가져와");
-      // console.log(data);
-      console.log("Reply submission response:", response.data);} catch {}
-    }
-  // 댓글 등록
   // const handleReplySubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (newReply.trim() === "") {
-  //     alert("댓글을 입력하세요.");
-  //     return;
-  //   }
-  //   const replyData = {
-  //     starNo,
-  //     content: newReply,
-  //     userNo: userInfo.userNo,
-  //     writer: userInfo.id,
-  //   };
+  //   // e.preventDefault();
+  
+  
   //   try {
-  //     await starBoards.insertReply(replyData);
-  //     setNewReply("");
-  //     getReplyList();
-  //   } catch (error) {
-  //     console.error('댓글 등록 실패:', error);
+  //     const replyData = {
+  //       starNo,
+  //       content: newReply,
+  //       userNo: userInfo.userNo,
+  //       writer: userInfo.id
+        
+  //       // username: "?"
+  //     };
+  //     console.log("아이디 제발 : ",userInfo.id)
+      
+  //     if (newReply.trim() === "") {
+  //       alert("댓글을 입력하세요.");
+  //       return;
+  //     }
+  
+  //     console.log("replyData");
+  //     console.log(replyData);
+      
+  //     const response = await starBoards.insertReply(replyData);
+  //     // const data = await response.data
+  //     console.log("데이터 가져와");
+  //     // console.log(data);
+  //     console.log("Reply submission response:", response.data);} catch {}
   //   }
-  // };
+  // 댓글 등록
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    if (newReply.trim() === "") {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+    const replyData = {
+      starNo,
+      content: newReply,
+      userNo: userInfo.userNo,
+      writer: userInfo.id,
+    };
+    try {
+      await starBoards.insertReply(replyData);
+      setNewReply("");
+      getReplyList();
+    } catch (error) {
+      console.error('댓글 등록 실패:', error);
+    }
+  };
 
 
  // 답글--------------------------------------------답글
@@ -153,10 +153,10 @@ const ReadContainer = ({ starNo }) => {
   };
 
 
-  const handleReplyDelete = async (replyNo) => {
-    await starBoards.deleteReply(replyNo);
-    window.confirm("삭제하시겠습니까?")
-    getReplyList();
+  // const handleReplyDelete = async (replyNo) => {
+  //   await starBoards.deleteReply(replyNo);
+  //   window.confirm("삭제하시겠습니까?")
+  //   getReplyList();
 
   // 댓글 삭제
   const handleReplyDelete = async (replyNo) => {
@@ -195,6 +195,10 @@ const ReadContainer = ({ starNo }) => {
 
   const handleNewRereplyChange = (e) => {
     setAnswerContent(e.target.value);
+  };
+
+  const handleNewReplyChange = (e) => {
+    setNewReply(e.target.value);
   };
 
 
@@ -238,6 +242,6 @@ const ReadContainer = ({ starNo }) => {
     </>
   );
 };
-}
+
 
 export default ReadContainer;
