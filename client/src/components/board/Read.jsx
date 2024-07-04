@@ -2,6 +2,10 @@ import React from 'react';
 import styles from '../board/css/read.module.css';
 import ReplyList from './ReplyList';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../contexts/LoginContextProvider';
+import { useSession } from '../../contexts/SessionContext';
+import swal from "sweetalert2";
+
 
 const Read = ({
   starNo,
@@ -48,12 +52,16 @@ const Read = ({
       </div>
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button>
-        {userInfo && userInfo.userNo === starBoard.userNo && (
+        {userInfo && userInfo.userNo === starBoard.userNo?
           <>
             <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={() => onDelete(starNo)}>삭제</button>
           </>
-        )}
+         :
+         <>
+            <button className={styles['btn-update']} type="button" >후원</button>
+         </>
+        }
       </div>
       <div className={styles['button-box1']}>
         <button className={styles['like-btn']} onClick={onLikeToggle}>
