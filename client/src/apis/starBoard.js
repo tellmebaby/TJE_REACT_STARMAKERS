@@ -41,3 +41,9 @@ export const updateReply = (reply) => api.put('/reply', reply);
 
 // 댓글 삭제
 export const deleteReply = (replyNo) => api.delete(`/reply/${replyNo}`);
+
+// 좋아요 상태 확인
+export const checkLiked = (userNo, starNo) => api.post('/checkLike', { userNo, starNo });
+
+// 좋아요 토글
+export const toggleLike = (userNo, starNo) => api.post('/like', { userNo, starNo });
