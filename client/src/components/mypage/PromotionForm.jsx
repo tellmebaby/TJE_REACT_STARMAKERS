@@ -48,30 +48,37 @@ const PromotionForm = ({ promotionList, userInfo }) => {
               </tr>
             </thead>
             <tbody>
-              {userPromotionList.slice(0, visibleItems).map((promotion) => (
-                <>
-
-                  <tr key={promotion.starNo}>
-                    <td className="border-0 pt-4">
-                      <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
-                    </td>
-                    <td className="border-0 pt-4">
-                      <span className={styles.categoryContainer}>{promotion.category1}</span>
-                    </td>
-                    <td className="border-0 pt-4">
-                      <span>{promotion.starPrice.toLocaleString()}원</span>
-                    </td>
-                    <td className="border-0 pt-4">{new Date(promotion.regDate).toLocaleDateString()}</td>
-                  </tr>
-                  <tr>
-                    <td colSpan="4">
-                      <div className={styles.buttonContainer}>
-                        <button className={`${styles.btnReview} ${styles.statusPending}`} disabled>{promotion.status}</button>
-                      </div>
-                    </td>
-                  </tr>
-                </>
-              ))}
+              {userPromotionList.length === 0 ? (
+                <tr>
+                  <td colSpan="4" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
+                    조회된 게시글이 없습니다.
+                  </td>
+                </tr>
+              ) : (
+                userPromotionList.slice(0, visibleItems).map((promotion) => (
+                  <React.Fragment key={promotion.starNo}>
+                    <tr key={`${promotion.starNo}-row1`}>
+                      <td className="border-0 pt-4">
+                        <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
+                      </td>
+                      <td className="border-0 pt-4">
+                        <span className={styles.categoryContainer}>{promotion.category1}</span>
+                      </td>
+                      <td className="border-0 pt-4">
+                        <span>{promotion.starPrice.toLocaleString()}원</span>
+                      </td>
+                      <td className="border-0 pt-4">{new Date(promotion.regDate).toLocaleDateString()}</td>
+                    </tr>
+                    <tr key={`${promotion.starNo}-row2`}>
+                      <td colSpan="4">
+                        <div className={styles.buttonContainer}>
+                          <button className={`${styles.btnReview} ${styles.statusPending}`} disabled>{promotion.status}</button>
+                        </div>
+                      </td>
+                    </tr>
+                  </React.Fragment>
+                ))
+              )}
             </tbody>
           </table>
           {visibleItems < userPromotionList.length && (

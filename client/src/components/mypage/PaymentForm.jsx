@@ -12,6 +12,8 @@ const PaymentForm = ({ payList, userInfo }) => {
     setVisibleItems((prevVisibleItems) => prevVisibleItems + 4);
   };
 
+  const userPayList = Array.isArray(payList) ? payList.filter(payment => payment.userNo === user.userNo) : [];
+
   return (
     <div className="container">
       <div className="row">
@@ -45,9 +47,15 @@ const PaymentForm = ({ payList, userInfo }) => {
                 </tr>
               </thead>
               <tbody id="payment-list">
-                {payList.slice(0, visibleItems).map((payment, index) => (
-                  user.userNo === payment.userNo && (
-                    <>
+                {userPayList.length === 0 ? (
+                  <tr>
+                    <td colSpan="4" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
+                      조회된 게시글이 없습니다.
+                    </td>
+                  </tr>
+                ) : (
+                  userPayList.slice(0, visibleItems).map((payment) => (
+                    <React.Fragment key={payment.code}>
                       <tr key={`${payment.code}-row1`}>
                         <td className="border-0 pt-4">{payment.code}</td>
                         <td className="border-0 pt-4">{payment.productTitle}</td>
@@ -70,12 +78,12 @@ const PaymentForm = ({ payList, userInfo }) => {
                           </div>
                         </td>
                       </tr>
-                    </>
-                  )
-                ))}
+                    </React.Fragment>
+                  ))
+                )}
               </tbody>
             </table>
-            {visibleItems < payList.length && (
+            {visibleItems < userPayList.length && (
               <div className={styles.loadMoreBtn}>
                 <button type="button" onClick={loadMore}>더보기</button>
               </div>
