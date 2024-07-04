@@ -6,16 +6,16 @@ const QnaListContainer = () => {
   const [qnaList, setQnaList] = useState([]);
   const [user, setUser] = useState(null);
   const [pageInfo, setPageInfo] = useState({ pageNumber: 1, itemsPerPage: 10 }); // 초기 상태 빈 객체로 설정
-
   const [pageNo, setPage] = useState(1);
   const [keyword, setKeyword] = useState('');
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   const getQnaList = async () => {
     try {
       const params = {
         page: pageNo,
         keyword: keyword
-      }
+      };
       const response = await mypage.qnaList(params);
       const data = response.data;
 
@@ -46,6 +46,7 @@ const QnaListContainer = () => {
     const fetchData = async () => {
       await getUser();
       await getQnaList();
+      setLoading(false); // 데이터 로딩 후 로딩 상태 false로 설정
     };
 
     fetchData();
@@ -56,16 +57,17 @@ const QnaListContainer = () => {
     console.log('Updated User:', user);
   }, [qnaList, user]);
 
-  return user ? (
-    <QnaListForm
-      qnaList={qnaList}
-      user={user}
-      page={pageInfo}
-      setPage={setPage}
-      setKeyword={setKeyword}
-    />
-  ) : (
-    <div>Loading...</div>
+  return (
+    loading ? <div>Loading...</div> :
+    user && (
+      <QnaListForm
+        qnaList={qnaList}
+        user={user}
+        page={pageInfo}
+        setPage={setPage}
+        setKeyword={setKeyword}
+      />
+    )
   );
 };
 

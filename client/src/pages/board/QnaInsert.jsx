@@ -7,7 +7,7 @@ const Insert = () => {
     <>
         <MainLayout>
           <h1 className='d-flex justify-content-center mb-3 mt-3'>질문 등록</h1>
-          <QnaInsertContainer status={'답변대기'} />
+          <QnaInsertContainer status={'답변 대기'} />
         </MainLayout>
     </>
   )
