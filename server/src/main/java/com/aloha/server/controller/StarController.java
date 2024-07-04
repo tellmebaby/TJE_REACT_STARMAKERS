@@ -130,10 +130,10 @@ public class StarController {
         Map<String, Object> response = new HashMap<>();
         response.put("starBoard", starBoard);
 
-        return new ResponseEntity<> (response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-     /**
+    /**
      * 글 등록 요청(insert)
      * 
      * @param model
@@ -148,8 +148,8 @@ public class StarController {
 
         StarBoard newBoard = starService.insert(starBoard); // starBoard 등록
         int starNo = newBoard.getStarNo();
-        
-        if (starNo > 0) {          
+
+        if (starNo > 0) {
             return new ResponseEntity<>(newBoard, HttpStatus.CREATED);
         }
 
@@ -213,28 +213,35 @@ public class StarController {
             @RequestParam(value = "type", required = false) String type,
             Page page,
             Option option) throws Exception {
-
+    
         try {
             List<StarBoard> starList = starService.list(type, page, option);
-
+    
+            // 각 게시글의 댓글 수 설정
+            for (StarBoard starBoard : starList) {
+                int commentCount = replyService.countByStarNo(starBoard.getStarNo());
+                starBoard.setCommentCount(commentCount);
+            }
+    
             Map<String, Object> response = new HashMap<>();
             response.put("starList", starList);
             response.put("page", page);
             response.put("option", option);
-
-            List<Option> optionList = new ArrayList<Option>();
+    
+            List<Option> optionList = new ArrayList<>();
             optionList.add(new Option("제목+내용", 0));
             optionList.add(new Option("제목", 1));
             optionList.add(new Option("내용", 2));
             optionList.add(new Option("작성자", 3));
             response.put("optionList", optionList);
-
+    
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
 
     // --------------------------------------------------------------------------
 
@@ -282,9 +289,6 @@ public class StarController {
         return new ResponseEntity<>(starList, HttpStatus.OK);
     }
 
-   
-
-
     // 추가 화면 설정
     @GetMapping("/starList/api")
     public ResponseEntity<List<StarBoard>> getMoreCards(
@@ -299,7 +303,7 @@ public class StarController {
 
         page.setRows(24); // 한 번에 불러올 행 수 설정
 
-        if ( userNo > 0 ) {
+        if (userNo > 0) {
             starList = starService.getStarList(type, page, option, userNo);
         } else {
             starList = starService.list(type, page, option);
@@ -325,60 +329,63 @@ public class StarController {
      * @throws Exception
      */
     // @GetMapping("/starPayment/{no}")
-    // public ResponseEntity<?> payment(@PathVariable("no") Integer starNo, @AuthenticationPrincipal CustomUser customUser)
-    //         throws Exception {
-    //     Map<String, Object> response = new HashMap<>();
-    //     Users user = customUser.getUser();
+    // public ResponseEntity<?> payment(@PathVariable("no") Integer starNo,
+    // @AuthenticationPrincipal CustomUser customUser)
+    // throws Exception {
+    // Map<String, Object> response = new HashMap<>();
+    // Users user = customUser.getUser();
 
-    //     if (user != null) {
-    //         response.put("user", user);
-    //     }
-    //     StarBoard starBoard = starService.select(starNo);
+    // if (user != null) {
+    // response.put("user", user);
+    // }
+    // StarBoard starBoard = starService.select(starNo);
 
-    //     Date strDate = starBoard.getStartDate();
-    //     Date endDate = starBoard.getEndDate();
-    //     int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
-    //     int price = dif * 1000; // 결제 금액
-    //     response.put("dif", dif);
-    //     response.put("price", price);
+    // Date strDate = starBoard.getStartDate();
+    // Date endDate = starBoard.getEndDate();
+    // int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 *
+    // 1000));
+    // int price = dif * 1000; // 결제 금액
+    // response.put("dif", dif);
+    // response.put("price", price);
 
-    //     price = (int) (dif * 1000); // 결제 금액
-    //     NumberFormat format = NumberFormat.getInstance();
-    //     String formattedPrice = format.format(price);
-    //     response.put("formattedPrice", formattedPrice);
+    // price = (int) (dif * 1000); // 결제 금액
+    // NumberFormat format = NumberFormat.getInstance();
+    // String formattedPrice = format.format(price);
+    // response.put("formattedPrice", formattedPrice);
 
-    //     response.put("starBoard", starBoard);
-    //     return new ResponseEntity<>(response, HttpStatus.OK);
+    // response.put("starBoard", starBoard);
+    // return new ResponseEntity<>(response, HttpStatus.OK);
     // }
 
     // @PostMapping("/starPayment")
     // public ResponseEntity<?> paymentPro(StarBoard starBoard,
-    //         @RequestParam(value = "image", required = false) MultipartFile file,
-    //         @AuthenticationPrincipal CustomUser customUser) throws Exception {
-    //     // 결제 버튼 클릭 시,
-    //     // 홍보글 정보 insert로 db등록
-    //     // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
+    // @RequestParam(value = "image", required = false) MultipartFile file,
+    // @AuthenticationPrincipal CustomUser customUser) throws Exception {
+    // // 결제 버튼 클릭 시,
+    // // 홍보글 정보 insert로 db등록
+    // // 등록한 정보에서 날짜 출력하여 홍보 일수 계산
 
-    //     // StarBoard starBoard1 = starBoard;
-    //     StarBoard newBoard;
-    //     // if (newBoard != null) {
-    //     // starBoard.setCard("유료홍보");
-    //     // newBoard = starService.insert(starBoard);
-    //     // }
+    // // StarBoard starBoard1 = starBoard;
+    // StarBoard newBoard;
+    // // if (newBoard != null) {
+    // // starBoard.setCard("유료홍보");
+    // // newBoard = starService.insert(starBoard);
+    // // }
 
-    //     Date strDate = starBoard.getStartDate();
-    //     Date endDate = starBoard.getEndDate();
-    //     int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 * 1000));
-    //     int price = dif * 1000; // 결제 금액
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("dif", dif);
-    //     response.put("price", price);
+    // Date strDate = starBoard.getStartDate();
+    // Date endDate = starBoard.getEndDate();
+    // int dif = (int) ((endDate.getTime() - strDate.getTime()) / (24 * 60 * 60 *
+    // 1000));
+    // int price = dif * 1000; // 결제 금액
+    // Map<String, Object> response = new HashMap<>();
+    // response.put("dif", dif);
+    // response.put("price", price);
 
-    //     Users user = customUser.getUser();
-    //     int userNo = user.getUserNo();
-    //     String userName = user.getName();
-    //     response.put("userName", userName);
-    //     return new ResponseEntity<>(response, HttpStatus.OK);
+    // Users user = customUser.getUser();
+    // int userNo = user.getUserNo();
+    // String userName = user.getName();
+    // response.put("userName", userName);
+    // return new ResponseEntity<>(response, HttpStatus.OK);
     // }
 
     /**
@@ -435,8 +442,6 @@ public class StarController {
         return new ResponseEntity<>(starBoard, HttpStatus.OK);
     }
 
-
-
     // @PostMapping("/like")
     // public ResponseEntity<String> like(@RequestParam("userNo") int userNo,
     // @RequestParam("starNo") int starNo) {
@@ -491,8 +496,8 @@ public class StarController {
         if (customUser != null) {
             Users user = customUser.getUser();
             if (user != null) {
-                log.info("유저정보가 있어"  + user);
-                int userNo= user.getUserNo();
+                log.info("유저정보가 있어" + user);
+                int userNo = user.getUserNo();
                 List<StarBoard> starCardList = starService.getMainCardListForLoggedInUser(userNo, type);
                 return new ResponseEntity<>(starCardList, HttpStatus.OK);
             }
@@ -555,7 +560,7 @@ public class StarController {
     public ResponseEntity<?> getBanner() throws Exception {
 
         List<StarBoard> bannerList = starService.getBanner();
-        if(bannerList != null){
+        if (bannerList != null) {
             List<StarBoard> filteredBannerList = new ArrayList<>();
             for (StarBoard banner : bannerList) {
                 if (banner.getImgNo() != 0) {
@@ -567,12 +572,13 @@ public class StarController {
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @GetMapping("/getFragByReview")
     public ResponseEntity<?> getFragByReview() throws Exception {
 
         String type = "review";
         List<StarBoard> reviewList = starService.getFragByType(type);
-        if(reviewList != null){
+        if (reviewList != null) {
             List<StarBoard> filteredReviewList = new ArrayList<>();
             for (StarBoard review : reviewList) {
                 if (review.getImgNo() != 0) {
@@ -584,12 +590,13 @@ public class StarController {
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @GetMapping("/getFragByEvent")
     public ResponseEntity<?> getFragByEvent() throws Exception {
 
         String type = "event";
         List<StarBoard> eventList = starService.getFragByType(type);
-        if(eventList != null){
+        if (eventList != null) {
             List<StarBoard> filteredEventList = new ArrayList<>();
             for (StarBoard event : eventList) {
                 if (event.getImgNo() != 0) {
@@ -601,6 +608,5 @@ public class StarController {
 
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
 
 }

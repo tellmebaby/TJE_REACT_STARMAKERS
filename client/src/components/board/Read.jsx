@@ -23,6 +23,8 @@ const Read = ({
   isLogin
 }) => {
 
+  console.log("replyList", starBoard);
+
   const navigate = useNavigate();
   const { session } = useSession();
   console.log("userInfo");
