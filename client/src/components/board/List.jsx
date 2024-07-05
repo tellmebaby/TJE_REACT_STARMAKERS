@@ -33,7 +33,7 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
     switch (type) {
       case 'event': return 'event';
       case 'an': return 'notice';
-      case 'review': return 'review';
+      case 'review': return 'black-han-sans-regular';
     }
   };
 
@@ -50,8 +50,8 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
 
   return (
   // <div className="container" style={{backgroundColor: '#f5f5f5'}}>
-    <div className="container" style={{ padding: 'auto' }}>
-      <h3 className={styles.event}>{getTitle()}</h3>
+    <div className="container" style={{ padding: '10px' }}>
+      <h3 className={styles[getStyle()]}>{getTitle()}</h3>
       <div className={styles.eventtext}>
         <label>{getDescription()}</label>
       </div>
