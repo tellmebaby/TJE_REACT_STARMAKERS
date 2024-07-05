@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from '../board/css/read.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
@@ -28,7 +28,7 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
   };
 
   const handleInsertAnswer = (replyNo) => {
-    handleRereplySubmit(replyNo, answerContents[replyNo] || '')
+    handleRereplySubmit(replyNo, answerContent)
       .then(() => {
         toggleAnswerBox(null); // 답글 상자 닫기
         setAnswerContent(''); // 답글 내용 초기화
@@ -46,32 +46,19 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
   //   }
   // };
 
-  const handleAnswerContentChange = (replyNo, content) => {
-    setAnswerContents(prevState => ({
-      ...prevState,
-      [replyNo]: content
-    }));
-  };
-
-  useEffect(() => {
-    if (showAnswerBox !== null) {
-      setAnswerContents(prevState => ({
-        ...prevState,
-        [showAnswerBox]: ''
-      }));
-    }
-  }, [showAnswerBox]);
-
   return (
     <div>
+      {/* 댓글인 경우 */}
       {reply.replyNo === reply.parentNo && (
         <div className={styles['reply-line']}>
+          {/* 댓글 */}
           <div className={styles['reply-top']}>
             <span className={styles['reply-writer']}>{reply.writer}</span>
             <span className={styles['reply-regDate']}>
               {new Date(reply.regDate).toLocaleString()}
             </span>
           </div>
+          {/* 댓글 내용/ 수정 삭제 버튼 */}
           <div className={styles['reply-con']}>
             <div className={styles['reply-middle']}>
               {editingReplyId === reply.replyNo ? (
@@ -109,8 +96,8 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
               <div className={styles['rereply-box']}>
                 <textarea
                   placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."
-                  value={answerContents[reply.replyNo] || ''}
-                  onChange={(e) => handleAnswerContentChange(reply.replyNo, e.target.value)}
+                  value={answerContent}
+                  onChange={handleNewRereplyChange}
                 />
                 <button type="button" onClick={() => handleInsertAnswer(reply.replyNo)}>등록</button>
               </div>
@@ -119,15 +106,18 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
         </div>
       )}
 
+      {/* 답글인 경우 */}
       {reply.replyNo !== reply.parentNo && (
         <div className={styles['rereply-list']} id={`rereply-list-${reply.replyNo}`}>
           <div className={styles['rereply']}>
+            {/* 답글 */}
             <div className={styles['rereply-top']}>
               <span className={styles['rereply-writer']}>{reply.writer}</span>
               <span className={styles['rereply-regDate']}>
                 {new Date(reply.regDate).toLocaleString()}
               </span>
             </div>
+            {/* 답글 내용/ 수정 삭제 버튼 */}
             <div className={styles['rereply-con']}>
               <div className={styles['rereply-middle']}>
                 {editingReplyId === reply.replyNo ? (
@@ -157,13 +147,17 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
                 )}
               </div>
             </div>
+            <div className={styles['reply-rereply']}>
+            <br/>
+            {/* <button className={styles['btn-rereply']} onClick={() => toggleAnswerBox(reply.replyNo)}>답글쓰기</button> */}
+          </div>
             {showAnswerBox === reply.replyNo && (
               <div className={styles['rereply-container']} id={`answer-${reply.replyNo}`}>
                 <div className={styles['rereply-box']}>
                   <textarea
                     placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."
-                    value={answerContents[reply.replyNo] || ''}
-                    onChange={(e) => handleAnswerContentChange(reply.replyNo, e.target.value)}
+                    value={answerContent}
+                    onChange={handleNewRereplyChange}
                   />
                   <button type="button" onClick={() => handleRereplySubmit(reply.replyNo)}>등록</button>
                 </div>
