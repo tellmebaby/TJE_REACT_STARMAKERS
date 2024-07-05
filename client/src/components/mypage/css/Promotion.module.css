@@ -143,3 +143,9 @@ a {
     margin-right: 5px;
     display: inline-block;
 }
+
+.contentIcon {
+    width: 32px; /* 원하는 너비 */
+    height: 32px; /* 원하는 높이 */
+    margin-right: 8px; /* 아이콘 간의 간격 조정 */
+  }

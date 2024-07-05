@@ -62,8 +62,12 @@ const PromotionForm = ({ promotionList, userInfo }) => {
                         <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
                       </td>
                       <td className="border-0 pt-4">
-                        {promotion.category1 ? promotion.category1.split(',').map((category, index) => (
-                          <span key={index} className={styles.categoryContainer}>{category}</span>
+                        {promotion.category1 ? promotion.category1.split(',').map((icon, index) => (
+                           <img
+                           key={index}
+                           src={`/img/icon/${icon}.png`}
+                           className={styles.contentIcon}
+                         />
                         )) : null}
                       </td>
                       <td className="border-0 pt-4">
