@@ -37,6 +37,7 @@ import StarUpdate from './pages/board/StarUpdate';
 import Payment from './pages/mypage/Payment';
 import MyPoint from './pages/mypage/MyPoint';
 import UserPayment from './pages/mypage/UserPayment';
+import Archive from './pages/mypage/Archive';
 
 function App() {
   return (
@@ -54,6 +55,7 @@ function App() {
           <Route path="/mypage/QnaList" element={<QnaList/>}></Route>
           <Route path="/mypage/Promotion" element={<Promotion/>}></Route>
           <Route path="/mypage/Payment" element={<Payment/>}></Route>
+          <Route path="/mypage/Archive" element={<Archive/>}></Route>
           <Route path="/mypage/myReviewList" element={<MyReviewList/>}></Route>
           <Route path="/mypage/UserDelete" element={<UserDelete/>}></Route>
           <Route path="/event" element={<EventList/>} />
