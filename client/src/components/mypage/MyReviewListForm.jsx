@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './MyReviewListForm.module.css';
 import * as mypage from '../../apis/mypage';
 import { Link } from 'react-router-dom';
+import Menu from './Menu';
 
 const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setKeyword }) => {
   const [selectedStarNos, setSelectedStarNos] = useState([]);
@@ -73,18 +74,7 @@ const MyReviewListForm = ({ reviewList, setReviewList, user, page, setPage, setK
   return (
     <div className="container">
       <div className="row">
-        <div className="col-md-3">
-          <div className={styles.sideMenu}>
-            <div className={styles.navLinks}>
-              <Link to="/mypage/profile"><i className="fa-solid fa-user"></i>회원 정보</Link>
-              <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
-              <Link to="/mypage/promotion" className={styles.active}><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
-              <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
-              <Link to="/mypage/qnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
-              <Link to="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
-            </div>
-          </div>
-        </div>
+      <Menu styles={styles}/>
         <div className="col-md-9">
           <div className={styles.list}>
             <Link to="/mypage/promotion">

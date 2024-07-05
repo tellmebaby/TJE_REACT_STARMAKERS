@@ -3,16 +3,15 @@ import { Link } from 'react-router-dom';
 import * as mypage from '../../apis/mypage';
 import styles from '../mypage/css/QnaListForm.module.css';
 import { formatDate } from '../../apis/format';
+import Menu from './Menu';
 
 const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
-  console.log("page : " + page);
-  console.log(page);
   const [selectedQnaNos, setSelectedQnaNos] = useState([]);
 
-  useEffect(() => {
-    console.log('QnaListForm qnaList:', qnaList);
-    console.log('QnaListForm user:', user);
-  }, [qnaList, user]);
+  // useEffect(() => {
+  //   console.log('QnaListForm qnaList:', qnaList);
+  //   console.log('QnaListForm user:', user);
+  // }, [qnaList, user]);
 
   const handleCheckboxChange = (qnaNo) => {
     setSelectedQnaNos((prevSelected) =>
@@ -54,9 +53,6 @@ const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
       return;
     }
 
-    console.log('qna 게시글 삭제');
-    console.log(allQnaNos);
-
     try {
       await mypage.deleteQna(allQnaNos);
       alert('모든 게시물이 삭제되었습니다');
@@ -75,18 +71,7 @@ const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-md-3">
-          <div className={styles.sideMenu}>
-            <div className={styles.navLinks}>
-              <Link to="/mypage/profile"><i className="fa-solid fa-user"></i>회원 정보</Link>
-              <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
-              <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
-              <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
-              <Link to="/mypage/QnaList" className={styles.active}><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
-              <Link to="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
-            </div>
-          </div>
-        </div>
+      <Menu styles={styles}/>
         <div className="col-md-9">
           <div className={styles.list}>
             <h2 className={styles.juaRegular}>1 : 1 문의</h2>

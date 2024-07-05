@@ -1,34 +1,41 @@
-import React from 'react'
-import styles from './css/PaymentForm.module.css'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { chargePoints, refundPoints } from '../../apis/alert'; // 적절한 경로로 수정
+import styles from './css/PaymentForm.module.css';
+import Menu from './Menu';
+import { useNavigate } from 'react-router-dom';
 
-const MyPointForm = () => {
+const MyPointForm = ({userPayList}) => {
+    const navigate = useNavigate();
+
+    const handleCharge = () => {
+        chargePoints(navigate, (chargeInfo) => {
+            console.log('Charged Amount:', chargeInfo.amount);
+            // Additional logic after charging points
+        });
+    };
+
+    const handleRefund = () => {
+        refundPoints((points) => {
+            console.log(`환급할 포인트: ${points}`);
+            // 포인트 환급 로직 추가
+        });
+    };
+
+
     return (
         <div className="container">
             <div className="row">
-                <div className="col-md-3">
-                    <div className={styles.sideMenu}>
-                        <div className={styles.navLinks}>
-                            <Link to="/mypage/profile"><i className="fa-solid fa-user"></i>회원 정보</Link>
-                            <Link to="/mypage/payment" className={styles.active}><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
-                            <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
-                            <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
-                            <Link to="/mypage/myPoint"><i className="fa-solid fa-coins"></i>내 포인트</Link>
-                            <Link to="/mypage/qnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
-                            <Link to="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
-                        </div>
-                    </div>
-                </div>
+                <Menu styles={styles}/>
+
                 <div className="col-md-9">
                     <div className={styles.list}>
-                        <h2 style={{ color: '#000' }}>포인트 조회</h2>
+                        <h2 style={{ color: '#000' }}>포인트 관리</h2>
                         <li>포인트 충전 및 사용 내역을 확인하실 수 있습니다.</li>
-                        <li>홍보글이 승인된 경우, 관리자 확인 후 일부 금액만 환불 가능 또는 환불 불가할 수 있습니다.</li>
+                        {/* <li>홍보글이 승인된 경우, 관리자 확인 후 일부 금액만 환불 가능 또는 환불 불가할 수 있습니다.</li> */}
+                        <button onClick={handleCharge}>충전</button>
+                        <button onClick={handleRefund}>환급</button>
                         <table className={styles.table}>
                             <thead>
-                                <tr>
-                                    <th colSpan="4"></th>
-                                </tr>
                                 <tr>
                                     <th>사용일자</th>
                                     <th>내역</th>
@@ -36,15 +43,15 @@ const MyPointForm = () => {
                                     <th>비고</th>
                                 </tr>
                             </thead>
-                            {/* <tbody id="payment-list">
+                            <tbody id="payment-list">
                                 {userPayList.length === 0 ? (
                                     <tr>
                                         <td colSpan="4" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
-                                            조회된 게시글이 없습니다.
+                                            조회된 내역이 없습니다.
                                         </td>
                                     </tr>
                                 ) : (
-                                    userPayList.slice(0, visibleItems).map((payment) => (
+                                    userPayList.map((payment) => (
                                         <React.Fragment key={payment.code}>
                                             <tr key={`${payment.code}-row1`}>
                                                 <td className="border-0 pt-4">{payment.code}</td>
@@ -71,7 +78,7 @@ const MyPointForm = () => {
                                         </React.Fragment>
                                     ))
                                 )}
-                            </tbody> */}
+                            </tbody>
                         </table>
                         {/* {visibleItems < userPayList.length && (
                             <div className={styles.loadMoreBtn}>
