@@ -17,7 +17,7 @@ export const cardListToStarBoard = (options, userNo, page = 1) => {
 
 // 좋아요
 export const StarLike = (userNo, starNo) => {
-  return axios.post("/like", null, {
+  return axios.post("/Starlike", null, {
     params: {
       userNo,
       starNo,
