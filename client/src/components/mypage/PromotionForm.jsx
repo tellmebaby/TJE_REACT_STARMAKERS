@@ -62,7 +62,9 @@ const PromotionForm = ({ promotionList, userInfo }) => {
                         <Link to={`/${promotion.starNo}`}>{promotion.title}</Link>
                       </td>
                       <td className="border-0 pt-4">
-                        <span className={styles.categoryContainer}>{promotion.category1}</span>
+                        {promotion.category1 ? promotion.category1.split(',').map((category, index) => (
+                          <span key={index} className={styles.categoryContainer}>{category}</span>
+                        )) : null}
                       </td>
                       <td className="border-0 pt-4">
                         <span>{promotion.starPrice.toLocaleString()}원</span>

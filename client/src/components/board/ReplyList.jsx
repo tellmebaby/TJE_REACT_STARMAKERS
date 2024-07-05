@@ -1,12 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styles from '../board/css/read.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answerContent, handleNewRereplyChange, setAnswerContent }) => {
+const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit }) => {
   const { userInfo } = useContext(LoginContext);
   const [editingReplyId, setEditingReplyId] = useState(null);
   const [newReplyContent, setNewReplyContent] = useState('');
-  const [showAnswerBox, setShowAnswerBox] = useState(null); // 답글 상자를 보여줄 댓글 번호 저장
+  const [showAnswerBox, setShowAnswerBox] = useState(null);
+  const [answerContents, setAnswerContents] = useState({}); // 답글 내용 상태를 객체로 관리
 
   const startEditing = (replyNo, currentContent) => {
     setEditingReplyId(replyNo);
@@ -29,10 +30,13 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
   };
 
   const handleInsertAnswer = (replyNo) => {
-    handleRereplySubmit(replyNo, answerContent)
+    handleRereplySubmit(replyNo, answerContents[replyNo] || '')
       .then(() => {
-        setShowAnswerBox(null); // 답글 상자 닫기
-        setAnswerContent(''); // 답글 내용 초기화
+        setShowAnswerBox(null);
+        setAnswerContents(prevState => ({
+          ...prevState,
+          [replyNo]: ''
+        }));
       })
       .catch(error => {
         console.error("Error inserting answer:", error);
@@ -41,25 +45,38 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
 
   const toggleAnswerBox = (replyNo) => {
     if (showAnswerBox === replyNo) {
-      setShowAnswerBox(null); // 같은 댓글을 다시 누르면 답글 상자 닫기
+      setShowAnswerBox(null);
     } else {
-      setShowAnswerBox(replyNo); // 새로운 댓글의 답글 상자 열기
+      setShowAnswerBox(replyNo);
     }
   };
 
+  const handleAnswerContentChange = (replyNo, content) => {
+    setAnswerContents(prevState => ({
+      ...prevState,
+      [replyNo]: content
+    }));
+  };
+
+  useEffect(() => {
+    if (showAnswerBox !== null) {
+      setAnswerContents(prevState => ({
+        ...prevState,
+        [showAnswerBox]: ''
+      }));
+    }
+  }, [showAnswerBox]);
+
   return (
     <div>
-      {/* 댓글인 경우 */}
       {reply.replyNo === reply.parentNo && (
         <div className={styles['reply-line']}>
-          {/* 댓글 */}
           <div className={styles['reply-top']}>
             <span className={styles['reply-writer']}>{reply.writer}</span>
             <span className={styles['reply-regDate']}>
               {new Date(reply.regDate).toLocaleString()}
             </span>
           </div>
-          {/* 댓글 내용/ 수정 삭제 버튼 */}
           <div className={styles['reply-con']}>
             <div className={styles['reply-middle']}>
               {editingReplyId === reply.replyNo ? (
@@ -97,8 +114,8 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
               <div className={styles['rereply-box']}>
                 <textarea
                   placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."
-                  value={answerContent}
-                  onChange={handleNewRereplyChange}
+                  value={answerContents[reply.replyNo] || ''}
+                  onChange={(e) => handleAnswerContentChange(reply.replyNo, e.target.value)}
                 />
                 <button type="button" onClick={() => handleInsertAnswer(reply.replyNo)}>등록</button>
               </div>
@@ -107,18 +124,15 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
         </div>
       )}
 
-      {/* 답글인 경우 */}
       {reply.replyNo !== reply.parentNo && (
         <div className={styles['rereply-list']} id={`rereply-list-${reply.replyNo}`}>
           <div className={styles['rereply']}>
-            {/* 답글 */}
             <div className={styles['rereply-top']}>
               <span className={styles['rereply-writer']}>{reply.writer}</span>
               <span className={styles['rereply-regDate']}>
                 {new Date(reply.regDate).toLocaleString()}
               </span>
             </div>
-            {/* 답글 내용/ 수정 삭제 버튼 */}
             <div className={styles['rereply-con']}>
               <div className={styles['rereply-middle']}>
                 {editingReplyId === reply.replyNo ? (
@@ -153,8 +167,8 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
                 <div className={styles['rereply-box']}>
                   <textarea
                     placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."
-                    value={answerContent}
-                    onChange={handleNewRereplyChange}
+                    value={answerContents[reply.replyNo] || ''}
+                    onChange={(e) => handleAnswerContentChange(reply.replyNo, e.target.value)}
                   />
                   <button type="button" onClick={() => handleRereplySubmit(reply.replyNo)}>등록</button>
                 </div>

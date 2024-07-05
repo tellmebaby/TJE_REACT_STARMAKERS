@@ -183,11 +183,16 @@ const ReadContainer = ({ starNo }) => {
   // 좋아요 토글
   const handleLikeToggle = async () => {
     try {
-      const response = await starBoards.toggleLike(userInfo.userNo, starNo);
-      setLiked(response.data.liked);
-      setLikes(response.data.likeCount);
-      console.log("좋아용");
-      console.log(response.data.liked);
+      if (isLogin) {
+        const response = await starBoards.toggleLike(userInfo.userNo, starNo);
+        setLiked(response.data.liked);
+        setLikes(response.data.likeCount);
+        console.log("좋아용");
+        console.log(response.data.liked);
+      } else {
+        alert('로그인을 하시기 바랍니다.')
+        navigate('/login')
+      }
     } catch (error) {
       console.error('좋아요 토글 실패:', error);
     }

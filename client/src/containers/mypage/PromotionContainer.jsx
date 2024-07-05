@@ -16,7 +16,7 @@ const PromotionContainer = () => {
         userNo: userInfo?.userNo
       };
       console.log("안녕");
-      console.log(userInfo.uesrNo);
+      console.log(userInfo.userNo);
 
       const response = await mypage.promotionList(params);
       const data = response.data;
@@ -37,9 +37,13 @@ const PromotionContainer = () => {
     }
   }, [userInfo]); // userInfo가 변경될 때마다 실행되도록 설정
 
+  if (!userInfo) {
+    return null; // 또는 다른 적절한 처리를 추가
+  }
+
   return (
     <>
-      {userInfo ? <PromotionForm promotionList={promotionList} userInfo={userInfo} /> : <p>Loading...</p>}
+      <PromotionForm promotionList={promotionList} userInfo={userInfo} />
     </>
   );
 };
