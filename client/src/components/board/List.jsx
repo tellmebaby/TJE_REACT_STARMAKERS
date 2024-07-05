@@ -72,8 +72,8 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
         <table style={{width: '97%'}}>
           <thead>
             <tr>
-              <th width="70">번호</th>
-              <th width="300">제목</th>
+              <th width="50">번호</th>
+              <th width="350">제목</th>
               <th width="150">작성자</th>
               <th width="200">작성일</th>
               <th width="150" className={styles.star}>★</th>

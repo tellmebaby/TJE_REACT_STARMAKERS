@@ -45,8 +45,8 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
         <table style={{ width: '97%' }}>
           <thead>
             <tr>
-              <td width="70"></td>
-              <th width="300">제목</th>
+              <td width="50"></td>
+              <th width="350">제목</th>
               <th width="150">작성자</th>
               <th width="200">작성일</th>
               <th width="150">상태</th>
