@@ -1,0 +1,30 @@
+.title {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 100px;
+    padding: 30px;
+    /* border: 1px solid #000; */
+    /* 기본적인 테두리 색상 지정 */
+    /* border-radius: 10px; */
+    /* box-sizing: border-box; */
+}
+
+/* .title-container span {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+
+.title-container hr {
+    text-align: center;
+    margin-top: 10px;
+}
+ */
+
+.doHyeonRegular {
+    font-family: "Do Hyeon", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  

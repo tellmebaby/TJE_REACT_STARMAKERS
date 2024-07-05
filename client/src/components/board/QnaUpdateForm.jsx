@@ -8,6 +8,9 @@ import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link, useNavigate } from 'react-router-dom';
 
+import styles from '../board/css/qnaRead.module.css';
+
+
 const UpdateForm = ({ qnaNo, qnaBoard, onUpdate, isLoading }) => {
   const navigate = useNavigate()
   const { isLogin, logout, userInfo } = useContext(LoginContext)
@@ -112,7 +115,7 @@ const UpdateForm = ({ qnaNo, qnaBoard, onUpdate, isLoading }) => {
     <div className="update">
       <div class="body lg" >
         <cneter className="d-flex justify-content-center mb-3">
-            <h1>Q&A 수정</h1>
+            <h1 className={styles.notice}>Q&A</h1>
         </cneter>
         {
           isLoading ?

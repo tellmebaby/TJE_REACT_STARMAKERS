@@ -95,9 +95,11 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
         </button>
         {userInfo && userInfo.userNo === qnaBoard.userNo && (
           <>
+          {qnaBoard.status === '답변 대기' && (
             <button className={styles['btn-update']} type="button" onClick={update}>
               수정
             </button>
+          )}
             <input
               className={styles['btn-delete']}
               type="button"

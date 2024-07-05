@@ -211,6 +211,14 @@ const StarInsertForm = ({ type, onInsert }) => {
                         </div>
                         :
                         <div className="container">
+                            <h1 className={styles.starTitle}>
+                                홍보글 등록
+                            </h1>
+                            <span class="d-flex justify-content-center text-secondary mb-3">
+                                <p className={styles.updateSub}>
+                                    등록 시, 관리자 확인 후 글이 리스트에 보여집니다.<br />자세한 문의사항은 1:1 채팅 또는 Q&A 게시판을 이용해주세요:D
+                                </p>
+                            </span>
                             <form id="starInsert">
 
                                 <div className="d-flex align-items-center border-bottom border-dark" id="channel">
@@ -243,6 +251,7 @@ const StarInsertForm = ({ type, onInsert }) => {
                                         </>
                                         :
                                         <>
+
                                             <div className="category my-4 bg-body-tertiary rounded">
                                                 <div className="site row py-2">
                                                     <div className="item col-1"></div>

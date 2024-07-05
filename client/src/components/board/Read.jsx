@@ -67,9 +67,32 @@ const Read = ({
     }
   };
 
+  const donaition = (point) => {
+    // db처리
+    console.log(`${starBoard.writer}님에게 ${userInfo.id}님이 ${point} 포인트를 후원하였습니다`);
+    // alert
+    Swal.fire({
+      title:"감사합니다!",
+      text: point + " 포인트가 후원되었습니다",
+      icon:'success'
+    }).then(result => {
+      window.location.reload();
+    })
+    // alert(`${point} 포인트가 후원되었습니다. 감사합니다!`)
+  }
   const clickDona = (point) => {
-    window.confirm(point)
-    
+    // window.confirm(point)
+    Swal.fire({
+      title:'후원하기',
+      html:`<p>${starBoard.writer}님에게 ${point}포인트를 후원합니다.`,
+      showCancelButton:true,
+      confirmButtonText:'좋아요',
+      cancelButtonText:'취소'
+    }).then(result => {
+      if (result.isConfirmed) {
+        donaition(point)
+      }
+    })
   }
 
   const dona = () => {
@@ -78,7 +101,7 @@ const Read = ({
     // const inputNumber =
     Swal.fire({
       icon: 'question',
-      title: '후원',
+      title: '후원하기',
       // text: '이 스타에게 포인트를 후원 하시나요?',
       html: `<br/>
             <p>최소 100포인트에서 최대 10000포인트까지<br/> 후원 가능합니다 :D</p>
@@ -207,7 +230,9 @@ const Read = ({
           </>
           :
           <>
-            <button className={styles['btn-update']} type="button" onClick={dona}>후원</button>
+            {isLogin && 
+             <button className={styles['btn-update']} type="button" onClick={dona}>후원</button>
+            }
           </>
         }
       </div>
