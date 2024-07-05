@@ -180,7 +180,7 @@ const ReadContainer = ({ starNo }) => {
             Swal.alert("삭제 완료!");
             getReplyList();
           } catch (error) {
-            console.error('게시글 삭제 실패:', error);
+            console.error('댓글 삭제 실패:', error);
           }
       }
   }
