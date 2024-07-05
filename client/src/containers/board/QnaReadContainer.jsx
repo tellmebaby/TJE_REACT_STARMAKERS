@@ -59,14 +59,26 @@ const QnaReadContainer = ({ qnaNo }) => {
   };
 
   const onDelete = async (qnaNo) => {
-    const response = await qna.remove(qnaNo)
-    const status = await response.status
-    console.log(`게시글 삭제 요청 결과 : ${status}`)
-    Swal.alert("삭제 완료!")
+    try {
+      
+      Swal.confirm("정말로 삭제하시겠습니까?", "", "question", (result) => {
+        // isConfirmed : 확인버튼 클릭 여부
+        if (result.isConfirmed) {
+            try {
+              qna.remove(qnaNo);
+              Swal.alert("삭제 완료!");
+              navigate("/qna/qnaList");
+            } catch (error) {
+              console.error('게시글 삭제 실패:', error);
+            }
+        }
+    })
 
-    // -> 목록으로 이동
-    navigate("/qna/qnaList")
-}
+    } catch (error) {
+      console.error('게시글 삭제 실패:', error);
+    }
+  };
+
 
   // hook
   useEffect(() => {
