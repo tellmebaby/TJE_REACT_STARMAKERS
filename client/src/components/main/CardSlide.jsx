@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./css/CardSlide.css";
 
 const CardSlide = ({ cardList, isLoading }) => {
+  console.log('카드값내라 ::::::::::::', cardList);
   const settings = {
     centerMode: true,
     centerPadding: '0', // 필요에 따라 패딩 조절

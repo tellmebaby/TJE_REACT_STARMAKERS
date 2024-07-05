@@ -6,6 +6,10 @@
     z-index: 100000000000000000000000000000000000000 !important;
 }
 
+.react-datepicker {
+    z-index: 1;
+}
+
 .react-datepicker__week {
     z-index: 10000000000000000000 !important;
 }

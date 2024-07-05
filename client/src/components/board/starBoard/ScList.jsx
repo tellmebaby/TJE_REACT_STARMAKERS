@@ -13,7 +13,9 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   const [searchKeyword, setSearchKeyword] = useState(initialKeyword || '');
   const [data, setData] = useState([]);  // 데이터 상태 추가
   const [page, setPage] = useState(1);  // 페이지 상태 관리, 필요하다면
-  const { userInfo } = useContext(LoginContext);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const { isLogin, userInfo } = useContext(LoginContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -43,9 +45,21 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   }, [location.state]);
 
   useEffect(() => {
-    if (selectedOptions.size > 0) {
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) return;
+      setPage((prevPage) => prevPage + 1);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
+
+
+
+  useEffect(() => {
+    if (selectedOptions.size > 0 && hasMore) {
       fetchData();
-    } 
+    }
   }, [selectedOptions, userInfo, page, searchKeyword]);
 
   useEffect(() => {
@@ -56,19 +70,28 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   }, [selectedOptions, userInfo, page, searchKeyword]); // searchKeyword를 의존성에 추가
  
   const fetchData = async () => {
-    setData([]); // Clear existing data before fetching new data
+    if (!hasMore) return;
+    setLoading(true);
+  
     const params = {
       ...Object.fromEntries(selectedOptions),
       userNo: userInfo ? userInfo.userNo : 0,
       page
     };
-    console.log("API call with params:", params);
+  
     try {
       const response = await axios.get('/starList/api', { params });
-      setData(response.data);
-      console.log("Data fetched:", response.data);
+      if (response.data.length > 0) {
+        setData(prevData => [...prevData, ...response.data]);
+        setPage(prevPage => prevPage + 1);  // 페이지 번호 증가
+        setHasMore(response.data.length === 24);  // 데이터 개수에 따라 hasMore 상태 업데이트
+      } else {
+        setHasMore(false);  // 더 이상 불러올 데이터가 없음
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -295,22 +318,23 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
             />
           </form>
           </div>
-        <div className="sub-btn-calendar">
+        {/* <div className="sub-btn-calendar">
           <a href="/page/starCard/starCalendar" className="btn-starCalendar">
             <i className="bi bi-calendar-week"></i>
           </a>
-        </div>
-        {/* 비로그인시 */}
-        <div>
-          {/* 비로그인시 표시될 내용 */}
-        </div>
-        {/* 로그인시 */}
-        <div>
+        </div> */}
+            {!isLogin ? (
+              <>
+              </>
+            ):(
           <div className="sub-btn-insertCard">
             <Link to="/starInsert" className="btn-starInsert">
               <i className="bi bi-pen"></i>
             </Link>
           </div>
+
+            )}
+        <div>
         </div>
       </div>
       <div className="container-typeTitle">
@@ -325,6 +349,7 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
           </div>
         ))}
       </div>
+      {loading && <div>Loading...</div>}
     </div>
   );
 };

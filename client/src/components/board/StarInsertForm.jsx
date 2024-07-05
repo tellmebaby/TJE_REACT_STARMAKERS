@@ -8,7 +8,8 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link } from 'react-router-dom';
-import Calendar from './css/calendar.module.css';
+// import Calendar from './css/CustomDateInput.css';
+import './css/CustomDateInput.css'
 import styles from './css/Insert.module.css'
 
 import DatePicker from 'react-datepicker';

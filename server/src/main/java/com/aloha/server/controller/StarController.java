@@ -476,17 +476,17 @@ public class StarController {
         return new ResponseEntity<>(starBoard, HttpStatus.OK);
     }
 
-    // @PostMapping("/like")
-    // public ResponseEntity<String> like(@RequestParam("userNo") int userNo,
-    // @RequestParam("starNo") int starNo) {
-    // try {
-    // boolean liked = likeService.toggleLike(userNo, starNo);
-    // return ResponseEntity.ok(liked ? "Liked" : "Unliked");
-    // } catch (Exception e) {
-    // return ResponseEntity.status(500).body("An error occurred: " +
-    // e.getMessage());
-    // }
-    // }
+    @PostMapping("/starlike")
+    public ResponseEntity<String> like(@RequestParam("userNo") int userNo,
+    @RequestParam("starNo") int starNo) {
+    try {
+    boolean liked = likeService.toggleLike(userNo, starNo);
+    return ResponseEntity.ok(liked ? "Liked" : "Unliked");
+    } catch (Exception e) {
+    return ResponseEntity.status(500).body("An error occurred: " +
+    e.getMessage());
+    }
+    }
 
     // read 페이지에서 적용되게 하려고 수정해본 것...혹시 몰라 위에 원래 코드는 주석처리 해둠요
     
@@ -532,12 +532,13 @@ public class StarController {
                 log.info("유저정보가 있어" + user);
                 int userNo = user.getUserNo();
                 List<StarBoard> starCardList = starService.getMainCardListForLoggedInUser(userNo, type);
+                log.info("카드몇번:" + starCardList.size());
                 return new ResponseEntity<>(starCardList, HttpStatus.OK);
             }
         }
         // 로그인 안했잖아 그래도 줄게 카드리스트
         List<StarBoard> starCardList = starService.mainCardList(type);
-        // log.info("성공했어 데이터를 가져왔어 : " + starCardList.size());
+        log.info("성공했어 데이터를 가져왔어 : " + starCardList.size());
         return new ResponseEntity<>(starCardList, HttpStatus.OK);
     }
 

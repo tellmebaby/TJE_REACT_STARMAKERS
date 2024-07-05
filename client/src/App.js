@@ -38,6 +38,7 @@ import Payment from './pages/mypage/Payment';
 import MyPoint from './pages/mypage/MyPoint';
 import UserPayment from './pages/mypage/UserPayment';
 import Archive from './pages/mypage/Archive';
+import UserPaymentSuccess from './pages/mypage/UserPaymentSuccess';
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           <Route path="/qnaInsert" element={<QnaInsert/>}></Route>
           <Route path="/StarPayment/:starNo" element={<StarPayment/>}></Route>
           <Route path="/UserPayment" element={<UserPayment/>}></Route>
+          <Route path="/UserPayment/success" element={<UserPaymentSuccess/>}></Route>
           <Route path="/payments/success" element={<StarPaymentSuccess/>}></Route>
           <Route path="/payments/fail" element={<StarPaymentFail/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>

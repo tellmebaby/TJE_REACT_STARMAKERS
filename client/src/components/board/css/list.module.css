@@ -157,10 +157,10 @@ a {
 
 .fa-star {
     color: gold;
-    font-size: 17px; /* 아이콘 크기 조정 */
+    font-size: 17px;
     margin-right: 10px;
     animation: twinkle2 1.5s infinite alternate;
-    transition: transform 0.3s ease-in-out; /* 크기 변화 애니메이션 */
+    transition: transform 0.3s ease-in-out;
 }
 .black-han-sans-regular {
     font-family: "Black Han Sans", sans-serif;

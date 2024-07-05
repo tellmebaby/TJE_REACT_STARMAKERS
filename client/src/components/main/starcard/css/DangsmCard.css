@@ -317,3 +317,11 @@ height: 40%;
     width: 65%;
   }
   
+
+  .card-container {
+    perspective: 1000px;
+    width: 300px;
+    height: 400px;
+    position: relative;
+    cursor: pointer;
+  }
