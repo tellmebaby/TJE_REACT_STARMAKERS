@@ -212,6 +212,9 @@ const ReadContainer = ({ starNo }) => {
     if(userInfo){
       getBoard();
       getReplyList();
+    } else {
+      getBoard();
+      getReplyList();
     }
   }, [starNo,userInfo]);
 
