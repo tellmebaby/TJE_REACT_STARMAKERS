@@ -125,7 +125,7 @@ const StarInsertForm = ({ type, onInsert }) => {
         formData.append('startDate', startDate);
         formData.append('endDate', endDate);
 
-     
+
 
         // 헤더
         const headers = {
@@ -151,7 +151,7 @@ const StarInsertForm = ({ type, onInsert }) => {
 
 
     useEffect((e) => {
-        if(userInfo && title) onSubmit();
+        if (userInfo && title) onSubmit();
     }, [card]);
 
 
@@ -348,21 +348,24 @@ const StarInsertForm = ({ type, onInsert }) => {
                                                         selected={startDate}
                                                         onChange={date => setStartDate(date)}
                                                         dateFormat="yyyy-MM-dd"
-                                                        className="form-control col-5 "
-                                                        calendarClassName={Calendar.calenderWrapper}
+                                                        className="form-control"
+                                                        // calendarClassName={Calendar..react-datepicker-wrapper }
                                                         minDate={new Date()}
                                                         placeholderText="홍보 시작일"
                                                     />
 
                                                 </span>
-                                                <DatePicker
-                                                    selected={endDate}
-                                                    onChange={date => setEndDate(date)}
-                                                    dateFormat="yyyy-MM-dd"
-                                                    className="form-control col-5"
-                                                    minDate={startDate}
-                                                    placeholderText="홍보 종료일"
-                                                />
+                                                <span className='col-5'>
+                                                    <DatePicker
+                                                        selected={endDate}
+                                                        onChange={date => setEndDate(date)}
+                                                        dateFormat="yyyy-MM-dd"
+                                                        className="form-control"
+                                                        // calendarClassName={Calendar.calenderWrapper}
+                                                        minDate={startDate}
+                                                        placeholderText="홍보 종료일"
+                                                    />
+                                                </span>
                                             </div>
                                             <div className="input-group mb-3">
                                                 <label className="input-group-text" for="inputGroupFile01">썸네일</label>

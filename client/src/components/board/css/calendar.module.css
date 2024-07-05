@@ -13,3 +13,7 @@
 .react-datepicker__day {
     z-index: 111111 !important;
 }
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
