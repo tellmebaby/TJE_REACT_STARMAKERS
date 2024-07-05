@@ -9,21 +9,28 @@ const HomeContainer = () => {
     const [cardList, setCardList] = useState([]);
   const [isLoading, setLoading] = useState(false);
 
-  const getCardList = async () => {
-    setLoading(true);
-    try {
-      const response = await cards.starCardList();
-      const data = response.data;
-      setCardList(data);
-    } catch (error) {
-      console.error('Error fetching card list:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   useEffect(() => {
+    if (isLoading) {
+      
+    }
+    const getCardList = async () => {
+      
+      try {
+        const response = await cards.starCardList();
+        const data = response.data;
+        console.log(response.data);
+        setCardList(data);
+        
+      } catch (error) {
+        console.error('Error fetching card list:', error);
+      } finally {
+        
+      }
+    };
+
     getCardList();
+    console.log("1231232131")
   }, []);
   return (
     <>

@@ -17,9 +17,6 @@ const DangsmCard = ({ card }) => {
   const cardType = card.card ? card.card : 'standard';
   const [showStar, setShowStar] = useState(false);
   const [updatedCard, setUpdatedCard] = useState(card);
-  const [starBoard, setStarBoard] = useState({});
-  const [likes, setLikes] = useState(0);
-  const [liked, setLiked] = useState(false);
 
       // 페이지 이동
       const navigate = useNavigate()
@@ -59,15 +56,19 @@ const DangsmCard = ({ card }) => {
         }, 1000); // 1초 후에 star 아이콘 제거
       }
       try {
-        // const response = await StarLike(userInfo.userNo, updatedCard.starNo);
-        const response = await toggleLike(userInfo.userNo, updatedCard.starNo);
+        const response = await StarLike(userInfo.userNo, updatedCard.starNo);
         console.log(response.data);
-        setLiked(response.data.liked);
-        setLikes(response.data.likeCount);
+        let check = false;  // `let`으로 선언하여 나중에 값을 변경할 수 있게 함
+        if (response.data === 'Liked') {
+            check = true;  // 응답이 'Liked'인 경우 check를 true로 설정
+        }
+    
         setUpdatedCard({
           ...updatedCard,
-          action: response.data.liked ? 'liked' : '',
-          likes: response.data.liked ? updatedCard.likes + 1 : updatedCard.likes - 1,
+  // 서버 응답이 'liked'일 경우 'liked'로 설정하고, 그렇지 않으면 빈 문자열로 설정
+  action: check ? 'Liked' : '',
+  // 'liked' 상태에 따라 좋아요 수 증감 처리
+  likes: check ? updatedCard.likes + 1 : updatedCard.likes - 1
         });
       } catch (error) {
         console.error('error by dangsmCard:', error);
@@ -75,20 +76,16 @@ const DangsmCard = ({ card }) => {
     } else {
       Swal.alert("로그인 해주세요", "로그인 화면으로 이동합니다.", "LOGIN",
         () => { navigate("/login") }
-    )
+      )
     }
   };
 
-  useEffect(() => {
-    // console.log('Updated card:', updatedCard);
-  }, [updatedCard]);
 
   return (
     <div className='click-star' onDoubleClick={handleDoubleClick}>
       <div className='card-container' ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      onDoubleClick={handleDoubleClick}
       style={{
         transition: 'transform 0.5s',
         transformStyle: 'preserve-3d'

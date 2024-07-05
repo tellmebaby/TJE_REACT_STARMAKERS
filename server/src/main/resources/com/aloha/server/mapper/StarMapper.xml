@@ -167,33 +167,7 @@
         LIMIT 60
     </select>
 
-    <!-- 로그인 유저 메인 카드 리스트 요청 -->
-    <!-- <select id="getMainCardListForLoggedInUser" resultType="StarBoard">
-    SELECT
-    s.*,
-    f.file_no AS imgNo,
-    (
-        SELECT file_no 
-        FROM file f2 
-        WHERE f2.user_no = s.user_no AND f2.star_no = 0 
-        ORDER BY f2.reg_date DESC 
-        LIMIT 1
-    ) AS userImgId,
-    CASE
-        WHEN a.star_no IS NOT NULL THEN 'liked'
-        ELSE 'nothing'
-    END AS action
-    FROM 
-        star_board s
-    LEFT JOIN 
-        file f ON f.star_no = s.star_no
-    LEFT JOIN
-        action a ON a.star_no = s.star_no AND a.user_no = #{userNo}
-    WHERE 
-        s.type = #{type}
-    ORDER BY 
-        s.reg_date DESC
-    </select> -->
+
     <!-- 메인 카드 list 출력 : 승인된 글만 보여야 함 -->
     <select id="getMainCardListForLoggedInUser" parameterType="map" resultType="StarBoard">
     SELECT
