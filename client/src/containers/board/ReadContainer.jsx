@@ -3,6 +3,7 @@ import * as starBoards from '../../apis/starBoard';
 import Read from '../../components/board/Read';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import * as Swal from '../../apis/alert'
 
 const ReadContainer = ({ starNo }) => {
   const { isLogin, logout, userInfo } = useContext(LoginContext)
@@ -54,7 +55,7 @@ const ReadContainer = ({ starNo }) => {
   const onDelete = async (starNo) => {
     try {
       await starBoards.remove(starNo);
-      alert("삭제 완료!");
+      Swal.alert("삭제 완료!");
       navigate(`/${starBoard.type}`);
     } catch (error) {
       console.error('게시글 삭제 실패:', error);
@@ -96,7 +97,7 @@ const ReadContainer = ({ starNo }) => {
   const handleReplySubmit = async (e) => {
     e.preventDefault();
     if (newReply.trim() === "") {
-      alert("댓글을 입력하세요.");
+      Swal.alert("댓글을 입력하세요.");
       return;
     }
     const replyData = {
@@ -162,7 +163,7 @@ const ReadContainer = ({ starNo }) => {
   const handleReplyDelete = async (replyNo) => {
     try {
       await starBoards.deleteReply(replyNo);
-      alert("삭제 완료!");
+      Swal.alert("삭제 완료!");
       getReplyList();
     } catch (error) {
       console.error('댓글 삭제 실패:', error);
@@ -174,6 +175,7 @@ const ReadContainer = ({ starNo }) => {
   const handleReplyUpdate = async (replyNo, content) => {
     try {
       await starBoards.updateReply({ replyNo, writer: userInfo.id, content });
+      Swal.alert("수정 완료!")
       getReplyList();
     } catch (error) {
       console.error('댓글 수정 실패:', error);
