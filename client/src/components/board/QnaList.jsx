@@ -45,8 +45,8 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
         <table style={{ width: '97%' }}>
           <thead>
             <tr>
-              <td width="70"></td>
-              <th width="300">제목</th>
+              <td width="50"></td>
+              <th width="350">제목</th>
               <th width="150">작성자</th>
               <th width="200">작성일</th>
               <th width="150">상태</th>
@@ -55,16 +55,16 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
           </thead>
           
             <tr className={styles.fixed}>
-              <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
-              <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>로그인 필수</b></td>
+            <td align="center" className={styles.important}><p className={styles["important-text"]}>필독</p></td>
+              <td ><span className={styles['fa-star']}><i className="fas fa-star"></i></span><b style={{ color: 'crimson' }}>로그인 필수</b></td>
               <td align="center">관리자</td>
               <td align="center"><span>2024-05-28 18:59:37</span></td>
               <td align="center"></td>
               <td align="center">678</td>
             </tr>
             <tr className={styles.fixed}>
-              <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
-              <td><i className="fas fa-star"></i><b style={{ color: 'crimson' }}>관리 원칙에 위배되는 글은 삭제될 수 있습니다.</b></td>
+            <td align="center" className={styles.important}><p className={styles["important-text"]}>필독</p></td>
+              <td><span className={styles['fa-star']}><i className="fas fa-star"></i></span><b style={{ color: 'crimson' }}>관리 원칙에 위배되는 글은 삭제될 수 있습니다.</b></td>
               <td align="center">관리자</td>
               <td align="center"><span>2024-05-28 18:40:37</span></td>
               <td align="center"></td>
@@ -79,7 +79,7 @@ const QnaList = ({ qnaList, isLoading, page, option, setPage, setCode, setKeywor
               ) : (
                 qnaList.map((qnaBoard) => (
                   <tr key={qnaBoard.qnaNo}>
-                    <td align="center"><i className="fa-solid fa-q twinkle"></i></td>
+                    <td align="center"><span className={styles.twinkle}><i className="fa-solid fa-q"></i></span></td>
                     <td>
                       <Link to={`/qna/qnaRead/${qnaBoard.qnaNo}`}>{qnaBoard.title}</Link>
                       {new Date(qnaBoard.regDate) > new Date() && <img src="/img/new.png" style={{ width: '15px', height: '15px' }} />}

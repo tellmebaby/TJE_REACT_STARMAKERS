@@ -47,7 +47,7 @@
         WHERE point_no = #{pointNo}
     </update>
 
-    <!-- 관리자 회원별 결제 조회 -->
+    <!-- 관리자 회원별 포인트 사용 total 조회 -->
     <select id="totalPoint" resultType="Point">
         SELECT sum(point) as total_point
         FROM point

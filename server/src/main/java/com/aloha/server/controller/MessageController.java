@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,47 +38,81 @@ public class MessageController {
     @Autowired
     private FileService fileService;
 
+    // @PostMapping("/insertToAdmin")
+    // public ResponseEntity<String> insertPro(@RequestBody Message messageDTO, 
+    //                                         @RequestParam Integer userNo) {
+
+    //     String name = messageDTO.getName();
+
+    //     if (name != "관리자" && name == null) {
+
+    //         if (userNo == null) {
+    //             return ResponseEntity.status(401).body("User not authenticated");
+    //         }
+
+    //         if (messageDTO.getContent() == null || messageDTO.getContent().isEmpty()) {
+    //             return ResponseEntity.status(400).body("Content cannot be null or empty");
+    //         }
+
+    //     } else {
+    //         userNo = messageDTO.getUserNo();
+    //     }
+
+    //     if (userNo == 0) {
+    //         return ResponseEntity.status(401).body("User not authenticated");
+    //     }
+
+    //     Message message = new Message();
+    //     message.setContent(messageDTO.getContent());
+    //     message.setCode(messageDTO.getCode());
+    //     message.setPayNo(0);
+    //     message.setQnaNo(0);
+    //     message.setReplyNo(0);
+    //     message.setUserNo(userNo);
+
+    //     int result = messageService.insertMessage(message);
+    //     if (result > 0) {
+    //         log.info("Insert successful!");
+    //         return ResponseEntity.ok("Message saved successfully");
+    //     }
+    //     return ResponseEntity.status(500).body("Failed to save message");
+    // }
+
     @PostMapping("/insertToAdmin")
-    public ResponseEntity<String> insertPro(@RequestBody Message messageDTO, 
-                                            @AuthenticationPrincipal CustomUser customUser) {
+public ResponseEntity<String> insertPro(@RequestBody Message messageDTO, @RequestParam(required = true) Integer userNo) {
 
-        String name = messageDTO.getName();
-        int userNo = 0;
-
-        if (name != "관리자" && name == null) {
-            Users user = customUser.getUser();
-            if (user == null) {
-                return ResponseEntity.status(401).body("User not authenticated");
-            }
-
-            if (messageDTO.getContent() == null || messageDTO.getContent().isEmpty()) {
-                return ResponseEntity.status(400).body("Content cannot be null or empty");
-            }
-
-            userNo = user.getUserNo();
-        } else {
-            userNo = messageDTO.getUserNo();
+    String name = messageDTO.getName();
+    if (name == null || !"관리자".equals(name)) {
+        if (userNo == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
         }
 
-        if (userNo == 0) {
-            return ResponseEntity.status(401).body("User not authenticated");
+        if (messageDTO.getContent() == null || messageDTO.getContent().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Content cannot be null or empty");
         }
-
-        Message message = new Message();
-        message.setContent(messageDTO.getContent());
-        message.setCode(messageDTO.getCode());
-        message.setPayNo(0);
-        message.setQnaNo(0);
-        message.setReplyNo(0);
-        message.setUserNo(userNo);
-
-        int result = messageService.insertMessage(message);
-        if (result > 0) {
-            log.info("Insert successful!");
-            return ResponseEntity.ok("Message saved successfully");
-        }
-        return ResponseEntity.status(500).body("Failed to save message");
+    } else {
+        userNo = messageDTO.getUserNo();
     }
+
+    if (userNo == 0) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+    }
+
+    Message message = new Message();
+    message.setContent(messageDTO.getContent());
+    message.setCode(messageDTO.getCode());
+    message.setPayNo(0);
+    message.setQnaNo(0);
+    message.setReplyNo(0);
+    message.setUserNo(userNo);
+
+    int result = messageService.insertMessage(message);
+    if (result > 0) {
+        return ResponseEntity.ok("Message saved successfully");
+    }
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save message");
+}
+
     
 
     @GetMapping("/{messageNo}")
@@ -102,13 +137,11 @@ public class MessageController {
     }
 
     @GetMapping("/getChatMessagesByUser")
-    public ResponseEntity<List<Message>> getMessagesByUser(@AuthenticationPrincipal CustomUser customUser) {
-        Users user = customUser.getUser();
-        if (user == null) {
+    public ResponseEntity<List<Message>> getMessagesByUser(@RequestParam("userNo") Integer userNo) {
+        
+        if ( userNo == 0) {
             return ResponseEntity.status(401).build();
         }
-
-        int userNo = user.getUserNo();
         List<Message> messages = messageService.getChatMessageByUser(userNo);
         return ResponseEntity.ok(messages);
     }
