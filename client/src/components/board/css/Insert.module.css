@@ -32,3 +32,29 @@
 .btns:hover {
     background-color: #292929;
 }
+
+.updateSub {
+    text-align: center;
+}
+
+.starTitle {
+    text-align: center;
+    font-family: "Gugi", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 57px;
+    margin-bottom: 50px;
+  }
+
+.title-container span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.title-container hr {
+    margin-top: 10px;
+}
+
+.qnaTitle {
+    text-align: center;
+}

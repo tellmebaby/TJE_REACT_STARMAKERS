@@ -237,12 +237,15 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
     return (
         <div className="update">
             <div class="body lg" >
-                <h1 class="d-flex justify-content-center mb-3 mt-3">
-                    홍보 수정
+                {/* <h1 class="d-flex justify-content-center mb-3 mt-3 "> */}
+                <h1 className={styles.starTitle}>
+                    홍보글 수정
                 </h1>
-                <p class="d-flex justify-content-center text-secondary mb-3">
-                    수정 시, 관리자 확인 후 글이 재등록됩니다.<br />자세한 문의사항은 1:1 채팅 또는 Q&A 게시판을 이용해주세요:D
-                </p>
+                <span class="d-flex justify-content-center text-secondary mb-3">
+                    <p className={styles.updateSub}>
+                        수정 시, 관리자 확인 후 글이 재등록됩니다.<br />자세한 문의사항은 1:1 채팅 또는 Q&A 게시판을 이용해주세요:D
+                    </p>
+                </span>
                 {
                     isLoading ?
                         <div className="container content-box mt-3 mb-3">

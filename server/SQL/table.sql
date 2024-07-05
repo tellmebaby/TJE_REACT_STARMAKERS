@@ -209,6 +209,8 @@ CREATE TABLE password_reset_token
   PRIMARY KEY (id)
 ) COMMENT '비밀번호 변경 인증이메일 토큰';
 
+
+DROP TABLE IF EXISTS point;
 CREATE TABLE point 
 (
   `point_no`  INT       NOT NULL AUTO_INCREMENT COMMENT '결제번호',
@@ -217,10 +219,10 @@ CREATE TABLE point
   `user_no`   INT       NOT NULL     COMMENT '회원번호',
   `star_no`   INT       NULL     COMMENT '사용한글번호',
   `type`    VARCHAR(50) NOT NULL COMMENT '사용타입', -- 적절한 길이를 설정했습니다.
-  `send_no` INT NULL DEFAULT NULL COMMENT '후원하는회원',
-	`msg` VARCHAR NULL DEFAULT NULL,
-  PRIMARY KEY (point_no)
-)
+  `send_no` INT NULL COMMENT '후원하는회원',
+	`msg` TEXT NULL ,
+  PRIMARY KEY (`point_no`)
+);
 
 
 

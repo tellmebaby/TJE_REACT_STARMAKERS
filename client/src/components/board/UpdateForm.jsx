@@ -8,6 +8,8 @@ import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link, useNavigate } from 'react-router-dom';
 
+import styles from '../board/css/read.module.css';
+
 const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
   const navigate = useNavigate()
   
@@ -110,13 +112,33 @@ const UpdateForm = ({ isFile, starNo, starBoard, onUpdate, isLoading }) => {
     };
   }
 
+  const getTypeClass = () => {
+    switch (starBoard.type) {
+      case 'an':
+        return styles.notice;
+      case 'event':
+        return styles.event;
+      case 'review':
+        return styles['black-han-sans-regular'];
+    }
+  };
+
+  const getTitle = () => {
+    switch (starBoard.type) {
+      case 'event': return 'EVENT';
+      case 'an': return 'Notice';
+      case 'review': return '후기';
+    }
+  };
+
   return (
     <div className="update">
       <div class="body lg" >
         <cneter className="d-flex justify-content-center mb-3">
-        {starBoard.type === 'an' && <h1>공지사항 수정</h1>}
+        {/* {starBoard.type === 'an' && <h1>공지사항 수정</h1>}
         {starBoard.type === 'event' && <h1>이벤트 수정</h1>}
-        {starBoard.type === 'review' && <h1>후기 수정</h1>}
+        {starBoard.type === 'review' && <h1>후기 수정</h1>} */}
+        <h1 className={`${styles.title} ${getTypeClass()}`}>{getTitle()}</h1>
          </cneter>
         {
           !isLogin || isLoading ?
