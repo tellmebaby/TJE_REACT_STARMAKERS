@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import StarCategory1 from './StarCategory1';
 import ClipCard from './ClipCard';
@@ -20,6 +20,32 @@ const DangsmCard = ({ card }) => {
 
       // 페이지 이동
       const navigate = useNavigate()
+
+      const cardRef = useRef(null); // 카드 DOM 참조
+      const [rotate, setRotate] = useState({ x: 0, y: 0 }); // 회전 상태
+
+      const handleMouseMove = (e) => {
+        const { offsetX, offsetY, target } = e.nativeEvent;
+        const { clientWidth, clientHeight } = target;
+    
+        // 마우스 위치에 따른 회전 각도 계산
+        const rotateY = (offsetX / clientWidth * 50) - 25;
+        const rotateX = -(offsetY / clientHeight * 50) + 25;
+    
+        setRotate({ x: rotateX, y: rotateY });
+      };
+
+      const handleMouseLeave = () => {
+        setRotate({ x: 0, y: 0 });
+      };
+    
+
+      useEffect(() => {
+        const cardElement = cardRef.current;
+        if (cardElement) {
+          cardElement.style.transform = `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`;
+        }
+      }, [rotate]);
 
   const handleDoubleClick = async () => {
     if (userInfo) {
@@ -53,29 +79,39 @@ const DangsmCard = ({ card }) => {
 
   return (
     <div className='click-star' onDoubleClick={handleDoubleClick}>
-      <div className={`card ${cardType}`} style={{ width: '145px' }}>
-        <div className={`Starrr ${showStar ? 'show' : ''}`}><p>⭐️</p></div>
-        <div className="cards custom-card" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}>
-          <div className="top-container">
-            <StarCategory1 card={updatedCard} />
-            <ClipCard card={updatedCard} />
-          </div>
-          <div className="card-overlay" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}></div>
-          <Link to={`/${card.starNo}`} className="card-body">
-            <h5 className="card-title">
-              <img src={`/file/img/${card.userImgId}`} alt="작성자 아이콘" className="author-icon" />
-              {`${card.title}`}
-            </h5>
-            {/* <CardContent card={updatedCard} /> */}
-            <div className="bottom-container">
-              <div className='starCategory2-con'>
-                <StarCategory2 card={updatedCard} />
-              </div>
-              <div className='starLink-con'>
-                <StarLink card={updatedCard} />
-              </div>
+      <div className='card-container' ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onDoubleClick={handleDoubleClick}
+      style={{
+        transition: 'transform 0.5s',
+        transformStyle: 'preserve-3d'
+      }}
+      >
+        <div className={`card ${cardType}`} style={{ width: '145px' }}>
+          <div className={`Starrr ${showStar ? 'show' : ''}`}><p>⭐️</p></div>
+          <div className="cards custom-card" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}>
+            <div className="top-container">
+              <StarCategory1 card={updatedCard} />
+              <ClipCard card={updatedCard} />
             </div>
-          </Link>
+            <div className="card-overlay" style={{ backgroundImage: `url('/file/img/${card.imgNo}')` }}></div>
+            <Link to={`/${card.starNo}`} className="card-body">
+              <h5 className="card-title">
+                <img src={`/file/img/${card.userImgId}`} alt="작성자 아이콘" className="author-icon" />
+                {`${card.title}`}
+              </h5>
+              {/* <CardContent card={updatedCard} /> */}
+              <div className="bottom-container">
+                <div className='starCategory2-con'>
+                  <StarCategory2 card={updatedCard} />
+                </div>
+                <div className='starLink-con'>
+                  <StarLink card={updatedCard} />
+                </div>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
