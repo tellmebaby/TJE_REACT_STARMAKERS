@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
 import styles from '../board/css/read.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import { updateReply } from '../../apis/starBoard';
 
-const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer, updateReply }) => {
-  const { isLogin, logout, userInfo } = useContext(LoginContext);
+const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answerContent, handleNewRereplyChange, setAnswerContent, showAnswerBox, toggleAnswerBox }) => {
+  const { userInfo } = useContext(LoginContext);
   const [editingReplyId, setEditingReplyId] = useState(null);
   const [newReplyContent, setNewReplyContent] = useState('');
 
@@ -15,7 +14,6 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer, updateReply 
 
   const cancelEditing = () => {
     setEditingReplyId(null);
-    // alert("작성중이던 내용이 사라집니다.")
     setNewReplyContent('');
   };
 
@@ -29,11 +27,30 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer, updateReply 
       });
   };
 
+  const handleInsertAnswer = (replyNo) => {
+    handleRereplySubmit(replyNo, answerContent)
+      .then(() => {
+        toggleAnswerBox(null); // 답글 상자 닫기
+        setAnswerContent(''); // 답글 내용 초기화
+      })
+      .catch(error => {
+        console.error("Error inserting answer:", error);
+      });
+  };
+
+  // const toggleAnswerBox = (replyNo) => {
+  //   if (showAnswerBox === replyNo) {
+  //     setShowAnswerBox(null); // 같은 댓글을 다시 누르면 답글 상자 닫기
+  //   } else {
+  //     setShowAnswerBox(replyNo); // 새로운 댓글의 답글 상자 열기
+  //   }
+  // };
+
   return (
     <div>
       {/* 댓글인 경우 */}
       {reply.replyNo === reply.parentNo && (
-        <div className={styles['reply-line']} id="reply-line">
+        <div className={styles['reply-line']}>
           {/* 댓글 */}
           <div className={styles['reply-top']}>
             <span className={styles['reply-writer']}>{reply.writer}</span>
@@ -72,14 +89,26 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer, updateReply 
             </div>
           </div>
           <div className={styles['reply-rereply']}>
-            <button className={styles['btn-rereply']} onClick={() => insertAnswer(reply.replyNo)}>답글쓰기</button>
+            <button className={styles['btn-rereply']} onClick={() => toggleAnswerBox(reply.replyNo)}>답글쓰기</button>
           </div>
+          {showAnswerBox === reply.replyNo && (
+            <div className={styles['rereply-container']} id={`answer-${reply.replyNo}`}>
+              <div className={styles['rereply-box']}>
+                <textarea
+                  placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."
+                  value={answerContent}
+                  onChange={handleNewRereplyChange}
+                />
+                <button type="button" onClick={() => handleInsertAnswer(reply.replyNo)}>등록</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* 답글인 경우 */}
       {reply.replyNo !== reply.parentNo && (
-        <div className={styles['rereply-list']} id="rereply-list">
+        <div className={styles['rereply-list']} id={`rereply-list-${reply.replyNo}`}>
           <div className={styles['rereply']}>
             {/* 답글 */}
             <div className={styles['rereply-top']}>
@@ -118,12 +147,18 @@ const ReplyList = ({ reply, sessionUser, deleteReply, insertAnswer, updateReply 
                 )}
               </div>
             </div>
-            <div className={`${styles['rereply-container']} m-0 p-0`}>
-              <div className={styles['rereply-box']}>
-                <textarea placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."></textarea>
-                <button type="button" onClick={() => insertAnswer(reply.replyNo)}>등록</button>
+            {showAnswerBox === reply.replyNo && (
+              <div className={styles['rereply-container']} id={`answer-${reply.replyNo}`}>
+                <div className={styles['rereply-box']}>
+                  <textarea
+                    placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다."
+                    value={answerContent}
+                    onChange={handleNewRereplyChange}
+                  />
+                  <button type="button" onClick={() => handleRereplySubmit(reply.replyNo)}>등록</button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}

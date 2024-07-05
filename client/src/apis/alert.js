@@ -29,3 +29,4 @@ export const confirm = (title, text, icon, callback) => {
     })
     .then( callback )
 }
+

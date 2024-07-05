@@ -6,6 +6,7 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
 
   const keywordRef = useRef();
 
+  console.log("boardList", boardList);
 
   const handleClick = (pageNumber) => {
     setPage(pageNumber);

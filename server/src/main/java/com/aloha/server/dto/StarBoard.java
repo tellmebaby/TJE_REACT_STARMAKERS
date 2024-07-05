@@ -25,6 +25,7 @@ public class StarBoard {
     private String card;
     private String category1; // 채널(인스타, 유튜브, 치지직 등)
     private String category2; // 분야(음식, 여행, 게임 등)
+    private String koreaCategory2;
     private String type; // 유료 / 무료 / 디자인의뢰
     private Date startDate;
     private Date endDate;

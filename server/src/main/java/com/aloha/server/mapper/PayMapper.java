@@ -3,6 +3,7 @@ package com.aloha.server.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import com.aloha.server.dto.Pay;
 
@@ -16,6 +17,9 @@ public interface PayMapper {
 
     // 결제내역 상세조회
     public Pay select(int payNo);
+
+    @Select("SELECT * FROM payment_info WHERE code = #{code} limit 0,1")
+    public Pay select_code(String code);
 
     //마이페이지 결제내역 리스트
     public List<Pay> userList(int userNo);

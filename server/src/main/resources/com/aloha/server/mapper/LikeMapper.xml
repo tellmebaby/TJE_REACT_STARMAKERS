@@ -23,4 +23,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where user_no=#{userNo} and star_no=#{starNo}
     </delete>
 
+      <select id="likeCount" resultType="int">
+        SELECT COUNT(*) 
+        FROM action
+        WHERE star_no = #{starNo}
+    </select>
+
 </mapper>

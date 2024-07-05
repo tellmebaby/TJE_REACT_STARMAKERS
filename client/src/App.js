@@ -35,6 +35,7 @@ import StarPaymentFail from './pages/board/StarPaymentFail';
 import MyReviewList from './pages/mypage/MyReviewList';
 import StarUpdate from './pages/board/StarUpdate';
 import Payment from './pages/mypage/Payment';
+import MyPoint from './pages/mypage/MyPoint';
 
 function App() {
   return (
@@ -73,6 +74,8 @@ function App() {
           <Route path="/payments/fail" element={<StarPaymentFail/>}></Route>
           <Route path="/eventInsert" element={<EventInsert/>}></Route>
           <Route path="/update/:starNo" element={<Update/>}></Route>
+
+          <Route path="/mypage/myPoint" element={<MyPoint/>}></Route>
         </Routes>
         </SessionProvider>
       </LoginContextProvider>
