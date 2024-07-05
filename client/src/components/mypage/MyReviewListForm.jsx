@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './MyReviewListForm.module.css';
+import styles from '../../components/mypage/css/MyReviewListForm.module.css';
 import * as mypage from '../../apis/mypage';
 import { Link } from 'react-router-dom';
 
