@@ -1,0 +1,29 @@
+/* ProfileForm.module.css */
+.navLinks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sideMenu {
+    width: 200px;
+    margin-right: 30px;
+    margin-top: 172px;
+}
+
+.navLinks a {
+    display: block;
+    color: #6c757d;
+    margin-bottom: 25px;
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.navLinks a:hover {
+    color: #000;
+}
+
+.navLinks .active {
+    font-weight: bold;
+    color: black;
+}
+    

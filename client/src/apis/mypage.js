@@ -36,3 +36,6 @@ export const promotionList = (params) => api.get(`/mypage/promotion`, {params})
 
 // 마이페이지 결제내역
 export const payList = (params) => api.get(`/mypage/payment`, params);
+
+// 마이페이지 내 보관함
+export const mypageStarList = (myStar) => api.get(`/mypageStarlist`, myStar);
