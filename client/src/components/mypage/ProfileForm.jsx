@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../mypage/css/ProfileForm.module.css';
+import Menu from './Menu';
 
 const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
     const [fileInput, setFileInput] = useState(null);
@@ -46,18 +47,7 @@ const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
     return (
         <div className="container">
             <div className="row">
-                <div className="col-md-3">
-                    <div className={styles.sideMenu}>
-                        <div className={styles.navLinks}>
-                            <Link to="/mypage/profile" className={styles.active}><i className="fa-solid fa-user"></i>회원 정보</Link>
-                            <Link to="/mypage/payment"><i className="fa-solid fa-credit-card"></i>결제 내역</Link>
-                            <Link to="/mypage/promotion"><i className="fa-solid fa-edit"></i>내가 쓴 글</Link>
-                            <Link to="/mypage/archive"><i className="fa-solid fa-archive"></i>내 보관함</Link>
-                            <Link to="/mypage/QnaList"><i className="fa-solid fa-question-circle"></i>1 : 1 문의</Link>
-                            <Link to="/mypage/userDelete"><i className="fa-solid fa-user-slash"></i>회원 탈퇴</Link>
-                        </div>
-                    </div>
-                </div>
+            <Menu styles={styles}/>
                 <div className="col-md-6">
                     <div className="box">
                         <div className={styles.tableMargin}></div>

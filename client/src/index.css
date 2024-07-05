@@ -1,0 +1,10 @@
+.swal2-input-custom {
+    margin-bottom: 10px; /* 입력 박스의 아래쪽 마진을 조정합니다. */
+    width: 100%; /* 입력 박스의 너비를 100%로 설정합니다. */
+}
+
+.swal2-select-custom {
+    margin-bottom: 10px; /* 선택 박스의 아래쪽 마진을 조정합니다. */
+    width: 100%; /* 선택 박스의 너비를 100%로 설정합니다. */
+}
+
