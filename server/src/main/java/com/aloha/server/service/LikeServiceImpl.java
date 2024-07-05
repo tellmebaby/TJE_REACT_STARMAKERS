@@ -26,16 +26,19 @@ public class LikeServiceImpl implements LikeService {
     public boolean toggleLike(int userNo, int starNo) throws Exception {
 
         Integer like = likeMapper.select(userNo, starNo);
+        log.info("좋아했던 있었낭?  " + like);
 
         StarBoard starBoard = starMapper.select(starNo);
         int likes = starBoard.getLikes();
 
         int chk =0;
         if (like == null) {
+            log.info("좋아할래!!!!! 좋아한적없잖아!!!" + "userNo:" + userNo + "starNo" + starNo);
             likeMapper.save(userNo, starNo);
             likes++;
             chk =1;
         } else {
+            log.info("안좋아할래!! 좋아했었잖아!!");
             likeMapper.delete(userNo, starNo);
             likes--;
         }
@@ -43,7 +46,7 @@ public class LikeServiceImpl implements LikeService {
         starBoard.setLikes(likes);
         int result = starMapper.update(starBoard);
         if( result > 0 ){
-            // log.info("업데이트 성공");
+            log.info("업데이트 성공");
         }
 
 
