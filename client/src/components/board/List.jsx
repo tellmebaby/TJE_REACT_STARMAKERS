@@ -51,7 +51,7 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
   return (
   // <div className="container" style={{backgroundColor: '#f5f5f5'}}>
     <div className="container" style={{ padding: 'auto' }}>
-      <h3 className={styles.{getStyle()}}>{getTitle()}</h3>
+      <h3 className={styles.event}>{getTitle()}</h3>
       <div className={styles.eventtext}>
         <label>{getDescription()}</label>
       </div>
