@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../board/css/read.module.css';
 import ReplyList from './ReplyList';
 import { useNavigate } from 'react-router-dom';
@@ -32,6 +32,17 @@ const Read = ({
   onLikeToggle
 }) => {
   const navigate = useNavigate();
+
+  const [showAnswerBox, setShowAnswerBox] = useState(null);
+  const toggleAnswerBox = (replyNo) => {
+    if (showAnswerBox === replyNo) {
+      setShowAnswerBox(null);
+      setAnswerContent(''); // 답글 내용 초기화
+    } else {
+      setShowAnswerBox(replyNo);
+      setAnswerContent(''); // 답글 내용 초기화
+    }
+  };
 
   return (
     <div className="container2" style={{ padding: '10px' }}>
@@ -110,6 +121,8 @@ const Read = ({
             handleNewRereplyChange={handleNewRereplyChange}
             answerContent={answerContent}
             setAnswerContent={setAnswerContent}
+            showAnswerBox={showAnswerBox}
+            toggleAnswerBox={toggleAnswerBox}
           />
         ))}
       </div>
