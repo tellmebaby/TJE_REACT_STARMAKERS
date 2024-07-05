@@ -8,7 +8,6 @@ const QnaListContainer = () => {
   const [pageInfo, setPageInfo] = useState({ pageNumber: 1, itemsPerPage: 10 }); // 초기 상태 빈 객체로 설정
   const [pageNo, setPage] = useState(1);
   const [keyword, setKeyword] = useState('');
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
   const getQnaList = async () => {
     try {
@@ -46,7 +45,6 @@ const QnaListContainer = () => {
     const fetchData = async () => {
       await getUser();
       await getQnaList();
-      setLoading(false); // 데이터 로딩 후 로딩 상태 false로 설정
     };
 
     fetchData();
@@ -58,7 +56,6 @@ const QnaListContainer = () => {
   }, [qnaList, user]);
 
   return (
-    loading ? <div>Loading...</div> :
     user && (
       <QnaListForm
         qnaList={qnaList}
