@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MyPointForm from '../../components/mypage/MyPointForm'
+import * as pay from '../../apis/pay'
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const MyPointContainer = () => {
+  const [pointList, setPointList] = useState([]);
+  const { userInfo } = useContext(LoginContext);
 
-  const userPayList= [];
-  
+  const userPointList = async () => {
+    try {
+      const response = await pay.pointList(userInfo.userNo);
+      const data = response.data;
+
+      setPointList(data);
+
+      // setPointList
+
+    } catch (error) {
+      console.error('Error fetching review list:', error);
+      if (error.response) {
+        console.error('Error response:', error.response);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (userInfo?.userNo) {
+      userPointList();
+    }
+  }, [userInfo]);
+
+
+
   return (
-    <MyPointForm userPayList={userPayList}/>
+    <MyPointForm pointList={pointList} />
   )
 }
 

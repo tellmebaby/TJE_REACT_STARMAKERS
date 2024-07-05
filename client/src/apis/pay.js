@@ -4,10 +4,10 @@ import api from './api';
 export const payInsert = (data) => api.post(`/pay`, data)
 
 // 포인트충전
-export const pointAdd = (data) => api.post(`/point`, data)
+export const pointAdd = (data) => api.post(`/pay/point`, data)
 
 // 포인트내역
-export const pointList = (data) => api.get(`/point`, data);
+export const pointList = (no) => api.get(`/pay/point/${no}`);
 
 // 후원금 조회
-export const pointSelect = (data) => api.get(`/point/select`, data);
+export const pointSelect = (data) => api.get(`/pay/point/select`, data);

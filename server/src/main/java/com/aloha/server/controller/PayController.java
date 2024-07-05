@@ -1,6 +1,7 @@
 package com.aloha.server.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aloha.server.dto.StarBoard;
-import com.aloha.server.service.StarService;
 import com.aloha.server.dto.Pay;
+import com.aloha.server.dto.Point;
+import com.aloha.server.dto.StarBoard;
 import com.aloha.server.service.PayService;
+import com.aloha.server.service.PointService;
+import com.aloha.server.service.StarService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +33,9 @@ public class PayController {
 
     @Autowired
     private StarService starService;
+
+    @Autowired
+    private PointService pointService;
 
     @GetMapping("/payments/success")
     public String showSuccessPage() {
@@ -89,6 +95,40 @@ public class PayController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @PostMapping("/point")
+    public ResponseEntity<?> pointAdd(@RequestBody Point point) {
+
+        String type = point.getType();
+
+        if(type!="충전"){
+
+        }
+
+        try {
+            int result = pointService.insert(point);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+
+    @GetMapping("/point/{no}")
+    public ResponseEntity<?> pointList(@PathVariable("no") int userNo) throws Exception {
+        try {
+            List<Point> poinyList = pointService.list(userNo);
+            return new ResponseEntity<>(poinyList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    
+    
+
+    
 
 
 }

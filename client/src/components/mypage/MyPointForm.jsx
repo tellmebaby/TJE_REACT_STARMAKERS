@@ -4,13 +4,12 @@ import styles from './css/PaymentForm.module.css';
 import Menu from './Menu';
 import { useNavigate } from 'react-router-dom';
 
-const MyPointForm = ({userPayList}) => {
+const MyPointForm = ({pointList}) => {
     const navigate = useNavigate();
 
     const handleCharge = () => {
         chargePoints(navigate, (chargeInfo) => {
-            console.log('Charged Amount:', chargeInfo.amount);
-            // Additional logic after charging points
+            // console.log('Charged Amount:', chargeInfo.amount);
         });
     };
 
@@ -44,31 +43,31 @@ const MyPointForm = ({userPayList}) => {
                                 </tr>
                             </thead>
                             <tbody id="payment-list">
-                                {userPayList.length === 0 ? (
+                                {pointList.length === 0 ? (
                                     <tr>
                                         <td colSpan="4" align="center" style={{ paddingTop: '183.49px', paddingBottom: '183.49px' }}>
                                             조회된 내역이 없습니다.
                                         </td>
                                     </tr>
                                 ) : (
-                                    userPayList.map((payment) => (
-                                        <React.Fragment key={payment.code}>
-                                            <tr key={`${payment.code}-row1`}>
-                                                <td className="border-0 pt-4">{payment.code}</td>
-                                                <td className="border-0 pt-4">{payment.productTitle}</td>
+                                    pointList.map((point) => (
+                                        <React.Fragment key={point.code}>
+                                            <tr key={`${point.code}-row1`}>
+                                                <td className="border-0 pt-4">{point.code}</td>
+                                                <td className="border-0 pt-4">{point.productTitle}</td>
                                                 <td className="border-0 pt-4">
-                                                    <span>{payment.price.toLocaleString()}원</span>
+                                                    <span>{point.point.toLocaleString()}원</span>
                                                 </td>
-                                                <td className="border-0 pt-4">{new Date(payment.regDate).toLocaleDateString()}</td>
+                                                <td className="border-0 pt-4">{new Date(point.regDate).toLocaleDateString()}</td>
                                             </tr>
-                                            <tr key={`${payment.code}-row2`}>
+                                            <tr key={`${point.code}-row2`}>
                                                 <td colSpan="3"></td>
                                                 <td>
                                                     <div className={styles.buttonContainer}>
                                                         <input
                                                             type="button"
-                                                            className={`${styles.btnReview} ${payment.status === '결제완료' ? styles.approved : styles.pending}`}
-                                                            value={payment.status}
+                                                            className={`${styles.btnReview} ${point.status === '결제완료' ? styles.approved : styles.pending}`}
+                                                            value={point.status}
                                                             disabled
                                                         />
                                                         <button className={styles.btnRefund}>환불요청</button>
@@ -80,7 +79,7 @@ const MyPointForm = ({userPayList}) => {
                                 )}
                             </tbody>
                         </table>
-                        {/* {visibleItems < userPayList.length && (
+                        {/* {visibleItems < pointList.length && (
                             <div className={styles.loadMoreBtn}>
                                 <button type="button" onClick={loadMore}>더보기</button>
                             </div>

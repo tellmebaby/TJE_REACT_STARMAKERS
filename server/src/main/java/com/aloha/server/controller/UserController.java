@@ -41,6 +41,8 @@ public class UserController {
         Users user = customUser.getUser();
         try {
             Users loginUser = userService.select(user.getEmail());
+
+
             return new ResponseEntity<>(loginUser, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("UNAUTHORIZED", HttpStatus.UNAUTHORIZED);
