@@ -1,15 +1,15 @@
-package com.aloha.server.mapper;
+package com.aloha.server.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.aloha.server.dto.Files;
 
-@Mapper
-public interface PointMapper {
-    // 게시글 목록
+
+public interface PointService {
+
+  // 게시글 목록
    public List<Files> list() throws Exception;
    // 게시글 조회
    public Files select(int no) throws Exception;
