@@ -4,7 +4,7 @@ import ReplyList from './ReplyList';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useSession } from '../../contexts/SessionContext';
-import swal from "sweetalert2";
+import Swal from "sweetalert2";
 
 
 const Read = ({
@@ -43,7 +43,23 @@ const Read = ({
       setAnswerContent(''); // 답글 내용 초기화
     }
   };
+  const dona = () => {
+    Swal.fire({
+      icon:'question',
+      title:'후원',
+      text:'후원 하시겠습니까?',
+      showCancelButton:true,
+      confirmButtonText:'후원하기',
+      cancelButtonText:'취소',
+      confirmButtonColor:'#91accf',
+      cancelButtonColor:'#ffccee'
+    }).then(result => {
+      if(result.isConfirmed) {
 
+      } 
+    })
+
+  }
   return (
     <div className="container2" style={{ padding: '10px' }}>
       <center>
@@ -76,7 +92,7 @@ const Read = ({
           </>
          :
          <>
-            <button className={styles['btn-update']} type="button" >후원</button>
+            <button className={styles['btn-update']} type="button" onClick={dona}>후원</button>
          </>
         }
       </div>
