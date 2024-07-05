@@ -63,7 +63,7 @@ const Read = ({
       case 'event': return 'EVENT';
       case 'an': return 'Notice';
       case 'review': return '후기';
-      case 'starCard': return '홍보'
+      case 'starCard': return '스타 홍보'
     }
   };
 
