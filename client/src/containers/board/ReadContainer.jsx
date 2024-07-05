@@ -54,14 +54,24 @@ const ReadContainer = ({ starNo }) => {
   // 게시글 삭제
   const onDelete = async (starNo) => {
     try {
-      await starBoards.remove(starNo);
-      Swal.alert("삭제 완료!");
-      navigate(`/${starBoard.type}`);
+      
+      Swal.confirm("정말로 삭제하시겠습니까?", "", "question", (result) => {
+        // isConfirmed : 확인버튼 클릭 여부
+        if (result.isConfirmed) {
+            try {
+              starBoards.remove(starNo);
+              Swal.alert("삭제 완료!");
+              navigate(`/${starBoard.type}`);
+            } catch (error) {
+              console.error('게시글 삭제 실패:', error);
+            }
+        }
+    })
+
     } catch (error) {
       console.error('게시글 삭제 실패:', error);
     }
   };
-
 
  // 댓글--------------------------------------------댓글
   // const handleReplySubmit = async (e) => {
@@ -161,15 +171,21 @@ const ReadContainer = ({ starNo }) => {
 
   // 댓글 삭제
   const handleReplyDelete = async (replyNo) => {
-    try {
-      await starBoards.deleteReply(replyNo);
-      Swal.alert("삭제 완료!");
-      getReplyList();
-    } catch (error) {
-      console.error('댓글 삭제 실패:', error);
-    }
+    
+    Swal.confirm("정말로 삭제하시겠습니까?", "", "question", (result) => {
+      // isConfirmed : 확인버튼 클릭 여부
+      if (result.isConfirmed) {
+          try {
+            starBoards.deleteReply(replyNo);
+            Swal.alert("삭제 완료!");
+            getReplyList();
+          } catch (error) {
+            console.error('게시글 삭제 실패:', error);
+          }
+      }
+  }
 
-  };
+  )};
 
   // 댓글 수정
   const handleReplyUpdate = async (replyNo, content) => {

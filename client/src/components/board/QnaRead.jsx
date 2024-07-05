@@ -25,12 +25,12 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
     window.location.href = `/qna/update/${qnaNo}`;
   };
 
-  const handleDelete = () => {
-    const check = window.confirm("정말로 삭제하시겠습니까?")
-    if (check) {
-      onDelete(qnaNo)
-    }
-  }
+  // const handleDelete = () => {
+  //   const check = window.confirm("정말로 삭제하시겠습니까?")
+  //   if (check) {
+  //     onDelete(qnaNo)
+  //   }
+  // }
 
   const toggleAnswer = () => {
     setIsEditingAnswer(!isEditingAnswer);
@@ -101,7 +101,7 @@ const QnaRead = ({ qnaNo, qnaBoard, isLoading, user, addAnswer, updateAnswer, de
             <input
               className={styles['btn-delete']}
               type="button"
-              onClick={handleDelete}
+              onClick={() => onDelete(qnaNo)}
               value="삭제"
             />
           </>
