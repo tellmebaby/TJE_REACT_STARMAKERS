@@ -67,20 +67,27 @@ const Read = ({
     }
   };
 
-  const clickDona = (value) => {
-
+  const clickDona = (point) => {
+    window.confirm(point)
+    
   }
 
   const dona = () => {
     const inputValue = 0;
     const inputStep = 100;
+    // const inputNumber =
     Swal.fire({
       icon: 'question',
       title: '후원',
-      text: '이 스타에게 포인트를 후원 하시나요?',
+      // text: '이 스타에게 포인트를 후원 하시나요?',
       html: `<br/>
             <p>최소 100포인트에서 최대 10000포인트까지<br/> 후원 가능합니다 :D</p>
-`,
+               <input
+                    type="number"
+                    value="${inputValue}"
+                    step="${inputStep}"
+                    class="swal2-input"
+                    id="range-value">`,
       input: 'range',
       inputValue,
       inputAttributes: {
@@ -92,10 +99,28 @@ const Read = ({
       confirmButtonText: '후원하기',
       cancelButtonText: '취소',
       confirmButtonColor: '#91accf',
-      cancelButtonColor: '#ffccee'
+      cancelButtonColor: '#ffccee',
+      didOpen: () => {
+        const inputRange = Swal.getInput()
+        const inputNumber = Swal.getPopup().querySelector('#range-value') 
+        // remove default output
+        Swal.getPopup().querySelector('output').style.display = 'none'
+        inputRange.style.width = '100%'
+        
+        // sync input[type=number] with input[type=range]
+        inputRange.addEventListener('input', () => {
+          inputNumber.value = inputRange.value
+        })
+        
+        // sync input[type=range] with input[type=number]
+        inputNumber.addEventListener('change', () => {
+          inputRange.value = inputNumber.value
+        })
+      },
     }).then(result => {
       if (result.isConfirmed) {
-        clickDona(inputValue)
+        const point = Swal.getPopup().querySelector('#range-value').value;
+        clickDona(point)
       }
     })
   }
@@ -173,7 +198,7 @@ const Read = ({
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button>
         {userInfo && userInfo.userNo === starBoard.userNo ?
           <>
-           {starBoard.type == "starCard" ?
+            {starBoard.type == "starCard" ?
               <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/starUpdate/${starNo}`}>수정</button>
               :
               <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
