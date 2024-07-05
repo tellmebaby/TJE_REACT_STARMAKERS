@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as qna from '../../apis/qna';
 import QnaRead from '../../components/board/QnaRead';
 import { useNavigate } from 'react-router-dom';
+import * as Swal from '../../apis/alert'
 
 const QnaReadContainer = ({ qnaNo }) => {
   // 🧊 state
@@ -61,7 +62,7 @@ const QnaReadContainer = ({ qnaNo }) => {
     const response = await qna.remove(qnaNo)
     const status = await response.status
     console.log(`게시글 삭제 요청 결과 : ${status}`)
-    alert("삭제 완료!")
+    Swal.alert("삭제 완료!")
 
     // -> 목록으로 이동
     navigate("/qna/qnaList")
