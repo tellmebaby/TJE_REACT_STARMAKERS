@@ -27,3 +27,18 @@
     color: black;
 }
     
+.container {
+    padding: 20px;
+  }
+  
+  .list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* 가로로 카드 배치 */
+    margin-top: 20px;
+  }
+  
+  .contentIcon {
+    width: 32px; /* 원하는 너비 */
+    height: 32px; /* 원하는 높이 */
+    margin-right: 8px; /* 아이콘 간의 간격 조정 */
+  }
