@@ -91,7 +91,7 @@ const ProfileForm = ({ user, fileList, onSaveImage, onDeleteImage }) => {
                         </table>
                         <div className={styles.buttonContainer}>
                             <Link to="/mypage/profileUpdate">
-                                <input className={styles.button} type="button" value="정보 수정" />
+                                <input className="btn btn-primary btn-lg" type="button" value="정보 수정" />
                             </Link>
                         </div>
                     </div>
