@@ -2,12 +2,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import styles from '../board/css/read.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit }) => {
+const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answerContent, handleNewRereplyChange, setAnswerContent, showAnswerBox, toggleAnswerBox }) => {
   const { userInfo } = useContext(LoginContext);
   const [editingReplyId, setEditingReplyId] = useState(null);
   const [newReplyContent, setNewReplyContent] = useState('');
-  const [showAnswerBox, setShowAnswerBox] = useState(null);
-  const [answerContents, setAnswerContents] = useState({}); // 답글 내용 상태를 객체로 관리
 
   const startEditing = (replyNo, currentContent) => {
     setEditingReplyId(replyNo);
@@ -32,24 +30,21 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit }) => 
   const handleInsertAnswer = (replyNo) => {
     handleRereplySubmit(replyNo, answerContents[replyNo] || '')
       .then(() => {
-        setShowAnswerBox(null);
-        setAnswerContents(prevState => ({
-          ...prevState,
-          [replyNo]: ''
-        }));
+        toggleAnswerBox(null); // 답글 상자 닫기
+        setAnswerContent(''); // 답글 내용 초기화
       })
       .catch(error => {
         console.error("Error inserting answer:", error);
       });
   };
 
-  const toggleAnswerBox = (replyNo) => {
-    if (showAnswerBox === replyNo) {
-      setShowAnswerBox(null);
-    } else {
-      setShowAnswerBox(replyNo);
-    }
-  };
+  // const toggleAnswerBox = (replyNo) => {
+  //   if (showAnswerBox === replyNo) {
+  //     setShowAnswerBox(null); // 같은 댓글을 다시 누르면 답글 상자 닫기
+  //   } else {
+  //     setShowAnswerBox(replyNo); // 새로운 댓글의 답글 상자 열기
+  //   }
+  // };
 
   const handleAnswerContentChange = (replyNo, content) => {
     setAnswerContents(prevState => ({
