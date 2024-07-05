@@ -41,8 +41,8 @@ const PaymentForm = ({ payList, userInfo }) => {
                 </tr>
                 <tr>
                   <th style={{ width: '150px' }}>결제번호</th>
-                  <th style={{ width: '300px' }}>결제상품</th>
-                  <th style={{ width: '150px' }}>결제금액</th>
+                  <th style={{ width: '350px' }}>결제상품</th>
+                  <th style={{ width: '100px' }}>결제금액</th>
                   <th style={{ width: '200px' }}>결제일자</th>
                 </tr>
               </thead>
