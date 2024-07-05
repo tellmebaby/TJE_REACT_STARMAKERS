@@ -4,14 +4,14 @@ import ScList from '../../components/board/starBoard/ScList';
 
 const StarListContainer = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const option = queryParams.get('option') || {};
+  const category = location.state?.categorySelected || '';
 
   return (
     <div>
-      <ScList option={option} />
+      <ScList category={category} />
     </div>
   );
-}
+};
+
 
 export default StarListContainer;

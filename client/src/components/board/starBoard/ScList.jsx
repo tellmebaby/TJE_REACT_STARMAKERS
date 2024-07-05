@@ -1,31 +1,98 @@
-import React, { useEffect, useState } from 'react';
-import StarCardList from './StarCardList';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
 import './css/ScList.css';
-// import 'bootstrap-icons/font/bootstrap-icons.css';
+import './css/StarCardList.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Link } from 'react-router-dom';
+import { LoginContext } from '../../../contexts/LoginContextProvider';
+import DangsmCard from '../../main/starcard/DangsmCard';
 
-const ScList = ({option}) => {
+const ScList = ({category, option, keyword: initialKeyword}) => {
   const [selectedOptions, setSelectedOptions] = useState(new Map());
-  const [searchKeyword, setSearchKeyword] = useState('');
+  const [searchKeyword, setSearchKeyword] = useState(initialKeyword || '');
+  const [data, setData] = useState([]);  // 데이터 상태 추가
+  const [page, setPage] = useState(1);  // 페이지 상태 관리, 필요하다면
+  const { userInfo } = useContext(LoginContext);
+  const location = useLocation();
+
+  useEffect(() => {
+    // 초기 상태에서 아무 선택도 없을 경우 전체 데이터 로딩
+    if (!location.state && selectedOptions.size === 0) {
+        fetchData(true);  // 전체 데이터를 로드하는 함수 호출, 필요에 따라 API 수정
+    }
+}, [location, selectedOptions.size]);
 
 
   useEffect(() => {
-    if (option) {
-      setSelectedOptions(new Map([[option, true]]));
+    const newOptions = new Map();
+    if (category) newOptions.set(category, true);
+    if (option) newOptions.set(option, true);
+    if (initialKeyword) newOptions.set('keyword', initialKeyword);
+    setSelectedOptions(newOptions);
+  }, [category, option, initialKeyword]);
+
+  useEffect(() => {
+    // Location 상태에서 검색어 추출
+    const keyword = location.state?.keyword || '';
+    setSearchKeyword(keyword);  // 입력창의 상태를 설정
+    console.log("가져온 키워드야 : " + keyword);
+    if (keyword) {
+      setSelectedOptions(new Map([['keyword', keyword]]));
     }
-  }, [option]);
+  }, [location.state]);
+
+  useEffect(() => {
+    if (selectedOptions.size > 0) {
+      fetchData();
+    } 
+  }, [selectedOptions, userInfo, page, searchKeyword]);
+
+  useEffect(() => {
+    if (selectedOptions.size > 0) {
+      console.log("Fetching data with options:", Object.fromEntries(selectedOptions));
+      fetchData();
+    }
+  }, [selectedOptions, userInfo, page, searchKeyword]); // searchKeyword를 의존성에 추가
+ 
+  const fetchData = async () => {
+    setData([]); // Clear existing data before fetching new data
+    const params = {
+      ...Object.fromEntries(selectedOptions),
+      userNo: userInfo ? userInfo.userNo : 0,
+      page
+    };
+    console.log("API call with params:", params);
+    try {
+      const response = await axios.get('/starList/api', { params });
+      setData(response.data);
+      console.log("Data fetched:", response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const handleInputClick = (option, value = true) => {
     setSelectedOptions((prevOptions) => {
       const newOptions = new Map(prevOptions);
       if (newOptions.has(option)) {
         newOptions.delete(option);
+        console.log(`'${option}' 체크가 해제되었습니다.`);
       } else {
         newOptions.set(option, value);
+        console.log(`'${option}' 체크되었습니다.`);
+      }
+      if (newOptions.size === 0) {
+        console.log("모든 체크가 해제되었습니다. 데이터를 비웁니다.");
+        setData([]); // 모든 체크가 해제되면 데이터를 비움
+      } else {
+        fetchData();
       }
       return newOptions;
     });
   };
+
+
 
   const isOptionSelected = (option) => {
     return selectedOptions.has(option);
@@ -33,23 +100,22 @@ const ScList = ({option}) => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (searchKeyword) {
-      handleInputClick('keyword', searchKeyword);
-    }
+    setSelectedOptions(prev => new Map(prev).set('keyword', searchKeyword));
+    console.log("Search submitted with keyword:", searchKeyword);
   };
 
+
   const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchKeyword(value);
-    if (value === '') {
-      handleInputClick('keyword', ' ');
-    }
+    setSearchKeyword(e.target.value);
   };
 
   const clearSearch = () => {
     setSearchKeyword('');
-    handleInputClick('keyword', ' ');
+    setSelectedOptions(prev => new Map());
+    console.log("검색어를 지웠습니다.");
   };
+
+
 
 
   return (
@@ -252,7 +318,13 @@ const ScList = ({option}) => {
       </div>
 
 
-      <StarCardList options={selectedOptions} />
+      <div className='star-card-list'>
+        {data.map((item) => (
+          <div key={item.starNo} className='star-card-item' style={{ width: '170px' }}>
+            <DangsmCard card={item} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

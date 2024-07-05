@@ -289,36 +289,70 @@ public class StarController {
         return new ResponseEntity<>(starList, HttpStatus.OK);
     }
 
-    // 추가 화면 설정
+
+   
+
+
+      // 추가 화면 설정
     @GetMapping("/starList/api")
     public ResponseEntity<List<StarBoard>> getMoreCards(
-            @RequestParam(value = "type", defaultValue = "starCard") String type,
-            Page page,
-            Option option, int userNo) throws Exception {
+        @RequestParam(value = "type", defaultValue = "starCard") String type,
+        Page page,
+        Option option, @RequestParam(value = "userNo", required = false) Integer userNo) throws Exception {
 
-        if ( option != null ){
-            log.info("받아온 옵션값 :::::::::::::::: " + option);
-        }
-        List<StarBoard> starList;
-
-        page.setRows(24); // 한 번에 불러올 행 수 설정
-
-        if (userNo > 0) {
-            starList = starService.getStarList(type, page, option, userNo);
-        } else {
-            starList = starService.list(type, page, option);
-        }
-
-        starList.forEach(star -> {
-            if (star.getCategory1() != null) {
-                List<String> icons = Arrays.stream(star.getCategory1().split(","))
-                        .collect(Collectors.toList());
-                star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
-            }
-        });
-
-        return new ResponseEntity<>(starList, HttpStatus.OK);
+    if (option != null) {
+        log.info("받아온 옵션값 :::::::::::::::: " + option);
     }
+
+    List<StarBoard> starList;
+    page.setRows(24); // 한 번에 불러올 행 수 설정
+
+
+    if (userNo != null && userNo > 0) {
+        starList = starService.getStarList(type, page, option, userNo);
+    } else {
+        starList = starService.list(type, page, option);
+    }
+
+    starList.forEach(star -> {
+        if (star.getCategory1() != null) {
+            List<String> icons = Arrays.stream(star.getCategory1().split(","))
+                    .collect(Collectors.toList());
+            star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
+        }
+    });
+
+    return new ResponseEntity<>(starList, HttpStatus.OK);
+}
+    // @GetMapping("/starList/api")
+    // public ResponseEntity<List<StarBoard>> getMoreCards(
+    //         @RequestParam(value = "type", defaultValue = "starCard") String type,
+    //         Page page,
+    //         Option option, Integer userNo) throws Exception {
+
+    //     if ( option != null ){
+    //         log.info("받아온 옵션값 :::::::::::::::: " + option);
+    //     }
+    //     List<StarBoard> starList;
+
+    //     page.setRows(24); // 한 번에 불러올 행 수 설정
+
+    //     if ( userNo > 0 ) {
+    //         starList = starService.getStarList(type, page, option, userNo);
+    //     } else {
+    //         starList = starService.list(type, page, option);
+    //     }
+
+    //     starList.forEach(star -> {
+    //         if (star.getCategory1() != null) {
+    //             List<String> icons = Arrays.stream(star.getCategory1().split(","))
+    //                     .collect(Collectors.toList());
+    //             star.setIcons(icons); // star 객체에 아이콘 리스트를 설정
+    //         }
+    //     });
+
+    //     return new ResponseEntity<>(starList, HttpStatus.OK);
+    // }
 
     /**
      * 결제 버튼 클릭 시
