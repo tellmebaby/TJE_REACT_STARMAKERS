@@ -10,6 +10,7 @@ import './css/DangsmCard.css';
 import { LoginContext } from '../../../contexts/LoginContextProvider';
 import { StarLike } from '../../../apis/main/cards';
 import * as Swal from '../../../apis/alert'
+import * as starBoards from '../../../apis/starBoard'
 
 
 const DangsmCard = ({ card }) => {
@@ -17,6 +18,9 @@ const DangsmCard = ({ card }) => {
   const cardType = card.card ? card.card : 'standard';
   const [showStar, setShowStar] = useState(false);
   const [updatedCard, setUpdatedCard] = useState(card);
+  const [starBoard, setStarBoard] = useState({});
+  const [likes, setLikes] = useState(0);
+  const [liked, setLiked] = useState(false);
 
       // 페이지 이동
       const navigate = useNavigate()
@@ -56,8 +60,11 @@ const DangsmCard = ({ card }) => {
         }, 1000); // 1초 후에 star 아이콘 제거
       }
       try {
-        const response = await StarLike(userInfo.userNo, updatedCard.starNo);
+        // const response = await StarLike(userInfo.userNo, updatedCard.starNo);
+        const response = await starBoards.toggleLike(userInfo.userNo, updatedCard.starNo);
         console.log(response.data);
+        setLiked(response.data.liked);
+        setLikes(response.data.likeCount);
         setUpdatedCard({
           ...updatedCard,
           action: response.data.liked ? 'liked' : '',
