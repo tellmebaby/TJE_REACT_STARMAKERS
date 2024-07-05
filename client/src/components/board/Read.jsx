@@ -63,6 +63,7 @@ const Read = ({
       case 'event': return 'EVENT';
       case 'an': return 'Notice';
       case 'review': return '후기';
+      case 'starCard': return '홍보'
     }
   };
 
@@ -119,7 +120,7 @@ const Read = ({
                 <span className="align-items-center">{new Date(starBoard.regDate).toLocaleString()}</span>
                 <div className="d-flex justify-content-end col-2">
                   <span ><i className="fa-solid fa-star"></i> </span>
-                  <span>{starBoard.likes}</span>
+                  <span>{likes}</span>
                   <span className="ms-2"><i className="fa-regular fa-eye"></i> </span>
                   <span>{starBoard.views}</span>
                 </div>
