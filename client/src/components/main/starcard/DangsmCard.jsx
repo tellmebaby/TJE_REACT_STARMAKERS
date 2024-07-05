@@ -8,9 +8,8 @@ import StarLink from './StarLink';
 import './css/CardContent.css';
 import './css/DangsmCard.css';
 import { LoginContext } from '../../../contexts/LoginContextProvider';
-import { StarLike } from '../../../apis/main/cards';
+import { StarLike, toggleLike } from '../../../apis/main/cards';
 import * as Swal from '../../../apis/alert'
-import * as starBoards from '../../../apis/starBoard'
 
 
 const DangsmCard = ({ card }) => {
@@ -61,7 +60,7 @@ const DangsmCard = ({ card }) => {
       }
       try {
         // const response = await StarLike(userInfo.userNo, updatedCard.starNo);
-        const response = await starBoards.toggleLike(userInfo.userNo, updatedCard.starNo);
+        const response = await toggleLike(userInfo.userNo, updatedCard.starNo);
         console.log(response.data);
         setLiked(response.data.liked);
         setLikes(response.data.likeCount);
