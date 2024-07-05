@@ -44,13 +44,35 @@ const Read = ({
     }
   };
 
+  const getTypeClass = () => {
+    switch (starBoard.type) {
+      case 'an':
+        return styles.notice;
+      case 'event':
+        return styles.event;
+      case 'review':
+        return styles['black-han-sans-regular'];
+      case 'starCard':
+        return styles.starCard;
+    }
+  };
+
+  const getTitle = () => {
+    switch (starBoard.type) {
+      case 'event': return 'EVENT';
+      case 'an': return 'Notice';
+      case 'review': return '후기';
+    }
+  };
+
   return (
     <div className="container2" style={{ padding: '10px' }}>
       <center>
-        {starBoard.type === 'an' && <h1>공지사항</h1>}
-        {starBoard.type === 'event' && <h1>이벤트</h1>}
+        {/* {starBoard.type === 'an' && <h1>Notice</h1>}
+        {starBoard.type === 'event' && <h1>EVENT</h1>}
         {starBoard.type === 'review' && <h1>후기</h1>}
-        {starBoard.type === 'starCard' && <h1>홍보</h1>}
+        {starBoard.type === 'starCard' && <h1>홍보</h1>} */}
+        <h1 className={`${styles.title} ${getTypeClass()}`}>{getTitle()}</h1>
       </center>
       {!isLoading && starBoard && (
         <>
