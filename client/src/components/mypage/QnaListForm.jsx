@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as mypage from '../../apis/mypage';
 import styles from '../mypage/css/QnaListForm.module.css';
@@ -45,7 +45,7 @@ const QnaListForm = ({ qnaList, user, page, setPage, setCode }) => {
   const handleAllDelete = async () => {
     const allQnaNos = userQnaList.map(qna => qna.qnaNo);
     if (allQnaNos.length === 0) {
-      alert('삭제할 게시물이 없습니다.')
+      alert('삭제할 게시물이 없습니다.');
       return;
     }
 
