@@ -2,11 +2,10 @@ import React, { useContext, useState } from 'react';
 import styles from '../board/css/read.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answerContent, handleNewRereplyChange, setAnswerContent }) => {
+const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answerContent, handleNewRereplyChange, setAnswerContent, showAnswerBox, toggleAnswerBox }) => {
   const { userInfo } = useContext(LoginContext);
   const [editingReplyId, setEditingReplyId] = useState(null);
   const [newReplyContent, setNewReplyContent] = useState('');
-  const [showAnswerBox, setShowAnswerBox] = useState(null); // 답글 상자를 보여줄 댓글 번호 저장
 
   const startEditing = (replyNo, currentContent) => {
     setEditingReplyId(replyNo);
@@ -31,7 +30,7 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
   const handleInsertAnswer = (replyNo) => {
     handleRereplySubmit(replyNo, answerContent)
       .then(() => {
-        setShowAnswerBox(null); // 답글 상자 닫기
+        toggleAnswerBox(null); // 답글 상자 닫기
         setAnswerContent(''); // 답글 내용 초기화
       })
       .catch(error => {
@@ -39,13 +38,13 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
       });
   };
 
-  const toggleAnswerBox = (replyNo) => {
-    if (showAnswerBox === replyNo) {
-      setShowAnswerBox(null); // 같은 댓글을 다시 누르면 답글 상자 닫기
-    } else {
-      setShowAnswerBox(replyNo); // 새로운 댓글의 답글 상자 열기
-    }
-  };
+  // const toggleAnswerBox = (replyNo) => {
+  //   if (showAnswerBox === replyNo) {
+  //     setShowAnswerBox(null); // 같은 댓글을 다시 누르면 답글 상자 닫기
+  //   } else {
+  //     setShowAnswerBox(replyNo); // 새로운 댓글의 답글 상자 열기
+  //   }
+  // };
 
   return (
     <div>
