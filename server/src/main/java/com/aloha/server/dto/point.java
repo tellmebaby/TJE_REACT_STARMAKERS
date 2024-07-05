@@ -8,6 +8,5 @@ public class Point {
     private Date regDate;
     private int starNo;
     private String type;
-
     private int totalPoint;
 }
