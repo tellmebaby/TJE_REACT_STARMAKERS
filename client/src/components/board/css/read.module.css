@@ -586,7 +586,7 @@ h1 {
 .main-image {
     position: relative;
     display: block;
-    width: 100%;
+    width: 960px;
     max-width: 960px;
     /* 컨테이너 안으로 */
     margin: 0 auto;
