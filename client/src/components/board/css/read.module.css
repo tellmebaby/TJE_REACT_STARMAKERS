@@ -482,7 +482,7 @@ h1 {
           } */
 
 /* 답글!!!! 목록 */
-#rereply-list {
+.rereply-list {
     display: block;
     width: 100%;
     display: block;

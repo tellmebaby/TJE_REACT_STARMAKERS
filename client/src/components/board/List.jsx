@@ -29,6 +29,14 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
     }
   };
 
+  const getStyle = () => {
+    switch (type) {
+      case 'event': return 'event';
+      case 'an': return 'notice';
+      case 'review': return 'review';
+    }
+  };
+
   const getDescription = () => {
     switch (type) {
       case 'event': return '다양한 이벤트에 참여하고 상품도 받아가세요🎊';
@@ -41,7 +49,8 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
   
 
   return (
-    <div className="container" style={{ padding: '10px' }}>
+  // <div className="container" style={{backgroundColor: '#f5f5f5'}}>
+    <div className="container" style={{ padding: 'auto' }}>
       <h3 className={styles.event}>{getTitle()}</h3>
       <div className={styles.eventtext}>
         <label>{getDescription()}</label>
@@ -59,8 +68,8 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
           <button type="submit" className={styles.button} onClick={handleSearch}>검색</button>
         </form>
       </div>
-      <div className={styles['table-container']}>
-        <table className={styles.table}>
+      <div style={{backgroundColor: 'white',  borderRadius: '10px', display: 'flex',  justifyContent: 'center', paddingBottom: '14px' }}>
+        <table style={{width: '97%'}}>
           <thead>
             <tr>
               <th width="70">번호</th>
@@ -154,7 +163,8 @@ const List = ({ type, optionList, page, option, boardList, setPage, setCode, set
       </center>
 
 
-    </div>
+      </div>
+    // </div>
   );
   
 }
