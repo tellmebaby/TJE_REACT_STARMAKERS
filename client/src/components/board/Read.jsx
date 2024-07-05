@@ -43,22 +43,38 @@ const Read = ({
       setAnswerContent(''); // 답글 내용 초기화
     }
   };
+
+  const clickDona = (value) => {
+
+  }
+
   const dona = () => {
+    const inputValue = 0;
+    const inputStep = 100;
     Swal.fire({
-      icon:'question',
-      title:'후원',
-      text:'후원 하시겠습니까?',
-      showCancelButton:true,
-      confirmButtonText:'후원하기',
-      cancelButtonText:'취소',
-      confirmButtonColor:'#91accf',
-      cancelButtonColor:'#ffccee'
+      icon: 'question',
+      title: '후원',
+      text: '이 스타에게 포인트를 후원 하시나요?',
+      html: `<br/>
+            <p>최소 100포인트에서 최대 10000포인트까지<br/> 후원 가능합니다 :D</p>
+`,
+      input: 'range',
+      inputValue,
+      inputAttributes: {
+        min: '100',
+        max: '10000',
+        step: inputStep.toString(),
+      },
+      showCancelButton: true,
+      confirmButtonText: '후원하기',
+      cancelButtonText: '취소',
+      confirmButtonColor: '#91accf',
+      cancelButtonColor: '#ffccee'
     }).then(result => {
-      if(result.isConfirmed) {
-
-      } 
+      if (result.isConfirmed) {
+        clickDona(inputValue)
+      }
     })
-
   }
   return (
     <div className="container2" style={{ padding: '10px' }}>
@@ -70,14 +86,59 @@ const Read = ({
       </center>
       {!isLoading && starBoard && (
         <>
-          <div className={styles.writer}>
-            <label>{starBoard.writer}</label>
-            <label>{new Date(starBoard.regDate).toLocaleString()}</label>
-          </div>
-          <div className={styles['title-container']}>
-            <span>{starBoard.title}</span>
-            <hr />
-          </div>
+          {starBoard.type == 'starCard' ?
+            <>
+              <div className="d-flex justify-content-between fw-light fs-6 read-top">
+                <span className="">
+                  {new Date(starBoard.startDate).toLocaleDateString()}~{new Date(starBoard.endDate).toLocaleDateString()}
+                </span>
+                <span className="align-items-center">{new Date(starBoard.regDate).toLocaleString()}</span>
+                <div className="d-flex justify-content-end col-2">
+                  <span ><i className="fa-solid fa-star"></i> </span>
+                  <span>{starBoard.likes}</span>
+                  <span className="ms-2"><i className="fa-regular fa-eye"></i> </span>
+                  <span>{starBoard.views}</span>
+                </div>
+              </div>
+              <div className={styles.mainImage}>
+                <div>
+                  <img src={"/file/img/" + starBoard.imgNo} className="image rounded mt-auto" alt="썸네일" />
+                </div>
+                <div className={styles.text}>
+                  <span className=" fs-1 m-0 p-0 text-light black-han-sans-regular">{starBoard.title}</span>
+                  <br />
+                  <span className="fw-bold text-light fs-10 eventtext">{starBoard.writer}</span>
+                  <br />
+                  {
+                    starBoard.category1.split(',').map((icon, index) =>
+                      <img
+                        key={index}
+                        src={`/img/icon/${icon}.png`}
+                        className={`content-icon ${icon}`}
+                        style={{ maxWidth: '20px', margin: '0', marginRight: '5px', maxHeight: '20px' }}
+                      />
+                    )
+                  }
+                  <br />
+                  {
+                    starBoard.koreaCategory2.split(',').map(word => `#${word.trim()}`).join(' ')
+                  }
+                </div>
+              </div>
+            </>
+            :
+            <>
+              <div className={styles.writer}>
+                <label>{starBoard.writer}</label>
+                <label>{new Date(starBoard.regDate).toLocaleString()}</label>
+              </div>
+              <div className={styles['title-container']}>
+                <span>{starBoard.title}</span>
+                <hr />
+              </div>
+            </>
+
+          }
         </>
       )}
       <div className={styles['content-container']}>
@@ -85,15 +146,15 @@ const Read = ({
       </div>
       <div className={`d-flex justify-content-end mt-2 ${styles['button-box']}`}>
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button>
-        {userInfo && userInfo.userNo === starBoard.userNo?
+        {userInfo && userInfo.userNo === starBoard.userNo ?
           <>
             <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
             <button className={styles['btn-delete']} type="button" onClick={() => onDelete(starNo)}>삭제</button>
           </>
-         :
-         <>
+          :
+          <>
             <button className={styles['btn-update']} type="button" onClick={dona}>후원</button>
-         </>
+          </>
         }
       </div>
       <div className={styles['button-box1']}>
@@ -104,16 +165,16 @@ const Read = ({
       </div>
       <div className={styles['reply-container']}>
         <div className={styles['reply-box']}>
-          <textarea 
-            value={newReply} 
-            onChange={handleNewReplyChange} 
-            placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다. 로그인 하신 분만 댓글을 작성할 수 있습니다." 
+          <textarea
+            value={newReply}
+            onChange={handleNewReplyChange}
+            placeholder="자유롭게 의견을 작성하세요. 운영원칙에 위배되는 댓글은 삭제될 수 있습니다. 로그인 하신 분만 댓글을 작성할 수 있습니다."
             disabled={!isLogin}
           ></textarea>
-          <button 
-            type="button" 
-            className="btn-reply" 
-            onClick={handleReplySubmit} 
+          <button
+            type="button"
+            className="btn-reply"
+            onClick={handleReplySubmit}
             disabled={!isLogin}
           >등록</button>
         </div>
@@ -124,10 +185,10 @@ const Read = ({
       </div>
       <div id={styles['reply-listbox']}>
         {Array.isArray(replyList) && replyList.map(reply => (
-          <ReplyList 
-            key={reply.replyNo} 
+          <ReplyList
+            key={reply.replyNo}
             reply={reply}
-            sessionUser={userInfo} 
+            sessionUser={userInfo}
             deleteReply={handleReplyDelete}
             updateReply={handleReplyUpdate}
             insertAnswer={onReplySubmit}
