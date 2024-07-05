@@ -8,7 +8,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import './editer.css'
 import * as filesAPI from '../../apis/files'
 import { Link, useNavigate } from 'react-router-dom';
-import Calendar from './css/calendar.module.css';
+// import Calendar from './css/calendar.module.css';
 import styles from './css/Insert.module.css'
 
 import DatePicker from 'react-datepicker';
@@ -44,7 +44,7 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
 
     // ✅ 카테고리1 : 유튜브,인스타,아프리카,치지직
     const handleChangeCategory1 = (e) => {
-        setCate1(true)
+        setCate1(true) // 실행 되는 경우 true로 바꿈
         const cate = e.target.value
 
         let checked = false
@@ -59,7 +59,7 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
             }
         }
         console.log(`category1 [] : ${category}`);
-        if( !checked ) {
+        if (!checked) {
             const updatedCategory = [cate, ...category]
             console.log(`category1 [] : ${updatedCategory}`);
             setCategory(updatedCategory)
@@ -82,7 +82,7 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
             }
         }
         console.log(`category22 [] : ${category22}`);
-        if( !checked ) {
+        if (!checked) {
             const updatedCategory = [cate, ...category22]
             console.log(`category22 [] : ${updatedCategory}`);
             setCategory22(updatedCategory)
@@ -103,12 +103,12 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         formData.append('content', content);
         formData.append('userNo', userInfo.userNo);
         formData.append('writer', userInfo.id);
-        if(cate1){
+        if (cate1) {
             formData.append('category1', category);
         } else {
             formData.append('category1', category1)
         }
-        if(cate2){
+        if (cate2) {
             formData.append('category2', category22);
         } else {
             formData.append('category2', category2)
@@ -171,14 +171,15 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
         };
     };
     useEffect(() => {
-        if (starBoard) {
-            console.log(`starBoard.category1 : ${starBoard.category1}`);
-
+        if (starBoard && !isLoading) {
+            
             setTitle(starBoard.title);
             setContent(starBoard.content);
             setCategory1(starBoard.category1);
             setCategory2(starBoard.category2);
-
+            
+            console.log(`starBoard.category1 : ${category1}`);
+            console.log(`starBoard.category2 : ${category2}`);
             const cat1Inputs = document.querySelectorAll('input[name="category1"]');
             const cat1List = Array.from(cat1Inputs).map(input => input.value);
 
@@ -186,10 +187,10 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
             const cat2List = Array.from(cat2Inputs).map(input => input.value);
 
             // category1 (문자열) : instagram,youtube 
-            if (category1) {
+            if (starBoard.category1) {
                 let newCategory = []
                 cat1List.forEach(cat1Value => {
-                    if (category1.includes(cat1Value)) {
+                    if (starBoard.category1.includes(cat1Value)) {
                         const inputElement = document.querySelector(`input[id="${cat1Value}"]`);
                         if (inputElement) {
                             inputElement.checked = true;
@@ -204,16 +205,16 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
                 setCategory(newCategory)
             }
 
-            if (category2) {
+            if (starBoard.category2) {
                 let newCategory = []
                 cat2List.forEach(cat2Value => {
-                    if (category2.includes(cat2Value)) {
+                    if (starBoard.category2.includes(cat2Value)) {
                         const inputElement = document.querySelector(`input[value="${cat2Value}"]`);
                         if (inputElement) {
                             inputElement.checked = true;
                             newCategory = [cat2Value, ...newCategory]
                             console.log(`newCategory2 : ${newCategory}`);
-                            console.log("category2 : " + category2);
+                            console.log("category2 : " + starBoard.category2);
 
                             // setDuplicated2(false);
                             // if (!duplicated2) category22.push(inputElement)
@@ -226,7 +227,6 @@ const StarUpdateForm = ({ starNo, starBoard, onUpdate, isLoading }) => {
             }
         }
     }, [starBoard]);
-
 
     function uploadPlugin(editor) {
         editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
