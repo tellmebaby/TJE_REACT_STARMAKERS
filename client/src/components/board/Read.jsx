@@ -148,7 +148,11 @@ const Read = ({
         <button className={styles['btn-list']} type="button" onClick={() => navigate(-1)}>목록</button>
         {userInfo && userInfo.userNo === starBoard.userNo ?
           <>
-            <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
+           {starBoard.type == "starCard" ?
+              <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/starUpdate/${starNo}`}>수정</button>
+              :
+              <button className={styles['btn-update']} type="button" onClick={() => window.location.href = `/update/${starNo}`}>수정</button>
+            }
             <button className={styles['btn-delete']} type="button" onClick={() => onDelete(starNo)}>삭제</button>
           </>
           :
