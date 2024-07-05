@@ -61,10 +61,10 @@ const MyPayment = () => {
       try {
         await paymentWidget?.requestPayment({
           orderId: nanoid(),
-          orderName: "포인트 충전",
+          orderName: "[당스만]포인트 충전",
           customerName: user.name,
           customerEmail: user.email,
-          successUrl: `${window.location.origin}/payments/success?`,
+          successUrl: `${window.location.origin}/UserPayment/success?`,
           failUrl: `${window.location.origin}/payments/fail?`
         });
       } catch (error) {
