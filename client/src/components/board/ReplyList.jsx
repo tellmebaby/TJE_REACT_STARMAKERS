@@ -147,6 +147,10 @@ const ReplyList = ({ reply, deleteReply, updateReply, handleRereplySubmit, answe
                 )}
               </div>
             </div>
+            <div className={styles['reply-rereply']}>
+            <br/>
+            {/* <button className={styles['btn-rereply']} onClick={() => toggleAnswerBox(reply.replyNo)}>답글쓰기</button> */}
+          </div>
             {showAnswerBox === reply.replyNo && (
               <div className={styles['rereply-container']} id={`answer-${reply.replyNo}`}>
                 <div className={styles['rereply-box']}>
