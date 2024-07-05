@@ -22,6 +22,7 @@ public class Users {
     private String birth;
     private String address_detail;
     private String sociaCode;
+    private int point;
 
     private int userImgId;
 

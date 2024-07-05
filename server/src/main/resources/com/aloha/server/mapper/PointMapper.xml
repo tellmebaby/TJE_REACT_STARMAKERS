@@ -5,53 +5,22 @@
 
 <mapper namespace="com.aloha.server.mapper.PointMapper">
 
-    <resultMap type="Point" id="pointMap">
-        <result property="totalPoint" column="total_point"></result>
-    </resultMap>
-
-    <insert id="insert" useGeneratedKeys="true" keyProperty="pointNo">
-        INSERT INTO point ( point, user_no, star_no, type  )
-        VALUES ( #{point}, #{userNo}, #{starNo}, #{type} )
+    <insert id="insert" >
+        INSERT INTO point (point, user_no, star_no, type, send_no, msg)
+    VALUES (#{point}, #{userNo}, #{starNo}, #{type}, #{sendNo}, #{msg})
     </insert>
 
-    <select id="select" resultType="Point">
-        SELECT * FROM point WHERE user_no = #{userNo} LIMIT 0,1
+    <select id="selectBoard" resultType="int">
+        SELECT sum(point) as sum FROM point WHERE star_no = #{starNo}
     </select>
 
-
-    <!-- 마이페이지 결제 내역 -->
-    <select id="userList" resultType="Point">
-    SELECT p.*,
-            sb.status as star_status
-        FROM 
-            point p
-        JOIN 
-            star_board sb
-        ON 
-            p.user_no = sb.user_no
-        WHERE p.user_no = #{userNo}
-        AND p.star_no = sb.star_no
-        ORDER BY sb.reg_date DESC
+    <select id="list" resultType="Point">
+    SELECT * FROM point WHERE user_no = #{userNo}
     </select>
 
-    <select id="totalList" resultType="Point">
-        SELECT *
-        FROM point
-        order by point_no desc
-    </select>
-
-    <!-- 회원 정보 수정 -->
-    <update id="update">
-        UPDATE point
-           SET point = #{point}
-        WHERE point_no = #{pointNo}
-    </update>
-
-    <!-- 관리자 회원별 포인트 사용 total 조회 -->
-    <select id="totalPoint" resultType="Point">
-        SELECT sum(point) as total_point
-        FROM point
-        WHERE user_no = #{userNo}
+    <select id="sum" resultType="int">
+        SELECT sum(point) as sum
+        FROM point where  user_no = #{userNo}
     </select>
 
 </mapper>

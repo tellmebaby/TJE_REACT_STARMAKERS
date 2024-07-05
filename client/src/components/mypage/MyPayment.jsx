@@ -64,8 +64,8 @@ const MyPayment = () => {
           orderName: "[당스만]포인트 충전",
           customerName: user.name,
           customerEmail: user.email,
-          successUrl: `${window.location.origin}/UserPayment/success?`,
-          failUrl: `${window.location.origin}/payments/fail?`
+          successUrl: `${window.location.origin}/UserPayment/success?userNo=${userInfo.userNo}`,
+          failUrl: `${window.location.origin}/payments/fail`
         });
       } catch (error) {
         console.error("Error requesting payment:", error);

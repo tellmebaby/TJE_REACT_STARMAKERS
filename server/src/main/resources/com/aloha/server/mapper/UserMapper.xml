@@ -8,6 +8,7 @@
     <resultMap type="Users" id="userMap">
         <id property="userNo" column="user_no" />
         <result property="name" column="name" />
+        <result property="point" column="point" />
         <result property="id" column="id" />
         <result property="email" column="email" />
         <result property="password" column="password" />
@@ -58,6 +59,7 @@
               ,password
               ,name
               ,id
+              ,point
               ,phone
               ,address
               ,gender
@@ -111,6 +113,7 @@
            SET phone = #{phone}
               ,address = #{address}
               ,id = #{id}
+              ,point = #{point}
               ,upd_date = now()
         WHERE email = #{email}
     </update>

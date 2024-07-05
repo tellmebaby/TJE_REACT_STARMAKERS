@@ -2,23 +2,16 @@ package com.aloha.server.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
-import com.aloha.server.dto.Files;
-
+import com.aloha.server.dto.Point;
 
 public interface PointService {
 
-  // 게시글 목록
-   public List<Files> list() throws Exception;
-   // 게시글 조회
-   public Files select(int no) throws Exception;
-   // 게시글 등록
-   public int insert(Files file) throws Exception;
-   // 게시글 수정
-   public int update(Files file) throws Exception;
-   // 게시글 삭제
-   public int delete(int no) throws Exception;
-   // 조회수 업데이트
-   public int updateViews(@Param("count") int count, @Param("no") int no) throws Exception;
+  // 마이페이지 포인트내역조회
+  public List<Point> list(int userNo) throws Exception;
+
+  // 게시물 후원금액 조회
+  public int selectBoard(int starNo) throws Exception;
+
+  // 포인트 추가/삭제
+  public int insert(Point point) throws Exception;
 }
