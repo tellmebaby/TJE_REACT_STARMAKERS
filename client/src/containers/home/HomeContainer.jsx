@@ -19,7 +19,6 @@ const HomeContainer = () => {
       try {
         const response = await cards.starCardList();
         const data = response.data;
-        console.log(response.data);
         setCardList(data);
         
       } catch (error) {
@@ -30,7 +29,6 @@ const HomeContainer = () => {
     };
 
     getCardList();
-    console.log("1231232131")
   }, []);
   return (
     <>
