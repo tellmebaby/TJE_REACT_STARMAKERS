@@ -63,13 +63,13 @@ const DangsmCard = ({ card }) => {
             check = true;  // 응답이 'Liked'인 경우 check를 true로 설정
         }
     
-        setUpdatedCard({
-          ...updatedCard,
-  // 서버 응답이 'liked'일 경우 'liked'로 설정하고, 그렇지 않으면 빈 문자열로 설정
-  action: check ? 'Liked' : '',
-  // 'liked' 상태에 따라 좋아요 수 증감 처리
-  likes: check ? updatedCard.likes + 1 : updatedCard.likes - 1
-        });
+        setUpdatedCard(updatedCard => ({
+            ...updatedCard,
+          // 서버 응답이 'liked'일 경우 'liked'로 설정하고, 그렇지 않으면 빈 문자열로 설정
+          action: check ? 'Liked' : '',
+          // 'liked' 상태에 따라 좋아요 수 증감 처리
+          likes: check ? updatedCard.likes + 1 : updatedCard.likes - 1
+        }));
       } catch (error) {
         console.error('error by dangsmCard:', error);
       }
