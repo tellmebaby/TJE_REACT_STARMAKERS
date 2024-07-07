@@ -15,7 +15,7 @@
     </select>
 
     <select id="list" resultType="Point">
-    SELECT * FROM point WHERE user_no = #{userNo}
+    SELECT * FROM point WHERE user_no = #{userNo} order by point_no desc
     </select>
 
     <select id="sum" resultType="int">

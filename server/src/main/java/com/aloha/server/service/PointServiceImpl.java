@@ -82,7 +82,6 @@ public class PointServiceImpl implements PointService {
             try {
                 Users sendUser = userMapper.selectUserNo(sendUserNo);
                 if (sendUser != null) {
-                    log.info(sendUser.toString());
                     point.setType("후원");
                     point.setMsg(sendUser.getId() + "님이 " + point_ + "포인트를 후원하였습니다.");
                 } else {
@@ -93,16 +92,13 @@ public class PointServiceImpl implements PointService {
                 throw new Exception("후원자 정보 조회 중 오류 발생: " + e.getMessage());
             }
         } else if (point_ < 0) {
-            point.setType("사용");
-            point.setMsg(point_ + "포인트가 사용되었습니다.");
+            point_ *= -1;
+            if (point.getType() == "사용") {
+                point.setMsg(point_ + "포인트가 사용되었습니다.");
+            }
         } else {
             throw new IllegalArgumentException("유효하지 않은 포인트 정보입니다.");
         }
-
-        log.info("C포인트");
-
-
-        log.info(point.toString());
 
         int result = pointMapper.insert(point);
         log.info("D포인트");

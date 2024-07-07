@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import MyPointForm from '../../components/mypage/MyPointForm'
-import * as pay from '../../apis/pay'
-import { LoginContext } from '../../contexts/LoginContextProvider';
+import React, { useContext, useEffect, useState } from "react";
+import MyPointForm from "../../components/mypage/MyPointForm";
+import * as pay from "../../apis/pay";
+import { LoginContext } from "../../contexts/LoginContextProvider";
 
 const MyPointContainer = () => {
   const [pointList, setPointList] = useState([]);
@@ -13,13 +13,10 @@ const MyPointContainer = () => {
       const data = response.data;
 
       setPointList(data);
-
-      // setPointList
-
     } catch (error) {
-      console.error('Error fetching review list:', error);
+      console.error("Error fetching review list:", error);
       if (error.response) {
-        console.error('Error response:', error.response);
+        console.error("Error response:", error.response);
       }
     }
   };
@@ -30,11 +27,13 @@ const MyPointContainer = () => {
     }
   }, [userInfo]);
 
-
-
   return (
-    <MyPointForm pointList={pointList} />
-  )
-}
+    <MyPointForm
+      pointList={pointList}
+      userInfo={userInfo}
+      userPointList={userPointList}
+    />
+  );
+};
 
-export default MyPointContainer
+export default MyPointContainer;
