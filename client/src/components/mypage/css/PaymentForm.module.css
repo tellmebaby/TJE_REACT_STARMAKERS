@@ -1,127 +1,233 @@
 .navLinks {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .sideMenu {
-    width: 200px;
-    margin-right: 30px;
-    margin-top: 172px;
+  width: 200px;
+  margin-right: 30px;
+  margin-top: 172px;
 }
 
 .navLinks a {
-    display: block;
-    color: #6c757d;
-    margin-bottom: 25px;
-    text-decoration: none;
-    font-size: 25px;
+  display: block;
+  color: #6c757d;
+  margin-bottom: 25px;
+  text-decoration: none;
+  font-size: 25px;
 }
 
 .navLinks a:hover {
-    color: #000;
+  color: #000;
 }
 
 .navLinks .active {
-    font-weight: bold;
-    color: black;
+  font-weight: bold;
+  color: black;
 }
 
 .list {
-    margin-top: 50px;
-    color: #8d8d8d;
-  }
-  
-  .table {
-    font-size: 15px;
-    border-color: black;
-  }
-  
-  .btnReview, .btnRefund {
-    border-radius: 10px;
-    padding: 5px 15px;
-    font-size: 13px;
-    border: none;
-    color: white;
-    margin-right: 5px;
-    width: 90px;
-    text-align: center;
-  }
-  
-  .btnReview.pending {
-    background-color: #2972fe;
-  }
-  
-  .btnReview.approved {
-    background-color: #28a745;
-  }
-  
-  .btnRefund {
-    background-color: #2972fe;
-  }
-  
-  .table th, .table td {
-    color: black;
-    vertical-align: middle;
-  }
-  
-  .table td .buttonContainer {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .table tr, th {
-    text-align: center;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 4px;
-  }
-  
-  .pagination a {
-    margin: 0 5px;
-    text-decoration: none;
-    color: #333;
-    font-size: 18px;
-  }
-  
-  .prev, .next {
-    font-size: 24px;
-  }
-  
-  .pageNumber:hover, .prev:hover, .next:hover {
-    color: #000;
-  }
-  
-  span, a {
-    color: black;
-    text-decoration: none;
-  }
-  
-  .loadMoreBtn {
-    display: block;
-    width: 100%;
-    text-align: center;
-    margin: 20px 0;
-  }
-  
-  .loadMoreBtn button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2972fe;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .loadMoreBtn button:hover {
-    background-color: #1d5bc6;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
+  margin-top: 50px;
+  color: #8d8d8d;
+}
+
+.table {
+  font-size: 15px;
+  border-color: black;
+}
+
+.btnReview,
+.btnRefund {
+  border-radius: 10px;
+  padding: 5px 15px;
+  font-size: 13px;
+  border: none;
+  color: white;
+  margin-right: 5px;
+  width: 90px;
+  text-align: center;
+}
+
+.btnReview.pending {
+  background-color: #2972fe;
+}
+
+.btnReview.approved {
+  background-color: #28a745;
+}
+
+.btnRefund {
+  background-color: #2972fe;
+}
+
+.table th,
+.table td {
+  color: black;
+  vertical-align: middle;
+}
+
+.table td .buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table tr,
+th {
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 4px;
+}
+
+.pagination a {
+  margin: 0 5px;
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+}
+
+.prev,
+.next {
+  font-size: 24px;
+}
+
+.pageNumber:hover,
+.prev:hover,
+.next:hover {
+  color: #000;
+}
+
+span,
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.loadMoreBtn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.loadMoreBtn button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #2972fe;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.loadMoreBtn button:hover {
+  background-color: #1d5bc6;
+}
+
+.hidden {
+  display: none;
+}
+
+.buttonContainer {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.chargeButton,
+.refundButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chargeButton {
+  background-color: #4caf50; /* 초록색 */
+  color: white;
+}
+
+.chargeButton:hover {
+  background-color: #45a049; /* 좀 더 진한 초록색 */
+}
+
+.refundButton {
+  background-color: #f44336; /* 빨간색 */
+  color: white;
+}
+
+.refundButton:hover {
+  background-color: #d32f2f; /* 좀 더 진한 빨간색 */
+}
+
+.moveButton {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #2196f3; /* 파란색 */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.moveButton:hover {
+  background-color: #1976d2; /* 좀 더 진한 파란색 */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+.chargeBtn {
+  background-color: #e0f7fa; /* 밝은 청록색 */
+  color: #284d48; /* 진한 청록색 */
+  border: 1px solid #00796b;
+}
+
+.refundBtn {
+  background-color: #ffebee; /* 밝은 빨간색 */
+  color: #c62828; /* 진한 빨간색 */
+  border: 1px solid #c62828;
+}
+
+.useBtn {
+  background-color: #e8f5e9; /* 밝은 초록색 */
+  color: #2e7d32; /* 진한 초록색 */
+  border: 1px solid #2e7d32;
+}
+
+.donateBtn {
+  background-color: #fff3e0; /* 밝은 주황색 */
+  color: #ef6c00; /* 진한 주황색 */
+  border: 1px solid #ef6c00;
+}
+
+/* 기본 버튼 스타일 */
+.button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
