@@ -13,15 +13,22 @@
 }
 
 .right-content > svg {
-    width: 16px; /* 아이콘의 너비 설정 */
-    height: 16px; /* 아이콘의 높이 설정 */
-    fill: white; /* 아이콘의 색상을 흰색으로 설정 */
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)); /* 그림자 설정 */
+    transition: opacity 0.2s ease-in-out;
+    opacity: 1; /* 기본적으로 보이도록 설정 */
 }
 
 .clipboard-icon {
-    transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
-    opacity: 0;
+    opacity: 0; /* 초기에는 숨겨져 있음 */
+    transform: rotate(180deg); 
+    transition: opacity 0.2s ease-in-out;
+}
+
+.right-content:hover .clipboard-icon {
+    opacity: 1; /* 호버 시 클립보드 아이콘 보이게 함 */
+}
+
+.right-content:hover > svg {
+    opacity: 0; /* 클립보드 아이콘이 보일 때 세 점 아이콘 숨김 */
 }
 
 .clipboard-icon.rotate-180:hover {
@@ -40,4 +47,4 @@
     transform: rotate(180deg); /* 요소를 180도 회전시키는 변환 */
     opacity: 1;
     transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out; /* 회전 애니메이션 및 투명도 변환 애니메이션 속성 */
-}
+} 
