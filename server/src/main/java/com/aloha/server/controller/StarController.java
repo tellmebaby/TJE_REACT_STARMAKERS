@@ -560,11 +560,6 @@ public class StarController {
         }
     }
 
-    // @GetMapping("/newStarMember")
-    // @ResponseBody
-    // public List<StarUser> newStarMember() throws Exception {
-    // return userService.newMemberList();
-    // }
     @GetMapping("/newStarMember")
     public ResponseEntity<?> newStarMember() throws Exception {
         try {

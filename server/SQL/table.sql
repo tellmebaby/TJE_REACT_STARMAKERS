@@ -1,3 +1,4 @@
+-- Active: 1714701530602@@127.0.0.1@3306@joeun
 
 DROP TABLE IF EXISTS email ;
 CREATE TABLE `email` (
