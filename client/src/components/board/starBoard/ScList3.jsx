@@ -15,6 +15,12 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   const { isLogin, userInfo } = useContext(LoginContext);
   const location = useLocation();
 
+    useEffect(() => {
+    if (!location.state && selectedOptions.size === 0) {
+      fetchData(true);
+    }
+  }, [location, selectedOptions.size]);
+
   useEffect(() => {
     const newOptions = new Map();
     if (category) newOptions.set(category, true);
