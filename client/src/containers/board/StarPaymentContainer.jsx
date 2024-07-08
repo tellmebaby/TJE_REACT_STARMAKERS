@@ -40,13 +40,15 @@ const StarPaymentContainer = ({ starNo }) => {
     const paymentKey = searchParams.get("paymentKey");
     const starNoParam = searchParams.get("starNo");
     const userNo = searchParams.get("userNo");
+    const card = searchParams.get("card");
 
     const requestData = {
       code: orderId,
       price: amount,
       paymentKey: paymentKey,
       starNo: starNoParam,
-      userNo: userNo
+      userNo: userNo,
+      card : card
     };
 
     try {

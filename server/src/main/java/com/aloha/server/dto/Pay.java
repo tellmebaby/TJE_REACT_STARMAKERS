@@ -16,4 +16,5 @@ public class Pay {
     private String status;
     private String starStatus;
     private int totalPrice;
+    private String card;
 }

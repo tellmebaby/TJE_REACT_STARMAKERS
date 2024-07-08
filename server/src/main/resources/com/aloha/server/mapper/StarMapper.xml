@@ -404,6 +404,7 @@
             status=#{status},
             category1=#{category1},
             category2=#{category2},
+            card=#{card},
             upd_date = now()
         WHERE star_no = #{starNo}
     </update>
