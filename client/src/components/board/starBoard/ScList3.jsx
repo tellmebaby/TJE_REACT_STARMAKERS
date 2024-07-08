@@ -14,6 +14,27 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   const [page, setPage] = useState(1);  // 페이지 상태 관리, 필요하다면
   const { isLogin, userInfo } = useContext(LoginContext);
   const location = useLocation();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // 스크롤 위치와 뷰포트 높이가 전체 문서 높이에 근접했는지 확인
+      console.log("접근했나봐 아래에 무한 스크로로~")
+      if (window.innerHeight + document.documentElement.scrollTop
+        >= document.documentElement.offsetHeight - 100 && !loading) {
+        setPage(prevPage => prevPage + 1);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [loading]);
+
+  useEffect(() => {
+    if (selectedOptions.size > 0 || page > 1) {
+      fetchData();
+    }
+  }, [selectedOptions, userInfo, page]);
 
     useEffect(() => {
     if (!location.state && selectedOptions.size === 0) {
@@ -44,18 +65,23 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   }, [selectedOptions, userInfo, page]);
 
   const fetchData = async () => {
+    setLoading(true);
     const params = {
       ...Object.fromEntries(selectedOptions),
       userNo: userInfo ? userInfo.userNo : 0,
       page
     };
+
     try {
       const response = await axios.get('/starList/api', { params });
-      setData(response.data);
+      setData(prevData => [...prevData, ...response.data]); // 기존 데이터에 새 데이터 추가
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setLoading(false);
     }
   };
+
 
   const handleInputClick = (option, value = true) => {
     setSelectedOptions((prevOptions) => {
@@ -299,6 +325,7 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
           </div>
         ))}
       </div>
+      {loading && <div>Loading...</div>}
     </div>
   );
 };
