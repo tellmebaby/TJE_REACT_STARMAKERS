@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import StarCardList from './StarCardList';
 import './css/ScList.css';
@@ -15,6 +15,8 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   const { isLogin, userInfo } = useContext(LoginContext);
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);  // 추가 데이터 로딩 가능 여부
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,15 +34,17 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
 
   useEffect(() => {
     if (selectedOptions.size > 0 || page > 1) {
+      console.log('셀렉트옵션이 0보다 크거나 페이지가 1보다 클때');
       fetchData();
     }
-  }, [selectedOptions, userInfo, page]);
+  }, [Array.from(selectedOptions).map(([key, val]) => `${key}:${val}`).join(','), userInfo, page]);
 
-    useEffect(() => {
-    if (!location.state && selectedOptions.size === 0) {
-      fetchData(true);
-    }
-  }, [location, selectedOptions.size]);
+  //   useEffect(() => {
+  //   if (!location.state && selectedOptions.size === 0) {
+  //     console.log('로케이션 스테이트 !location.state && selectedOptions.size === 0');
+  //     fetchData(true);
+  //   }
+  // }, [location, selectedOptions.size]);
 
   useEffect(() => {
     const newOptions = new Map();
@@ -58,47 +62,84 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
     }
   }, [location.state]);
 
-  useEffect(() => {
-    if (selectedOptions.size > 0) {
-      fetchData();
+  // useEffect(() => {
+  //   if (selectedOptions.size > 0) {
+  //     console.log('선택옵션이 하나 이상이라 부른다');
+  //     fetchData();
+  //   }
+  // }, [selectedOptions, userInfo, page]);
+// selectedOptions 상태가 바뀔 때마다 fetchData를 호출합니다.
+useEffect(() => {
+  fetchData();
+}, [Array.from(selectedOptions).map(([key, val]) => `${key}:${val}`).join(','), page]);
+
+
+// 선택된 옵션 변경에 따라 데이터를 새로 불러오고, 페이지를 1로 초기화
+useEffect(() => {
+  setPage(1);
+  fetchData();
+}, [Array.from(selectedOptions).map(([key, val]) => `${key}:${val}`).join(',')]);
+
+// 페이지 번호가 변경될 때 추가 데이터를 불러옴
+useEffect(() => {
+  console.log('Page number changed');
+  if (page > 1) fetchData();  // 추가 페이지 데이터를 불러옴
+}, [page]);
+
+
+const handleInputClick = (option, value = true) => {
+  setSelectedOptions((prevOptions) => {
+    const newOptions = new Map(prevOptions);
+    if (newOptions.has(option)) {
+      newOptions.delete(option);
+    } else {
+      newOptions.set(option, value);
     }
-  }, [selectedOptions, userInfo, page]);
+    // 페이지를 1로 리셋하고 데이터를 초기화하는 로직은 여기에 남겨둡니다.
+    setPage(1);
+    setData([]);
+    setHasMore(true); // 옵션이 변경될 때 항상 hasMore를 true로 재설정
+    return newOptions;
+  });
+};
 
-  const fetchData = async () => {
-    setLoading(true);
-    const params = {
-      ...Object.fromEntries(selectedOptions),
-      userNo: userInfo ? userInfo.userNo : 0,
-      page
-    };
+const fetchData = async () => {
+  if (!hasMore || loading || selectedOptions.size === 0) return;
 
-    try {
-      const response = await axios.get('/starList/api', { params });
-      setData(prevData => [...prevData, ...response.data]); // 기존 데이터에 새 데이터 추가
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  const params = { ...Object.fromEntries(selectedOptions), userNo: userInfo ? userInfo.userNo : 0, page };
 
+  try {
+    const response = await axios.get('/starList/api', { params });
+    const newData = response.data || [];
+    setData(prevData => page === 1 ? newData : [...prevData, ...newData]);
+    setHasMore(newData.length === 24);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+    // Using useMemo to avoid recalculating on each render
+    const isOptionSelected = useMemo(() => {
+      
+      console.log('isOptionSelected : ' , selectedOptions );
+      return option => selectedOptions.has(option);
+    }, [selectedOptions]);
 
-  const handleInputClick = (option, value = true) => {
-    setSelectedOptions((prevOptions) => {
-      const newOptions = new Map(prevOptions);
-      if (newOptions.has(option)) {
-        newOptions.delete(option);
-      } else {
-        newOptions.set(option, value);
+    useEffect(() => {
+      const keywordFromSearch = location.state?.keyword;
+      if (keywordFromSearch) {
+        // 검색어를 selectedOptions에 추가
+        setSelectedOptions(prev => new Map(prev).set('keyword', keywordFromSearch));
       }
-      fetchData();  // 옵션 변경 후 데이터 다시 불러오기
-      return newOptions;
-    });
-  };
-
-  const isOptionSelected = (option) => {
-    return selectedOptions.has(option);
-  };
+    }, [location.state]);
+    
+    useEffect(() => {
+      if (selectedOptions.size > 0) {
+        fetchData();
+      }
+    }, [selectedOptions, page]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -108,17 +149,16 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   };
 
   const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchKeyword(value);
-    if (value === '') {
-      handleInputClick('keyword', ' ');
+    const newSearchKeyword = e.target.value;
+    setSearchKeyword(newSearchKeyword);
+    if (newSearchKeyword === '') {
+      setSelectedOptions(new Map()); // Clear all options to fetch all data
+      setPage(1); // Reset to the first page
+      fetchData(); // Immediately fetch all data
     }
   };
 
-  const clearSearch = () => {
-    setSearchKeyword('');
-    handleInputClick('keyword', ' ');
-  };
+
 
 
   return (
@@ -286,17 +326,16 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
       <div className="container-starSearch">
         <div className="sub-searchInput">
           <i id="icon-inSearchBar" className="bi bi-search"></i>
-          <form id="searchForm" onSubmit={handleSearchSubmit}>
-            <input
-              type="text"
-              className="search-bar_input"
-              id="searchInput"
-              placeholder="검색"
-              value={searchKeyword}
-              onChange={handleSearchChange}
-              onFocus={() => setSearchKeyword('')}
-            />
-          </form>
+          <form onSubmit={handleSearchSubmit}>
+          <input
+            type="text"
+            className="search-bar_input"
+            id="searchInput"
+            placeholder="검색"
+            value={searchKeyword}
+            onChange={handleSearchChange}
+          />
+        </form>
           </div>
         {/* <div className="sub-btn-calendar">
           <a href="/page/starCard/starCalendar" className="btn-starCalendar">
@@ -319,8 +358,8 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
 
 
       <div className='star-card-list'>
-        {data.map((item) => (
-          <div key={item.starNo} className='star-card-item' style={{ width: '170px' }}>
+        {data.map((item, index) => (
+          <div key={item.starNo || index} className='star-card-item' style={{ width: '170px' }}>
             <DangsmCard card={item} />
           </div>
         ))}

@@ -36,6 +36,9 @@ const Search = () => {
     e.preventDefault();
     if (searchKeyword) {
       navigate('/starList', { state: { keyword: searchKeyword } });
+    } else {
+      // 검색어가 없을 경우 경고
+      alert("검색어를 입력해주세요.");
     }
   };
 
