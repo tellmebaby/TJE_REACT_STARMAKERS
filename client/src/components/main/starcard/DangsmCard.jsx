@@ -49,7 +49,7 @@ const DangsmCard = ({ card }) => {
 
   const handleDoubleClick = async () => {
     if (userInfo) {
-      if (updatedCard.action !== 'liked') {
+      if (updatedCard.action !== 'Liked') {
         setShowStar(true);
         setTimeout(() => {
           setShowStar(false);
