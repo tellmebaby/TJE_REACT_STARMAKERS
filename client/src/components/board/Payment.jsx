@@ -6,6 +6,8 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import DangsmCard from '../main/starcard/DangsmCard';
 
 const Payment = ({ starBoard, isLoading, status }) => {
+
+
   const { userInfo } = useContext(LoginContext);
 
   const [user, setUser] = useState({});
@@ -212,10 +214,10 @@ const Payment = ({ starBoard, isLoading, status }) => {
                   <th scope="row">카드 예시</th>
                   <td style={{ width: '85%' }}>
                     {starBoard && starBoard.category1 ? (
-                      <div style={{ width: '170px' }}>
-                        <div className={`card ${selectedDesign}`} style={{ width: '178px' }}>
-                          <DangsmCard card={starBoard} />
-                        </div>
+                      <div>
+                        {/* <div className={`card ${selectedDesign}`}> */}
+                          <DangsmCard card={ {...starBoard, card: selectedDesign}} />
+                        {/* </div> */}
                       </div>
                     ) : (
                       <div>Loading...</div>
