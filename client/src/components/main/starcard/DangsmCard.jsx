@@ -57,7 +57,7 @@ const DangsmCard = ({ card }) => {
       }
       try {
         const response = await StarLike(userInfo.userNo, updatedCard.starNo);
-        console.log(response.data);
+        // console.log(response.data);
         let check = false;  // `let`으로 선언하여 나중에 값을 변경할 수 있게 함
         if (response.data === 'Liked') {
             check = true;  // 응답이 'Liked'인 경우 check를 true로 설정
