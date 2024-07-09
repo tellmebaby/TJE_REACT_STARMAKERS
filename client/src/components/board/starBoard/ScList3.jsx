@@ -103,24 +103,33 @@ const handleInputClick = (option, value = true) => {
   });
 };
 
-const fetchData = async () => {
-  if (!hasMore || loading || selectedOptions.size === 0) return;
+  // 초기 데이터 로딩 함수
+  const fetchData = async (initial = false) => {
+    if (!hasMore || loading) return;
+    setLoading(true);
 
-  setLoading(true);
-  const params = { ...Object.fromEntries(selectedOptions), userNo: userInfo ? userInfo.userNo : 0, page };
+    // 초기 로딩시 파라미터를 임의로 설정하거나, selectedOptions에 따라 파라미터 설정
+    const params = initial ? { allData: true, userNo: userInfo ? userInfo.userNo : 0, page }
+                           : { ...Object.fromEntries(selectedOptions), userNo: userInfo ? userInfo.userNo : 0, page };
 
-  try {
-    const response = await axios.get('/starList/api', { params });
-    const newData = response.data || [];
-    console.log('newData : ', newData);
-    setData(prevData => page === 1 ? newData : [...prevData, ...newData]);
-    setHasMore(newData.length === 24);
-  } catch (error) {
-    // console.error("Error fetching data:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const response = await axios.get('/starList/api', { params });
+      const newData = response.data || [];
+      setData(prevData => page === 1 ? newData : [...prevData, ...newData]);
+      setHasMore(newData.length === 24);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+   // 컴포넌트 마운트 시에만 초기 데이터 로딩
+   useEffect(() => {
+    fetchData(true); // initial 매개변수를 true로 설정하여 전체 데이터 요청
+  }, []);
+
+  
     // Using useMemo to avoid recalculating on each render
     const isOptionSelected = useMemo(() => {
       
