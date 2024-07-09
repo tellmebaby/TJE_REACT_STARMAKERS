@@ -21,7 +21,7 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
   useEffect(() => {
     const handleScroll = () => {
       // 스크롤 위치와 뷰포트 높이가 전체 문서 높이에 근접했는지 확인
-      console.log("접근했나봐 아래에 무한 스크로로~")
+      // console.log("접근했나봐 아래에 무한 스크로로~");
       if (window.innerHeight + document.documentElement.scrollTop
         >= document.documentElement.offsetHeight - 100 && !loading) {
         setPage(prevPage => prevPage + 1);
@@ -34,7 +34,7 @@ const ScList = ({category, option, keyword: initialKeyword}) => {
 
   useEffect(() => {
     if (selectedOptions.size > 0 || page > 1) {
-      console.log('셀렉트옵션이 0보다 크거나 페이지가 1보다 클때');
+      // console.log('셀렉트옵션이 0보다 크거나 페이지가 1보다 클때');
       fetchData();
     }
   }, [Array.from(selectedOptions).map(([key, val]) => `${key}:${val}`).join(','), userInfo, page]);
@@ -82,7 +82,7 @@ useEffect(() => {
 
 // 페이지 번호가 변경될 때 추가 데이터를 불러옴
 useEffect(() => {
-  console.log('Page number changed');
+  // console.log('Page number changed');
   if (page > 1) fetchData();  // 추가 페이지 데이터를 불러옴
 }, [page]);
 
@@ -112,10 +112,11 @@ const fetchData = async () => {
   try {
     const response = await axios.get('/starList/api', { params });
     const newData = response.data || [];
+    console.log('newData : ', newData);
     setData(prevData => page === 1 ? newData : [...prevData, ...newData]);
     setHasMore(newData.length === 24);
   } catch (error) {
-    console.error("Error fetching data:", error);
+    // console.error("Error fetching data:", error);
   } finally {
     setLoading(false);
   }
@@ -123,7 +124,7 @@ const fetchData = async () => {
     // Using useMemo to avoid recalculating on each render
     const isOptionSelected = useMemo(() => {
       
-      console.log('isOptionSelected : ' , selectedOptions );
+      // console.log('isOptionSelected : ' , selectedOptions );
       return option => selectedOptions.has(option);
     }, [selectedOptions]);
 
